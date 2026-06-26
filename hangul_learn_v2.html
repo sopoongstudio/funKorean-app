@@ -1269,7 +1269,7 @@ function startDlgSpeech(expected, btn, feedbackId) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SR();
   // continuous=true so pauses mid-sentence don't cut off the recording
-  recognition.lang = 'ko-KR'; recognition.continuous = true; recognition.interimResults = true;
+  recognition.lang = 'ko-KR'; recognition.continuous = false; recognition.interimResults = false;
   let mediaRecorder = null, audioChunks = [], recordingReady = false;
   let finalTranscript = '';
   let stopBtn = null;
