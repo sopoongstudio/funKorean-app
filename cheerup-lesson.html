@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TWICE Cheer Up 수업</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e6fbfa;
+  --card:#ffffff;
+  --accent:#14b8a6;      /* teal — TWICE Cheer Up */
+  --accent2:#0d9488;
+  --teal-light:#5eead4;
+  --coral:#fb7185;       /* cheerleader pom-pom */
+  --coral2:#e11d48;
+  --peach:#fbbf24;
+  --lavender:#a78bfa;
+  --text:#134e4a;
+  --dim:#5f7c7a;
+  --light:#94b8b5;
+  --shadow:0 4px 20px rgba(20,184,166,.08);
+}
+body{
+  background:linear-gradient(135deg,#ccfbf1 0%,#e0f7fa 35%,#fff1f2 100%);
+  font-family:'Noto Sans KR','Outfit',sans-serif;
+  color:var(--text);
+  overflow:hidden;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(circle at 15% 85%,rgba(94,234,212,.25),transparent 50%),
+             radial-gradient(circle at 85% 15%,rgba(251,113,133,.12),transparent 50%);
+  pointer-events:none;z-index:0;
+}
+.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(20,184,166,.14),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(28px,4.5vw,56px);
+  background:linear-gradient(160deg,#f0fdfa,#f8fafc 45%,#fff7f7 100%);
+  opacity:0;transition:opacity .35s}
+.slide.active{display:flex;opacity:1}
+.progress-bar{position:absolute;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--teal-light),var(--coral));transition:width .5s;z-index:50;border-radius:0 3px 3px 0}
+.slide-num{position:absolute;top:16px;right:24px;font-family:'Outfit';font-size:12px;color:var(--light);letter-spacing:1.5px;font-weight:500}
+.lesson-tag{position:absolute;top:14px;left:24px;font-family:'Outfit';font-size:11px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:20px}
+.lt1{background:rgba(20,184,166,.1);color:var(--accent2)}
+.lt2{background:rgba(251,113,133,.12);color:var(--coral2)}
+
+h1{font-family:'Outfit';font-size:clamp(26px,3.8vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(18px,2.4vw,30px);font-weight:700;color:var(--accent2);margin-bottom:clamp(10px,1.6vw,22px);display:flex;align-items:center;gap:10px}
+.subtitle{font-size:clamp(13px,1.4vw,18px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{flex:1;display:flex;flex-direction:column;gap:clamp(8px,1.2vw,16px);overflow-y:auto;padding-bottom:36px}
+.content::before,.content::after{content:'';margin:auto;flex-shrink:1}
+.game-frame{width:100%;height:100%;min-height:0;border:2px solid #d1ece9;border-radius:14px;background:#f0fafa}
+
+/* cover */
+.cover-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px}
+.cover-badge{font-family:'Outfit';font-size:clamp(11px,1.1vw,14px);font-weight:700;letter-spacing:3px;color:var(--coral2);background:rgba(251,113,133,.1);padding:6px 22px;border-radius:30px;margin-bottom:8px}
+.cover-hook{font-size:clamp(15px,1.7vw,22px);color:var(--dim);font-weight:500;margin-top:4px}
+.lesson-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;justify-content:center}
+.lesson-link{display:inline-flex;align-items:center;gap:7px;padding:9px 22px;border-radius:30px;font-size:clamp(12px,1.2vw,15px);font-weight:600;text-decoration:none;border:2px solid;cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s}
+.ll1{border-color:var(--accent);color:var(--accent2);background:rgba(20,184,166,.06)}.ll1:hover{background:rgba(20,184,166,.14);transform:translateY(-1px)}
+.ll2{border-color:var(--coral);color:var(--coral2);background:rgba(251,113,133,.06)}.ll2:hover{background:rgba(251,113,133,.14);transform:translateY(-1px)}
+
+/* YouTube thumbnail cards (link only — no embed) */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #d1ece9;box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.yt-thumb-card:hover img{transform:scale(1.04)}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.32);transition:background .2s}
+.yt-thumb-card:hover .yt-play-overlay{background:rgba(0,0,0,.18)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:12px;font-weight:600;letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.yt-note{text-align:center;font-size:clamp(11px,1.05vw,13px);color:var(--dim);margin-top:6px}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,26px);height:100%;align-items:center}
+.hook-box{background:linear-gradient(135deg,var(--accent),var(--teal-light));border-radius:18px;padding:clamp(20px,2.6vw,38px);text-align:center;color:#fff;box-shadow:0 6px 24px rgba(20,184,166,.25)}
+.hook-en{font-family:'Outfit';font-size:clamp(16px,2vw,26px);font-weight:800;letter-spacing:1px}
+.hook-kr{font-size:clamp(22px,2.8vw,38px);font-weight:900;margin:8px 0 4px}
+.hook-rom{font-size:clamp(12px,1.3vw,16px);opacity:.9;font-style:italic}
+.tip-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.tip-chip{padding:7px 16px;border-radius:30px;background:var(--card);border:1.5px solid #d1ece9;font-size:clamp(11px,1.05vw,13px);color:var(--dim);font-weight:500}
+
+/* golden words */
+.gw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px)}
+.gw-card{background:var(--card);border-radius:16px;border:2px solid #d1ece9;border-top:6px solid var(--accent);padding:clamp(12px,1.5vw,22px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:var(--shadow)}
+.gw-card:nth-child(2){border-top-color:var(--coral)}
+.gw-card:nth-child(3){border-top-color:var(--peach)}
+.gw-card:nth-child(4){border-top-color:var(--lavender)}
+.gw-card:nth-child(5){border-top-color:var(--coral)}
+.gw-card:nth-child(6){border-top-color:var(--accent)}
+.gw-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(20,184,166,.14)}
+.gw-emoji{font-size:clamp(20px,2.2vw,30px)}
+.gw-kr{font-size:clamp(17px,2vw,26px);font-weight:900;margin:4px 0 2px}
+.gw-rom{font-size:clamp(10px,1.05vw,13px);color:var(--accent2);font-weight:600;font-style:italic}
+.gw-en{font-size:clamp(10px,1.05vw,13px);color:var(--dim);margin-top:4px;line-height:1.4}
+.gw-hint{text-align:center;font-size:clamp(11px,1.05vw,13px);color:var(--light);margin-top:4px}
+
+/* pattern drill */
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.3vw,16px)}
+.pd-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;padding:clamp(10px,1.2vw,16px);box-shadow:var(--shadow)}
+.pd-title{font-size:clamp(13px,1.4vw,18px);font-weight:800;margin-bottom:2px}
+.pd-c1 .pd-title{color:#d97706}.pd-c2 .pd-title{color:var(--accent2)}.pd-c3 .pd-title{color:#16a34a}.pd-c4 .pd-title{color:#7c3aed}
+.pd-sub{font-size:clamp(10px,1vw,12px);color:var(--dim);font-style:italic;margin-bottom:8px}
+.pd-ex{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:10px;background:#f6fdfc;border:1px solid #e2f3f1;margin-bottom:5px;cursor:pointer;transition:all .2s;font-size:clamp(11px,1.15vw,15px)}
+.pd-ex:hover{border-color:var(--accent);background:rgba(20,184,166,.04)}
+.pd-ex .rom{font-size:.78em;color:var(--dim);font-style:italic}
+.pd-ex .tag{font-size:.85em}
+
+/* action challenge */
+.ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.4vw,18px)}
+.ac-card{background:var(--card);border-radius:16px;border:2px solid #d1ece9;padding:clamp(12px,1.5vw,20px);box-shadow:var(--shadow)}
+.ac-num{display:inline-block;font-family:'Outfit';font-weight:800;font-size:clamp(11px,1.05vw,13px);background:rgba(251,113,133,.12);color:var(--coral2);border-radius:8px;padding:2px 10px;margin-bottom:6px}
+.ac-q{font-size:clamp(12px,1.3vw,17px);font-weight:600;min-height:2.4em}
+.ac-reveal{margin-top:8px;width:100%;padding:9px;border-radius:12px;border:2px dashed var(--teal-light);background:rgba(20,184,166,.04);color:var(--accent2);font-weight:800;font-size:clamp(13px,1.4vw,18px);cursor:pointer;font-family:'Noto Sans KR';transition:all .25s}
+.ac-reveal.shown{border-style:solid;background:rgba(20,184,166,.1)}
+.ac-rule{text-align:center;font-size:clamp(11px,1.1vw,14px);color:var(--dim)}
+
+/* word hunt */
+.wh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.3vw,16px)}
+.wh-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;border-top:5px solid var(--accent);padding:clamp(10px,1.3vw,18px);text-align:center;box-shadow:var(--shadow)}
+.wh-card:nth-child(2n){border-top-color:var(--coral)}
+.wh-card:nth-child(3n){border-top-color:var(--peach)}
+.wh-kr{font-size:clamp(16px,1.8vw,24px);font-weight:900;cursor:pointer}
+.wh-kr:hover{color:var(--accent2)}
+.wh-rom{font-size:clamp(10px,1vw,12px);color:var(--accent2);font-style:italic}
+.wh-en{font-size:clamp(10px,1vw,12px);color:var(--dim);margin:2px 0 8px}
+.wh-boxes{display:flex;gap:6px;justify-content:center}
+.wh-box{width:clamp(18px,1.8vw,24px);height:clamp(18px,1.8vw,24px);border-radius:6px;border:2px solid #d1ece9;background:#f6fdfc;cursor:pointer;transition:all .2s}
+.wh-box.checked{background:var(--accent);border-color:var(--accent2)}
+
+/* chorus lines */
+.line-list{display:flex;flex-direction:column;gap:clamp(7px,1vw,12px)}
+.line-row{display:flex;align-items:center;gap:12px;padding:clamp(9px,1.2vw,16px);border-radius:14px;background:var(--card);border:2px solid #d1ece9;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.line-row:hover{border-color:var(--accent);background:rgba(20,184,166,.03)}
+.line-no{font-family:'Outfit';font-weight:800;font-size:clamp(12px,1.2vw,16px);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(20,184,166,.1);color:var(--accent2)}
+.line-row.new .line-no{background:rgba(251,113,133,.12);color:var(--coral2)}
+.tts-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;border:none;cursor:pointer;transition:transform .2s;color:#fff}
+.tts-btn:hover{transform:scale(1.1)}
+.tts-btn.playing{animation:pulse-ring 1s infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(20,184,166,.3)}50%{box-shadow:0 0 0 8px rgba(20,184,166,0)}}
+.line-kr{font-size:clamp(13px,1.45vw,19px);font-weight:700}
+.line-rom{font-size:clamp(10px,1vw,13px);color:var(--accent2);font-style:italic;margin-top:1px}
+.line-en{font-size:clamp(10px,1vw,13px);color:var(--dim);margin-top:1px}
+.speed-ctrl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);justify-content:center;margin-top:6px}
+.speed-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #d1ece9;background:var(--card);color:var(--text);cursor:pointer;font-size:12px;font-family:'Noto Sans KR';transition:all .2s}
+.speed-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* discussion */
+.disc-hero{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border:2px solid #fecdd3;border-radius:18px;padding:clamp(16px,2.2vw,32px);text-align:center}
+.disc-q{font-size:clamp(17px,2.2vw,28px);font-weight:900;color:var(--coral2)}
+.disc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.3vw,16px)}
+.disc-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;padding:clamp(12px,1.4vw,18px);text-align:center;font-size:clamp(11px,1.2vw,15px);font-weight:600;color:var(--text);box-shadow:var(--shadow);line-height:1.5}
+.disc-card .em{font-size:clamp(18px,2vw,26px);display:block;margin-bottom:6px}
+.disc-note{text-align:center;font-size:clamp(11px,1.1vw,13px);color:var(--light);font-style:italic}
+
+/* game link buttons */
+.game-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 30px;border-radius:40px;background:linear-gradient(135deg,var(--coral2),var(--coral));color:#fff;font-size:clamp(13px,1.4vw,17px);font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(225,29,72,.22);transition:transform .2s;font-family:'Noto Sans KR'}
+.game-btn:hover{transform:scale(1.04)}
+.game-btn.teal{background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 4px 16px rgba(20,184,166,.25)}
+
+/* wrap up */
+.wrap-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,26px);height:100%;align-items:center}
+.wrap-box{background:var(--card);border-radius:16px;border:2px solid #d1ece9;padding:clamp(14px,1.8vw,26px);box-shadow:var(--shadow)}
+.wrap-box h3{font-size:clamp(14px,1.5vw,20px);margin-bottom:10px;color:var(--accent2)}
+.wrap-box.coral h3{color:var(--coral2)}
+.wrap-item{display:flex;align-items:center;gap:8px;padding:7px 4px;font-size:clamp(12px,1.25vw,16px);border-bottom:1px dashed #e2f3f1}
+.wrap-item:last-child{border-bottom:none}
+.wrap-bye{text-align:center;font-size:clamp(16px,2vw,26px);font-weight:900;color:var(--accent2);margin-top:10px}
+
+/* nav */
+.nav-area{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:10px clamp(16px,2.5vw,32px);z-index:40;background:linear-gradient(transparent,rgba(255,255,255,.85) 40%)}
+.nav-btn{padding:9px 24px;border-radius:30px;border:2px solid #d1ece9;background:var(--card);color:var(--text);font-size:clamp(12px,1.15vw,14px);font-weight:600;cursor:pointer;font-family:'Noto Sans KR';transition:all .2s}
+.nav-btn:hover{border-color:var(--accent)}
+.nav-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.nav-btn.primary:hover{background:var(--accent2)}
+.nav-btn.invisible{visibility:hidden}
+.dots{display:flex;gap:6px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#d1ece9;cursor:pointer;transition:all .2s}
+.nav-dot.active{background:var(--accent);transform:scale(1.35)}
+</style>
+</head>
+<body>
+<div class="deck">
+<div class="progress-bar" id="progBar"></div>
+
+<!-- ════════ SLIDE 0 · COVER ════════ -->
+<div class="slide active">
+  <div class="cover-center">
+    <div class="cover-badge">KPOP CLASS</div>
+    <h1 style="font-size:clamp(40px,6vw,76px)">TWICE</h1>
+    <h1 style="color:var(--coral2)">Cheer Up 📣</h1>
+    <div class="cover-hook">CHEER UP BABY · 좀 더 힘을 내</div>
+    <div class="subtitle">Gesture-based · Beginner-friendly</div>
+    <div class="lesson-links">
+      <button class="lesson-link ll1" onclick="goTo(1)">🎵 Lesson 1 <span class="ll-sub">— Golden Words & Chorus</span></button>
+      <button class="lesson-link ll2" onclick="goTo(7)">💕 Lesson 2 <span class="ll-sub">— 밀당 & Full Chorus</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 1 · L1 LISTEN ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>🎧 Listen — The Hooked Part</h2>
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=gYGukeZIhxg&t=67s" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/gYGukeZIhxg/hqdefault.jpg" alt="TWICE Cheer Up lyrics video">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="yt-play-label">▶ 유튜브에서 듣기 · 1:07 → 1:31</div>
+          </div>
+        </a>
+        <div class="yt-note">Lyrics version · 추천 속도 0.65</div>
+      </div>
+      <div>
+        <div class="hook-box">
+          <div class="hook-en">CHEER UP BABY, CHEER UP BABY</div>
+          <div class="hook-kr">좀 더 힘을 내</div>
+          <div class="hook-rom">jom deo him-eul nae</div>
+        </div>
+        <div class="tip-chips">
+          <span class="tip-chip">👂 Listen 2 times</span>
+          <span class="tip-chip">🥁 Tap the beat</span>
+          <span class="tip-chip">🔍 Catch any word?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 2 · L1 GOLDEN WORDS ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>⭐ Golden Words — Today's Key Words</h2>
+  <div class="content">
+    <div class="gw-grid">
+      <div class="gw-card" onclick="speakKr(this,'힘을 내')"><div class="gw-emoji">✊</div><div class="gw-kr">힘을 내!</div><div class="gw-rom">him-eul nae</div><div class="gw-en">Gain strength! / Go for it!</div></div>
+      <div class="gw-card" onclick="speakKr(this,'마음')"><div class="gw-emoji">💚</div><div class="gw-kr">맘 (마음)</div><div class="gw-rom">mam (ma-eum)</div><div class="gw-en">Heart / Mind / Feelings</div></div>
+      <div class="gw-card" onclick="speakKr(this,'안돼')"><div class="gw-emoji">🙅</div><div class="gw-kr">안돼</div><div class="gw-rom">an-dwae</div><div class="gw-en">No way! / Can't do that!</div></div>
+      <div class="gw-card" onclick="speakKr(this,'좋아하는')"><div class="gw-emoji">🌟</div><div class="gw-kr">좋아하는</div><div class="gw-rom">jo-a-ha-neun</div><div class="gw-en">Liking someone / To like</div></div>
+      <div class="gw-card" onclick="speakKr(this,'내가')"><div class="gw-emoji">➡️</div><div class="gw-kr">내가</div><div class="gw-rom">nae-ga</div><div class="gw-en">I / Me (subject)</div></div>
+      <div class="gw-card" onclick="speakKr(this,'너를')"><div class="gw-emoji">💌</div><div class="gw-kr">널 (너를)</div><div class="gw-rom">neol (neo-reul)</div><div class="gw-en">You (as object)</div></div>
+    </div>
+    <div class="gw-hint">🔊 카드를 탭하면 발음을 들을 수 있어요 — tap a card to hear it!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 3 · L1 PATTERN DRILL ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>🗣️ Pattern Drill — Try It Yourself!</h2>
+  <div class="content">
+    <div class="pd-grid">
+      <div class="pd-card pd-c1">
+        <div class="pd-title">✊ 힘을 내!</div><div class="pd-sub">him-eul nae — Gain strength!</div>
+        <div class="pd-ex" onclick="speakKr(this,'언니 힘내')"><span>언니, 힘내! <span class="rom">eon-ni him-nae</span></span><span class="tag">sis ↑</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'엄마 힘내요')"><span>엄마, 힘내요! <span class="rom">eom-ma him-nae-yo</span></span><span class="tag">mom</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'파이팅')"><span>파이팅! <span class="rom">pa-i-ting</span></span><span class="tag">💪</span></div>
+      </div>
+      <div class="pd-card pd-c2">
+        <div class="pd-title">💚 마음이 ___</div><div class="pd-sub">ma-eum-i ___ — My heart / feelings...</div>
+        <div class="pd-ex" onclick="speakKr(this,'마음이 아파')"><span>마음이 아파 <span class="rom">a-pa</span></span><span class="tag">hurts 💔</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'마음이 행복해')"><span>마음이 행복해 <span class="rom">haeng-bok-hae</span></span><span class="tag">happy 😊</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'마음이 흐뭇해')"><span>마음이 흐뭇해 <span class="rom">heu-mut-hae</span></span><span class="tag">warm 🥰</span></div>
+      </div>
+      <div class="pd-card pd-c3">
+        <div class="pd-title">🙅 ___면 안돼!</div><div class="pd-sub">___ myeon an-dwae! — You can't ___!</div>
+        <div class="pd-ex" onclick="speakKr(this,'지면 안돼')"><span>지면 안돼! <span class="rom">ji-myeon</span></span><span class="tag">lose 😤</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'울면 안돼')"><span>울면 안돼! <span class="rom">ul-myeon</span></span><span class="tag">cry 😢</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'주면 안돼')"><span>주면 안돼! <span class="rom">ju-myeon</span></span><span class="tag">give in 🙅</span></div>
+      </div>
+      <div class="pd-card pd-c4">
+        <div class="pd-title">🌟 내가 ___ 좋아해</div><div class="pd-sub">nae-ga ___ jo-a-hae — I like ___</div>
+        <div class="pd-ex" onclick="speakKr(this,'내가 커피 좋아해')"><span>내가 커피 좋아해</span><span class="tag">☕</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'내가 트와이스 좋아해')"><span>내가 트와이스 좋아해</span><span class="tag">🎵</span></div>
+        <div class="pd-ex" onclick="speakKr(this,'내가 널 좋아해')"><span>내가 널 좋아해</span><span class="tag">💌</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 4 · L1 ACTION CHALLENGE ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>⚡ Action Challenge — React Fast!</h2>
+  <div class="content">
+    <div class="ac-rule">선생님이 상황을 읽으면 → 단어를 외치고 제스처! Teacher reads → shout the word + gesture!</div>
+    <div class="ac-grid">
+      <div class="ac-card"><span class="ac-num">01</span><div class="ac-q">Melanie teacher is exhausted... 😮‍💨</div><button class="ac-reveal" onclick="reveal(this,'힘을 내! (him-eul nae!)')">정답 보기 👀</button></div>
+      <div class="ac-card"><span class="ac-num">02</span><div class="ac-q">A stranger asks your number on Day 1! 😳</div><button class="ac-reveal" onclick="reveal(this,'안돼! (an-dwae!)')">정답 보기 👀</button></div>
+      <div class="ac-card"><span class="ac-num">03</span><div class="ac-q">Show your love for K-Pop! 🎤</div><button class="ac-reveal" onclick="reveal(this,'맘! (mam! · 마음)')">정답 보기 👀</button></div>
+      <div class="ac-card"><span class="ac-num">04</span><div class="ac-q">Your friend's big interview is tomorrow! 💼</div><button class="ac-reveal" onclick="reveal(this,'힘을 내! (him-eul nae!)')">정답 보기 👀</button></div>
+    </div>
+    <div class="ac-rule">🏆 3 correct in a row = winner!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 5 · L1 WORD HUNT ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>🔎 Listening Activity — Word Hunt!</h2>
+  <div class="content">
+    <div class="ac-rule">1절을 들으며 단어가 들릴 때마다 박스를 체크! Check a box each time you hear the word.
+      &nbsp;<a href="https://www.youtube.com/watch?v=c7rCyll5AeY" target="_blank" rel="noopener" style="color:var(--coral2);font-weight:700;text-decoration:none">▶ MV 듣기</a></div>
+    <div class="wh-grid">
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'매일')">매일</div><div class="wh-rom">mae-il</div><div class="wh-en">every day</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'몰라')">몰라</div><div class="wh-rom">mol-la</div><div class="wh-en">I don't know</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'예쁘대')">예쁘대</div><div class="wh-rom">ye-ppeu-dae</div><div class="wh-en">they say she's pretty</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'미안해')">미안해</div><div class="wh-rom">mi-an-hae</div><div class="wh-en">I'm sorry</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'모르게')">모르게</div><div class="wh-rom">mo-reu-ge</div><div class="wh-en">secretly</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+      <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'겁이나')">겁이나</div><div class="wh-rom">geob-i-na</div><div class="wh-en">I'm scared</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
+    </div>
+    <div class="ac-rule">6개 단어를 다 찾을 수 있나요? Try 3 listens!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 6 · L1 CHORUS LINES ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt1">LESSON 1</span>
+  <h2>📖 Read &amp; Remember — Today's Chorus Lines</h2>
+  <div class="content">
+    <div class="line-list">
+      <div class="line-row" onclick="speakKr(this,'CHEER UP BABY, CHEER UP BABY')"><div class="line-no">1</div><button class="tts-btn">🔊</button><div><div class="line-kr">CHEER UP BABY, CHEER UP BABY</div><div class="line-en">Cheer up, baby! Come on!</div></div></div>
+      <div class="line-row" onclick="speakKr(this,'좀 더 힘을 내')"><div class="line-no">2</div><button class="tts-btn">🔊</button><div><div class="line-kr">좀 더 힘을 내</div><div class="line-rom">jom deo him-eul nae</div><div class="line-en">Come on, cheer up a little more</div></div></div>
+      <div class="line-row" onclick="speakKr(this,'여자가 쉽게 맘을 주면 안돼')"><div class="line-no">3</div><button class="tts-btn">🔊</button><div><div class="line-kr">여자가 쉽게 맘을 주면 안돼</div><div class="line-rom">yeo-ja-ga swip-ge mam-eul ju-myeon an-dwae</div><div class="line-en">A girl shouldn't give her heart away easily</div></div></div>
+      <div class="line-row" onclick="speakKr(this,'그래야 니가 날 더 좋아하게 될걸')"><div class="line-no">4</div><button class="tts-btn">🔊</button><div><div class="line-kr">그래야 니가 날 더 좋아하게 될걸</div><div class="line-rom">geu-rae-ya ni-ga nal deo jo-a-ha-ge doel-geol</div><div class="line-en">That way you'll like me even more</div></div></div>
+    </div>
+    
+    <div class="ac-rule">🎯 Lesson 1 goal: 이 4줄 읽기! &nbsp;·&nbsp; Lesson 2: 나머지 3줄 → full chorus 부르기!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 7 · L2 밀당 CULTURE + 토론 ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>💕 밀당 — Korean Dating Culture</h2>
+  <div class="content">
+    <div class="disc-hero">
+      <div class="disc-q">Have you ever done 밀당<br>(push &amp; pull) with someone?</div>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card"><span class="em">💬</span>Did you text back late on purpose?</div>
+      <div class="disc-card"><span class="em">😏</span>Did you act casual around your crush?</div>
+      <div class="disc-card"><span class="em">🤔</span>What's 밀당 like in your country?</div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:4px">
+      <a class="game-btn teal" href="gen_z_dating_4stages.html" target="_blank" rel="noopener">📖 젠지 연애 4단계 — Dating Culture 읽기</a>
+      <a class="game-btn" href="mildang-discussion.html" target="_blank" rel="noopener" id="discussLink">💬 토론에 참여하기 — Share Your Story</a>
+    </div>
+    <div class="disc-note">Read the culture guide, then share your 밀당 story with other learners!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 8 · L2 GOLDEN WORDS ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>⭐ Golden Words — Today's New Words</h2>
+  <div class="content">
+    <div class="gw-grid">
+      <div class="gw-card" onclick="speakKr(this,'연기')"><div class="gw-emoji">🎭</div><div class="gw-kr">연기</div><div class="gw-rom">yeon-gi</div><div class="gw-en">Acting / Pretending</div></div>
+      <div class="gw-card" onclick="speakKr(this,'모르게')"><div class="gw-emoji">🤫</div><div class="gw-kr">모르게</div><div class="gw-rom">mo-reu-ge</div><div class="gw-en">Secretly / Without knowing</div></div>
+      <div class="gw-card" onclick="speakKr(this,'밀당')"><div class="gw-emoji">💕</div><div class="gw-kr">밀당</div><div class="gw-rom">mil-dang</div><div class="gw-en">Push &amp; Pull (in dating)</div></div>
+      <div class="gw-card" onclick="speakKr(this,'태연하게')"><div class="gw-emoji">😌</div><div class="gw-kr">태연하게</div><div class="gw-rom">tae-yeon-ha-ge</div><div class="gw-en">Casually / As if nothing</div></div>
+      <div class="gw-card" onclick="speakKr(this,'할래')"><div class="gw-emoji">🙋</div><div class="gw-kr">할래 (할거야)</div><div class="gw-rom">hal-lae (hal-geo-ya)</div><div class="gw-en">Shall we? / Wanna do it?</div></div>
+      <div class="gw-card" onclick="speakKr(this,'아무렇지 않게')"><div class="gw-emoji">🪨</div><div class="gw-kr">아무렇지 않게</div><div class="gw-rom">a-mu-reo-chi an-ke</div><div class="gw-en">No big deal / Hiding real feelings</div></div>
+    </div>
+    <div class="gw-hint">🔊 이 단어들이 오늘 배울 후렴구에 나와요!</div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 9 · L2 NEW LINES ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>🆕 Today's New Lines — Learn These 3!</h2>
+  <div class="content">
+    <div class="line-list">
+      <div class="line-row new" onclick="speakKr(this,'태연하게 연기할래 아무렇지 않게')"><div class="line-no">5</div><button class="tts-btn">🔊</button><div><div class="line-kr">태연하게 연기할래 아무렇지 않게</div><div class="line-rom">tae-yeon-ha-ge yeon-gi-hal-lae a-mu-reot-ji an-ke</div><div class="line-en">I'll act all casual, as if I don't care</div></div></div>
+      <div class="line-row new" onclick="speakKr(this,'내가 널 좋아하는 맘 모르게')"><div class="line-no">6</div><button class="tts-btn">🔊</button><div><div class="line-kr">내가 널 좋아하는 맘 모르게</div><div class="line-rom">nae-ga neol jo-a-ha-neun mam mo-reu-ge</div><div class="line-en">So you won't know how much I like you</div></div></div>
+      <div class="line-row new" onclick="speakKr(this,'just get it together and then baby CHEER UP')"><div class="line-no">7</div><button class="tts-btn">🔊</button><div><div class="line-kr">just get it together and then baby CHEER UP</div><div class="line-en">Just get it together and then baby CHEER UP</div></div></div>
+    </div>
+    <div class="ac-rule">각 줄을 3번씩 읽어요 — 천천히, 그다음 빠르게!</div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:6px">
+      <button class="game-btn" onclick="go(1)" style="border:none;cursor:pointer">🎮 게임 타임! Fill in the Blank · Listening Match →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SLIDE 10 · GAME TIME (embedded games) ════════ -->
+<div class="slide" style="padding:clamp(20px,3vw,40px) clamp(20px,3vw,40px) 56px">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2 style="margin-bottom:8px">🎮 Game Time — Study Room</h2>
+  <iframe class="game-frame" src="CheerUp_Lesson2_Games.html" title="Cheer Up Lesson 2 Games"></iframe>
+</div>
+
+<!-- ════════ SLIDE 11 · FULL CHORUS ════════ -->
+<div class="slide">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>🎤 Full Chorus — Sing All 7 Lines!</h2>
+  <div class="content">
+    <div class="two-col">
+      <div class="line-list" style="font-size:.92em">
+        <div class="line-row" onclick="speakKr(this,'CHEER UP BABY, CHEER UP BABY')"><div class="line-no">1</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">CHEER UP BABY, CHEER UP BABY</div></div>
+        <div class="line-row" onclick="speakKr(this,'좀 더 힘을 내')"><div class="line-no">2</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">좀 더 힘을 내</div></div>
+        <div class="line-row" onclick="speakKr(this,'여자가 쉽게 맘을 주면 안돼')"><div class="line-no">3</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">여자가 쉽게 맘을 주면 안돼</div></div>
+        <div class="line-row" onclick="speakKr(this,'그래야 니가 날 더 좋아하게 될걸')"><div class="line-no">4</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">그래야 니가 날 더 좋아하게 될걸</div></div>
+        <div class="line-row new" onclick="speakKr(this,'태연하게 연기할래 아무렇지 않게')"><div class="line-no">5</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">태연하게 연기할래 아무렇지 않게</div></div>
+        <div class="line-row new" onclick="speakKr(this,'내가 널 좋아하는 맘 모르게')"><div class="line-no">6</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">내가 널 좋아하는 맘 모르게</div></div>
+        <div class="line-row new" onclick="speakKr(this,'just get it together and then baby CHEER UP')"><div class="line-no">7</div><div class="line-kr" style="font-size:clamp(11px,1.2vw,15px)">just get it together... CHEER UP</div></div>
+      </div>
+      <div>
+        <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=c7rCyll5AeY" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/c7rCyll5AeY/hqdefault.jpg" alt="TWICE Cheer Up MV">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="yt-play-label">▶ MV와 함께 불러보기</div>
+          </div>
+        </a>
+        <div class="yt-note">후렴구: 1:07부터 · 줄을 탭하면 발음을 들을 수 있어요</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- nav -->
+<div class="nav-area">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← 이전</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn primary" id="nextBtn" onclick="go(1)">다음 →</button>
+</div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide'),dots=document.getElementById('dots'),bar=document.getElementById('progBar');
+const prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+let cur=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='nav-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dots.appendChild(d)});
+function updateNav(){
+  prevBtn.classList.toggle('invisible',cur===0);
+  nextBtn.style.visibility=(cur>=slides.length-1)?'hidden':'visible';
+}
+function goTo(i){
+  slides[cur].classList.remove('active');dots.children[cur].classList.remove('active');
+  cur=i;slides[cur].classList.add('active');dots.children[cur].classList.add('active');
+  bar.style.width=((cur+1)/slides.length*100)+'%';
+  updateNav();
+}
+function go(n){let x=cur+n;if(x<0||x>=slides.length)return;goTo(x);}
+bar.style.width=(1/slides.length*100)+'%';updateNav();
+document.addEventListener('keydown',e=>{
+  if(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key===' ')go(1);
+  if(e.key==='ArrowLeft')go(-1);
+});
+
+// TTS
+let ttsRate=1.0;
+function speakKr(el,text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=ttsRate;
+  if(el){const btn=el.querySelector('.tts-btn')||el;btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing')}
+  speechSynthesis.speak(u);
+}
+function setSpeed(el,r){ttsRate=r;document.querySelectorAll('.speed-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+
+// Action challenge reveal
+function reveal(btn,answer){
+  if(btn.classList.contains('shown'))return;
+  btn.classList.add('shown');btn.textContent=answer;
+  speakKr(btn,answer.split(' (')[0]);
+  event.stopPropagation();
+}
+</script>
+</body>
+</html>

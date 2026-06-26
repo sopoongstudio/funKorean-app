@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퀴즈 — 내가 제일 잘나가</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #C0392B;
+    --red-light: #FDECEA;
+    --bg: #faf9ff;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #7a7a99;
+    --border: rgba(83,74,183,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 4rem;
+  }
+  .top-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: .4rem;
+  }
+  .title {
+    font-family: 'Gaegu', cursive;
+    font-size: 32px;
+    color: var(--text);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  /* SCORE BAR */
+  .score-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+  .score-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background .3s;
+  }
+  .score-dot.correct { background: var(--green); }
+  .score-dot.wrong { background: var(--red); }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem 2rem;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+    animation: fadeIn .35s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .q-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .q-english {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--purple);
+    margin-bottom: .5rem;
+    font-family: 'Gaegu', cursive;
+  }
+  .q-hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .opt-btn {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 12px;
+    font-size: 22px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition: all .2s;
+    line-height: 1.3;
+  }
+  .opt-btn .roman {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: var(--purple-light);
+    border-color: var(--purple);
+    transform: translateY(-2px);
+  }
+  .opt-btn.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .opt-btn.wrong {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .opt-btn:disabled { cursor: default; transform: none; }
+
+  /* FEEDBACK */
+  .feedback {
+    min-height: 36px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .feedback.show { opacity: 1; }
+  .feedback.ok { color: var(--green); }
+  .feedback.no { color: var(--red); }
+
+  /* NEXT BTN */
+  .next-btn {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 36px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .3s, transform .1s;
+    pointer-events: none;
+  }
+  .next-btn.show { opacity: 1; pointer-events: auto; }
+  .next-btn:hover { opacity: .85; }
+  .next-btn:active { transform: scale(.97); }
+
+  /* RESULT */
+  .result-card {
+    display: none;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+    animation: fadeIn .4s ease;
+  }
+  .result-card.show { display: block; }
+  .result-emoji { font-size: 72px; margin-bottom: 1rem; }
+  .result-title { font-family: 'Gaegu', cursive; font-size: 36px; color: var(--purple); margin-bottom: .5rem; }
+  .result-score { font-size: 16px; color: var(--muted); margin-bottom: 2rem; }
+  .retry-btn {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 36px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .retry-btn:hover { opacity: .85; }
+</style>
+</head>
+<body>
+
+<p class="top-label">퀴즈 — K-pop Korean</p>
+<h1 class="title">내가 제일 잘나가 🎵</h1>
+
+<div class="score-bar">
+  <div class="score-dot" id="dot0"></div>
+  <div class="score-dot" id="dot1"></div>
+  <div class="score-dot" id="dot2"></div>
+</div>
+
+<div class="q-card" id="qcard">
+  <div class="q-num" id="qnum">question 1 / 3</div>
+  <div class="q-english" id="qenglish"></div>
+  <div class="q-hint" id="qhint"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="nextbtn" onclick="nextQ()">다음 문제 →</button>
+</div>
+
+<div class="result-card" id="result">
+  <div class="result-emoji" id="remoji"></div>
+  <div class="result-title" id="rtitle"></div>
+  <div class="result-score" id="rscore"></div>
+  <button class="retry-btn" onclick="restart()">🔄 다시 풀기</button>
+</div>
+
+<script>
+var questions = [
+  {
+    english: "I / me",
+    hint: "who is singing? 누가 노래해요?",
+    correct: "내가",
+    options: [
+      { ko: "내가", roman: "nae-ga" },
+      { ko: "제일", roman: "je-il" },
+      { ko: "나가", roman: "na-ga" },
+      { ko: "누가", roman: "nu-ga" }
+    ]
+  },
+  {
+    english: "the best / #1",
+    hint: "she's number one! 최고예요!",
+    correct: "제일",
+    options: [
+      { ko: "잘", roman: "jal" },
+      { ko: "제일", roman: "je-il" },
+      { ko: "제가", roman: "je-ga" },
+      { ko: "저는", roman: "jeo-neun" }
+    ]
+  },
+  {
+    english: "doing well / killing it",
+    hint: "she's going places! 잘하고 있어요!",
+    correct: "잘나가",
+    options: [
+      { ko: "잘 먹어", roman: "jal meo-geo" },
+      { ko: "나는", roman: "na-neun" },
+      { ko: "잘나가", roman: "jal-na-ga" },
+      { ko: "빛나", roman: "bit-na" }
+    ]
+  }
+];
+
+var cur = 0;
+var score = 0;
+var answered = false;
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function loadQ() {
+  answered = false;
+  var q = questions[cur];
+  document.getElementById('qnum').textContent = 'question ' + (cur+1) + ' / 3';
+  document.getElementById('qenglish').textContent = q.english;
+  document.getElementById('qhint').textContent = q.hint;
+
+  var fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+
+  var nb = document.getElementById('nextbtn');
+  nb.className = 'next-btn';
+
+  var opts = shuffle(q.options);
+  var container = document.getElementById('options');
+  container.innerHTML = '';
+  opts.forEach(function(o) {
+    var btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = o.ko + '<span class="roman">' + o.roman + '</span>';
+    btn.onclick = function() { checkAnswer(o.ko, btn); };
+    container.appendChild(btn);
+  });
+}
+
+function checkAnswer(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  var q = questions[cur];
+  var allBtns = document.querySelectorAll('.opt-btn');
+  allBtns.forEach(function(b) { b.disabled = true; });
+
+  var fb = document.getElementById('feedback');
+  var nb = document.getElementById('nextbtn');
+
+  if (chosen === q.correct) {
+    btn.classList.add('correct');
+    fb.textContent = '✅ 맞아요! Great job!';
+    fb.className = 'feedback show ok';
+    document.getElementById('dot' + cur).classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '❌ 정답은 — ' + q.correct + '!';
+    fb.className = 'feedback show no';
+    document.getElementById('dot' + cur).classList.add('wrong');
+    allBtns.forEach(function(b) {
+      if (b.textContent.trim().startsWith(q.correct)) b.classList.add('correct');
+    });
+  }
+
+  if (cur < questions.length - 1) {
+    nb.textContent = '다음 문제 →';
+  } else {
+    nb.textContent = '결과 보기 🎉';
+  }
+  nb.className = 'next-btn show';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= questions.length) {
+    showResult();
+  } else {
+    document.getElementById('qcard').style.animation = 'none';
+    void document.getElementById('qcard').offsetWidth;
+    document.getElementById('qcard').style.animation = '';
+    loadQ();
+  }
+}
+
+function showResult() {
+  document.getElementById('qcard').style.display = 'none';
+  var r = document.getElementById('result');
+  r.classList.add('show');
+
+  var emoji, title, sub;
+  if (score === 3) {
+    emoji = '👑'; title = '내가 제일 잘나가!'; sub = '3 / 3 — 완벽해요! Perfect!';
+  } else if (score === 2) {
+    emoji = '🌟'; title = '잘했어요!'; sub = '2 / 3 — Great job!';
+  } else {
+    emoji = '💪'; title = '괜찮아요!'; sub = '1 / 3 — Keep going! 화이팅!';
+  }
+  document.getElementById('remoji').textContent = emoji;
+  document.getElementById('rtitle').textContent = title;
+  document.getElementById('rscore').textContent = sub;
+}
+
+function restart() {
+  cur = 0; score = 0; answered = false;
+  ['dot0','dot1','dot2'].forEach(function(id) {
+    var d = document.getElementById(id);
+    d.className = 'score-dot';
+  });
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('qcard').style.display = '';
+  loadQ();
+}
+
+loadQ();
+</script>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TWS 첫 만남 수업</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e8f4fc;
+  --bg2:#f0f8ff;
+  --card:#ffffff;
+  --accent:#3b82f6;
+  --accent2:#2563eb;
+  --sky:#7dd3fc;
+  --mint:#34d399;
+  --mint2:#10b981;
+  --coral:#fb7185;
+  --peach:#fbbf24;
+  --lavender:#a78bfa;
+  --text:#1e293b;
+  --dim:#64748b;
+  --light:#94a3b8;
+  --border:#cbd5e1;
+  --cardbg:rgba(255,255,255,.85);
+  --shadow:0 4px 20px rgba(59,130,246,.08);
+}
+body{
+  background:linear-gradient(135deg,#dbeafe 0%,#e0f2fe 30%,#f0fdfa 60%,#ecfdf5 100%);
+  font-family:'Noto Sans KR','Outfit',sans-serif;
+  color:var(--text);
+  overflow:hidden;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(circle at 20% 80%,rgba(125,211,252,.2),transparent 50%),
+             radial-gradient(circle at 80% 20%,rgba(167,139,250,.12),transparent 50%),
+             radial-gradient(circle at 50% 50%,rgba(52,211,153,.08),transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(59,130,246,.12),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(28px,4.5vw,56px);
+  background:linear-gradient(160deg,#f0f9ff,#f8fafc 40%,#f0fdf4 100%);
+  opacity:0;transition:opacity .35s}
+.slide.active{display:flex;opacity:1}
+
+.progress-bar{position:absolute;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--sky),var(--mint));transition:width .5s;z-index:50;border-radius:0 3px 3px 0}
+.slide-num{position:absolute;top:16px;right:24px;font-family:'Outfit';font-size:12px;color:var(--light);letter-spacing:1.5px;font-weight:500}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+h1{font-family:'Outfit';font-size:clamp(26px,3.8vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-bottom:clamp(12px,2vw,28px);display:flex;align-items:center;gap:10px}
+.subtitle{font-size:clamp(13px,1.4vw,18px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,16px);overflow-y:auto;padding-bottom:36px}
+
+/* Lesson nav links (Slide 1) */
+.lesson-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.lesson-link{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:30px;font-size:clamp(11px,1.1vw,14px);font-weight:600;text-decoration:none;border:2px solid;cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s}
+.ll-sub{font-size:.78em;opacity:.65;font-weight:400}
+.ll1{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.06)}.ll1:hover{background:rgba(59,130,246,.14);transform:translateY(-1px)}
+.ll2{border-color:var(--coral);color:#e11d48;background:rgba(251,113,133,.06)}.ll2:hover{background:rgba(251,113,133,.14);transform:translateY(-1px)}
+.ll3{border-color:var(--mint2);color:var(--mint2);background:rgba(16,185,129,.06)}.ll3:hover{background:rgba(16,185,129,.14);transform:translateY(-1px)}
+
+/* ===== SLIDE 2: Ordinals ===== */
+.ord-scroll{overflow-x:auto;padding-bottom:8px}
+.ordinal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(6px,1vw,12px)}
+.ord-card{background:var(--card);border:2px solid #e2e8f0;border-radius:14px;padding:clamp(8px,1vw,16px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:var(--shadow)}
+.ord-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,130,246,.12)}
+.ord-card.correct{border-color:var(--mint2);background:rgba(16,185,129,.06)}
+.ord-card .num{font-family:'Outfit';font-size:clamp(16px,1.8vw,28px);font-weight:800;color:var(--accent)}
+.ord-card .kr{font-size:clamp(13px,1.4vw,20px);font-weight:700;margin:2px 0}
+.ord-card .cardinal{font-size:clamp(10px,1vw,13px);color:var(--dim);margin-top:2px;border-top:1px dashed #e2e8f0;padding-top:3px}
+.ord-card .speaker{font-size:14px;opacity:.4;display:block;margin-top:2px}
+
+.quiz-box{background:var(--card);border-radius:14px;padding:clamp(12px,1.5vw,22px);border:2px solid #e2e8f0;box-shadow:var(--shadow)}
+.quiz-box .q{font-size:clamp(13px,1.3vw,17px);font-weight:600;margin-bottom:10px;color:var(--accent2)}
+.quiz-opts{display:flex;gap:8px;flex-wrap:wrap}
+.quiz-opt{padding:8px 20px;border-radius:30px;border:2px solid #e2e8f0;cursor:pointer;font-size:clamp(12px,1.1vw,15px);transition:all .25s;background:var(--card);color:var(--text);font-family:'Noto Sans KR'}
+.quiz-opt:hover{border-color:var(--accent);background:rgba(59,130,246,.04)}
+.quiz-opt.right{border-color:var(--mint2);background:rgba(16,185,129,.08);color:var(--mint2)}
+.quiz-opt.wrong{border-color:var(--coral);background:rgba(251,113,133,.06);color:#e11d48}
+
+/* Thumbnail card (replaces embed) */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #e2e8f0;box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.yt-thumb-card:hover img{transform:scale(1.04)}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.32);transition:background .2s}
+.yt-thumb-card:hover .yt-play-overlay{background:rgba(0,0,0,.18)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:12px;font-weight:600;letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.yt-open-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 0;border-radius:10px;background:rgba(255,0,0,.06);border:1.5px solid rgba(255,0,0,.18);color:#cc0000;font-size:13px;font-weight:600;text-decoration:none;transition:all .2s}
+.yt-open-btn:hover{background:rgba(255,0,0,.12);border-color:rgba(255,0,0,.4)}
+.shorts-open-btn{padding:14px 36px;border-radius:40px;background:linear-gradient(135deg,#e11d48,#fb7185);border:none;color:#fff;font-size:clamp(14px,1.4vw,18px);font-weight:600;cursor:pointer;transition:transform .2s;font-family:'Noto Sans KR';box-shadow:0 4px 16px rgba(225,29,72,.2);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.shorts-open-btn:hover{transform:scale(1.04)}
+.lyrics-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);height:100%}
+.yt-side{display:flex;flex-direction:column;gap:12px}
+.yt-wrap{width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #e2e8f0;box-shadow:var(--shadow)}
+.yt-wrap iframe{width:100%;height:100%;border:0}
+.yt-link{text-align:center;font-size:13px;color:var(--dim)}
+.yt-link a{color:var(--accent);text-decoration:none}
+.lyrics-side{display:flex;flex-direction:column;gap:clamp(6px,1vw,12px);overflow-y:auto}
+.lyric-row{display:flex;align-items:center;gap:10px;padding:clamp(8px,1vw,14px);border-radius:12px;background:var(--card);border:1.5px solid #e2e8f0;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.lyric-row:hover{border-color:var(--accent);background:rgba(59,130,246,.03)}
+.tts-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--sky));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;border:none;cursor:pointer;transition:transform .2s;color:#fff}
+.tts-btn:hover{transform:scale(1.1)}
+.tts-btn.playing{animation:pulse-ring 1s infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.3)}50%{box-shadow:0 0 0 8px rgba(59,130,246,0)}}
+.lyric-kr{font-size:clamp(13px,1.3vw,17px);font-weight:600}
+.lyric-rom{font-size:clamp(10px,1vw,13px);color:var(--dim);margin-top:1px}
+.speed-ctrl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);margin-top:auto;padding-top:4px}
+.speed-ctrl button{padding:5px 14px;border-radius:20px;border:1.5px solid #e2e8f0;background:var(--card);color:var(--text);cursor:pointer;font-size:12px;font-family:'Noto Sans KR';transition:all .2s}
+.speed-ctrl button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ===== SLIDE 4: Vocab + Pattern ===== */
+.vp-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);height:100%}
+.vocab-side,.pattern-side{display:flex;flex-direction:column;gap:clamp(8px,1vw,14px)}
+.section-label{font-size:clamp(13px,1.3vw,17px);font-weight:700;color:var(--accent2);display:flex;align-items:center;gap:6px}
+.vocab-card{background:var(--card);border:2px solid #e2e8f0;border-radius:14px;padding:clamp(10px,1.2vw,18px);cursor:pointer;transition:all .25s;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.vocab-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.vocab-card .emoji-icon{font-size:clamp(20px,2.4vw,32px);flex-shrink:0}
+.vocab-card .word{font-size:clamp(16px,1.8vw,24px);font-weight:700}
+.vocab-card .meaning{font-size:clamp(11px,1.1vw,14px);color:var(--dim)}
+
+.pattern-card{background:var(--card);border:2px solid #e2e8f0;border-radius:14px;padding:clamp(10px,1.2vw,18px);box-shadow:var(--shadow);cursor:pointer;transition:all .25s}
+.pattern-card:hover{border-color:var(--lavender)}
+.pattern-card .pat-kr{font-size:clamp(14px,1.5vw,19px);font-weight:600;margin-bottom:3px}
+.pattern-card .pat-en{font-size:clamp(11px,1vw,13px);color:var(--dim)}
+.pattern-card .pat-speaker{float:right;font-size:16px;opacity:.4}
+
+.plan-label{font-size:clamp(12px,1.1vw,14px);font-weight:600;color:var(--mint2);margin-top:4px}
+.plan-chips{display:flex;gap:8px;flex-wrap:wrap}
+.plan-chip{padding:7px 16px;border-radius:30px;border:2px solid #e2e8f0;background:var(--card);font-size:clamp(12px,1.1vw,15px);cursor:pointer;transition:all .25s;font-family:'Noto Sans KR'}
+.plan-chip:hover{border-color:var(--peach);background:rgba(251,191,36,.06)}
+.plan-chip.said{border-color:var(--mint2);background:rgba(16,185,129,.06);color:var(--mint2)}
+
+/* ===== SLIDE 5: Chorus Practice ===== */
+.chorus-area{text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.4vw,20px)}
+.chorus-text{font-size:clamp(16px,2.2vw,30px);font-weight:700;line-height:1.8;color:var(--text);max-width:800px;background:var(--card);padding:clamp(16px,2vw,30px);border-radius:18px;border:2px solid #e2e8f0;box-shadow:var(--shadow)}
+.chorus-text .highlight{color:var(--accent);font-weight:800}
+.practice-tracker{display:flex;gap:clamp(12px,2vw,28px);justify-content:center;flex-wrap:wrap}
+.track-group{text-align:center}
+.track-label{font-size:clamp(12px,1.1vw,14px);font-weight:600;color:var(--dim);margin-bottom:6px}
+.track-dots{display:flex;gap:6px;justify-content:center}
+.track-dot{width:clamp(28px,3.5vw,44px);height:clamp(28px,3.5vw,44px);border-radius:50%;border:2.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,1.2vw,16px);cursor:pointer;transition:all .3s;background:var(--card)}
+.track-dot.done{border-color:var(--mint2);background:rgba(16,185,129,.1);color:var(--mint2)}
+.track-dot:hover{border-color:var(--accent);transform:scale(1.08)}
+.chorus-play-btn{padding:14px 36px;border-radius:40px;background:linear-gradient(135deg,var(--accent),var(--sky));border:none;color:#fff;font-size:clamp(14px,1.4vw,18px);font-weight:600;cursor:pointer;transition:transform .2s;font-family:'Noto Sans KR';box-shadow:0 4px 16px rgba(59,130,246,.2)}
+.chorus-play-btn:hover{transform:scale(1.04)}
+
+/* ===== SLIDE 6: Games ===== */
+.game-tabs{display:flex;gap:8px;margin-bottom:clamp(8px,1.2vw,16px)}
+.game-tab{padding:7px 18px;border-radius:30px;border:2px solid #e2e8f0;cursor:pointer;font-size:13px;transition:all .25s;background:var(--card);color:var(--text);font-family:'Noto Sans KR'}
+.game-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.game-panel{display:none}.game-panel.active{display:block}
+.num-game-board{display:flex;gap:clamp(6px,.8vw,12px);justify-content:center;flex-wrap:wrap;margin:12px 0}
+.num-btn{width:clamp(52px,6vw,80px);height:clamp(52px,6vw,80px);border-radius:14px;font-size:clamp(16px,1.8vw,24px);font-weight:700;border:2.5px solid #e2e8f0;background:var(--card);color:var(--text);cursor:pointer;transition:all .25s;font-family:'Noto Sans KR';box-shadow:var(--shadow)}
+.num-btn:hover{border-color:var(--accent);transform:scale(1.06)}
+.num-btn.done{border-color:var(--mint2);background:rgba(16,185,129,.08);color:var(--mint2);pointer-events:none}
+.num-btn.fail{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.game-msg{text-align:center;font-size:clamp(13px,1.3vw,17px);min-height:24px;margin-top:8px}
+
+.fill-sentence{font-size:clamp(15px,1.8vw,24px);text-align:center;line-height:1.4;margin:12px 0}
+.blank{display:inline;padding:0 6px;margin:0 2px;font-weight:700;color:var(--accent)}
+.fill-opts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.fill-opt{padding:8px 22px;border-radius:30px;border:2px solid #e2e8f0;cursor:pointer;font-size:clamp(13px,1.3vw,17px);transition:all .25s;background:var(--card);color:var(--text);font-family:'Noto Sans KR'}
+.fill-opt:hover{border-color:var(--accent)}
+.fill-opt.right{border-color:var(--mint2);background:rgba(16,185,129,.08);color:var(--mint2)}
+.fill-opt.wrong{border-color:var(--coral);background:rgba(251,113,133,.06);color:#e11d48}
+
+/* ===== SLIDE 7: Review ===== */
+.check-item{display:flex;align-items:center;gap:12px;padding:clamp(10px,1.2vw,16px) 18px;border-radius:12px;background:var(--card);border:1.5px solid #e2e8f0;cursor:pointer;transition:all .25s;font-size:clamp(13px,1.3vw,17px);box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.check-item:hover{border-color:var(--accent)}
+.check-item .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;font-size:14px}
+.check-item.checked .box{background:var(--mint2);border-color:var(--mint2);color:#fff}
+.check-item.checked{border-color:var(--mint2)}
+
+/* Nav */
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px clamp(18px,3vw,36px);background:linear-gradient(transparent,rgba(248,250,252,.95) 40%)}
+.nav-btn{padding:8px 24px;border-radius:30px;border:2px solid #e2e8f0;background:var(--card);color:var(--text);cursor:pointer;font-size:13px;transition:all .25s;font-family:'Outfit';font-weight:600;letter-spacing:.3px}
+.nav-btn:hover{border-color:var(--accent);background:rgba(59,130,246,.04)}
+.nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.2)}
+.nav-btn.primary:hover{transform:scale(1.03)}
+.nav-btn.invisible{visibility:hidden}
+.nav-dots{display:flex;gap:7px}
+.nav-dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s}
+.nav-dot.active{background:var(--accent);width:26px;border-radius:5px}
+.reset-btn{padding:6px 16px;border-radius:20px;border:1.5px solid #e2e8f0;background:var(--card);color:var(--text);cursor:pointer;font-size:12px;font-family:'Noto Sans KR';transition:all .2s}
+.reset-btn:hover{border-color:var(--accent)}
+/* ===== LESSON 2 styles ===== */
+.story-lines{display:flex;flex-direction:column;gap:clamp(5px,.8vw,9px);overflow-y:auto}
+.story-line{display:flex;align-items:center;gap:10px;padding:clamp(7px,.9vw,12px) clamp(10px,1.2vw,16px);border-radius:12px;background:var(--card);border:1.5px solid var(--border);cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.story-line:hover{border-color:#7c3aed;background:rgba(124,58,237,.03)}
+.story-line.lit{border-color:#a78bfa;background:rgba(167,139,250,.06)}
+.line-kr{font-size:clamp(16px,1.7vw,22px);font-weight:700}
+.line-en{font-size:clamp(10px,.95vw,13px);color:var(--dim);margin-top:2px}
+.meaning-panel{background:var(--card);border-radius:16px;border:2px solid var(--border);padding:clamp(12px,1.5vw,22px);display:flex;flex-direction:column;gap:10px;box-shadow:0 4px 20px rgba(124,58,237,.06)}
+.meaning-title{font-size:clamp(16px,1.5vw,20px);font-weight:700}
+.meaning-body{font-size:clamp(15px,1.4vw,18px);color:var(--dim);line-height:1.8;flex:1}
+.meaning-tip{font-size:clamp(14px,1.2vw,16px);padding:10px 14px;background:rgba(245,158,11,.06);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;color:#92400e;line-height:1.5}
+.expr-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.5vw,18px)}
+.expr-card{background:var(--card);border-radius:16px;border:2px solid var(--border);padding:clamp(10px,1.3vw,18px) clamp(10px,1.3vw,18px) clamp(10px,1.3vw,18px);box-shadow:0 4px 20px rgba(124,58,237,.06);transition:all .25s;overflow:visible}
+.expr-label{font-size:clamp(11px,1vw,13px);font-weight:700;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.expr-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;cursor:pointer;transition:background .2s;margin-bottom:4px}
+.expr-row:hover{background:rgba(124,58,237,.04)}
+.expr-kr{font-size:clamp(15px,1.6vw,21px);font-weight:700;flex:1}
+.expr-en{font-size:clamp(12px,1.1vw,15px);color:var(--dim)}
+.expr-speak{font-size:13px;color:var(--light);flex-shrink:0}
+.arrow-card{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(244,63,94,.04));border:2px dashed rgba(124,58,237,.2);border-radius:16px;padding:clamp(12px,1.5vw,22px)}
+.arrow-text{font-size:clamp(20px,2.6vw,38px);font-weight:900;color:#7c3aed}
+.arrow-sub{font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center;line-height:1.5}
+.rp-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);height:100%}
+.rp-scene{background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(167,139,250,.04));border:2px solid rgba(124,58,237,.15);border-radius:16px;padding:clamp(10px,1.3vw,18px);display:flex;flex-direction:column;gap:9px}
+.scene-label{font-size:clamp(11px,1vw,13px);font-weight:700;color:#7c3aed}
+.bubble{border-radius:14px;padding:clamp(8px,1vw,13px) clamp(10px,1.2vw,16px);font-size:clamp(12px,1.2vw,16px);line-height:1.6}
+.bubble-teacher{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;border-radius:14px 14px 14px 4px}
+.bubble-student{background:var(--card);border:2px solid var(--border);border-radius:14px 14px 4px 14px}
+.bubble-label{font-size:clamp(10px,.9vw,12px);font-weight:700;margin-bottom:4px;opacity:.75}
+.fill-blank{display:inline-block;min-width:70px;border-bottom:2.5px solid #cbd5e1;
+  padding:1px 8px;color:#94a3b8;font-weight:600;cursor:default;
+  font-style:italic;transition:all .3s;border-radius:4px 4px 0 0}
+.fill-blank.filled{color:#7c3aed;border-color:#7c3aed;font-style:normal;background:rgba(124,58,237,.06)}
+.rp-hints{display:flex;flex-direction:column;gap:8px}
+.hint-label{font-size:clamp(11px,1vw,13px);font-weight:700;color:var(--dim);margin-bottom:2px}
+.hint-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:30px;border:1.5px solid var(--border);background:var(--card);font-size:clamp(12px,1.1vw,15px);cursor:pointer;transition:all .25s;font-family:'Noto Sans KR';margin:3px}
+.hint-chip:hover{border-color:#7c3aed;background:rgba(124,58,237,.04)}
+.hint-chip.used{border-color:#10b981;background:rgba(16,185,129,.06);color:#10b981}
+.rp-tts-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.rp-btn{padding:8px 18px;border-radius:30px;border:2px solid var(--border);background:var(--card);font-size:clamp(12px,1.1vw,14px);cursor:pointer;transition:all .25s;font-family:'Noto Sans KR';font-weight:600}
+.rp-btn:hover{border-color:#7c3aed}
+.rp-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:transparent;color:#fff}
+.drill-layout{display:flex;flex-direction:column;gap:clamp(5px,.6vw,8px);overflow-y:auto}
+.drill-card{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:clamp(7px,.9vw,12px);display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .25s}
+.drill-card:hover{border-color:#7c3aed;background:rgba(124,58,237,.02)}
+.drill-card.done{border-color:#10b981;background:rgba(16,185,129,.04)}
+.drill-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(12px,1.2vw,15px);flex-shrink:0}
+.drill-card.done .drill-num{background:linear-gradient(135deg,#10b981,#34d399)}
+.drill-kr{font-size:clamp(15px,1.6vw,20px);font-weight:700;flex:1}
+.drill-en{font-size:clamp(11px,1vw,13px);color:var(--dim);margin-top:1px}
+.drill-tag{font-size:clamp(10px,.9vw,12px);padding:3px 10px;border-radius:20px;background:rgba(245,158,11,.1);color:#92400e;font-weight:600;flex-shrink:0}
+.drill-done-icon{font-size:18px;flex-shrink:0}
+.speed-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;font-size:12px;font-family:'Noto Sans KR';transition:all .2s}
+.speed-btn.active{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.order-game{display:flex;flex-direction:column;gap:clamp(8px,1.1vw,14px)}
+.order-instruction{text-align:center;font-size:clamp(13px,1.3vw,17px);font-weight:600;color:var(--dim);margin-bottom:4px}
+.word-bank{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:clamp(10px,1.2vw,18px);background:rgba(124,58,237,.04);border-radius:14px;border:2px dashed rgba(124,58,237,.18);min-height:52px}
+.word-tile{padding:8px 18px;border-radius:30px;border:2px solid rgba(124,58,237,.3);background:var(--card);font-size:clamp(16px,1.8vw,24px);font-weight:700;cursor:pointer;transition:all .25s;font-family:'Noto Sans KR';box-shadow:0 2px 8px rgba(124,58,237,.08)}
+.word-tile:hover{border-color:#7c3aed;transform:translateY(-2px)}
+.word-tile.placed{opacity:.3;pointer-events:none}
+.answer-slots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:clamp(10px,1.2vw,18px);background:rgba(16,185,129,.04);border-radius:14px;border:2px solid rgba(16,185,129,.2);min-height:52px;align-items:center}
+.answer-slot{padding:8px 18px;border-radius:30px;border:2px solid #10b981;background:rgba(16,185,129,.08);font-size:clamp(16px,1.8vw,24px);font-weight:700;font-family:'Noto Sans KR';cursor:pointer;transition:all .2s;color:#10b981}
+.answer-slot:hover{background:rgba(16,185,129,.15)}
+.order-msg{text-align:center;font-size:clamp(14px,1.4vw,18px);min-height:24px;font-weight:700}
+.order-btns{display:flex;gap:8px;justify-content:center}
+.next-q-btn{padding:7px 18px;border-radius:20px;border:none;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;cursor:pointer;font-size:13px;font-family:'Noto Sans KR';font-weight:600;display:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="deck" id="deck">
+<div class="progress-bar" id="progBar"></div>
+
+<!-- ===== SLIDE 1: Title ===== -->
+<div class="slide active">
+  <span class="slide-num">01 / 12</span>
+  <div class="content" style="justify-content:center">
+    <h1>첫 만남은<br>계획대로 되지 않아</h1>
+    <p class="subtitle">TWS (투어스) 노래로 배우는 한국어 🎵</p>
+    <div class="lesson-links">
+      <button class="lesson-link ll2" onclick="goTo(1)">🎤 후렴구 따라 부르기<span class="ll-sub"> / Sing Along</span></button>
+      <button class="lesson-link ll1" onclick="goTo(2)">🔢 서수 + 기수 배우기<span class="ll-sub"> / Numbers</span></button>
+      <button class="lesson-link ll3" onclick="goTo(3)">📝 새 단어 &amp; 패턴 드릴<span class="ll-sub"> / Vocab &amp; Patterns</span></button>
+      <button class="lesson-link" style="border-color:#8b5cf6;color:#8b5cf6;background:rgba(139,92,246,.06)" onclick="goTo(6)">🚀 레슨 2 바로가기<span class="ll-sub"> / Jump to Lesson 2</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: Lyrics + Video (now before numbers) ===== -->
+<div class="slide">
+  <span class="slide-num">02 / 12</span>
+  <h2>🎤 가사 + 발음 가이드</h2>
+  <div class="content">
+    <div class="lyrics-layout">
+      <div class="yt-side">
+        <div style="font-size:12px;font-weight:600;color:var(--dim);margin-bottom:4px;letter-spacing:.5px">🎬 FULL MV</div>
+        <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s" target="_blank">
+          <img src="https://img.youtube.com/vi/hVAc1Vf2ITU/hqdefault.jpg" alt="TWS MV">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div>
+            <span class="yt-play-label">YouTube에서 보기 / Watch on YouTube</span>
+          </div>
+        </a>
+        <a class="yt-open-btn" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s" target="_blank">
+          ▶ Full MV 열기 &nbsp;<span style="font-size:.85em;opacity:.7">Open on YouTube</span>
+        </a>
+      </div>
+      <div class="lyrics-side">
+        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:linear-gradient(135deg,rgba(251,113,133,.08),rgba(244,114,182,.04));border:1.5px solid #fda4af;border-radius:12px;text-decoration:none;color:#e11d48;font-weight:600;font-size:clamp(12px,1.1vw,14px)">
+          <span style="font-size:18px">🎯</span>
+          <div><div>Highlight — YouTube Shorts</div><div style="font-size:11px;color:var(--dim);font-weight:400;margin-top:1px">후렴구 영상 보기 / Watch the chorus</div></div>
+          <span style="margin-left:auto">↗</span>
+        </a>
+        <div class="lyric-row" onclick="speakKr(this,'셋, 둘, 하나')">
+          <button class="tts-btn">🔊</button>
+          <div><div class="lyric-kr">(셋, 둘, 하나)</div><div class="lyric-rom">Set, dul, ha-na</div></div>
+        </div>
+        <div class="lyric-row" onclick="speakKr(this,'첫 만남은 너무 어려워')">
+          <button class="tts-btn">🔊</button>
+          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheot mann-am-eun neo-mu eo-ryeo-wo</div></div>
+        </div>
+        <div class="lyric-row" onclick="speakKr(this,'계획대로 되는 게 없어서')">
+          <button class="tts-btn">🔊</button>
+          <div><div class="lyric-kr">계획대로 되는 게 없어서</div><div class="lyric-rom">Gye-hoek-dae-ro doe-neun ge eop-seo-seo</div></div>
+        </div>
+        <div class="lyric-row" onclick="speakKr(this,'첫 만남은 너무 어려워')">
+          <button class="tts-btn">🔊</button>
+          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheot mann-am-eun neo-mu eo-ryeo-wo</div></div>
+        </div>
+        <div class="lyric-row" onclick="speakKr(this,'내 이름은 말야')">
+          <button class="tts-btn">🔊</button>
+          <div><div class="lyric-kr">내 이름은 말야</div><div class="lyric-rom">Nae i-reum-eun mal-ya</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: Ordinals 1-10 ===== -->
+<div class="slide">
+  <span class="slide-num">03 / 12</span>
+  <h2>🔢 서수 & 기수 배우기</h2>
+  <div class="content">
+    <div class="ord-scroll">
+      <div class="ordinal-grid" id="ordGrid">
+        <!-- JS fills -->
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="q" id="quizQ">❓ 퀴즈: "다섯 번째"는 영어로?</div>
+      <div class="quiz-opts" id="quizOpts">
+        <button class="quiz-opt" onclick="checkQuiz(this,false)">Third</button>
+        <button class="quiz-opt" onclick="checkQuiz(this,true)">Fifth</button>
+        <button class="quiz-opt" onclick="checkQuiz(this,false)">Seventh</button>
+        <button class="quiz-opt" onclick="checkQuiz(this,false)">Tenth</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: Vocab ===== -->
+<div class="slide">
+  <span class="slide-num">04 / 12</span>
+  <h2>📝 새 단어 & 패턴 드릴</h2>
+  <div class="content">
+    <div class="vp-layout">
+      <div class="vocab-side">
+        <div class="section-label">📖 새 단어 (클릭하면 들려요!)</div>
+        <div class="vocab-card" onclick="speakKr(this,'첫 만남')">
+          <div class="emoji-icon">🤝</div>
+          <div><div class="word">첫 만남</div><div class="meaning">First meeting</div></div>
+        </div>
+        <div class="vocab-card" onclick="speakKr(this,'너무')">
+          <div class="emoji-icon">😤</div>
+          <div><div class="word">너무</div><div class="meaning">Too much / so very</div></div>
+        </div>
+        <div class="vocab-card" onclick="speakKr(this,'어려워')">
+          <div class="emoji-icon">😰</div>
+          <div><div class="word">어려워</div><div class="meaning">It's difficult / hard</div></div>
+        </div>
+        <div class="vocab-card" onclick="speakKr(this,'계획')">
+          <div class="emoji-icon">📋</div>
+          <div><div class="word">계획</div><div class="meaning">Plan / planning</div></div>
+        </div>
+      </div>
+      <div class="pattern-side">
+        <div class="section-label">🗣️ 패턴: ~은/는 너무 어려워 / 쉬워</div>
+        <div class="pattern-card" onclick="speakKr(this,'숙제는 너무 어려워')">
+          <span class="pat-speaker">🔊</span>
+          <div class="pat-kr">숙제는 너무 어려워</div>
+          <div class="pat-en">Homework is too difficult</div>
+        </div>
+        <div class="pattern-card" onclick="speakKr(this,'영어는 쉬워')">
+          <span class="pat-speaker">🔊</span>
+          <div class="pat-kr">영어는 쉬워</div>
+          <div class="pat-en">English is easy</div>
+        </div>
+        <div class="pattern-card" onclick="speakKr(this,'한국어는 진짜 어려워')">
+          <span class="pat-speaker">🔊</span>
+          <div class="pat-kr">한국어는 진짜 어려워</div>
+          <div class="pat-en">Korean is really difficult</div>
+        </div>
+        <div class="plan-label">📋 "계획" 말하기 연습 — 탭해서 말해 보세요!</div>
+        <div class="plan-chips" id="planChips">
+          <button class="plan-chip" onclick="practPlan(this,'여행 계획')">✈️ 여행 계획</button>
+          <button class="plan-chip" onclick="practPlan(this,'공부 계획')">📚 공부 계획</button>
+          <button class="plan-chip" onclick="practPlan(this,'지출 계획')">💰 지출 계획</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: Chorus Practice ===== -->
+<div class="slide">
+  <span class="slide-num">05 / 12</span>
+  <h2>🎤 후렴구 연습</h2>
+  <div class="content">
+    <div class="chorus-area">
+      <div class="chorus-text">
+        <span class="highlight">(셋, 둘, 하나)</span><br>
+        첫 만남은 너무 어려워<br>
+        계획대로 되는 게 없어서<br>
+        첫 만남은 너무 어려워<br>
+        내 이름은 말야
+      </div>
+      <div class="practice-tracker">
+        <div class="track-group">
+          <div class="track-label">📖 읽기 (3회)</div>
+          <div class="track-dots" id="readDots">
+            <div class="track-dot" onclick="markDot(this)">1</div>
+            <div class="track-dot" onclick="markDot(this)">2</div>
+            <div class="track-dot" onclick="markDot(this)">3</div>
+          </div>
+        </div>
+        <div class="track-group">
+          <div class="track-label">🎤 따라 부르기 (3회)</div>
+          <div class="track-dots" id="singDots">
+            <div class="track-dot" onclick="markDot(this)">1</div>
+            <div class="track-dot" onclick="markDot(this)">2</div>
+            <div class="track-dot" onclick="markDot(this)">3</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <button class="chorus-play-btn" style="background:linear-gradient(135deg,#3b82f6,#7dd3fc)" onclick="speakKr(null,'셋, 둘, 하나. 첫 만남은 너무 어려워. 계획대로 되는 게 없어서. 첫 만남은 너무 어려워. 내 이름은 말야.')">📖 읽기 (TTS)</button>
+        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" target="_blank" class="chorus-play-btn" style="background:linear-gradient(135deg,#e11d48,#fb7185);text-decoration:none;display:inline-flex;align-items:center;gap:8px">▶️ 노래 재생<span style="font-size:.8em;opacity:.8"> / Play Song</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: Games ===== -->
+<div class="slide">
+  <span class="slide-num">06 / 12</span>
+  <h2>🎮 게임 타임!</h2>
+  <div class="content">
+    <div class="game-tabs">
+      <button class="game-tab active" onclick="switchGame(0,this)">🔢 숫자 순서</button>
+      <button class="game-tab" onclick="switchGame(1,this)">📝 가사 빈칸 채우기</button>
+      <button class="game-tab" onclick="switchGame(2,this)">✍️ 가사 써보기</button>
+    </div>
+
+    <!-- Game A: Number order -->
+    <div class="game-panel active" id="gameA">
+      <p style="text-align:center;color:var(--dim);margin-bottom:8px;font-size:clamp(14px,1.4vw,18px);font-weight:600">하나부터 열까지 순서대로 클릭하세요!</p>
+      <div class="num-game-board" id="numBoard"></div>
+      <div class="game-msg" id="numMsg"></div>
+      <div style="text-align:center;margin-top:8px"><button class="reset-btn" onclick="resetNumGame()">🔄 다시</button></div>
+    </div>
+
+    <!-- Game B: Fill blank -->
+    <div class="game-panel" id="gameB">
+      <p style="text-align:center;color:var(--dim);margin-bottom:8px;font-size:clamp(14px,1.4vw,18px);font-weight:600">빈칸에 들어갈 단어를 골라보세요! (클릭하면 읽어줘요 🔊)</p>
+      <div id="fillArea"></div>
+      <div id="fillCorrectMsg" style="text-align:center;font-size:clamp(14px,1.5vw,19px);font-weight:800;color:var(--mint2);min-height:26px;margin-top:6px"></div>
+      <div style="text-align:center;margin-top:8px"><button class="reset-btn" onclick="fillIdx=0;renderFill();document.getElementById('fillCorrectMsg').textContent=''">🔄 다시</button></div>
+    </div>
+
+    <!-- Game C: Typing -->
+    <div class="game-panel" id="gameC">
+      <div style="padding:14px;background:rgba(59,130,246,.04);border-radius:14px;border:1.5px solid #bfdbfe">
+        <div style="text-align:center;font-size:clamp(13px,1.3vw,16px);font-weight:700;color:var(--accent2);margin-bottom:10px">✍️ 후렴구 문장을 직접 타이핑해 보세요!</div>
+        <div id="typePrompt" style="text-align:center;font-size:clamp(16px,1.8vw,22px);font-weight:800;color:var(--text);margin-bottom:12px;padding:10px 16px;background:var(--card);border-radius:12px;border:2px solid #e2e8f0"></div>
+        <div style="display:flex;gap:8px;justify-content:center;align-items:center">
+          <input id="typeInput" type="text" placeholder="한국어로 입력하세요..." style="padding:10px 16px;border-radius:30px;border:2px solid #e2e8f0;font-size:clamp(14px,1.5vw,18px);font-family:'Noto Sans KR',sans-serif;outline:none;width:min(380px,65%);transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='#e2e8f0'" onkeydown="if(event.key==='Enter')checkTyping()">
+          <button onclick="checkTyping()" style="padding:10px 22px;border-radius:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-size:clamp(13px,1.3vw,16px);font-weight:700;cursor:pointer;font-family:'Noto Sans KR'">확인 ✓</button>
+        </div>
+        <div id="typeMsg" style="text-align:center;margin-top:10px;font-size:clamp(13px,1.3vw,16px);min-height:22px"></div>
+        <div style="text-align:center;margin-top:8px"><button class="reset-btn" onclick="typeIdx=0;initTyping()">🔄 다시</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: Lesson 2 Title ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">07 / 12</span>
+  <div class="content" style="justify-content:center">
+    <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:clamp(11px,1vw,13px);font-weight:700;margin-bottom:10px;background:rgba(124,58,237,.08);color:#7c3aed;border:1.5px solid rgba(124,58,237,.2)">🎵 TWS — 첫 만남은 계획대로 되지 않아</div>
+    <h1 style="color:#5b21b6">레슨 2<br>가사로 말하기</h1>
+    <p class="subtitle">오늘은 전체 가사를 읽고, 진짜 대화로 연습해요! 🗣️<br>Today we read the full lyrics and practice real conversation!</p>
+    <div class="lesson-links" style="margin-top:16px">
+      <button class="lesson-link" style="border-color:#7c3aed;color:#7c3aed;background:rgba(124,58,237,.06)" onclick="goTo(7)">📖 가사 스토리<span class="ll-sub"> / Story</span></button>
+      <button class="lesson-link" style="border-color:#f43f5e;color:#f43f5e;background:rgba(244,63,94,.06)" onclick="goTo(8)">💬 반말 vs 존댓말</button>
+      <button class="lesson-link" style="border-color:#10b981;color:#10b981;background:rgba(16,185,129,.06)" onclick="goTo(9)">🎭 롤플레이<span class="ll-sub"> / Roleplay</span></button>
+      <button class="lesson-link" style="border-color:#0ea5e9;color:#0ea5e9;background:rgba(14,165,233,.06)" onclick="goTo(0)">← 레슨 1로<span class="ll-sub"> / Back to L1</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: Story Reader ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">08 / 12</span>
+  <h2 style="color:#5b21b6">📖 가사 스토리 읽기</h2>
+  <div class="content">
+    <div class="lyrics-layout">
+      <div class="story-lines" id="storyLines"></div>
+      <div class="meaning-panel" style="border-color:#e9d5ff">
+        <div class="meaning-title" id="mpTitle" style="color:#5b21b6">👆 왼쪽 가사를 클릭해 보세요!</div>
+        <div class="meaning-body" id="mpBody" style="color:var(--light);font-style:italic">Click any lyric line on the left to see the meaning and explanation here.</div>
+        <div class="meaning-tip" id="mpTip" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: Casual vs Formal ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">09 / 12</span>
+  <h2 style="color:#5b21b6;margin-bottom:clamp(6px,.8vw,10px)">💬 반말 vs 존댓말</h2>
+  <div class="content" style="gap:clamp(6px,.8vw,10px)">
+    <div style="display:grid;grid-template-columns:1fr 56px 1fr;gap:clamp(8px,1.2vw,16px);align-items:stretch">
+      <!-- Casual column -->
+      <div class="expr-card" style="padding:clamp(10px,1.2vw,16px)">
+        <div class="expr-label" style="color:#f43f5e;margin-bottom:8px;font-size:clamp(12px,1.1vw,15px)">🎤 반말 <span style="font-weight:400;opacity:.7">(casual / K-pop)</span></div>
+        <div class="expr-row" onclick="speakKr(null,'이름이 뭐야')">
+          <div style="flex:1"><div class="expr-kr">이름이 뭐야?</div><div class="expr-en">What's your name?</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'내 이름은 말야')">
+          <div style="flex:1"><div class="expr-kr">내 이름은 말야</div><div class="expr-en">My name is…</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'반가워')">
+          <div style="flex:1"><div class="expr-kr">반가워!</div><div class="expr-en">Nice to meet you!</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'내일 또 봐')">
+          <div style="flex:1"><div class="expr-kr">내일 또 봐</div><div class="expr-en">See you tomorrow</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+      </div>
+      <!-- Arrow center -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+        <div style="font-size:clamp(22px,2.5vw,34px);font-weight:900;color:#7c3aed">→</div>
+        <div style="font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center;line-height:1.6;font-weight:600">친구<br><span style="color:#7c3aed">→</span><br>선생님</div>
+      </div>
+      <!-- Formal column -->
+      <div class="expr-card" style="padding:clamp(10px,1.2vw,16px)">
+        <div class="expr-label" style="color:#0ea5e9;margin-bottom:8px;font-size:clamp(12px,1.1vw,15px)">🏫 존댓말 <span style="font-weight:400;opacity:.7">(polite / formal)</span></div>
+        <div class="expr-row" onclick="speakKr(null,'이름이 뭐예요')">
+          <div style="flex:1"><div class="expr-kr">이름이 뭐예요?</div><div class="expr-en">What's your name? (polite)</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'제 이름은이에요')">
+          <div style="flex:1"><div class="expr-kr">제 이름은 ___이에요</div><div class="expr-en">My name is ___</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'반갑습니다')">
+          <div style="flex:1"><div class="expr-kr">반갑습니다!</div><div class="expr-en">Nice to meet you! (formal)</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+        <div class="expr-row" onclick="speakKr(null,'내일 또 봐요')">
+          <div style="flex:1"><div class="expr-kr">내일 또 봐요</div><div class="expr-en">See you tomorrow (polite)</div></div><span style="font-size:18px;cursor:pointer;flex-shrink:0">🔊</span>
+        </div>
+      </div>
+    </div>
+    <!-- Key rule box -->
+    <div style="background:rgba(124,58,237,.05);border:1.5px solid rgba(124,58,237,.2);border-radius:14px;padding:clamp(10px,1.1vw,16px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:clamp(13px,1.3vw,17px)">
+        <span style="font-weight:800;color:#7c3aed">💡 핵심 / Key Rule:</span>
+        <span>반말(casual) <strong style="color:#f43f5e">~야(ya)/~어(eo)/~봐(bwa)</strong> → 존댓말(polite) 끝에 <strong style="color:#0ea5e9">~요(yo)</strong> 붙이면 OK! 😊</span>
+        <span style="color:#cbd5e1">|</span>
+        <span>나(I) → <strong style="color:#0ea5e9">저</strong></span>
+        <span style="color:#cbd5e1">|</span>
+        <span>어려워 → <strong style="color:#0ea5e9">어려워요</strong></span>
+        <span style="color:#cbd5e1">|</span>
+        <span>반가워 → <strong style="color:#0ea5e9">반가워요</strong></span>
+        <span style="color:#cbd5e1">|</span>
+        <span>봐 → <strong style="color:#0ea5e9">봐요</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: Roleplay ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">10 / 12</span>
+  <h2 style="color:#5b21b6">🎭 롤플레이: 첫 만남 대화</h2>
+  <div class="content" style="gap:clamp(8px,1vw,14px)">
+    <div class="rp-layout" style="gap:clamp(12px,1.8vw,24px)">
+      <div class="rp-scene" style="gap:clamp(8px,1vw,12px);padding:clamp(12px,1.5vw,20px)">
+        <div class="scene-label" style="font-size:clamp(12px,1.2vw,15px)">🎬 새 학교 첫날 / First day at a new school</div>
+        <div class="bubble bubble-teacher" style="font-size:clamp(14px,1.5vw,19px);padding:clamp(10px,1.2vw,16px)">
+          <div class="bubble-label" style="font-size:clamp(11px,1.1vw,14px);display:flex;align-items:center;justify-content:space-between;">
+            <span>👩‍🏫 선생님</span>
+            <button onclick="speakKr(null,'안녕하세요! 처음 뵙겠습니다. 저는 한국어 선생님이에요. 성함이 어떻게 되세요?')" style="background:rgba(255,255,255,.25);border:none;border-radius:99px;padding:2px 10px;cursor:pointer;font-size:clamp(11px,1vw,13px);color:white;font-weight:600;">🔊 듣기</button>
+          </div>
+          안녕하세요! 처음 뵙겠습니다.<br>저는 한국어 선생님이에요. 성함이 어떻게 되세요?
+        </div>
+        <div class="bubble bubble-student" style="font-size:clamp(14px,1.5vw,19px);padding:clamp(10px,1.2vw,16px);line-height:2">
+          <div class="bubble-label" style="font-size:clamp(11px,1.1vw,14px);display:flex;align-items:center;justify-content:space-between;">
+            <span>🙋 나 (You) — 오른쪽 단어를 클릭하세요!</span>
+            <button onclick="speakRpStudent()" style="background:rgba(124,58,237,.15);border:1.5px solid rgba(124,58,237,.3);border-radius:99px;padding:2px 10px;cursor:pointer;font-size:clamp(11px,1vw,13px);color:#7c3aed;font-weight:600;">🔊 듣기</button>
+          </div>
+          안녕하세요! 저는 <span class="fill-blank" id="nameBlank">이름</span>예요.<br>
+          <span class="fill-blank" id="originBlank">나라</span>에서 왔어요.<br>
+          한국어는 <span class="fill-blank" id="levelBlank">느낌</span>!
+        </div>
+        <div class="bubble bubble-teacher" style="font-size:clamp(14px,1.5vw,19px);padding:clamp(10px,1.2vw,16px)">
+          <div class="bubble-label" style="font-size:clamp(11px,1.1vw,14px);display:flex;align-items:center;justify-content:space-between;">
+            <span>👩‍🏫 선생님</span>
+            <button onclick="speakKr(null,'와, 정말요? 이렇게 만나서 반가워요!')" style="background:rgba(255,255,255,.25);border:none;border-radius:99px;padding:2px 10px;cursor:pointer;font-size:clamp(11px,1vw,13px);color:white;font-weight:600;">🔊 듣기</button>
+          </div>
+          와, 정말요? 이렇게 만나서 반가워요! 😊
+        </div>
+      </div>
+      <div class="rp-hints" style="gap:clamp(8px,1vw,12px)">
+        <div class="hint-label" style="font-size:clamp(13px,1.3vw,16px)">👆 클릭하면 빈칸에 채워져요!</div>
+        <div>
+          <div style="font-size:clamp(12px,1.2vw,15px);color:var(--dim);margin-bottom:5px;font-weight:700">📛 이름</div>
+          <button class="hint-chip" data-type="name" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('name','마리아',this)">마리아</button>
+          <button class="hint-chip" data-type="name" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('name','알렉스',this)">알렉스</button>
+          <button class="hint-chip" data-type="name" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('name','에마',this)">에마</button>
+        </div>
+        <div>
+          <div style="font-size:clamp(12px,1.2vw,15px);color:var(--dim);margin-bottom:5px;font-weight:700">🌍 나라</div>
+          <button class="hint-chip" data-type="origin" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('origin','멕시코',this)">멕시코</button>
+          <button class="hint-chip" data-type="origin" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('origin','캐나다',this)">캐나다</button>
+          <button class="hint-chip" data-type="origin" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('origin','브라질',this)">브라질</button>
+          <button class="hint-chip" data-type="origin" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('origin','스페인',this)">스페인</button>
+        </div>
+        <div>
+          <div style="font-size:clamp(12px,1.2vw,15px);color:var(--dim);margin-bottom:5px;font-weight:700">🎯 한국어 느낌</div>
+          <button class="hint-chip" data-type="level" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('level','너무 어려워요',this)">너무 어려워요 😰</button>
+          <button class="hint-chip" data-type="level" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('level','재미있어요',this)">재미있어요 😄</button>
+          <button class="hint-chip" data-type="level" style="font-size:clamp(13px,1.3vw,16px)" onclick="rpFill('level','신나요',this)">신나요 🎉</button>
+        </div>
+        <div style="margin-top:4px;padding:10px 14px;background:rgba(245,158,11,.06);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;font-size:clamp(12px,1.2vw,15px);color:#92400e;line-height:1.5">
+          🌟 <strong>도전:</strong> 선생님 역할로 바꿔서 질문해보세요!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: Speaking Drill ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">11 / 12</span>
+  <h2 style="color:#5b21b6">🗣️ 말하기 드릴</h2>
+  <div class="content" style="gap:clamp(5px,.7vw,8px)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+      <div style="font-size:clamp(11px,1vw,14px);color:var(--dim);font-weight:600">클릭 → 듣기 → 따라 말하기! 🔊</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;color:var(--dim)">속도:</span>
+        <button class="speed-btn" onclick="setSpeed(this,0.5)">🐢 느리게</button>
+        <button class="speed-btn active" onclick="setSpeed(this,1.0)">🚶 보통</button>
+      </div>
+    </div>
+    <div class="drill-layout" id="drillList" style="gap:clamp(5px,.6vw,8px)"></div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: Sentence Order Game ===== -->
+<div class="slide" style="background:linear-gradient(160deg,#fdf4ff,#fafafa 40%,#fff1f2 100%)">
+  <span class="slide-num">12 / 12</span>
+  <h2 style="color:#5b21b6">🎮 문장 순서 맞추기!</h2>
+  <div class="content">
+    <div class="order-game">
+      <div class="order-instruction" id="orderInstr">단어를 순서대로 클릭해서 문장을 만들어보세요!</div>
+      <div style="font-size:clamp(11px,1vw,13px);text-align:center;color:var(--dim);margin-bottom:2px" id="orderHint"></div>
+      <div class="word-bank" id="wordBank"></div>
+      <div style="font-size:clamp(11px,1vw,13px);color:#10b981;font-weight:600;text-align:center">✏️ 내가 만드는 문장:</div>
+      <div class="answer-slots" id="answerSlots"></div>
+      <div class="order-msg" id="orderMsg"></div>
+      <div class="order-btns">
+        <button class="reset-btn" onclick="resetOrder()">🔄 다시</button>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextOrderQ()">다음 문제 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← 이전</button>
+  <div class="nav-dots" id="dots"></div>
+  <button class="nav-btn primary" id="nextBtn" onclick="go(1)">다음 →</button>
+</div>
+</div>
+
+<script>
+// ——— Navigation ———
+const slides=document.querySelectorAll('.slide'),dots=document.getElementById('dots'),bar=document.getElementById('progBar');
+const prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+let cur=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='nav-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dots.appendChild(d)});
+function updateNav(){
+  prevBtn.classList.toggle('invisible',cur===0);
+  nextBtn.style.visibility=(cur>=slides.length-1)?'hidden':'visible';
+}
+function goTo(i){
+  slides[cur].classList.remove('active');dots.children[cur].classList.remove('active');
+  cur=i;slides[cur].classList.add('active');dots.children[cur].classList.add('active');bar.style.width=((cur+1)/slides.length*100)+'%';
+  updateNav();
+  // Reset plan chips when entering slide 3 (vocab, index 3)
+  if(i===3){document.querySelectorAll('#planChips .plan-chip').forEach(c=>c.classList.remove('said'));}
+  // Reset practice dots when entering chorus slide (index 4)
+  if(i===4){document.querySelectorAll('.track-dot').forEach(d=>d.classList.remove('done'));}
+  if(i===10){
+    document.querySelectorAll('.drill-counter').forEach(c=>{c.textContent='';});
+    document.querySelectorAll('#drillList .drill-card').forEach(c=>{c.style.borderColor='';c.style.background='';});
+  }
+  if(i===5){resetNumGame();fillIdx=0;renderFill();document.getElementById('fillCorrectMsg').textContent='';
+    document.querySelectorAll('.game-tab').forEach((t,ti)=>t.classList.toggle('active',ti===0));
+    document.querySelectorAll('.game-panel').forEach((p,pi)=>p.classList.toggle('active',pi===0));}
+}
+function go(n){let x=cur+n;if(x<0||x>=slides.length)return;goTo(x);}
+function updateNavBtns(){updateNav();}
+bar.style.width=(1/slides.length*100)+'%';updateNav();
+document.addEventListener('keydown',e=>{
+  if(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key===' ')go(1);
+  if(e.key==='ArrowLeft')go(-1);
+});
+
+// ——— TTS ———
+let ttsRate=1.0;
+let drillRate=1.0; // 말하기 드릴 전용 속도
+function speakKr(el,text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=ttsRate;
+  if(el){const btn=el.querySelector('.tts-btn')||el;btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing')}
+  speechSynthesis.speak(u);
+}
+function speakDrill(el,text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=drillRate;
+  if(el){const btn=el.querySelector('.tts-btn')||el;btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing')}
+  speechSynthesis.speak(u);
+}
+function setSpeed(el,r){drillRate=r;document.querySelectorAll('.speed-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+
+// ——— Ordinals grid ———
+const ordData=[
+  {n:'1st',ord:'첫째',card:'하나',chn:'일'},
+  {n:'2nd',ord:'둘째',card:'둘',chn:'이'},
+  {n:'3rd',ord:'셋째',card:'셋',chn:'삼'},
+  {n:'4th',ord:'넷째',card:'넷',chn:'사'},
+  {n:'5th',ord:'다섯째',card:'다섯',chn:'오'},
+  {n:'6th',ord:'여섯째',card:'여섯',chn:'육'},
+  {n:'7th',ord:'일곱째',card:'일곱',chn:'칠'},
+  {n:'8th',ord:'여덟째',card:'여덟',chn:'팔'},
+  {n:'9th',ord:'아홉째',card:'아홉',chn:'구'},
+  {n:'10th',ord:'열째',card:'열',chn:'십'},
+];
+const og=document.getElementById('ordGrid');
+ordData.forEach(d=>{
+  const c=document.createElement('div');
+  c.className='ord-card';
+  c.onclick=()=>{speakKr(c,d.ord);c.classList.add('correct');setTimeout(()=>c.classList.remove('correct'),1200)};
+  c.innerHTML=`<span class="speaker">🔊</span><div class="num">${d.n}</div><div class="kr">${d.ord}</div><div class="cardinal">기수: ${d.card} (${d.chn})</div>`;
+  og.appendChild(c);
+});
+
+// ——— Quiz ———
+function checkQuiz(el,correct){
+  // Clear all previous selections
+  document.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('right','wrong');});
+  el.classList.add(correct?'right':'wrong');
+  document.getElementById('quizQ').textContent=correct
+    ?'🎉 정답! Fifth = 다섯째 (다섯 번째)'
+    :'❌ 다시 해봐요! Hint: 다섯 번째';
+}
+
+// ——— Number game (1-10) with TTS ———
+const numWords=['하나','둘','셋','넷','다섯','여섯','일곱','여덟','아홉','열'];
+let numStep=1;
+function resetNumGame(){
+  numStep=1;document.getElementById('numMsg').textContent='';
+  const board=document.getElementById('numBoard');board.innerHTML='';
+  const arr=numWords.map((w,i)=>({kr:w,val:i+1})).sort(()=>Math.random()-.5);
+  arr.forEach(item=>{
+    const b=document.createElement('button');b.className='num-btn';b.textContent=item.kr;
+    b.onclick=()=>{
+      speakKr(null,item.kr);
+      if(item.val===numStep){b.classList.add('done');numStep++;if(numStep>10){document.getElementById('numMsg').innerHTML='🎉 <strong>완벽합니다!</strong> 하나→열 성공!';fireConfetti();}}
+      else{b.classList.add('fail');document.getElementById('numMsg').textContent='❌ 다시! 하나(1)부터 순서대로!';setTimeout(()=>b.classList.remove('fail'),350)}
+    };
+    board.appendChild(b);
+  });
+}
+resetNumGame();
+
+// ——— Fill blank (4 options, TTS, Correct! per question) ———
+const fillData=[
+  {sentence:'<span class="blank" id="b0">___</span> 만남은 너무 어려워',answer:'첫',opts:['첫','옛','새','이번'],tts:'첫 만남은 너무 어려워'},
+  {sentence:'계획<span class="blank" id="b1">___</span> 되는 게 없어서',answer:'대로',opts:['대로','처럼','보다','만큼'],tts:'계획대로 되는 게 없어서'},
+  {sentence:'내 이름은 <span class="blank" id="b2">___</span>',answer:'말야',opts:['말야','뭐야','몰라','맞아'],tts:'내 이름은 말야'},
+];
+let fillIdx=0;
+
+function renderFill(){
+  const area=document.getElementById('fillArea');
+  const msg=document.getElementById('fillCorrectMsg');
+  if(fillIdx>=fillData.length){
+    area.innerHTML='<div class="game-msg" style="font-size:clamp(15px,1.5vw,20px)">🎉 <strong>다 맞혔어요!</strong></div>';
+    msg.textContent='';
+    fireConfetti();
+    return;
+  }
+  msg.textContent='';
+  const d=fillData[fillIdx],sh=[...d.opts].sort(()=>Math.random()-.5);
+  area.innerHTML=`<div class="fill-sentence" style="font-size:clamp(17px,2vw,26px);font-weight:700;line-height:1.3;margin-bottom:16px">${d.sentence}</div><div class="fill-opts">${sh.map(o=>`<button class="fill-opt" style="font-size:clamp(14px,1.5vw,19px);font-weight:600" onclick="checkFill(this,'${o}','${d.answer}','${d.tts}')">${o}</button>`).join('')}</div>`;
+}
+function checkFill(el,chosen,answer,tts){
+  speakKr(null,chosen);
+  if(chosen===answer){
+    el.classList.add('right');
+    document.getElementById('b'+fillIdx).textContent=answer;
+    document.getElementById('fillCorrectMsg').innerHTML='✅ <strong>Correct!</strong> 잘했어요!';
+    setTimeout(()=>{fillIdx++;renderFill();},1100);
+  } else {
+    el.classList.add('wrong');setTimeout(()=>el.classList.remove('wrong'),500);
+  }
+}
+
+// ——— Typing practice (Game C) ———
+const typeSentences=['첫 만남은 너무 어려워','계획대로 되는 게 없어서','내 이름은 말야'];
+let typeIdx=0;
+function initTyping(){
+  typeIdx=0;
+  document.getElementById('typePrompt').textContent=typeSentences[typeIdx];
+  document.getElementById('typeInput').value='';
+  document.getElementById('typeMsg').textContent='';
+}
+function checkTyping(){
+  const input=document.getElementById('typeInput');
+  const msg=document.getElementById('typeMsg');
+  const val=input.value.trim();
+  const target=typeSentences[typeIdx];
+  if(val===target){
+    msg.innerHTML='✅ <strong>Correct!</strong> 완벽해요!';
+    fireConfetti();
+    setTimeout(()=>{
+      typeIdx++;
+      if(typeIdx>=typeSentences.length){
+        document.getElementById('typePrompt').textContent='🎊 모두 완료!';
+        input.value='';msg.innerHTML='🎉 <strong>다 썼어요! 대단해요!</strong>';
+      } else {
+        document.getElementById('typePrompt').textContent=typeSentences[typeIdx];
+        input.value='';msg.textContent='';
+      }
+    },1200);
+  } else {
+    msg.innerHTML='<span style="color:#e11d48">❌ 다시 한번! 띄어쓰기도 확인해요.</span>';
+    input.style.borderColor='#fb7185';
+    setTimeout(()=>{input.style.borderColor='#e2e8f0';},600);
+  }
+}
+
+// ——— Confetti ———
+function fireConfetti(){
+  if(typeof confetti==='undefined')return;
+  confetti({particleCount:120,spread:80,origin:{y:0.6},colors:['#3b82f6','#34d399','#fb7185','#fbbf24','#a78bfa']});
+}
+
+// ——— Game tabs (3 tabs now) ———
+function switchGame(idx,tab){
+  document.querySelectorAll('.game-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.game-panel').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.game-panel')[idx].classList.add('active');
+  if(idx===2)initTyping();
+}
+
+// ——— Practice tracker ———
+function markDot(el){el.classList.toggle('done')}
+
+// ——— Plan chips ———
+function practPlan(el,text){speakKr(el,text);el.classList.add('said')}
+
+// ——— LESSON 2 JS ———
+
+// Story data
+const storyData=[
+  {kr:'거울 속에 내 표정 봐 봐',en:'Look at my expression in the mirror',
+   meaning:'He\'s nervously checking himself in the mirror before meeting someone — so relatable!',
+   tip:'봐 봐 = "look, look!" Repeating a verb adds emphasis. 봐 = 보다 (to look) 🪞'},
+  {kr:'연습했던 손든 인사도 그대로 하면 돼',en:'Just do the waving greeting I practiced',
+   meaning:'He literally rehearsed his wave! Overthinking a first meeting is a universal feeling 😄',
+   tip:'그대로 = "as it is / just like that" — very useful word in everyday Korean ✋'},
+  {kr:'발걸음은 매일 걷던 그 길로',en:'My steps are on the path I walk every day',
+   meaning:'Same old path, but today feels totally different because of who he\'s about to meet.',
+   tip:'발걸음 = 발 (foot) + 걸음 (step). Korean loves compound words! 👣'},
+  {kr:'빨리 말 걸어보고 싶어',en:'I want to talk to you so quickly',
+   meaning:'"말을 걸다" = to initiate conversation. Literally "hang words on someone." So poetic!',
+   tip:'말 걸다 is KEY! 말 걸어도 돼요? = "Can I talk to you?" Use this in real life! 🗣️'},
+  {kr:'Woo, 문 앞에서 셋을 세어본다',en:'I count to three in front of the door',
+   meaning:'Building courage before knocking — counting down셋, 둘, 하나 just like the chorus!',
+   tip:'세다 = to count. 세어본다 = "I try counting." The ending 보다 adds a "trying" nuance 🚪'},
+  {kr:'이렇게 만나서 반가워',en:'It\'s nice to meet you like this',
+   meaning:'"반갑다" = to be glad/pleased to meet. 반가워 (casual) → 반갑습니다 (formal) — same meaning!',
+   tip:'반갑습니다 is your most important formal greeting after 안녕하세요! 🤝'},
+  {kr:'내일 또 봐, 안녕',en:'See you tomorrow, bye',
+   meaning:'노래의 마지막 인사! 봐 = see you (casual). 안녕 = bye/hello (both!)',
+   tip:'내일 또 봐 (casual) → 내일 또 봐요 (polite). 안녕 = hello AND goodbye! 👋'},
+];
+
+// Build story lines — Korean only, no English subtitle
+const storyContainer=document.getElementById('storyLines');
+if(storyContainer){
+  storyData.forEach(d=>{
+    const row=document.createElement('div');row.className='story-line';
+    row.innerHTML=`<button class="tts-btn" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);flex-shrink:0">🔊</button><div class="line-kr" style="font-size:clamp(16px,1.7vw,22px)">${d.kr}</div>`;
+    row.onclick=()=>{
+      speakKr(row,d.kr);
+      document.querySelectorAll('.story-line').forEach(r=>r.classList.remove('lit'));
+      row.classList.add('lit');
+      document.getElementById('mpTitle').textContent='💡 '+d.kr;
+      const mb=document.getElementById('mpBody');
+      mb.textContent=d.meaning;mb.style.color='var(--text)';mb.style.fontStyle='normal';
+      const tip=document.getElementById('mpTip');
+      tip.style.display='block';tip.textContent=d.tip;
+    };
+    storyContainer.appendChild(row);
+  });
+}
+
+function speakFullRpTeacher(){
+  // 선생님 전체 대화 순서대로 읽기
+  const lines = [
+    '안녕하세요! 처음 뵙겠습니다. 저는 한국어 선생님이에요. 성함이 어떻게 되세요?',
+    '와, 정말요? 이렇게 만나서 반가워요!'
+  ];
+  let idx = 0;
+  function next() {
+    if (idx >= lines.length) return;
+    const u = new SpeechSynthesisUtterance(lines[idx]);
+    u.lang = 'ko-KR'; u.rate = ttsRate;
+    u.onend = () => { idx++; setTimeout(next, 400); };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+  next();
+}
+
+function speakRpStudent(){
+  const name=document.getElementById('nameBlank').textContent;
+  const origin=document.getElementById('originBlank').textContent;
+  const level=document.getElementById('levelBlank').textContent;
+  const nameText = (name==='이름') ? '___' : name;
+  const originText = (origin==='나라') ? '___' : origin;
+  const levelText = (level==='느낌') ? '___' : level;
+  speakKr(null,`안녕하세요! 저는 ${nameText}예요. ${originText}에서 왔어요. 한국어는 ${levelText}!`);
+}
+// Roleplay state
+const rpState={name:'이름',origin:'나라',level:'느낌'};
+function rpFill(type,kr,btn){
+  rpState[type]=kr;
+  const ids={name:'nameBlank',origin:'originBlank',level:'levelBlank'};
+  const el=document.getElementById(ids[type]);
+  if(el){el.textContent=kr;el.classList.add('filled');}
+  // unmark same-group chips by data-type
+  document.querySelectorAll(`.hint-chip[data-type="${type}"]`).forEach(c=>c.classList.remove('used'));
+  if(btn)btn.classList.add('used');
+  speakKr(null,kr);
+}
+function playRoleplay(){
+  const lines=[
+    '안녕하세요! 처음 뵙겠습니다. 저는 한국어 선생님이에요. 성함이 어떻게 되세요?',
+    `안녕하세요! 저는 ${rpState.name}이에요. ${rpState.origin}에서 왔어요. 한국어는 ${rpState.level}!`,
+    '와, 정말요? 이렇게 만나서 반가워요!',
+  ];
+  let i=0;window.speechSynthesis.cancel();
+  function next(){if(i>=lines.length)return;const u=new SpeechSynthesisUtterance(lines[i]);u.lang='ko-KR';u.rate=0.85;u.onend=()=>{i++;setTimeout(next,500)};speechSynthesis.speak(u);}
+  next();
+}
+
+// Speaking drill
+const drillData=[
+  {kr:'처음 뵙겠습니다',en:'How do you do? (formal)',tag:'존댓말'},
+  {kr:'성함이 어떻게 되세요?',en:'May I ask your name?',tag:'존댓말'},
+  {kr:'만나서 반가워요',en:'Nice to meet you',tag:'일상'},
+  {kr:'저는 ___에서 왔어요',en:'I came from ___',tag:'자기소개'},
+  {kr:'한국어를 배우고 있어요',en:'I\'m learning Korean',tag:'자기소개'},
+  {kr:'계획대로 되는 게 없어서',en:'Because nothing goes according to plan',tag:'가사'},
+  {kr:'이렇게 만나서 반가워',en:'It\'s nice to meet you like this',tag:'가사'},
+];
+const drillContainer=document.getElementById('drillList');
+if(drillContainer){
+  drillData.forEach((d,i)=>{
+    const c=document.createElement('div');c.className='drill-card';
+    c.innerHTML=`<div class="drill-num">${i+1}</div><div style="flex:1"><div class="drill-kr">${d.kr}</div><div class="drill-en">${d.en}</div></div><span class="drill-tag">${d.tag}</span><span class="drill-counter" style="min-width:36px;text-align:center;font-size:clamp(11px,1vw,13px);color:var(--light);font-weight:600"></span>`;
+    let count=0;
+    c.onclick=()=>{
+      speakDrill(null,d.kr);
+      count++;
+      c.querySelector('.drill-counter').textContent=count+'회 🔊';
+      c.style.borderColor='#7c3aed';
+      c.style.background='rgba(124,58,237,.03)';
+    };
+    drillContainer.appendChild(c);
+  });
+}
+
+// Sentence order game
+const orderQs=[
+  {words:['저는','한국어 선생님','입니다','처음','뵙겠습니다'],answer:['저는','한국어 선생님','입니다','처음','뵙겠습니다'],hint:'I am a Korean teacher. How do you do?'},
+  {words:['성함이','어떻게','되세요?'],answer:['성함이','어떻게','되세요?'],hint:'May I ask your name?'},
+  {words:['이렇게','만나서','반가워요'],answer:['이렇게','만나서','반가워요'],hint:'It\'s nice to meet you like this.'},
+  {words:['저는','캐나다','에서','왔어요'],answer:['저는','캐나다','에서','왔어요'],hint:'I came from Canada.'},
+];
+let orderIdx=0,answerArr=[],orderDone=false;
+function renderOrder(){
+  const q=orderQs[orderIdx];
+  document.getElementById('orderHint').textContent='💬 '+q.hint;
+  document.getElementById('orderMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answerArr=[];
+  const bank=document.getElementById('wordBank');bank.innerHTML='';
+  const slots=document.getElementById('answerSlots');slots.innerHTML='';
+  const shuffled=[...q.words].sort(()=>Math.random()-.5);
+  shuffled.forEach(w=>{
+    const t=document.createElement('div');t.className='word-tile';t.textContent=w;
+    t.onclick=()=>{
+      if(t.classList.contains('placed'))return;
+      t.classList.add('placed');answerArr.push(w);
+      const slot=document.createElement('div');slot.className='answer-slot';slot.textContent=w;
+      slot.onclick=()=>{answerArr=answerArr.filter(x=>x!==w);slot.remove();t.classList.remove('placed');document.getElementById('orderMsg').textContent='';document.getElementById('nextQBtn').style.display='none';};
+      slots.appendChild(slot);
+      speakKr(null,w);
+      if(answerArr.length===q.words.length)checkOrder();
+    };
+    bank.appendChild(t);
+  });
+}
+function checkOrder(){
+  const q=orderQs[orderIdx];const msg=document.getElementById('orderMsg');
+  if(JSON.stringify(answerArr)===JSON.stringify(q.answer)){
+    msg.innerHTML='🎉 <strong>정답!</strong> 완벽해요!';msg.style.color='#10b981';
+    fireConfetti();document.getElementById('nextQBtn').style.display='inline-block';
+  } else {
+    msg.innerHTML='❌ 다시 해봐요!';msg.style.color='#f43f5e';
+  }
+}
+function resetOrder(){orderIdx=0;orderDone=false;renderOrder();}
+function nextOrderQ(){
+  orderIdx++;
+  if(orderIdx>=orderQs.length){
+    // All done!
+    document.getElementById('wordBank').innerHTML='';
+    document.getElementById('answerSlots').innerHTML='';
+    document.getElementById('orderHint').textContent='';
+    document.getElementById('orderMsg').innerHTML='🎊 <strong>모든 문제 완료!</strong> 대단해요!';
+    document.getElementById('orderMsg').style.color='#7c3aed';
+    document.getElementById('nextQBtn').style.display='none';
+    fireConfetti();
+    orderDone=true;
+    return;
+  }
+  renderOrder();
+}
+
+// init lesson 2
+renderOrder();
+
+// init lesson 1
+resetNumGame();
+renderFill();
+initTyping();
+</script>
+</body>
+</html>

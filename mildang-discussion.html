@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>밀당 토론 💬 Cheer Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F8F4FF;
+    --surface: #FFFFFF;
+    --border: #E2D9F3;
+    --accent: #6D28D9;
+    --accent-light: #EDE9FE;
+    --accent2: #EC4899;
+    --text: #1E1333;
+    --text-muted: #6B7280;
+    --green: #10B981;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--accent);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+  }
+  .back-btn {
+    background: rgba(255,255,255,.15);
+    border: none;
+    color: white;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: rgba(255,255,255,.25); }
+  .header-info { flex: 1; }
+  .header-tag {
+    font-size: .68rem;
+    color: rgba(255,255,255,.7);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: .15rem;
+  }
+  .header-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: white;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #6D28D9, #EC4899);
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+    color: white;
+  }
+  .hero-emoji { font-size: 2.5rem; margin-bottom: .5rem; }
+  .hero h1 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: .3rem;
+  }
+  .hero p {
+    font-size: .88rem;
+    opacity: .85;
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto .8rem;
+  }
+  .hero-badges {
+    display: flex;
+    gap: .5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .badge {
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 99px;
+    padding: .25rem .8rem;
+    font-size: .72rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  /* DISCUSSION PROMPT */
+  .prompt-card {
+    max-width: 680px;
+    margin: 1.5rem auto 0;
+    background: white;
+    border-radius: 16px;
+    padding: 1.2rem 1.4rem;
+    border-left: 4px solid var(--accent2);
+    box-shadow: 0 4px 20px rgba(109,40,217,.12);
+  }
+  .prompt-label {
+    font-size: .68rem;
+    color: var(--accent2);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .prompt-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: .3rem;
+  }
+  .prompt-en {
+    font-size: .82rem;
+    color: var(--text-muted);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  /* WRITE FORM */
+  .write-box {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 12px rgba(109,40,217,.06);
+  }
+  .write-box h2 {
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .input-row {
+    display: flex;
+    gap: .6rem;
+    margin-bottom: .8rem;
+  }
+  .input-field {
+    flex: 1;
+    padding: .65rem .9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    color: var(--text);
+    outline: none;
+    background: var(--bg);
+    transition: border-color .2s;
+  }
+  .input-field:focus { border-color: var(--accent); background: white; }
+  .stance-row {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .8rem;
+    flex-wrap: wrap;
+  }
+  .stance-btn {
+    padding: .4rem 1rem;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    color: var(--text-muted);
+  }
+  .stance-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .stance-btn.selected-pro { background: #6D28D9; color: white; border-color: #6D28D9; }
+  .stance-btn.selected-con { background: #EC4899; color: white; border-color: #EC4899; }
+  .stance-btn.selected-neutral { background: #6B7280; color: white; border-color: #6B7280; }
+  textarea.input-field {
+    width: 100%;
+    resize: vertical;
+    min-height: 90px;
+    margin-bottom: .8rem;
+  }
+  .submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: .65rem 1.5rem;
+    border-radius: 99px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .submit-btn:hover { background: #5B21B6; }
+  .submit-btn:disabled { background: #C4B5FD; cursor: not-allowed; }
+
+  /* STATS */
+  .stats-row {
+    display: flex;
+    gap: .8rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    font-size: .8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  /* FILTER */
+  .filter-row {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: .35rem .9rem;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* COMMENTS */
+  .comments-list { display: flex; flex-direction: column; gap: .8rem; }
+  .comment-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    transition: box-shadow .2s;
+  }
+  .comment-card:hover { box-shadow: 0 4px 16px rgba(109,40,217,.1); }
+  .comment-header {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .6rem;
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .avatar-pro { background: #EDE9FE; color: #6D28D9; }
+  .avatar-con { background: #FCE7F3; color: #EC4899; }
+  .avatar-neutral { background: #F3F4F6; color: #6B7280; }
+  .comment-meta { flex: 1; }
+  .comment-name {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .comment-time {
+    font-size: .7rem;
+    color: var(--text-muted);
+  }
+  .stance-tag {
+    padding: .2rem .65rem;
+    border-radius: 99px;
+    font-size: .68rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .stance-pro { background: #EDE9FE; color: #6D28D9; }
+  .stance-con { background: #FCE7F3; color: #BE185D; }
+  .stance-neutral { background: #F3F4F6; color: #4B5563; }
+  .comment-body {
+    font-size: .88rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .comment-like {
+    margin-top: .7rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .like-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    padding: .25rem .7rem;
+    font-size: .75rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+  }
+  .like-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .like-btn.liked { background: #FCE7F3; border-color: var(--accent2); color: var(--accent2); }
+
+  /* EMPTY / LOADING */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+  }
+  .empty-state .big { font-size: 2.5rem; margin-bottom: .8rem; }
+  .loading { text-align: center; padding: 2rem; color: var(--text-muted); font-size: .9rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1E1333;
+    color: white;
+    padding: .7rem 1.4rem;
+    border-radius: 99px;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: transform .3s ease;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 500px) {
+    .input-row { flex-direction: column; }
+    .hero h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="cheerup-lesson.html" class="back-btn">←</a>
+  <div class="header-info">
+    <div class="header-tag">K-Culture · TWICE · A2</div>
+    <div class="header-title">💬 밀당 토론</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-emoji">💕</div>
+  <h1>밀당, 어떻게 생각해요?</h1>
+  <p>What do you think about "mildang" — playing hard to get in Korean dating culture?</p>
+  <div class="hero-badges">
+    <span class="badge">🎵 Cheer Up — TWICE</span>
+    <span class="badge">A2 Level</span>
+    <span class="badge">자유 토론</span>
+  </div>
+</div>
+
+<div style="max-width:680px;margin:1.2rem auto 0;padding:0 1rem;">
+  <div class="prompt-card">
+    <div class="prompt-label">💡 오늘의 토론 주제</div>
+    <div class="prompt-text">밀당은 연애에서 필요한 것일까요, 아니면 솔직한 게 더 좋을까요?</div>
+    <div class="prompt-en">Is playing hard to get necessary in romance, or is it better to be honest?</div>
+  </div>
+</div>
+
+<main>
+  <!-- WRITE -->
+  <div class="write-box">
+    <h2>✏️ 내 의견 남기기</h2>
+    <div class="input-row">
+      <input class="input-field" id="name-input" placeholder="닉네임 (Nickname)" maxlength="20">
+    </div>
+    <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.5rem;">내 입장은? My stance:</div>
+    <div class="stance-row">
+      <button class="stance-btn" onclick="selectStance('pro', this)">💜 밀당 찬성</button>
+      <button class="stance-btn" onclick="selectStance('con', this)">💗 솔직함이 최고</button>
+      <button class="stance-btn" onclick="selectStance('neutral', this)">🤍 상황마다 달라요</button>
+    </div>
+    <textarea class="input-field" id="comment-input" placeholder="한국어나 영어로 의견을 남겨주세요! Feel free to write in Korean or English 😊" maxlength="500"></textarea>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+      <button class="submit-btn" id="submit-btn" onclick="submitComment()">
+        <span>의견 올리기</span><span>→</span>
+      </button>
+      <span id="char-count" style="font-size:.75rem;color:var(--text-muted);">0 / 500</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-chip">💬 <span id="total-count">0</span> 의견</div>
+    <div class="stat-chip">💜 <span id="pro-count">0</span> 찬성</div>
+    <div class="stat-chip">💗 <span id="con-count">0</span> 솔직함</div>
+    <div class="stat-chip">🤍 <span id="neutral-count">0</span> 상황따라</div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterComments('all', this)">전체</button>
+    <button class="filter-btn" onclick="filterComments('pro', this)">💜 밀당 찬성</button>
+    <button class="filter-btn" onclick="filterComments('con', this)">💗 솔직함이 최고</button>
+    <button class="filter-btn" onclick="filterComments('neutral', this)">🤍 상황마다</button>
+  </div>
+
+  <!-- COMMENTS -->
+  <div id="comments-container">
+    <div class="loading">불러오는 중... ⏳</div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp, doc, updateDoc, increment }
+    from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDVZiBE_RbDeMRCGbKmrStUEBageWQhZOs",
+    authDomain: "hangul-learn.firebaseapp.com",
+    projectId: "hangul-learn",
+    storageBucket: "hangul-learn.firebasestorage.app",
+    messagingSenderId: "552141112439",
+    appId: "1:552141112439:web:30f4fec134a9a8e349b272"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const COLLECTION = 'comments_mildang';
+
+  let allComments = [];
+  let currentFilter = 'all';
+  let selectedStance = '';
+  let likedIds = JSON.parse(localStorage.getItem('liked_mildang') || '[]');
+
+  // STANCE SELECT
+  window.selectStance = function(stance, btn) {
+    selectedStance = stance;
+    document.querySelectorAll('.stance-btn').forEach(b => {
+      b.className = 'stance-btn';
+    });
+    btn.classList.add('selected-' + stance);
+  };
+
+  // CHAR COUNT
+  document.getElementById('comment-input').addEventListener('input', function() {
+    document.getElementById('char-count').textContent = this.value.length + ' / 500';
+  });
+
+  // SUBMIT
+  window.submitComment = async function() {
+    const name = document.getElementById('name-input').value.trim() || '익명';
+    const text = document.getElementById('comment-input').value.trim();
+    if (!text) { showToast('의견을 입력해주세요! ✏️'); return; }
+    if (!selectedStance) { showToast('입장을 선택해주세요! 💬'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span>올리는 중...</span>';
+
+    try {
+      await addDoc(collection(db, COLLECTION), {
+        name, text, stance: selectedStance,
+        likes: 0,
+        createdAt: serverTimestamp()
+      });
+      document.getElementById('comment-input').value = '';
+      document.getElementById('name-input').value = '';
+      document.getElementById('char-count').textContent = '0 / 500';
+      selectedStance = '';
+      document.querySelectorAll('.stance-btn').forEach(b => b.className = 'stance-btn');
+      showToast('의견이 올라갔어요! 🎉');
+      loadComments();
+    } catch(e) {
+      showToast('오류가 났어요. 다시 시도해주세요 😢');
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<span>의견 올리기</span><span>→</span>';
+  };
+
+  // LOAD
+  async function loadComments() {
+    try {
+      const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      allComments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      updateStats();
+      renderComments();
+    } catch(e) {
+      document.getElementById('comments-container').innerHTML =
+        '<div class="empty-state"><div class="big">😢</div><div>댓글을 불러올 수 없어요</div></div>';
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('total-count').textContent = allComments.length;
+    document.getElementById('pro-count').textContent = allComments.filter(c => c.stance === 'pro').length;
+    document.getElementById('con-count').textContent = allComments.filter(c => c.stance === 'con').length;
+    document.getElementById('neutral-count').textContent = allComments.filter(c => c.stance === 'neutral').length;
+  }
+
+  window.filterComments = function(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderComments();
+  };
+
+  function renderComments() {
+    const filtered = currentFilter === 'all' ? allComments : allComments.filter(c => c.stance === currentFilter);
+    const container = document.getElementById('comments-container');
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="big">💬</div><div>아직 의견이 없어요.<br>첫 번째로 남겨보세요!</div></div>';
+      return;
+    }
+    container.innerHTML = '<div class="comments-list">' + filtered.map(c => commentHTML(c)).join('') + '</div>';
+  }
+
+  function commentHTML(c) {
+    const stanceLabel = { pro: '💜 밀당 찬성', con: '💗 솔직함이 최고', neutral: '🤍 상황마다' }[c.stance] || '';
+    const avatarClass = 'avatar avatar-' + (c.stance || 'neutral');
+    const initial = (c.name || '익')[0].toUpperCase();
+    const time = c.createdAt ? timeAgo(c.createdAt.toDate()) : '방금';
+    const liked = likedIds.includes(c.id);
+    return `<div class="comment-card">
+      <div class="comment-header">
+        <div class="${avatarClass}">${initial}</div>
+        <div class="comment-meta">
+          <div class="comment-name">${escHtml(c.name || '익명')}</div>
+          <div class="comment-time">${time}</div>
+        </div>
+        <span class="stance-tag stance-${c.stance || 'neutral'}">${stanceLabel}</span>
+      </div>
+      <div class="comment-body">${escHtml(c.text)}</div>
+      <div class="comment-like">
+        <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${c.id}', this)">
+          ${liked ? '❤️' : '🤍'} <span>${c.likes || 0}</span>
+        </button>
+      </div>
+    </div>`;
+  }
+
+  window.toggleLike = async function(id, btn) {
+    if (likedIds.includes(id)) return;
+    likedIds.push(id);
+    localStorage.setItem('liked_mildang', JSON.stringify(likedIds));
+    btn.classList.add('liked');
+    const countEl = btn.querySelector('span');
+    countEl.textContent = parseInt(countEl.textContent) + 1;
+    btn.innerHTML = '❤️ <span>' + countEl.textContent + '</span>';
+    try {
+      await updateDoc(doc(db, COLLECTION, id), { likes: increment(1) });
+    } catch(e) {}
+  };
+
+  function timeAgo(date) {
+    const diff = Math.floor((Date.now() - date) / 1000);
+    if (diff < 60) return '방금';
+    if (diff < 3600) return Math.floor(diff/60) + '분 전';
+    if (diff < 86400) return Math.floor(diff/3600) + '시간 전';
+    return Math.floor(diff/86400) + '일 전';
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  loadComments();
+</script>
+</body>
+</html>

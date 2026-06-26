@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>봄봄봄 Lesson 2 | A1-A2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto Sans KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --card:#ffffff;--accent:#e91e8c;--accent2:#c2185b;--pink:#f48fb1;
+  --mint:#34d399;--mint2:#10b981;--lavender:#a78bfa;
+  --text:#1e293b;--dim:#64748b;--light:#94a3b8;--border:#cbd5e1;
+  --shadow:0 4px 20px rgba(233,30,140,.08);
+}
+body{background:linear-gradient(135deg,#fce4ec 0%,#fdf2f8 30%,#fdf6ff 60%,#fff0f6 100%);font-family:'Noto Sans KR','Outfit',sans-serif;color:var(--text);overflow:hidden;height:100vh;display:flex;align-items:center;justify-content:center;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 20% 80%,rgba(244,143,177,.1),transparent 50%),radial-gradient(circle at 80% 20%,rgba(206,147,216,.06),transparent 50%);pointer-events:none;z-index:0;}
+.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(233,30,140,.08),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(28px,4.5vw,56px);background:linear-gradient(160deg,rgba(255,240,246,.4),rgba(255,255,255,.9) 40%,rgba(253,246,255,.4) 100%);opacity:0;transition:opacity .35s;visibility:hidden}
+.slide.active{display:flex;opacity:1;visibility:visible}
+.progress-bar{position:absolute;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--pink),var(--lavender));transition:width .5s;z-index:50;border-radius:0 3px 3px 0}
+.slide-num{position:absolute;top:16px;right:24px;font-family:'Outfit';font-size:12px;color:var(--light);letter-spacing:1.5px;font-weight:500}
+h1{font-family:'Outfit';font-size:clamp(26px,3.8vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-bottom:clamp(12px,2vw,24px);display:flex;align-items:center;gap:10px}
+.subtitle{font-size:clamp(13px,1.4vw,18px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,16px);overflow-y:auto;padding-bottom:36px}
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px clamp(18px,3vw,36px);background:linear-gradient(transparent,rgba(255,255,255,.95) 40%);z-index:10}
+.nav-btn{padding:8px 24px;border-radius:30px;border:2px solid #e2e8f0;background:white;color:var(--text);cursor:pointer;font-size:13px;transition:all .25s;font-family:'Outfit';font-weight:600;letter-spacing:.3px}
+.nav-btn:hover{border-color:var(--accent);background:rgba(233,30,140,.04)}
+.nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(233,30,140,.2)}
+.nav-btn.primary:hover{transform:scale(1.03)}
+.nav-btn.invisible{visibility:hidden}
+.nav-dots{display:flex;gap:7px}
+.nav-dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s}
+.nav-dot.active{background:var(--accent);width:26px;border-radius:5px}
+/* lesson links */
+.lesson-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.lesson-link{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:30px;font-size:clamp(12px,1.2vw,15px);font-weight:600;text-decoration:none;border:2px solid;cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s;white-space:nowrap}
+.ll-sub{font-size:.78em;opacity:.65;font-weight:400}
+.ll1{border-color:var(--accent);color:var(--accent);background:rgba(233,30,140,.05)}.ll1:hover{background:rgba(233,30,140,.12);transform:translateY(-1px)}
+.ll2{border-color:#8b5cf6;color:#7c3aed;background:rgba(139,92,246,.05)}.ll2:hover{background:rgba(139,92,246,.12);transform:translateY(-1px)}
+.ll3{border-color:#10b981;color:#059669;background:rgba(16,185,129,.05)}.ll3:hover{background:rgba(16,185,129,.12);transform:translateY(-1px)}
+/* lyrics */
+.lyrics-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,28px);height:100%}
+.yt-side{display:flex;flex-direction:column;gap:12px}
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #fce4ec;box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;display:block;text-decoration:none}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.yt-thumb-card:hover img{transform:scale(1.04)}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.32)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:12px;font-weight:600}
+.lyric-side{display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,16px)}
+.lyric-block{background:#f8fafc;border-radius:16px;padding:clamp(12px,1.8vw,24px);cursor:pointer;border:1.5px solid #e2e8f0;transition:all .2s}
+.lyric-block:hover{border-color:var(--accent);transform:scale(1.01)}
+.lyric-block .kr{font-size:clamp(15px,1.9vw,26px);font-weight:700;color:#880e4f;line-height:1.7}
+.lyric-block .kr .highlight{color:var(--accent);background:rgba(233,30,140,.08);border-radius:6px;padding:0 4px}
+.lyric-block .en{font-size:clamp(11px,1vw,14px);color:var(--dim);margin-top:6px;line-height:1.5}
+/* vocab */
+.vocab-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(8px,1.2vw,16px)}
+.vocab-card{background:white;border:1.5px solid #e2e8f0;border-radius:16px;padding:clamp(10px,1.5vw,20px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.vocab-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 24px rgba(233,30,140,.1)}
+.vocab-card.played{border-color:var(--mint2);background:#f0fdf4}
+.vocab-emoji{font-size:clamp(28px,3.5vw,44px);margin-bottom:8px}
+.vocab-kr{font-size:clamp(16px,2vw,26px);font-weight:700;color:var(--text);margin-bottom:4px}
+.vocab-rom{font-size:clamp(10px,1vw,13px);color:#e91e8c;margin-bottom:2px}
+.vocab-en{font-size:clamp(10px,1vw,13px);color:var(--dim)}
+/* pattern */
+.pattern-box{background:linear-gradient(135deg,rgba(233,30,140,.06),rgba(167,139,250,.06));border:2px solid rgba(233,30,140,.2);border-radius:20px;padding:clamp(16px,2.5vw,32px);text-align:center;margin-bottom:clamp(10px,1.5vw,20px)}
+.pattern-formula{font-size:clamp(18px,2.5vw,36px);font-weight:800;color:var(--accent2);margin-bottom:8px}
+.pattern-formula .slot{color:var(--lavender)}
+.pattern-eng{font-size:clamp(12px,1.2vw,16px);color:var(--dim);margin-top:4px}
+.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.2vw,16px)}
+.example-card{background:white;border:1.5px solid #e2e8f0;border-radius:14px;padding:clamp(10px,1.5vw,18px);cursor:pointer;transition:all .2s}
+.example-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.example-card .kr{font-size:clamp(14px,1.6vw,22px);font-weight:700;color:var(--text)}
+.example-card .kr .key{color:var(--accent)}
+.example-card .en{font-size:clamp(11px,1vw,14px);color:var(--dim);margin-top:4px}
+/* pick chips */
+.pick-section{margin-bottom:clamp(6px,1vw,12px)}
+.pick-label{font-size:clamp(12px,1.1vw,15px);color:var(--dim);margin-bottom:8px;font-weight:600}
+.pick-row{display:flex;gap:8px;flex-wrap:wrap}
+.pick-chip{background:white;border:1.5px solid #e2e8f0;border-radius:99px;padding:clamp(6px,0.8vw,10px) clamp(12px,1.5vw,20px);font-size:clamp(12px,1.3vw,17px);font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Noto Sans KR',sans-serif}
+.pick-chip:hover{border-color:var(--accent);background:rgba(233,30,140,.04)}
+.pick-chip.selected{border-color:var(--accent);background:rgba(233,30,140,.08);color:var(--accent)}
+.my-sentence{background:#f8fafc;border-radius:14px;padding:clamp(12px,1.8vw,24px);text-align:center;border:1.5px solid #e2e8f0;margin-top:4px}
+.my-sentence-text{font-size:clamp(18px,2.5vw,34px);font-weight:700;color:var(--accent2);min-height:44px}
+.my-sentence-en{font-size:clamp(11px,1.1vw,15px);color:var(--dim);margin-top:6px;min-height:20px}
+.say-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 28px;border-radius:30px;background:var(--accent);color:white;border:none;font-size:clamp(13px,1.3vw,16px);font-weight:700;cursor:pointer;font-family:'Noto Sans KR';margin-top:10px;transition:all .2s}
+.say-btn:hover{background:var(--accent2);transform:scale(1.03)}
+.say-count{font-size:clamp(11px,1vw,13px);color:var(--dim);margin-top:6px}
+.reset-btn{background:none;border:1.5px solid #e2e8f0;border-radius:99px;padding:6px 16px;font-size:clamp(11px,1vw,13px);color:var(--dim);cursor:pointer;font-family:'Noto Sans KR';transition:all .2s;margin-top:8px}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* matching quiz */
+.match-area{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;flex:1;align-items:center;position:relative}
+.match-col{display:flex;flex-direction:column;gap:clamp(8px,1.2vw,16px)}
+.match-card{background:white;border:2px solid #e2e8f0;border-radius:14px;padding:clamp(10px,1.4vw,18px) clamp(12px,1.6vw,20px);cursor:pointer;transition:all .25s;font-size:clamp(13px,1.5vw,20px);font-weight:700;color:var(--text);text-align:center;user-select:none}
+.match-card:hover{border-color:var(--accent);background:rgba(233,30,140,.04);transform:scale(1.02)}
+.match-card.selected{border-color:var(--accent);background:rgba(233,30,140,.08);color:var(--accent)}
+.match-card.correct{border-color:var(--mint2);background:#f0fdf4;color:var(--mint2);pointer-events:none}
+.match-card.wrong{border-color:#f43f5e;background:#fff1f2;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.match-svg-col{position:relative;overflow:visible}
+.match-result{text-align:center;font-size:clamp(14px,1.6vw,22px);font-weight:700;min-height:36px;margin-top:8px}
+.complete-box{text-align:center;padding:clamp(20px,3vw,40px)}
+.complete-emoji{font-size:clamp(48px,7vw,80px);margin-bottom:16px}
+.complete-title{font-size:clamp(24px,3.5vw,48px);font-weight:800;color:var(--accent2);margin-bottom:8px}
+.complete-sub{font-size:clamp(14px,1.5vw,20px);color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide active" id="s1">
+    <div class="slide-num">1 / 6</div>
+    <div class="content" style="justify-content:center">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(233,30,140,.08);border-radius:99px;padding:6px 16px;width:fit-content;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">LESSON 2 · A1-A2</span>
+      </div>
+      <h1>봄 봄 봄 🌸</h1>
+      <p class="subtitle">Roy Kim (로이킴) · 오늘의 하이라이트 가사</p>
+      <div style="background:#f8fafc;border-radius:16px;padding:clamp(14px,2vw,24px);margin-top:16px;border:1.5px solid #e2e8f0">
+        <p style="font-size:clamp(11px,1vw,13px);color:var(--dim);margin-bottom:10px">오늘의 가사 Today's highlight:</p>
+        <p style="font-size:clamp(15px,1.9vw,26px);font-weight:700;color:#880e4f;line-height:1.8">그대여 너를 <span style="color:var(--accent)">처음 본 순간</span> 나는 바로 알았지<br>그대여 나와 함께 해주오 <span style="color:var(--accent)">이 봄이 가기 전에</span></p>
+      </div>
+      <div class="lesson-links">
+        <button class="lesson-link ll2" onclick="goSlide(2)">🎵 노래 듣기<span class="ll-sub"> / Song</span></button>
+        <button class="lesson-link ll1" onclick="goSlide(3)">🌸 새 단어 &amp; 패턴 드릴<span class="ll-sub"> / Vocab &amp; Patterns</span></button>
+        <button class="lesson-link ll3" onclick="goSlide(5)">✏️ 말하기<span class="ll-sub"> / Speaking</span></button>
+        <button class="lesson-link" onclick="goSlide(6)" style="border-color:#f59e0b;color:#d97706;background:rgba(245,158,11,.05)">🎯 매칭 퀴즈<span class="ll-sub"> / Quiz</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Song + Lyrics -->
+  <div class="slide" id="s2">
+    <div class="slide-num">2 / 6</div>
+    <h2>🎵 노래 Song</h2>
+    <div class="content">
+      <div class="lyrics-layout">
+        <div class="yt-side">
+          <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=k3-BDy55tq4" target="_blank">
+            <img src="https://img.youtube.com/vi/k3-BDy55tq4/hqdefault.jpg" alt="봄봄봄 Roy Kim">
+            <div class="yt-play-overlay">
+              <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+              <div class="yt-play-label">YouTube에서 보기</div>
+            </div>
+          </a>
+          <p style="font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center">💡 후렴구를 잘 들어봐요! Listen for the chorus!</p>
+        </div>
+        <div class="lyric-side">
+          <p style="font-size:clamp(12px,1.2vw,15px);color:var(--dim)">후렴구 Chorus — 클릭하면 들을 수 있어요! 👆</p>
+          <div class="lyric-block" onclick="speakKr('그대여 너를 처음 본 순간 나는 바로 알았지')">
+            <div class="kr">그대여 너를 <span class="highlight">처음 본 순간</span> 나는 바로 알았지</div>
+            <div class="en">Darling, the moment I first saw you, I knew right away</div>
+          </div>
+          <div class="lyric-block" onclick="speakKr('그대여 나와 함께 해주오 이 봄이 가기 전에')">
+            <div class="kr">그대여 나와 함께 해주오 <span class="highlight">이 봄이 가기 전에</span></div>
+            <div class="en">Darling, please be with me before this spring is over</div>
+          </div>
+          <p style="font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center">🌸 이 노래는 한국 봄마다 어디서나 들려요!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Vocab -->
+  <div class="slide" id="s3">
+    <div class="slide-num">3 / 6</div>
+    <h2>📚 단어 Words</h2>
+    <div class="content">
+      <div class="vocab-grid">
+        <div class="vocab-card" onclick="speakVocab(this,'그대')">
+          <div class="vocab-emoji">💌</div>
+          <div class="vocab-kr">그대</div>
+          <div class="vocab-rom">geu-dae</div>
+          <div class="vocab-en">you (romantic)</div>
+        </div>
+        <div class="vocab-card" onclick="speakVocab(this,'순간')">
+          <div class="vocab-emoji">⚡</div>
+          <div class="vocab-kr">순간</div>
+          <div class="vocab-rom">sun-gan</div>
+          <div class="vocab-en">moment</div>
+        </div>
+        <div class="vocab-card" onclick="speakVocab(this,'바로')">
+          <div class="vocab-emoji">🎯</div>
+          <div class="vocab-kr">바로</div>
+          <div class="vocab-rom">ba-ro</div>
+          <div class="vocab-en">right away</div>
+        </div>
+        <div class="vocab-card" onclick="speakVocab(this,'함께')">
+          <div class="vocab-emoji">🤝</div>
+          <div class="vocab-kr">함께</div>
+          <div class="vocab-rom">ham-kke</div>
+          <div class="vocab-en">together</div>
+        </div>
+        <div class="vocab-card" onclick="speakVocab(this,'해주오')">
+          <div class="vocab-emoji">🙏</div>
+          <div class="vocab-kr">해주오</div>
+          <div class="vocab-rom">hae-ju-o</div>
+          <div class="vocab-en">please do (for me)</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:clamp(12px,1.1vw,14px);color:var(--dim);margin-top:8px">👆 카드를 클릭해서 들어보세요! Click each card to hear it!</p>
+      <div style="background:#f8fafc;border-radius:14px;padding:clamp(10px,1.5vw,18px);border:1.5px solid #e2e8f0;text-align:center">
+        <p style="font-size:clamp(11px,1.1vw,14px);color:var(--dim)">💡 <strong style="color:var(--accent2)">해주오</strong> = 노래/시에서 쓰는 표현이에요. "Please do this for me" — poetic &amp; romantic! 🌸</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Pattern -->
+  <div class="slide" id="s4">
+    <div class="slide-num">4 / 6</div>
+    <h2>💡 패턴 Pattern</h2>
+    <div class="content">
+      <div class="pattern-box">
+        <div class="pattern-formula"><span class="slot">[verb stem]</span>기 전에</div>
+        <div class="pattern-eng">"before ~ing" / "before [something happens]"</div>
+        <div style="margin-top:14px;font-size:clamp(14px,1.6vw,22px);font-weight:700;color:#880e4f">이 봄이 <span style="color:var(--accent)">가기 전에</span></div>
+        <div style="font-size:clamp(11px,1.1vw,14px);color:var(--dim);margin-top:4px">before this spring is over</div>
+      </div>
+      <div class="example-grid">
+        <div class="example-card" onclick="speakKr('자기 전에 물 마셔요')">
+          <div class="kr"><span class="key">자기 전에</span> 물 마셔요</div>
+          <div class="en">I drink water before sleeping</div>
+        </div>
+        <div class="example-card" onclick="speakKr('먹기 전에 손을 씻어요')">
+          <div class="kr"><span class="key">먹기 전에</span> 손을 씻어요</div>
+          <div class="en">I wash my hands before eating</div>
+        </div>
+        <div class="example-card" onclick="speakKr('가기 전에 전화해요')">
+          <div class="kr"><span class="key">가기 전에</span> 전화해요</div>
+          <div class="en">I call before I go</div>
+        </div>
+        <div class="example-card" onclick="speakKr('시작하기 전에 준비해요')">
+          <div class="kr"><span class="key">시작하기 전에</span> 준비해요</div>
+          <div class="en">I get ready before starting</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:clamp(11px,1vw,13px);color:var(--dim)">👆 클릭해서 들어보세요!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Make your own -->
+  <div class="slide" id="s5">
+    <div class="slide-num">5 / 6</div>
+    <h2>✏️ 내 문장 만들기 Make your own!</h2>
+    <div class="content">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.5vw,20px)">
+        <div>
+          <div class="pick-section">
+            <div class="pick-label">① 동사 선택 Pick a verb:</div>
+            <div class="pick-row" id="verbRow">
+              <div class="pick-chip" onclick="pickVerb(this,'자다','sleeping','자')">자다 😴</div>
+              <div class="pick-chip" onclick="pickVerb(this,'먹다','eating','먹')">먹다 🍚</div>
+              <div class="pick-chip" onclick="pickVerb(this,'가다','going','가')">가다 🚶</div>
+              <div class="pick-chip" onclick="pickVerb(this,'오다','coming','오')">오다 🏃</div>
+              <div class="pick-chip" onclick="pickVerb(this,'씻다','washing','씻')">씻다 🫧</div>
+              <div class="pick-chip" onclick="pickVerb(this,'공부하다','studying','공부하')">공부하다 📖</div>
+            </div>
+          </div>
+          <div class="pick-section" style="margin-top:clamp(8px,1.2vw,16px)">
+            <div class="pick-label">② 뭐 해요? Pick what you do:</div>
+            <div class="pick-row" id="actionRow">
+              <div class="pick-chip" onclick="pickAction(this,'물 마셔요','I drink water')">물 마셔요 💧</div>
+              <div class="pick-chip" onclick="pickAction(this,'이를 닦아요','I brush my teeth')">이를 닦아요 🦷</div>
+              <div class="pick-chip" onclick="pickAction(this,'전화해요','I call')">전화해요 📱</div>
+              <div class="pick-chip" onclick="pickAction(this,'준비해요','I get ready')">준비해요 ✅</div>
+              <div class="pick-chip" onclick="pickAction(this,'음악 들어요','I listen to music')">음악 들어요 🎵</div>
+            </div>
+          </div>
+          <button class="reset-btn" onclick="resetPick()">🔄 다시 시작</button>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:center">
+          <div class="my-sentence">
+            <div class="my-sentence-text" id="mySentence">동사를 골라봐요~ 👆</div>
+            <div class="my-sentence-en" id="mySentenceEn"></div>
+            <button class="say-btn" id="sayBtn" onclick="saySentence()" style="display:none">🔊 말해봐요!</button>
+            <div class="say-count" id="sayCount"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Matching Quiz -->
+  <div class="slide" id="s6">
+    <div class="slide-num">6 / 6</div>
+    <h2>🎯 매칭 퀴즈 Matching Quiz!</h2>
+    <div class="content" style="padding-bottom:48px">
+      <p style="font-size:clamp(12px,1.1vw,14px);color:var(--dim);text-align:center;margin-bottom:4px">왼쪽과 오른쪽을 연결해봐요! Match the pairs!</p>
+      <div style="position:relative;flex:1;display:flex;align-items:stretch;gap:0">
+        <!-- Left col -->
+        <div class="match-col" id="leftCol" style="flex:1;justify-content:space-around;padding:4px 0"></div>
+        <!-- SVG lines -->
+        <svg id="matchSvg" style="width:80px;flex-shrink:0;overflow:visible;position:relative;z-index:5" xmlns="http://www.w3.org/2000/svg"></svg>
+        <!-- Right col -->
+        <div class="match-col" id="rightCol" style="flex:1;justify-content:space-around;padding:4px 0"></div>
+      </div>
+      <div class="match-result" id="matchResult"></div>
+    </div>
+    <div style="text-align:center;padding:4px 0;position:relative;z-index:20">
+      <button onclick="skipQuiz()" id="skipBtn" style="background:none;border:none;font-size:clamp(11px,1vw,13px);color:#94a3b8;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif">퀴즈 건너뛰기 Skip quiz →</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 이전</button>
+    <div class="nav-dots" id="dotsBar"></div>
+    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">다음 →</button>
+  </div>
+</div>
+
+<script>
+function skipQuiz(){
+  document.getElementById('skipBtn').style.display='none';
+  window.location.href='bom_lesson1_v2.html';
+}
+
+let cur=1;const total=6;
+
+function initDots(){
+  const bar=document.getElementById('dotsBar');
+  bar.innerHTML='';
+  for(let i=1;i<=total;i++){
+    const d=document.createElement('div');
+    d.className='nav-dot'+(i===1?' active':'');
+    d.onclick=()=>goSlide(i);
+    bar.appendChild(d);
+  }
+}
+function updateDots(){
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i+1===cur));
+  document.getElementById('prevBtn').className='nav-btn'+(cur===1?' invisible':'');
+  document.getElementById('nextBtn').className='nav-btn'+(cur<total?' primary':' invisible');
+}
+initDots();updateDots();
+document.getElementById('progressBar').style.width=(1/total*100)+'%';
+
+function speakKr(text){
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='ko-KR';u.rate=0.85;
+  speechSynthesis.cancel();speechSynthesis.speak(u);
+}
+function speakVocab(el,word){
+  speakKr(word);
+  document.querySelectorAll('.vocab-card').forEach(c=>c.classList.remove('played'));
+  el.classList.add('played');
+}
+function goSlide(n){
+  document.getElementById('s'+cur).classList.remove('active');
+  document.getElementById('s'+cur).style.display='none';
+  cur=n;
+  const s=document.getElementById('s'+cur);
+  s.style.display='flex';s.classList.add('active');
+  document.getElementById('progressBar').style.width=(cur/total*100)+'%';
+  updateDots();
+  if(cur===6)setTimeout(initMatch,100);
+}
+function changeSlide(dir){
+  document.getElementById('s'+cur).classList.remove('active');
+  document.getElementById('s'+cur).style.display='none';
+  cur=Math.max(1,Math.min(total,cur+dir));
+  const s=document.getElementById('s'+cur);
+  s.style.display='flex';s.classList.add('active');
+  document.getElementById('progressBar').style.width=(cur/total*100)+'%';
+  updateDots();
+  if(cur===6)setTimeout(initMatch,100);
+}
+
+// ── Slide 5: Make your own ──
+let selectedVerb='',selectedVerbEn='',selectedStem='';
+let selectedAction='',selectedActionEn='';
+let sayCounter=0;
+
+function pickVerb(el,verb,verbEn,stem){
+  document.querySelectorAll('#verbRow .pick-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedVerb=verb;selectedVerbEn=verbEn;selectedStem=stem;
+  sayCounter=0;updateSentence();
+}
+function pickAction(el,action,actionEn){
+  document.querySelectorAll('#actionRow .pick-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedAction=action;selectedActionEn=actionEn;
+  sayCounter=0;updateSentence();
+}
+function updateSentence(){
+  if(!selectedStem)return;
+  const sentence=selectedStem+'기 전에'+(selectedAction?' '+selectedAction:'');
+  const enPart=selectedAction?selectedActionEn+' before '+selectedVerbEn:'before '+selectedVerbEn;
+  document.getElementById('mySentence').textContent=sentence;
+  document.getElementById('mySentenceEn').textContent=enPart;
+  document.getElementById('sayBtn').style.display='inline-flex';
+  document.getElementById('sayCount').textContent='';
+  speakKr(sentence);
+}
+function saySentence(){
+  if(!selectedStem)return;
+  const sentence=selectedStem+'기 전에'+(selectedAction?' '+selectedAction:'');
+  speakKr(sentence);
+  sayCounter++;
+  const msgs=['','한 번! 👏','두 번! 👏👏','세 번! 🎉 완벽해요!','대단해요! ✨','천재예요! 🌟'];
+  document.getElementById('sayCount').textContent=msgs[Math.min(sayCounter,msgs.length-1)];
+}
+function resetPick(){
+  selectedVerb='';selectedVerbEn='';selectedStem='';
+  selectedAction='';selectedActionEn='';sayCounter=0;
+  document.querySelectorAll('.pick-chip').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('mySentence').textContent='동사를 골라봐요~ 👆';
+  document.getElementById('mySentenceEn').textContent='';
+  document.getElementById('sayBtn').style.display='none';
+  document.getElementById('sayCount').textContent='';
+}
+
+// ── Slide 6: Matching Quiz ──
+const pairs=[
+  {left:'🌙 자기 전에',  right:'💧 물 마셔요',      sentence:'자기 전에 물 마셔요',      id:0},
+  {left:'🍽️ 먹기 전에',  right:'🫧 손을 씻어요',    sentence:'먹기 전에 손을 씻어요',    id:1},
+  {left:'🚶 가기 전에',  right:'📱 전화해요',        sentence:'가기 전에 전화해요',        id:2},
+  {left:'🌸 봄이 가기 전에', right:'💌 함께 해요',  sentence:'봄이 가기 전에 함께 해요', id:3},
+];
+
+let selectedLeft=null;
+let matched=new Set();
+let drawnLines=[];
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
+
+function initMatch(){
+  selectedLeft=null;matched=new Set();drawnLines=[];
+  const leftCol=document.getElementById('leftCol');
+  const rightCol=document.getElementById('rightCol');
+  const svg=document.getElementById('matchSvg');
+  const result=document.getElementById('matchResult');
+  leftCol.innerHTML='';rightCol.innerHTML='';
+  svg.innerHTML='';result.textContent='';
+
+  const leftOrder=shuffle(pairs);
+  const rightOrder=shuffle(pairs);
+
+  leftOrder.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='match-card';
+    card.textContent=p.left;
+    card.dataset.id=p.id;
+    card.onclick=()=>selectLeft(card);
+    leftCol.appendChild(card);
+  });
+  rightOrder.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='match-card';
+    card.textContent=p.right;
+    card.dataset.id=p.id;
+    card.onclick=()=>selectRight(card);
+    rightCol.appendChild(card);
+  });
+}
+
+function selectLeft(card){
+  if(card.classList.contains('correct'))return;
+  document.querySelectorAll('#leftCol .match-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedLeft=card;
+}
+
+function selectRight(card){
+  if(!selectedLeft)return;
+  if(card.classList.contains('correct'))return;
+
+  const leftId=parseInt(selectedLeft.dataset.id);
+  const rightId=parseInt(card.dataset.id);
+
+  if(leftId===rightId){
+    // Correct!
+    selectedLeft.classList.remove('selected');
+    selectedLeft.classList.add('correct');
+    card.classList.add('correct');
+    matched.add(leftId);
+    drawLine(selectedLeft,card,true);
+    const sentence=pairs.find(p=>p.id===leftId).sentence;
+    speakKr(sentence);
+    document.getElementById('matchResult').innerHTML='<span style="color:var(--mint2)">🎉 맞아요! '+sentence+'</span>';
+    selectedLeft=null;
+    if(matched.size===pairs.length){
+      setTimeout(()=>{
+        document.getElementById('matchResult').innerHTML='<span style="color:var(--accent2)">🌸 완벽해요! 모두 맞았어요! <button class="reset-btn" onclick="initMatch()" style="margin-left:12px">🔄 다시 하기</button></span>';
+        playFanfare();
+      },1200);
+    }
+  } else {
+    // Wrong
+    card.classList.add('wrong');
+    document.getElementById('matchResult').innerHTML='<span style="color:#f43f5e">❌ 다시 찾아봐요!</span>';
+    setTimeout(()=>card.classList.remove('wrong'),500);
+  }
+}
+
+function drawLine(leftCard,rightCard,correct){
+  const svg=document.getElementById('matchSvg');
+  const svgRect=svg.getBoundingClientRect();
+  const lRect=leftCard.getBoundingClientRect();
+  const rRect=rightCard.getBoundingClientRect();
+  const x1=0;
+  const y1=lRect.top+lRect.height/2-svgRect.top;
+  const x2=svgRect.width;
+  const y2=rRect.top+rRect.height/2-svgRect.top;
+  const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+  const cx=(x1+x2)/2;
+  line.setAttribute('d',`M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}`);
+  line.setAttribute('stroke',correct?'#10b981':'#f43f5e');
+  line.setAttribute('stroke-width','3');
+  line.setAttribute('fill','none');
+  line.setAttribute('stroke-linecap','round');
+  line.setAttribute('opacity','0.7');
+  svg.appendChild(line);
+}
+
+function playFanfare(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[523,.1],[659,.2],[784,.3],[1047,.5]].forEach(([f,t])=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=f;g.gain.setValueAtTime(.3,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.3);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.4);
+    });
+  }catch(e){}
+}
+</script>
+</body>
+</html>

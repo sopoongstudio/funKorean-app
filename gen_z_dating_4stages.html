@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>젠지 연애 4단계 | Korean Dating Culture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 300;
+        }
+
+        /* Timeline Progress */
+        .timeline-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            gap: 20px;
+        }
+
+        .stage {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .stage-dot {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stage:nth-child(1) .stage-dot {
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+        }
+
+        .stage:nth-child(2) .stage-dot {
+            background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+        }
+
+        .stage:nth-child(3) .stage-dot {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+
+        .stage:nth-child(4) .stage-dot {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .stage-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stage-kr {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .stage-connector {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: #cbd5e1;
+            transform: translateY(0);
+        }
+
+        .stage:last-child .stage-connector {
+            display: none;
+        }
+
+        /* Stage sections */
+        .stages-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stage-section {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            animation: fadeIn 0.8s ease-out both;
+        }
+
+        .stage-section:nth-child(1) { animation-delay: 0.2s; }
+        .stage-section:nth-child(2) { animation-delay: 0.3s; }
+        .stage-section:nth-child(3) { animation-delay: 0.4s; }
+        .stage-section:nth-child(4) { animation-delay: 0.5s; }
+
+        .stage-header {
+            padding: 25px;
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stage-section:nth-child(1) .stage-header {
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+        }
+
+        .stage-section:nth-child(2) .stage-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+        }
+
+        .stage-section:nth-child(3) .stage-header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+
+        .stage-section:nth-child(4) .stage-header {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .stage-content {
+            padding: 30px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .video-box {
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .info-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .emotion-section {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .stage-section:nth-child(1) .emotion-section {
+            border-left-color: #ec4899;
+        }
+
+        .stage-section:nth-child(2) .emotion-section {
+            border-left-color: #f59e0b;
+        }
+
+        .stage-section:nth-child(3) .emotion-section {
+            border-left-color: #8b5cf6;
+        }
+
+        .stage-section:nth-child(4) .emotion-section {
+            border-left-color: #10b981;
+        }
+
+        .emotion-title {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .emotion-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .emotion-tag {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .stage-section:nth-child(1) .emotion-tag {
+            color: #ec4899;
+            border: 1px solid #ec4899;
+        }
+
+        .stage-section:nth-child(2) .emotion-tag {
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+
+        .stage-section:nth-child(3) .emotion-tag {
+            color: #8b5cf6;
+            border: 1px solid #8b5cf6;
+        }
+
+        .stage-section:nth-child(4) .emotion-tag {
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .vocab-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .vocab-title {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        .vocab-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .vocab-item:last-child {
+            border-bottom: none;
+        }
+
+        .vocab-korean {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .vocab-english {
+            color: #64748b;
+            font-size: .85em;
+            font-style: italic;
+            margin-left: .3rem;
+        }
+
+        .description-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.8;
+            color: #334155;
+            font-size: 16px;
+        }
+
+        .description-box strong {
+            color: #1e293b;
+        }
+
+        /* Key behaviors */
+        .behaviors-section {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .behaviors-title {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+            margin-bottom: 12px;
+        }
+
+        .behavior-item {
+            padding: 8px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .behavior-item strong {
+            color: #1e293b;
+        }
+
+        /* Important note for stage 3 */
+        .important-note {
+            background: #fef2f2;
+            border: 2px solid #fee2e2;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #7f1d1d;
+        }
+
+        .important-note h4 {
+            color: #dc2626;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .important-note p {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .important-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-box {
+            background: white;
+            border: 2px solid #fee2e2;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            min-width: 20px;
+            width: 20px;
+            height: 20px;
+            background: #dc2626;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .timeline-text {
+            color: #7f1d1d;
+            line-height: 1.6;
+        }
+
+        .timeline-text strong {
+            color: #991b1b;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-progress {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+
+            .stage {
+                flex: 1 1 calc(50% - 10px);
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .stage-section {
+                margin-bottom: 20px;
+            }
+
+            .stage-content {
+                padding: 20px;
+            }
+
+            .timeline-progress {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .stage {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stage-specific styles for video sections */
+        .stage-1-type {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #be185d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>젠지의 연애 4단계 🎬</h1>
+            <p class="subtitle">Korean Gen Z Dating Journey: From Flirting to Lasting Love</p>
+        </header>
+        <div style="text-align:center;margin-bottom:2rem;">
+          <a href="mildang-discussion.html" target="_blank" rel="noopener" style="display:inline-block;background:#E879A0;color:#fff;text-decoration:none;padding:.9rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;box-shadow:0 4px 16px rgba(232,121,160,.4);">💬 토론에 참여하기 — Share Your Story</a>
+        </div>
+
+        <!-- Timeline Progress -->
+        <div class="timeline-progress">
+            <div class="stage">
+                <div class="stage-dot">1️⃣</div>
+                <div class="stage-name">플러팅</div>
+                <div class="stage-kr">Flirting</div>
+            </div>
+            <div class="stage">
+                <div class="stage-dot">2️⃣</div>
+                <div class="stage-name">썸</div>
+                <div class="stage-kr">Some</div>
+            </div>
+            <div class="stage">
+                <div class="stage-dot">3️⃣</div>
+                <div class="stage-name">밀당</div>
+                <div class="stage-kr">Mildang (Push & Pull)</div>
+            </div>
+            <div class="stage">
+                <div class="stage-dot">4️⃣</div>
+                <div class="stage-name">신뢰</div>
+                <div class="stage-kr">Trust</div>
+            </div>
+        </div>
+
+        <!-- Stage Sections -->
+        <div class="stages-container">
+            <!-- STAGE 1: FLIRTING -->
+            <div class="stage-section">
+                <div class="stage-header">1️⃣ 플러팅 (Flirting)</div>
+                <div class="stage-content">
+                    <div class="description-box">
+                        <strong>플러팅 = 관심을 표현하는 방식 <em>(showing you're interested)</em></strong><br>
+                        상대방에게 "너 좋아해" 신호를 보내기 <em>(dropping hints you're interested)</em><br>
+                        (아직 연애 단계가 아님) <em>(not dating yet)</em>
+                    </div>
+
+                    <div class="content-grid">
+                        <!-- Type 1: Friends to Romantic -->
+                        <div class="info-box">
+                            <div class="stage-1-type">
+                                Type 1: 친구 관계 → 로맨틱
+                            </div>
+                            <div class="video-box" style="cursor:pointer;" onclick="window.open('https://www.youtube.com/watch?v=307xcG82UT8','_blank')">
+                                <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;">
+                                  <img src="https://img.youtube.com/vi/307xcG82UT8/hqdefault.jpg" alt="YouTube" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;opacity:.92;">
+                                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                    <span style="color:white;font-size:1.3rem;margin-left:4px;">&#9654;</span>
+                                  </div>
+                                  <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:.5rem .7rem;">
+                                    <span style="color:white;font-size:.75rem;font-weight:600;">YouTube에서 보기</span>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="description-box">
+                                <strong>쌈마이웨이 <em>(Ssam-ma-i-way)</em></strong><br>
+                                오래 알던 친구→장난식 플러팅 <em>(flirting with a friend you've known forever)</em><br>
+                                "여사친 쓰다듬어줘" 같은 애교 <em>(cute teasing like "pat my head")</em>
+                            </div>
+                        </div>
+
+                        <!-- Type 2: First Meeting -->
+                        <div class="info-box">
+                            <div class="stage-1-type">
+                                Type 2: 처음 만남 → 직진
+                            </div>
+                            <div class="video-box" style="cursor:pointer;" onclick="window.open('https://www.youtube.com/watch?v=V42szaiFBl8','_blank')">
+                                <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;">
+                                  <img src="https://img.youtube.com/vi/V42szaiFBl8/hqdefault.jpg" alt="YouTube" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;opacity:.92;">
+                                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                    <span style="color:white;font-size:1.3rem;margin-left:4px;">&#9654;</span>
+                                  </div>
+                                  <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:.5rem .7rem;">
+                                    <span style="color:white;font-size:.75rem;font-weight:600;">YouTube에서 보기</span>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="description-box">
+                                <strong>솔로지옥 <em>(Single's Inferno)</em></strong><br>
+                                처음 만난 사이→담백한 플러팅 <em>(going straight in with someone you just met)</em><br>
+                                "오빠 잘생겼잖아" 직진 칭찬 <em>(straight-up compliment: "you're handsome!")</em>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="emotion-section">
+                        <div class="emotion-title">💭 감정 (Emotions)</div>
+                        <div class="emotion-list">
+                            <div class="emotion-tag" onclick="speakKr('장난스러운')" style="cursor:pointer;" title="🔊">장난스러운 (teasing)</div>
+                            <div class="emotion-tag" onclick="speakKr('설레는')" style="cursor:pointer;" title="🔊">설레는 (butterflies)</div>
+                            <div class="emotion-tag" onclick="speakKr('용감한')" style="cursor:pointer;" title="🔊">용감한 (going for it)</div>
+                            <div class="emotion-tag" onclick="speakKr('긴장되는')" style="cursor:pointer;" title="🔊">긴장되는 (heart racing)</div>
+                        </div>
+                    </div>
+
+                    <div class="vocab-box">
+                        <div class="vocab-title">📚 Key Vocabulary</div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">쓰다듬다 <span class="vocab-english">— to stroke / pat softly</span></div>
+                        </div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">떠보다 <span class="vocab-english">— to test the waters</span></div>
+                        </div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">직진 <span class="vocab-english">— to go for it directly</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 2: SUM -->
+            <div class="stage-section">
+                <div class="stage-header">2️⃣ 썸 (Some)</div>
+                <div class="stage-content">
+                    <div class="description-box">
+                        <strong>썸 = 모호한 관계 (Ambiguous Relationship)</strong><br>
+                        둘 다 좋아하는데 아직 사귀지 않음 <em>(you both feel it, but nothing's official)</em><br>
+                        "우리 사이가 뭐지?" 하는 단계 <em>("What are we?" stage)</em>
+                    </div>
+
+                    <div class="content-grid">
+                        <div class="info-box">
+                            <div class="video-box" style="cursor:pointer;" onclick="window.open('https://www.youtube.com/watch?v=NCE84HnTAbk&t=719','_blank')">
+                                <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;">
+                                  <img src="https://img.youtube.com/vi/NCE84HnTAbk/hqdefault.jpg" alt="YouTube" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;opacity:.92;">
+                                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                    <span style="color:white;font-size:1.3rem;margin-left:4px;">&#9654;</span>
+                                  </div>
+                                  <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:.5rem .7rem;">
+                                    <span style="color:white;font-size:.75rem;font-weight:600;">YouTube에서 보기</span>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="description-box">
+                                <strong>치얼업 <em>(Cheer Up)</em></strong><br>
+                                버스 정류장에서 별 보기 ⭐ <em>(looking at stars at the bus stop)</em><br>
+                                손잡기, 어깨 닿기 <em>(Holding hands, shoulders touching)</em><br>
+                                → "혹시 내가 좋아하나?" 하는 불안감 <em>("wait… do I actually like them?")</em>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="emotion-section">
+                                <div class="emotion-title">💭 감정 (Emotions)</div>
+                                <div class="emotion-list">
+                                    <div class="emotion-tag" onclick="speakKr('모호한')" style="cursor:pointer;" title="🔊">모호한 (hard to read)</div>
+                                    <div class="emotion-tag" onclick="speakKr('설레는')" style="cursor:pointer;" title="🔊">설레는 (butterflies)</div>
+                                    <div class="emotion-tag" onclick="speakKr('불안한')" style="cursor:pointer;" title="🔊">불안한 (on edge)</div>
+                                    <div class="emotion-tag" onclick="speakKr('확실하지 않은')" style="cursor:pointer;" title="🔊">확실하지 않은 (not sure)</div>
+                                    <div class="emotion-tag" onclick="speakKr('조심스러운')" style="cursor:pointer;" title="🔊">조심스러운 (holding back)</div>
+                                </div>
+                            </div>
+
+                            <div class="vocab-box">
+                                <div class="vocab-title">📚 Key Vocabulary</div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">모호하다 <span class="vocab-english">— vague, hard to read</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">눈치를 보다 <span class="vocab-english">— to read the room</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">설렘 <span class="vocab-english">— that fluttery feeling</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">불안감 <span class="vocab-english">— anxiety, uncertainty</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="behaviors-section">
+                        <div class="behaviors-title">⚡ Typical Behaviors</div>
+                        <div class="behavior-item">💬 <strong>자주 연락하기</strong> (texting all the time)</div>
+                        <div class="behavior-item">👀 <strong>눈치 보기</strong> (watching how they react)</div>
+                        <div class="behavior-item">💭 <strong>깊이 없는 대화</strong> (keeping it light)</div>
+                        <div class="behavior-item">⏳ <strong>반응 기다리기</strong> (waiting for a sign)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 3: MILDANG -->
+            <div class="stage-section">
+                <div class="stage-header">3️⃣ 밀당 (Mildang - Push & Pull)</div>
+                <div class="stage-content">
+                    <div class="description-box">
+                        <strong>밀당 = Push & Pull 게임</strong><br>
+                        연애 시작 후 초기 불안감에서 나오는 행동 <em>(acting out of fear early on)</em><br>
+                        상대를 간절하게 만들려고 함 <em>(making them want you more)</em>
+                    </div>
+
+                    <div class="content-grid">
+                        <div class="info-box">
+                            <div class="video-box" style="cursor:pointer;" onclick="window.open('https://www.youtube.com/watch?v=h3fm2J9mU4I','_blank')">
+                                <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;">
+                                  <img src="https://img.youtube.com/vi/h3fm2J9mU4I/hqdefault.jpg" alt="YouTube" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;opacity:.92;">
+                                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                    <span style="color:white;font-size:1.3rem;margin-left:4px;">&#9654;</span>
+                                  </div>
+                                  <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:.5rem .7rem;">
+                                    <span style="color:white;font-size:.75rem;font-weight:600;">YouTube에서 보기</span>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="description-box">
+                                <strong>갯마을 차차차 <em>(Hometown Cha-Cha-Cha)</em></strong><br>
+                                연애 초기의 밀당 게임 <em>(early dating mind games)</em><br>
+                                상대를 간절하게 만들려는 행동들 <em>(moves to keep them hooked)</em>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="emotion-section">
+                                <div class="emotion-title">💭 감정 (Emotions)</div>
+                                <div class="emotion-list">
+                                    <div class="emotion-tag" onclick="speakKr('불안한')" style="cursor:pointer;" title="🔊">불안한 (nervous)</div>
+                                    <div class="emotion-tag" onclick="speakKr('간절한')" style="cursor:pointer;" title="🔊">간절한 (really wanting them)</div>
+                                    <div class="emotion-tag" onclick="speakKr('경계하는')" style="cursor:pointer;" title="🔊">경계하는 (on guard)</div>
+                                    <div class="emotion-tag" onclick="speakKr('통제하려는')" style="cursor:pointer;" title="🔊">통제하려는 (playing games)</div>
+                                    <div class="emotion-tag" onclick="speakKr('피곤한')" style="cursor:pointer;" title="🔊">피곤한 (worn out)</div>
+                                </div>
+                            </div>
+                            <div class="vocab-box">
+                                <div class="vocab-title">📚 Key Vocabulary</div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">읽씹하다 <span class="vocab-english">— to read and ghost</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">밀다 <span class="vocab-english">— to push someone away</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">당기다 <span class="vocab-english">— to pull someone back in</span></div>
+                                </div>
+                                <div class="vocab-item">
+                                    <div class="vocab-korean">간절하다 <span class="vocab-english">— to really want / crave</span></div>
+                                </div>
+                            </div>
+
+                            <div class="behaviors-section" style="margin-top: 15px;">
+                                <div class="behaviors-title">⚡ Typical Behaviors</div>
+                                <div class="behavior-item">📵 <strong>읽씹</strong> (left on read)</div>
+                                <div class="behavior-item">⏱️ <strong>느린 답장</strong> (take long to reply)</div>
+                                <div class="behavior-item">😶 <strong>갑자기 다정함</strong> (suddenly sweet or flirty)</div>
+                                <div class="behavior-item">🏃 <strong>바쁜 척 하기</strong> (playing hard to get)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="important-note">
+                        <h4>⚠️ 중요! IMPORTANT!</h4>
+                        <p><strong>밀당은 언제까지? <em>(How long does mildang last?)</em></strong></p>
+                        <div class="timeline-box">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-text">
+                                    <strong>시작:</strong> 연애 확정 후 (After dating officially)
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-text">
+                                    <strong>지속:</strong> 일정 기간 (어느 정도 시간이 흐르면) <em>(for a while — until it naturally fades)</em>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-text">
+                                    <strong>종료:</strong> 믿음이 생기면 (When trust develops)
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 12px;"><strong style="color: #991b1b;">너무 길어지면 상대방이 피곤해져서 헤어지는 경우도 있습니다!</strong></p>
+                        <p><em>(If it drags on too long, the other person might get exhausted and lose interest!)</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 4: TRUST -->
+            <div class="stage-section">
+                <div class="stage-header">4️⃣ 신뢰 (Trust)</div>
+                <div class="stage-content">
+                    <div class="description-box">
+                        <strong>신뢰 = 진정한 연애 시작 <em>(Real love begins)</em></strong><br>
+                        밀당이 필요 없어짐 <em>(no more games)</em><br>
+                        상대를 믿고 편안해짐 <em>(you trust them, you can just be yourself)</em>
+                    </div>
+
+                    <div class="emotion-section">
+                        <div class="emotion-title">💭 감정 (Emotions)</div>
+                        <div class="emotion-list">
+                            <div class="emotion-tag" onclick="speakKr('안심되는')" style="cursor:pointer;" title="🔊">안심되는 (safe)</div>
+                            <div class="emotion-tag" onclick="speakKr('안정적인')" style="cursor:pointer;" title="🔊">안정적인 (steady)</div>
+                            <div class="emotion-tag" onclick="speakKr('편안한')" style="cursor:pointer;" title="🔊">편안한 (at ease)</div>
+                            <div class="emotion-tag" onclick="speakKr('확신하는')" style="cursor:pointer;" title="🔊">확신하는 (sure of each other)</div>
+                            <div class="emotion-tag" onclick="speakKr('편한')" style="cursor:pointer;" title="🔊">편한 (no pressure)</div>
+                        </div>
+                    </div>
+
+                    <div class="vocab-box" style="margin-top: 20px;">
+                        <div class="vocab-title">📚 Key Vocabulary</div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">믿다 <span class="vocab-english">— to trust someone</span></div>
+                        </div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">편하다 <span class="vocab-english">— to feel at ease</span></div>
+                        </div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">안심되다 <span class="vocab-english">— to feel safe and settled</span></div>
+                        </div>
+                        <div class="vocab-item">
+                            <div class="vocab-korean">진정한 <span class="vocab-english">— real, genuine</span></div>
+                        </div>
+                    </div>
+
+                    <div class="behaviors-section" style="margin-top: 20px;">
+                        <div class="behaviors-title">⚡ Changes in This Stage</div>
+                        <div class="behavior-item">✅ <strong>자연스러운 연락</strong> (texting without overthinking)</div>
+                        <div class="behavior-item">✅ <strong>숨기지 않음</strong> (no more hiding)</div>
+                        <div class="behavior-item">✅ <strong>계획 함께하기</strong> (making plans together)</div>
+                        <div class="behavior-item">✅ <strong>서로 의존</strong> (leaning on each other)</div>
+                        <div class="behavior-item">✅ <strong>밀당 끝남</strong> (the games are over!)</div>
+                    </div>
+
+                    <div class="important-note" style="background: #ecfdf5; border-color: #bbf7d0; color: #065f46; margin-top: 20px;">
+                        <h4 style="color: #059669;">💚 Key Message</h4>
+                        <p>
+                            <strong>진짜 사랑은 상대를 간절하게 만드는 게 아니라 안심시켜주는 거예요!</strong>
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <em>Real love is not about making the other person desperate, it's about making them feel secure and cared for! 💙</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+function speakKr(word) {
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'ko-KR';
+  u.rate = 0.9;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TWICE Cheer Up – Lesson 2 Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1AB5B0;
+  --teal-dark: #0E8C88;
+  --orange: #E8956D;
+  --pink: #F5A0B5;
+  --purple: #7B68AE;
+  --green: #4CAF50;
+  --red: #FF5252;
+  --bg: #f0fafa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: #333;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ─── Header ─── */
+.header {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.header-title { color: #fff; }
+.header-title small { font-size: 11px; opacity: 0.7; letter-spacing: 1.5px; font-weight: 600; }
+.header-title h1 { font-size: 20px; font-weight: 900; margin-top: 2px; }
+.btn-menu {
+  padding: 7px 16px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15); color: #fff; cursor: pointer;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  backdrop-filter: blur(4px); transition: all 0.2s;
+}
+.btn-menu:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
+
+/* ─── Screens ─── */
+.screen { display: none; padding: 20px; padding-bottom: 40px; max-width: 520px; margin: 0 auto; }
+.screen.active { display: block; }
+
+/* ─── Menu ─── */
+.menu-icon { text-align: center; font-size: 40px; margin: 16px 0 8px; }
+.menu-subtitle { text-align: center; font-size: 15px; color: var(--teal-dark); font-weight: 700; margin-bottom: 20px; }
+.game-card {
+  padding: 18px; border-radius: 16px; border: 2px solid #ddd;
+  background: #fff; cursor: pointer; margin-bottom: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06); transition: all 0.2s;
+  display: flex; align-items: center; gap: 14px;
+}
+.game-card:active { transform: scale(0.97); }
+.game-card.done { background: #E8F5E9; border-color: var(--green); }
+.game-card .icon { font-size: 34px; flex-shrink: 0; }
+.game-card .label { font-size: 16px; font-weight: 800; }
+.game-card .desc { font-size: 12px; color: #888; margin-top: 3px; }
+.game-card .check { font-size: 20px; margin-left: auto; flex-shrink: 0; }
+
+.trophy-box {
+  text-align: center; padding: 18px; border-radius: 16px;
+  background: linear-gradient(135deg, #FFFDE7, #E8F5E9); margin-top: 10px;
+}
+.trophy-box .big { font-size: 32px; }
+.trophy-box .msg { font-size: 15px; font-weight: 800; color: var(--green); margin-top: 4px; }
+.trophy-box .sub { font-size: 12px; color: #888; margin-top: 4px; }
+
+/* ─── Review Section ─── */
+.section-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 800; color: var(--teal-dark);
+  margin: 24px 0 12px; padding-top: 8px;
+  border-top: 2px dashed #d0eceb;
+}
+.review-line {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 12px;
+  background: #fff; margin-bottom: 8px;
+  border-left: 4px solid var(--teal);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.review-line .speak-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: var(--teal); color: #fff;
+  font-size: 16px; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.review-line .speak-btn:active { transform: scale(0.9); background: var(--teal-dark); }
+.review-line .speak-btn.speaking { animation: pulse 0.6s infinite; }
+.review-line .kr { font-size: 16px; font-weight: 700; color: var(--teal-dark); }
+.review-line .en { font-size: 12px; color: #999; margin-top: 2px; }
+
+/* line colors */
+.review-line:nth-child(2) { border-color: var(--teal-dark); }
+.review-line:nth-child(3) { border-color: var(--orange); }
+.review-line:nth-child(4) { border-color: var(--purple); }
+.review-line:nth-child(5) { border-color: var(--green); }
+.review-line:nth-child(6) { border-color: var(--pink); }
+.review-line:nth-child(7) { border-color: var(--teal); }
+
+/* ─── Game: Listening Match ─── */
+.game-instruction {
+  text-align: center; font-size: 13px; color: var(--orange);
+  font-weight: 700; margin-bottom: 6px;
+}
+.game-progress {
+  text-align: center; font-size: 12px; color: #999; margin-bottom: 16px;
+}
+.match-area {
+  display: flex; gap: 12px; justify-content: center; align-items: flex-start;
+}
+.speakers { display: flex; flex-direction: column; gap: 10px; }
+.speaker-btn {
+  width: 64px; height: 64px; border-radius: 14px;
+  border: 2px solid #ddd; background: #fff;
+  cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 26px; transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-family: inherit;
+}
+.speaker-btn .num { font-size: 10px; color: #bbb; margin-top: 2px; }
+.speaker-btn.selected { border-color: var(--teal); background: #E0F7F6; box-shadow: 0 0 12px rgba(26,181,176,0.25); }
+.speaker-btn.matched { border-color: var(--green); background: #E8F5E9; }
+.speaker-btn.speaking { animation: pulse 0.5s infinite; }
+.speaker-btn:active { transform: scale(0.92); }
+
+.text-options { display: flex; flex-direction: column; gap: 10px; flex: 1; max-width: 320px; }
+.text-card {
+  padding: 10px 14px; border-radius: 12px; border: 2px solid #eee;
+  background: #fff; cursor: pointer; text-align: left;
+  transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  font-family: inherit;
+}
+.text-card:active { transform: scale(0.97); }
+.text-card.matched { border-color: var(--green); background: #E8F5E9; }
+.text-card.wrong { border-color: var(--red); background: #FFEBEE; animation: shake 0.4s; }
+.text-card.used { opacity: 0.35; pointer-events: none; }
+.text-card .kr { font-size: 15px; font-weight: 700; }
+.text-card .rom { font-size: 11px; color: #aaa; font-style: italic; margin-top: 2px; }
+
+/* ─── Game: Fill in the Blank ─── */
+.word-bank {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin-bottom: 18px;
+}
+.word-chip {
+  padding: 7px 16px; border-radius: 20px; border: 2px solid var(--teal);
+  background: #fff; cursor: pointer; font-size: 14px; font-weight: 700;
+  color: var(--teal-dark); transition: all 0.2s; font-family: inherit;
+}
+.word-chip:active { transform: scale(0.93); }
+.word-chip.selected { background: var(--teal); color: #fff; box-shadow: 0 0 10px rgba(26,181,176,0.3); }
+.word-chip.used { opacity: 0.25; pointer-events: none; border-color: #ccc; color: #ccc; }
+
+.fill-lines { display: flex; flex-direction: column; gap: 7px; }
+.fill-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 10px;
+  border: 2px solid #eee; background: #fff;
+  transition: all 0.2s;
+}
+.fill-row.new-line { background: #FFFDE7; }
+.fill-row.filled { border-color: var(--green); background: #E8F5E9; }
+.fill-row.wrong { border-color: var(--red); background: #FFEBEE; animation: shake 0.4s; }
+
+.fill-row .num {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.fill-row .speak-sm {
+  width: 28px; height: 28px; border-radius: 50%; border: none;
+  background: #eee; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s; font-family: inherit;
+}
+.fill-row .speak-sm:active { background: var(--teal); color: #fff; }
+.fill-row .line-text { font-size: 14px; font-weight: 600; flex: 1; line-height: 1.4; }
+.blank-btn {
+  display: inline-block; min-width: 60px; padding: 3px 10px;
+  border-radius: 6px; border: 2px dashed #ccc;
+  background: #f9f9f9; color: #ccc; font-weight: 700;
+  font-size: 14px; cursor: pointer; transition: all 0.2s;
+  margin: 0 3px; font-family: inherit;
+}
+.blank-btn.active { border-color: var(--teal); background: rgba(26,181,176,0.08); }
+.blank-btn.filled { border: none; background: rgba(76,175,80,0.15); color: var(--green); }
+.new-badge {
+  background: #FF6B6B; color: #fff; font-size: 9px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
+}
+
+/* ─── Completion ─── */
+.complete-msg {
+  text-align: center; margin-top: 18px; padding: 16px;
+  border-radius: 16px; background: linear-gradient(135deg, #E8F5E9, #FFFDE7);
+}
+.complete-msg .emoji { font-size: 28px; }
+.complete-msg .text { font-size: 18px; font-weight: 800; color: var(--green); margin-top: 4px; }
+.btn-reset {
+  margin-top: 10px; padding: 9px 24px; border-radius: 22px;
+  background: var(--teal); color: #fff; border: none;
+  cursor: pointer; font-size: 13px; font-weight: 700;
+  font-family: inherit; transition: all 0.2s;
+}
+.btn-reset:active { transform: scale(0.95); background: var(--teal-dark); }
+
+/* ─── Animations ─── */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.screen.active { animation: fadeIn 0.3s ease; }
+
+/* ─── Mobile tweaks ─── */
+@media (max-width: 400px) {
+  .speaker-btn { width: 56px; height: 56px; font-size: 22px; }
+  .text-card .kr { font-size: 13px; }
+  .text-card .rom { font-size: 10px; }
+  .match-area { gap: 8px; }
+  .fill-row .line-text { font-size: 13px; }
+  .word-chip { font-size: 13px; padding: 6px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="header-title">
+    <small>TWICE · CHEER UP</small>
+    <h1>Lesson 2 Study Room</h1>
+  </div>
+  <button class="btn-menu" id="menuBtn" style="display:none;" onclick="showScreen('menu')">← Menu</button>
+</div>
+
+<!-- ═══ MENU SCREEN ═══ -->
+<div class="screen active" id="screen-menu">
+  <div class="menu-icon">🎵</div>
+  <div class="menu-subtitle">Choose a game!</div>
+
+  <div class="game-card" id="card1" onclick="showScreen('game1')">
+    <span class="icon">🔊</span>
+    <div>
+      <div class="label" style="color:var(--teal-dark)">Listening Match</div>
+      <div class="desc">Listen to 4 chorus lines → match the text!</div>
+    </div>
+    <span class="check" id="check1"></span>
+  </div>
+
+  <div class="game-card" id="card2" onclick="showScreen('game2')">
+    <span class="icon">✏️</span>
+    <div>
+      <div class="label" style="color:var(--orange)">Fill in the Blank</div>
+      <div class="desc">Complete all 7 chorus lines!</div>
+    </div>
+    <span class="check" id="check2"></span>
+  </div>
+
+  <div class="trophy-box" id="trophyBox" style="display:none;">
+    <div class="big">🏆</div>
+    <div class="msg">All games complete!</div>
+    <div class="sub">You're ready to sing the full chorus! ⚡</div>
+  </div>
+
+  <!-- Review: Key Sentences -->
+  <div class="section-header">📋 Review: Key Sentences</div>
+  <div id="reviewLines"></div>
+</div>
+
+<!-- ═══ GAME 1: LISTENING MATCH ═══ -->
+<div class="screen" id="screen-game1">
+  <div class="game-instruction">Click a speaker 🔊 → listen → tap the matching line!</div>
+  <div class="game-progress" id="g1progress">0 / 4 matched</div>
+  <div class="match-area">
+    <div class="speakers" id="g1speakers"></div>
+    <div class="text-options" id="g1texts"></div>
+  </div>
+  <div id="g1complete" style="display:none;" class="complete-msg">
+    <div class="emoji">🎉</div>
+    <div class="text">Perfect!</div>
+    <button class="btn-reset" onclick="resetGame1()">Try Again</button>
+  </div>
+</div>
+
+<!-- ═══ GAME 2: FILL IN THE BLANK ═══ -->
+<div class="screen" id="screen-game2">
+  <div class="game-instruction">Tap a word → then tap the matching blank!</div>
+  <div class="game-progress" id="g2progress">0 / 7 filled</div>
+  <div class="word-bank" id="g2bank"></div>
+  <div class="fill-lines" id="g2lines"></div>
+  <div id="g2complete" style="display:none;" class="complete-msg">
+    <div class="emoji">🎉</div>
+    <div class="text">Full Chorus Complete!</div>
+    <button class="btn-reset" onclick="resetGame2()">Play Again</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const chorusAll = [
+  { id:1, kr:"CHEER UP BABY, CHEER UP BABY", rom:"cheer up baby, cheer up baby", en:"Cheer up baby, cheer up baby", color:"var(--teal)", blank:"BABY", parts:["CHEER UP BABY, CHEER UP ",""] },
+  { id:2, kr:"좀 더 힘을 내", rom:"jom deo him-eul nae", en:"Cheer up a bit more", color:"var(--teal-dark)", blank:"힘을", parts:["좀 더 "," 내"] },
+  { id:3, kr:"여자가 쉽게 맘을 주면 안돼", rom:"yeo-ja-ga swip-ge mam-eul ju-myeon an-dwae", en:"A girl shouldn't give her heart easily", color:"var(--orange)", blank:"맘을", parts:["여자가 쉽게 "," 주면 안돼"] },
+  { id:4, kr:"그래야 니가 날 더 좋아하게 될걸", rom:"geu-rae-ya ni-ga nal deo jo-a-ha-ge doel-geol", en:"That way you'll like me more", color:"var(--purple)", blank:"좋아하게", parts:["그래야 니가 날 더 "," 될걸"] },
+  { id:5, kr:"태연하게 연기할래 아무렇지 않게", rom:"tae-yeon-ha-ge yeon-gi-hal-lae a-mu-reot-ji an-ke", en:"I'll act all casual, like I don't care", color:"var(--green)", blank:"연기할래", parts:["태연하게 "," 아무렇지 않게"], isNew:true },
+  { id:6, kr:"내가 널 좋아하는 맘 모르게", rom:"nae-ga neol jo-a-ha-neun mam mo-reu-ge", en:"So you won't know I like you", color:"var(--pink)", blank:"모르게", parts:["내가 널 좋아하는 맘 ",""], isNew:true },
+  { id:7, kr:"just get it together and then baby CHEER UP", rom:"just get it together and then baby cheer up", en:"Just get it together and then baby CHEER UP", color:"var(--teal)", blank:"CHEER UP", parts:["just get it together and then baby ",""], isNew:true },
+];
+
+const lesson1Lines = chorusAll.slice(0, 4);
+
+// ═══════════════ UTILITY ═══════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = text.match(/[가-힣]/) ? "ko-KR" : "en-US";
+  u.rate = 0.75;
+  window.speechSynthesis.speak(u);
+  return u;
+}
+
+// ═══════════════ SCREEN NAV ═══════════════
+let game1Done = false, game2Done = false;
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('menuBtn').style.display = name === 'menu' ? 'none' : 'block';
+  if (name === 'game1') initGame1();
+  if (name === 'game2') initGame2();
+}
+
+function markDone(game) {
+  if (game === 1) { game1Done = true; document.getElementById('check1').textContent = '✅'; document.getElementById('card1').classList.add('done'); }
+  if (game === 2) { game2Done = true; document.getElementById('check2').textContent = '✅'; document.getElementById('card2').classList.add('done'); }
+  if (game1Done && game2Done) document.getElementById('trophyBox').style.display = 'block';
+}
+
+// ═══════════════ REVIEW LINES ═══════════════
+function buildReview() {
+  const container = document.getElementById('reviewLines');
+  chorusAll.forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'review-line';
+    div.innerHTML = `
+      <button class="speak-btn" onclick="speakReview(this,'${line.kr.replace(/'/g,"\\'")}')">🔈</button>
+      <div>
+        <div class="kr" style="color:${line.color}">${line.kr}</div>
+        <div class="en">${line.en}</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function speakReview(btn, text) {
+  btn.classList.add('speaking');
+  btn.textContent = '🔊';
+  const u = speak(text);
+  u.onend = u.onerror = () => { btn.classList.remove('speaking'); btn.textContent = '🔈'; };
+}
+
+// ═══════════════ GAME 1: LISTENING MATCH ═══════════════
+let g1 = { speakers: [], texts: [], selected: null, matches: {}, speakingId: null };
+
+function initGame1() {
+  g1 = { speakers: shuffle(lesson1Lines), texts: shuffle(lesson1Lines), selected: null, matches: {}, speakingId: null };
+  renderGame1();
+  document.getElementById('g1complete').style.display = 'none';
+}
+function resetGame1() { initGame1(); }
+
+function renderGame1() {
+  const sp = document.getElementById('g1speakers');
+  const tx = document.getElementById('g1texts');
+  sp.innerHTML = ''; tx.innerHTML = '';
+
+  g1.speakers.forEach((line, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'speaker-btn';
+    if (g1.matches[line.id]) btn.classList.add('matched');
+    if (g1.selected === line.id) btn.classList.add('selected');
+    if (g1.speakingId === line.id) btn.classList.add('speaking');
+    btn.innerHTML = `${g1.matches[line.id] ? '✅' : (g1.speakingId === line.id ? '🔊' : '🔈')}<span class="num">#${i+1}</span>`;
+    btn.onclick = () => clickSpeaker(line);
+    sp.appendChild(btn);
+  });
+
+  g1.texts.forEach(line => {
+    const btn = document.createElement('button');
+    btn.className = 'text-card';
+    if (g1.matches[line.id]) btn.classList.add('matched');
+    if (Object.values(g1.matches).includes(line.id) && !g1.matches[line.id]) btn.classList.add('used');
+    btn.innerHTML = `<div class="kr" style="color:${line.color}">${line.kr}</div><div class="rom">${line.rom}</div>`;
+    btn.onclick = () => clickText(line);
+    tx.appendChild(btn);
+  });
+
+  const matched = Object.keys(g1.matches).length;
+  document.getElementById('g1progress').textContent = matched + ' / 4 matched';
+}
+
+function clickSpeaker(line) {
+  if (g1.matches[line.id]) return;
+  g1.selected = line.id;
+  g1.speakingId = line.id;
+  renderGame1();
+  const u = speak(line.kr);
+  u.onend = u.onerror = () => { g1.speakingId = null; renderGame1(); };
+}
+
+function clickText(line) {
+  if (!g1.selected) return;
+  if (g1.matches[line.id]) return;
+
+  if (g1.selected === line.id) {
+    g1.matches[line.id] = line.id;
+    g1.selected = null;
+    renderGame1();
+    if (Object.keys(g1.matches).length === 4) {
+      setTimeout(() => {
+        document.getElementById('g1complete').style.display = 'block';
+        markDone(1);
+      }, 500);
+    }
+  } else {
+    // wrong
+    const cards = document.getElementById('g1texts').children;
+    for (const c of cards) {
+      if (c.querySelector('.kr').textContent === line.kr) {
+        c.classList.add('wrong');
+        setTimeout(() => c.classList.remove('wrong'), 500);
+      }
+    }
+  }
+}
+
+// ═══════════════ GAME 2: FILL IN THE BLANK ═══════════════
+let g2 = { answers: {}, selectedWord: null, wrongId: null };
+let g2WordOrder = [];
+
+function initGame2() {
+  g2 = { answers: {}, selectedWord: null, wrongId: null };
+  g2WordOrder = shuffle(chorusAll.map(l => l.blank));
+  renderGame2();
+  document.getElementById('g2complete').style.display = 'none';
+}
+function resetGame2() { initGame2(); }
+
+function renderGame2() {
+  // word bank
+  const bank = document.getElementById('g2bank');
+  bank.innerHTML = '';
+  g2WordOrder.forEach(word => {
+    const btn = document.createElement('button');
+    btn.className = 'word-chip';
+    if (g2.selectedWord === word) btn.classList.add('selected');
+    if (Object.values(g2.answers).includes(word)) btn.classList.add('used');
+    btn.textContent = word;
+    btn.onclick = () => { g2.selectedWord = word; g2.wrongId = null; renderGame2(); };
+    bank.appendChild(btn);
+  });
+
+  // lines
+  const container = document.getElementById('g2lines');
+  container.innerHTML = '';
+  chorusAll.forEach(line => {
+    const filled = g2.answers[line.id];
+    const isWrong = g2.wrongId === line.id;
+    const row = document.createElement('div');
+    row.className = 'fill-row';
+    if (line.isNew && !filled) row.classList.add('new-line');
+    if (filled) row.classList.add('filled');
+    if (isWrong) row.classList.add('wrong');
+
+    const numStyle = `background:${line.color}`;
+    const blankClass = 'blank-btn' + (filled ? ' filled' : (g2.selectedWord ? ' active' : ''));
+
+    row.innerHTML = `
+      <button class="speak-sm" onclick="speak('${line.kr.replace(/'/g,"\\'")}')">🔈</button>
+      <span class="num" style="${numStyle}">${line.id}</span>
+      <div class="line-text" style="color:${line.color}">
+        ${line.parts[0]}<button class="${blankClass}" data-id="${line.id}">${filled || '______'}</button>${line.parts[1]}
+      </div>
+      ${line.isNew && !filled ? '<span class="new-badge">NEW</span>' : ''}
+    `;
+    container.appendChild(row);
+
+    row.querySelector('.blank-btn').onclick = () => clickBlank(line);
+  });
+
+  const count = Object.keys(g2.answers).length;
+  document.getElementById('g2progress').textContent = count + ' / 7 filled';
+}
+
+function clickBlank(line) {
+  if (!g2.selectedWord) return;
+  if (g2.answers[line.id]) return;
+
+  if (g2.selectedWord === line.blank) {
+    g2.answers[line.id] = g2.selectedWord;
+    g2.selectedWord = null;
+    renderGame2();
+    if (Object.keys(g2.answers).length === 7) {
+      setTimeout(() => {
+        document.getElementById('g2complete').style.display = 'block';
+        markDone(2);
+      }, 500);
+    }
+  } else {
+    g2.wrongId = line.id;
+    renderGame2();
+    setTimeout(() => { g2.wrongId = null; renderGame2(); }, 500);
+  }
+}
+
+// ═══════════════ INIT ═══════════════
+buildReview();
+</script>
+</body>
+</html>
