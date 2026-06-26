@@ -415,17 +415,18 @@
     <button class="modal-close" onclick="closeModal('sentence')">✕</button>
     <div class="modal-title-kr">문장 연습</div>
     <div class="modal-title-en">BASIC SENTENCES — TAP ANY TEXT TO HEAR IT</div>
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" id="sentence-tabs">
-      <button class="vcat-tab active" onclick="showSentenceCat(0,this)">👋 인사하기</button>
-      <button class="vcat-tab" onclick="showSentenceCat(1,this)">🏫 교실에서</button>
-      <button class="vcat-tab" onclick="showSentenceCat(2,this)">✈️ 한국 여행</button>
-      <button class="vcat-tab" onclick="showSentenceCat(3,this)">🍜 음식 주문하기</button>
-      <button class="vcat-tab" onclick="showSentenceCat(4,this)">🛍️ 쇼핑하기</button>
-      <button class="vcat-tab" onclick="showSentenceCat(5,this)">🏥 병원·약국</button>
-      <button class="vcat-tab" onclick="showSentenceCat(6,this)">🚇 교통·길 찾기</button>
-      <button class="vcat-tab" onclick="showSentenceCat(7,this)">🙋 자기소개</button>
-      <button class="vcat-tab" onclick="showSentenceCat(8,this)">🤝 부탁·거절하기</button>
-
+    <div style="margin-bottom:1.5rem;" id="sentence-tabs">
+      <select onchange="showSentenceCat(this.value,null)" style="width:100%;padding:.65rem 1rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23888%22 d=%22M6 8L1 3h10z%22/></svg>');background-repeat:no-repeat;background-position:right 1rem center;">
+        <option value="0">👋 인사하기</option>
+        <option value="1">🏫 교실에서</option>
+        <option value="2">✈️ 한국 여행</option>
+        <option value="3">🍜 음식 주문하기</option>
+        <option value="4">🛍️ 쇼핑하기</option>
+        <option value="5">🏥 병원·약국</option>
+        <option value="6">🚇 교통·길 찾기</option>
+        <option value="7">🙋 자기소개</option>
+        <option value="8">🤝 부탁·거절하기</option>
+      </select>
     </div>
     <div id="sentence-content"></div>
   </div>
@@ -1140,8 +1141,7 @@ speaking:[
 
 // SENTENCE RENDER
 function showSentenceCat(idx, btn) {
-  document.querySelectorAll('#sentence-tabs .vcat-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
+  if(btn && btn.classList) { document.querySelectorAll('#sentence-tabs .vcat-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); }
   const cat = l2Categories[idx];
   if (!cat) return;
   if (cat.comingSoon || !cat.sentences || cat.sentences.length === 0) {
@@ -1498,12 +1498,11 @@ function switchVocabMain(type){
   else if(type==='time'){tBtn.style.background='#8B5CF6';tBtn.style.borderColor='#8B5CF6';tBtn.style.color='white';}
   const cats=vocabCategories[type];
   const tabs=document.getElementById('vocab-tabs');
-  tabs.innerHTML=cats.map((c,i)=>`<button class="vcat-tab ${i===0?'active':''}" onclick="showVocabCat('${c.replace(/'/g,"\\'").replace(/"/g,'&quot;')}',this)">${c}</button>`).join('');
-  showVocabCat(cats[0],tabs.children[0]);
+  tabs.innerHTML=`<select onchange="showVocabCat(this.value,null)" style="width:100%;padding:.65rem 1rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23888%22 d=%22M6 8L1 3h10z%22/></svg>');background-repeat:no-repeat;background-position:right 1rem center;">${cats.map(c=>`<option value="${c.replace(/"/g,'&quot;')}">${c}</option>`).join('')}</select>`;
+  showVocabCat(cats[0],null);
 }
 function showVocabCat(cat,btn){
-  document.querySelectorAll('.vcat-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
+  if(btn && btn.classList) { document.querySelectorAll('.vcat-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); }
   const words=vocabData[cat]||[];
   const pdfMap={
     '👨‍👩‍👧 Family 가족':'family_flashcards.pdf',
