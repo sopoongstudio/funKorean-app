@@ -549,28 +549,7 @@ function toggleArtist(h){
 }
 
 // TTS
-function getKoreanVoice(){
-  const voices=window.speechSynthesis.getVoices();
-  // Prefer local/native Korean voices over network/enhanced ones that mispronounce
-  const priority=['Yuna','Sora','나라','유나','Nara','Google 한국의','ko-KR'];
-  for(const p of priority){
-    const v=voices.find(v=>v.lang==='ko-KR'&&v.name.includes(p)&&v.localService!==false);
-    if(v) return v;
-  }
-  // Fallback: any ko-KR local voice
-  const local=voices.find(v=>v.lang==='ko-KR'&&v.localService);
-  if(local) return local;
-  // Last resort: any ko-KR
-  return voices.find(v=>v.lang==='ko-KR')||null;
-}
-function speak(t){
-  if(!window.speechSynthesis)return;
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(t);
-  u.lang='ko-KR'; u.rate=0.85; u.pitch=1;
-  const v=getKoreanVoice(); if(v) u.voice=v;
-  window.speechSynthesis.speak(u);
-}
+function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.85;u.pitch=1;window.speechSynthesis.speak(u);}
 
 // FIRST WORDS
 const firstWordsData=[
@@ -1388,7 +1367,6 @@ function playFullDialogue(dIdx) {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(lines[i].kr.replace(/~/g,''));
     u.lang = 'ko-KR'; u.rate = 0.85; u.pitch = 1;
-    const v=getKoreanVoice(); if(v) u.voice=v;
     u.onend = () => { i++; setTimeout(speakNext, 400); };
     u.onerror = () => { i++; setTimeout(speakNext, 400); };
     window.speechSynthesis.speak(u);
