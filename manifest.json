@@ -2,7 +2,7 @@
   "name": "Learn Korean",
   "short_name": "Learn Korean",
   "description": "Fall in love with Korean — one song, one drama, one story at a time.",
-  "start_url": "/hangul_learn_v2.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#F8F4FF",
   "theme_color": "#6D28D9",

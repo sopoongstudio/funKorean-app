@@ -1,6 +1,7 @@
 const CACHE_NAME = 'funkorean-v1';
 const ASSETS = [
-  '/hangul_learn_v2.html',
+  '/',
+  '/index.html',
   '/manifest.json',
   '/icons/icon_192.png',
   '/icons/icon_512.png'
