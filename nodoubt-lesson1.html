@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Doubt Lesson 1 | ENHYPEN</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6ee;--bg2:#fff9f2;--card:#ffffff;
+  --accent:#b8660a;--accent2:#d4860e;
+  --gold:#c8860a;--ivory:#faf3e0;
+  --text:#2d1f0e;--dim:#8a6f52;--light:#b89878;--border:#e8d5b8;
+  --cardbg:rgba(255,255,255,.9);
+  --shadow:0 4px 20px rgba(184,102,10,.07);
+}
+body{background:var(--bg);font-family:"Noto Sans KR","Outfit",sans-serif;color:var(--text);min-height:100vh;}
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--gold),#e8a830,#d4860e);transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
+
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(184,102,10,.08);max-width:880px;margin:0 auto}
+h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.content{display:flex;flex-direction:column;gap:14px}
+.section-label{font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+
+/* COVER */
+.cover-section{padding:36px 20px 28px;text-align:center;background:linear-gradient(160deg,#fef3e2,#fdf6ee)}
+.cover-section>*{max-width:600px;margin-left:auto;margin-right:auto}
+.top-badge{display:inline-block;font-family:"Outfit";font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--gold);border-radius:99px;padding:4px 16px;margin-bottom:14px}
+.song-title{font-family:"Outfit";font-size:clamp(38px,11vw,68px);font-weight:800;color:var(--text);line-height:1;margin-bottom:8px}
+.tagline{font-size:clamp(12px,3vw,15px);color:var(--dim);margin-bottom:20px;line-height:1.6}
+.nav-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.nav-pill{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:99px;font-size:clamp(12px,3vw,14px);font-weight:600;text-decoration:none;border:2px solid;transition:all .2s;background:none;cursor:pointer;font-family:"Noto Sans KR","Outfit",sans-serif;white-space:nowrap}
+.np1{border-color:var(--gold);color:var(--gold)}.np1:hover{background:rgba(200,134,10,.08)}
+.np2{border-color:#7c5cbf;color:#7c5cbf}.np2:hover{background:rgba(124,92,191,.08)}
+.np3{border-color:#c0392b;color:#c0392b;background:rgba(192,57,43,.06)}.np3:hover{background:rgba(192,57,43,.14)}
+.np4{border-color:#2a7d4f;color:#2a7d4f}.np4:hover{background:rgba(42,125,79,.08)}
+
+/* YT */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid var(--border);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block;transition:border-color .2s;box-shadow:var(--shadow)}
+.yt-thumb-card:hover{border-color:var(--gold)}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.35)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:13px;font-weight:600}
+.yt-links{display:flex;gap:10px;margin-top:10px}
+.yt-link-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-size:clamp(12px,3.2vw,14px);font-weight:600;text-decoration:none;border:1.5px solid;transition:all .2s;text-align:center}
+.yt-lb{border-color:var(--border);color:var(--dim);background:rgba(255,255,255,.6)}.yt-lb:hover{border-color:var(--gold);color:var(--gold)}
+.yt-sb{border-color:rgba(184,102,10,.3);color:var(--accent);background:rgba(184,102,10,.05)}.yt-sb:hover{background:rgba(184,102,10,.12)}
+
+/* Lyric rows */
+.lyric-row{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.lyric-row:hover{border-color:var(--gold);background:rgba(200,134,10,.04)}
+.lyric-row.played{border-color:var(--gold);background:rgba(200,134,10,.06)}
+.tts-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--accent));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;color:#fff;font-size:15px;box-shadow:0 2px 8px rgba(200,134,10,.2)}
+.lyric-kr{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--text)}
+.lyric-rom{font-size:clamp(11px,2.8vw,13px);color:var(--gold);margin-top:2px}
+
+/* Listen */
+.listen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.listen-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .25s;user-select:none;box-shadow:var(--shadow)}
+.listen-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.listen-card.checked{border-color:var(--gold);background:rgba(200,134,10,.06)}
+.listen-card.checked .lkr{color:var(--gold)}
+.lcheck{font-size:20px;margin-bottom:6px}
+.lkr{font-size:clamp(16px,4.5vw,20px);font-weight:700;color:var(--text);margin-bottom:3px;transition:color .2s}
+.lrom{font-size:clamp(12px,3vw,14px);color:var(--gold);margin-bottom:2px}
+.len{font-size:clamp(12px,3vw,14px);color:var(--dim)}
+.score-bar{text-align:center;padding:12px;border-radius:12px;background:rgba(200,134,10,.06);border:1.5px solid rgba(200,134,10,.2);font-size:clamp(13px,3.5vw,15px);color:var(--dim);margin-top:12px}
+.listen-play-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:99px;background:var(--gold);color:white;border:none;font-size:clamp(13px,3.5vw,15px);font-weight:700;cursor:pointer;font-family:"Noto Sans KR";transition:all .2s;text-decoration:none;margin-bottom:14px;box-shadow:0 4px 12px rgba(200,134,10,.25)}
+.listen-play-btn:hover{background:var(--accent);transform:translateY(-1px)}
+
+/* Clues */
+.clue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.clue-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center;transition:all .2s;box-shadow:var(--shadow)}
+.clue-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.ckr{font-size:clamp(15px,4vw,19px);font-weight:700;color:var(--text);margin-bottom:3px}
+.crom{font-size:clamp(11px,2.8vw,13px);color:var(--gold);margin-bottom:3px}
+.cen{font-size:clamp(12px,3vw,14px);color:var(--accent);font-weight:600}
+.clue-ex{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.clue-ex-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.clue-ex:hover{border-color:var(--gold)}
+.cex-emoji{font-size:28px;flex-shrink:0}
+.cex-kr{font-size:clamp(15px,4vw,18px);font-weight:700;color:var(--text);margin-bottom:2px}
+.cex-rom{font-size:clamp(10px,2.5vw,12px);color:var(--gold);margin-bottom:2px}
+.cex-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim)}
+.cex-note{font-size:clamp(10px,2.5vw,12px);color:var(--accent);margin-top:4px;font-style:italic}
+
+/* Matching */
+.match-area{display:grid;grid-template-columns:1fr 50px 1fr;gap:0;align-items:center;position:relative}
+.match-col{display:flex;flex-direction:column;gap:12px}
+.match-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px 10px;cursor:pointer;transition:all .25s;font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text);text-align:center;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.match-card:hover{border-color:var(--gold)}
+.match-card.selected{border-color:var(--gold);background:rgba(200,134,10,.08);color:var(--gold)}
+.match-card.correct{border-color:#2a7d4f;background:rgba(42,125,79,.06);color:#2a7d4f;pointer-events:none}
+.match-card.wrong{border-color:#f43f5e;background:#fff1f2;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.match-result{text-align:center;font-size:clamp(14px,3.5vw,16px);font-weight:700;min-height:36px;margin-top:12px}
+
+/* Mission */
+.mission-box{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.mission-box h3{font-size:clamp(13px,3.5vw,16px);color:var(--accent);font-weight:700;margin-bottom:8px}
+.mission-input-row{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.mission-input-item{display:flex;align-items:center;gap:10px}
+.mlabel{color:var(--dim);font-size:clamp(14px,3.5vw,16px);flex-shrink:0}
+.mission-input{background:#fdf6ee;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:clamp(13px,3.5vw,16px);color:var(--text);font-family:"Noto Sans KR",sans-serif;flex:1;outline:none;transition:border-color .2s}
+.mission-input:focus{border-color:var(--gold)}
+.mission-no-item{display:flex;align-items:center;gap:8px}
+.mission-no-input{background:#fdf6ee;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:clamp(13px,3.5vw,16px);color:var(--accent);font-family:"Noto Sans KR",sans-serif;width:120px;outline:none;transition:border-color .2s;font-weight:700}
+.mission-no-input:focus{border-color:var(--gold)}
+.mission-no-label{font-size:clamp(14px,3.8vw,18px);font-weight:700;color:var(--text)}
+.complete-footer{text-align:center;padding:20px 20px 48px;font-size:clamp(12px,3.2vw,14px);color:var(--dim)}
+
+@media(min-width:600px){
+  .listen-grid{grid-template-columns:repeat(4,1fr)}
+  .clue-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+
+<!-- COVER -->
+<div class="cover-section">
+  <div>
+    <div class="top-badge">ENHYPEN &middot; A2–B1 &middot; Lesson 1</div>
+    <div class="song-title">No Doubt &#128373;&#65039;</div>
+    <div class="tagline">Decode the Lyrics &middot; Become a Word Detective</div>
+    <div class="nav-pills">
+      <a class="nav-pill np1" href="#listen">&#127911; Listen</a>
+      <a class="nav-pill np2" href="#decode">&#128269; Decode</a>
+      <a class="nav-pill np3" href="#match">&#127919; Match</a>
+      <a class="nav-pill np4" href="#mission">&#128203; Report</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: 가사 -->
+<div class="section" id="listen">
+  <div class="section-label">Step 1</div>
+  <h2>&#127911; Listen &mdash; Today's Lyrics</h2>
+  <div class="content">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0" target="_blank">
+      <img src="https://img.youtube.com/vi/X3_g_oeCTZ0/sddefault.jpg" onerror="this.src='https://i.ytimg.com/vi/X3_g_oeCTZ0/hqdefault.jpg'" alt="No Doubt MV" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div class="yt-play-overlay">
+        <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-play-label">&#9654; Full MV</div>
+      </div>
+    </a>
+    <div class="yt-links">
+      <a class="yt-link-btn yt-lb" href="https://www.youtube.com/watch?v=XKZQ3wlS9aI" target="_blank">&#128221; Lyrics Video</a>
+      <a class="yt-link-btn yt-sb" href="https://www.youtube.com/shorts/f7rsNKeXYBU" target="_blank">&#127919; Highlight Shorts</a>
+    </div>
+    <p style="font-size:clamp(12px,3vw,14px);color:var(--dim)">Click each line to hear it! &#128266;</p>
+    <div class="lyric-row" onclick="speakLine(this,'낮이 됐건 밤이 됐건')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">낮이 됐건 밤이 됐건</div><div class="lyric-rom">Na-ji dwaet-geon bam-i dwaet-geon</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'의심 없이')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">의심 없이 I love you</div><div class="lyric-rom">Ui-sim eop-si &nbsp;I love you</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'넌 나의 답')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">Ain't no doubt &nbsp;넌 나의 답</div><div class="lyric-rom">Ain't no doubt &nbsp;neon na-ui dap</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'난 괜찮아')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">No worries &nbsp;난 괜찮아</div><div class="lyric-rom">No worries &nbsp;nan gwaen-cha-na</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'갈증의 낮')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">No exit &nbsp;갈증의 낮</div><div class="lyric-rom">No exit &nbsp;gal-jeung-ui nat</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'날 태워 증명해')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">날 태워 증명해 &nbsp;Baby no doubt</div><div class="lyric-rom">Nal tae-wo jeung-myeong-hae &nbsp;Baby no doubt</div></div></div>
+  </div>
+</div>
+
+<!-- SECTION 2: 리스닝 -->
+<div class="section" id="decode">
+  <div class="section-label">Step 2</div>
+  <h2>&#128066; Listening Mission</h2>
+  <a class="listen-play-btn" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0" target="_blank">&#9654; Play the MV</a>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Check each word when you hear it in the song!</p>
+  <div class="listen-grid">
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">낮</div><div class="lrom">nat</div><div class="len">daytime</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">밤</div><div class="lrom">bam</div><div class="len">night</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">나의 답</div><div class="lrom">na-ui dap</div><div class="len">my answer</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">괜찮아</div><div class="lrom">gwaen-cha-na</div><div class="len">it's okay</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">갈증</div><div class="lrom">gal-jeung</div><div class="len">thirst</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">증명해</div><div class="lrom">jeung-myeong-hae</div><div class="len">prove</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">원해</div><div class="lrom">won-hae</div><div class="len">I want</div></div>
+    <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">괴롭지만</div><div class="lrom">gwae-rop-ji-man</div><div class="len">it's painful but</div></div>
+  </div>
+  <div class="score-bar" id="listenScore">&#127942; Catch all 8 words = Master Detective!</div>
+</div>
+
+<!-- SECTION 3: 단서 -->
+<div class="section">
+  <div class="section-label">Step 3</div>
+  <h2>&#128269; Word Clues</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Find the English clue to decode the Korean!</p>
+  <div class="content">
+    <div class="clue-grid">
+      <div class="clue-card"><div class="ckr">의심없어</div><div class="crom">ui-sim eop-seo</div><div class="cen">no doubt</div></div>
+      <div class="clue-card"><div class="ckr">걱정없어</div><div class="crom">geok-jeong eop-seo</div><div class="cen">no worries</div></div>
+      <div class="clue-card"><div class="ckr">출구없어</div><div class="crom">chul-gu eop-seo</div><div class="cen">no exit</div></div>
+      <div class="clue-card"><div class="ckr">그리워</div><div class="crom">geu-ri-wo</div><div class="cen">miss you</div></div>
+      <div class="clue-card"><div class="ckr">공상</div><div class="crom">gong-sang</div><div class="cen">daydream</div></div>
+      <div class="clue-card"><div class="ckr">운명</div><div class="crom">un-myeong</div><div class="cen">fate</div></div>
+      <div class="clue-card"><div class="ckr">밀어내</div><div class="crom">mil-eo-nae</div><div class="cen">push me</div></div>
+      <div class="clue-card"><div class="ckr">기다림</div><div class="crom">gi-da-rim</div><div class="cen">waiting</div></div>
+    </div>
+    <div class="clue-ex-row">
+      <div class="clue-ex" onclick="speakKr('날 태워 증명해')"><div class="cex-emoji">&#128293;</div><div><div class="cex-kr">날 태워 증명해</div><div class="cex-rom">nal tae-wo jeung-myeong-hae</div><div class="cex-en">Burn me &mdash; prove it</div><div class="cex-note">&#128161; 증명해 = 증명하다 (to prove)</div></div></div>
+      <div class="clue-ex" onclick="speakKr('갈증의 낮')"><div class="cex-emoji">&#9728;&#65039;</div><div><div class="cex-kr">갈증의 낮</div><div class="cex-rom">gal-jeung-ui nat</div><div class="cex-en">The day I was thirsty</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: 매칭 -->
+<div class="section" id="match">
+  <div class="section-label">Step 4</div>
+  <h2>&#127919; Matching Mission!</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Click an English word, then find the matching Korean!</p>
+  <div class="match-area">
+    <div class="match-col" id="leftCol"></div>
+    <svg id="matchSvg" style="width:50px;overflow:visible;position:relative;z-index:5" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="match-col" id="rightCol"></div>
+  </div>
+  <div class="match-result" id="matchResult"></div>
+</div>
+
+<!-- SECTION 5: 미션 완료 -->
+<div class="section" id="mission" style="border-bottom:none">
+  <div class="section-label">Step 5</div>
+  <h2>&#9989; Mission Complete!</h2>
+  <p style="font-size:clamp(13px,3.5vw,16px);color:var(--dim);margin-bottom:20px">You cracked the code! &#128373;&#65039;</p>
+  <div class="mission-box">
+    <h3>&#128221; Mission 1: Write 3 Korean words you decoded!</h3>
+    <p style="font-size:clamp(11px,3vw,13px);color:var(--dim)">Write 3 Korean words from the song</p>
+    <div class="mission-input-row">
+      <div class="mission-input-item"><span class="mlabel">&#9312;</span><input class="mission-input" type="text" placeholder="Write in Korean"></div>
+      <div class="mission-input-item"><span class="mlabel">&#9313;</span><input class="mission-input" type="text" placeholder="Write in Korean"></div>
+      <div class="mission-input-item"><span class="mlabel">&#9314;</span><input class="mission-input" type="text" placeholder="Write in Korean"></div>
+    </div>
+  </div>
+  <div class="mission-box">
+    <h3>&#128266; Mission 2: Say and write 2 "No" words in Korean!</h3>
+    <p style="font-size:clamp(11px,3vw,13px);color:var(--dim)">Fill in the blank &mdash; ______ 없어</p>
+    <div class="mission-input-row" style="margin-top:12px">
+      <div class="mission-no-item"><span class="mlabel">&#9312;</span><input class="mission-no-input" type="text" placeholder="______"><span class="mission-no-label">없어</span></div>
+      <div class="mission-no-item"><span class="mlabel">&#9313;</span><input class="mission-no-input" type="text" placeholder="______"><span class="mission-no-label">없어</span></div>
+    </div>
+  </div>
+</div>
+<div class="complete-footer">&#127919; Detective mission complete! More codes to crack next time &#128373;&#65039;</div>
+
+<script>
+window.addEventListener("scroll",function(){
+  var h=document.documentElement;
+  var pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById("progBar").style.width=pct+"%";
+});
+function speakKr(t){var u=new SpeechSynthesisUtterance(t);u.lang="ko-KR";u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);}
+function speakLine(el,t){document.querySelectorAll(".lyric-row").forEach(function(l){l.classList.remove("played");});el.classList.add("played");speakKr(t);}
+var checkCount=0;
+function toggleCheck(card){
+  var isChecked=card.classList.contains("checked");
+  card.classList.toggle("checked");
+  var box=card.querySelector(".lcheck");
+  if(isChecked){box.innerHTML="&#9634;";checkCount=Math.max(0,checkCount-1);}
+  else{box.innerHTML="&#9989;";checkCount++;}
+  var score=document.getElementById("listenScore");
+  if(checkCount===8){score.innerHTML="&#127942; <strong style='color:var(--gold)'>Master Detective! Perfect 8/8!</strong>";}
+  else if(checkCount>0){score.textContent=checkCount+"/8 words heard! Keep going...";}
+  else{score.innerHTML="&#127942; Catch all 8 words = Master Detective!";}
+}
+// ── Matching quiz (bom_lesson2 structure) ──
+var pairs=[
+  {id:0,left:"No doubt",right:"의심 없어",sentence:"의심 없어"},
+  {id:1,left:"I want you",right:"널 원해",sentence:"널 원해"},
+  {id:2,left:"No exit",right:"출구 없어",sentence:"출구 없어"},
+  {id:3,left:"Daytime",right:"낮",sentence:"낮"},
+  {id:4,left:"It's so painful but",right:"괴롭지만",sentence:"괴롭지만"},
+  {id:5,left:"Prove",right:"증명해",sentence:"증명해"}
+];
+var selectedLeft=null;var matched=new Set();
+
+function shuffle(arr){return arr.slice().sort(function(){return Math.random()-.5;});}
+
+function initMatch(){
+  selectedLeft=null;matched=new Set();
+  var leftCol=document.getElementById("leftCol");
+  var rightCol=document.getElementById("rightCol");
+  var svg=document.getElementById("matchSvg");
+  var result=document.getElementById("matchResult");
+  leftCol.innerHTML="";rightCol.innerHTML="";svg.innerHTML="";result.textContent="";
+  var leftOrder=shuffle(pairs);
+  var rightOrder=shuffle(pairs);
+  leftOrder.forEach(function(p){
+    var card=document.createElement("div");
+    card.className="match-card";card.textContent=p.left;card.dataset.id=p.id;
+    card.onclick=function(){selectLeft(card);};
+    leftCol.appendChild(card);
+  });
+  rightOrder.forEach(function(p){
+    var card=document.createElement("div");
+    card.className="match-card";card.textContent=p.right;card.dataset.id=p.id;
+    card.onclick=function(){selectRight(card);};
+    rightCol.appendChild(card);
+  });
+}
+
+function selectLeft(card){
+  if(card.classList.contains("correct"))return;
+  document.querySelectorAll("#leftCol .match-card").forEach(function(c){c.classList.remove("selected");});
+  card.classList.add("selected");selectedLeft=card;
+}
+
+function selectRight(card){
+  if(!selectedLeft)return;
+  if(card.classList.contains("correct"))return;
+  var leftId=parseInt(selectedLeft.dataset.id);
+  var rightId=parseInt(card.dataset.id);
+  if(leftId===rightId){
+    selectedLeft.classList.remove("selected");selectedLeft.classList.add("correct");
+    card.classList.add("correct");matched.add(leftId);
+    drawLine(selectedLeft,card);
+    speakKr(pairs.find(function(p){return p.id===leftId;}).sentence);
+    document.getElementById("matchResult").innerHTML="<span style='color:#2a7d4f'>&#127881; Correct! "+pairs.find(function(p){return p.id===leftId;}).right+"</span>";
+    selectedLeft=null;
+    if(matched.size===pairs.length){
+      setTimeout(function(){
+        document.getElementById("matchResult").innerHTML="<span style='color:var(--gold)'>&#127942; Perfect! All matched! &#128373;&#65039; <button onclick='initMatch()' style='margin-left:10px;background:none;border:1.5px solid var(--gold);color:var(--gold);border-radius:99px;padding:4px 14px;cursor:pointer;font-family:inherit;font-weight:700'>Try again &#8635;</button></span>";
+      },1200);
+    }
+  } else {
+    card.classList.add("wrong");
+    document.getElementById("matchResult").innerHTML="<span style='color:#f43f5e'>&#10060; Try again!</span>";
+    setTimeout(function(){card.classList.remove("wrong");},500);
+  }
+}
+
+function drawLine(leftCard,rightCard){
+  var svg=document.getElementById("matchSvg");
+  var svgRect=svg.getBoundingClientRect();
+  var lRect=leftCard.getBoundingClientRect();
+  var rRect=rightCard.getBoundingClientRect();
+  var x1=0;var y1=lRect.top+lRect.height/2-svgRect.top;
+  var x2=svgRect.width;var y2=rRect.top+rRect.height/2-svgRect.top;
+  var line=document.createElementNS("http://www.w3.org/2000/svg","path");
+  var cx=(x1+x2)/2;
+  line.setAttribute("d","M"+x1+","+y1+" C"+cx+","+y1+" "+cx+","+y2+" "+x2+","+y2);
+  line.setAttribute("stroke","#2a7d4f");line.setAttribute("stroke-width","3");line.setAttribute("fill","none");
+  line.setAttribute("stroke-dasharray","6,3");
+  svg.appendChild(line);
+}
+
+initMatch();
+</script>
+</body>
+</html>

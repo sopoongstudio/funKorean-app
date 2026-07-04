@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello Future — NCT Dream | Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #3ECFB2;
+    --mint-light: #E6FAF6;
+    --mint-mid: #B2EDE3;
+    --navy: #1C2B5E;
+    --purple: #7C6FCD;
+    --purple-light: #EEEAFF;
+    --gold: #F5A623;
+    --gold-light: #FFF4DC;
+    --coral: #F47B7B;
+    --coral-light: #FFEAEA;
+    --pastel-yellow: #FFF9D6;
+    --pastel-mint: #D6F5EE;
+    --pastel-lavender: #EDE9FF;
+    --pastel-peach: #FFE8DC;
+    --pastel-blue: #D6EEFF;
+    --gray: #6B7280;
+    --light: #F5F7FA;
+    --card-bg: #FFFFFF;
+    --text: #1C2B5E;
+    --radius: 16px;
+    --shadow: 0 2px 16px rgba(28,43,94,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+    background: #F5F7FA;
+    min-height: 100vh;
+    color: var(--text);
+    padding-bottom: 60px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 48px 24px 40px;
+    color: var(--navy);
+    background: white;
+    border-bottom: 1px solid #E8ECF4;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--mint-light);
+    border: 1.5px solid var(--mint);
+    color: var(--mint);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.2rem, 7vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+    color: var(--navy);
+  }
+  .hero h1 span { color: var(--mint); }
+  .hero-sub {
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .hero-chip {
+    background: var(--light);
+    border: 1.5px solid #DDE3EF;
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .hero-chip:hover {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+  }
+
+  /* ── CONTENT WRAPPER ── */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: clamp(24px, 5vw, 40px);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .section-title {
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── LYRICS CARD ── */
+  .lyrics-section { background: var(--navy); color: white; border-radius: 24px; }
+  .lyrics-section .section-title { color: rgba(255,255,255,0.8); font-size: 1rem; }
+
+  .yt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .yt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .yt-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+  .yt-btn.full { background: #FF0000; color: white; }
+  .yt-btn.shorts { background: var(--mint); color: var(--navy); }
+
+  .lyric-line {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 10px 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .lyric-line:last-child { border-bottom: none; }
+
+  .tts-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .tts-btn:hover { background: var(--mint); color: var(--navy); }
+
+  .lyric-ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.4;
+    color: white;
+  }
+  .lyric-rom {
+    font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+    color: var(--mint);
+    margin-top: 3px;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── FULL LYRICS ── */
+  .full-lyrics-section { background: var(--light); }
+  .lyric-row {
+    padding: 16px 0;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .lyric-row:last-child { border-bottom: none; }
+  .lr-ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(1.1rem, 3.2vw, 1.3rem);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .lr-rom {
+    font-size: 0.82rem;
+    color: var(--mint);
+    font-style: italic;
+    margin-bottom: 3px;
+  }
+  .lr-en {
+    font-size: 0.88rem;
+    color: var(--gray);
+  }
+
+  /* ── KEY WORDS ── */
+  .words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .word-card {
+    border-radius: 16px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .word-card:nth-child(1) { background: var(--pastel-yellow); }
+  .word-card:nth-child(2) { background: var(--pastel-mint); }
+  .word-card:nth-child(3) { background: var(--pastel-peach); }
+  .word-card:nth-child(4) { background: var(--pastel-lavender); }
+  .word-card:nth-child(5) { background: var(--pastel-blue); }
+  .word-card:nth-child(6) { background: var(--pastel-yellow); }
+  .word-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(28,43,94,0.12); }
+  .word-emoji { font-size: 1.8rem; margin-bottom: 2px; }
+  .word-ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--navy);
+  }
+  .word-rom { font-size: 0.78rem; color: var(--mint); font-style: italic; }
+  .word-en { font-size: 0.85rem; color: var(--gray); font-weight: 500; }
+  .word-extra { font-size: 0.75rem; color: var(--purple); margin-top: 2px; }
+
+  /* ── PATTERN DRILL ── */
+  .pattern-intro {
+    background: var(--pastel-blue);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .pattern-block {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border: 1.5px solid #E5E7EB;
+  }
+  .pattern-header {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--navy);
+    color: white;
+  }
+  .word-tts {
+    align-self: flex-end;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--navy);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    background: white;
+    border: 1.5px solid #DDE3EF;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .word-tts:hover { background: var(--mint-light); }
+  .pattern-emoji-big { font-size: 1.6rem; text-align: center; }
+  .pattern-ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    font-weight: 900;
+  }
+  .pattern-rom { font-size: 0.78rem; color: var(--mint); margin-top: 2px; }
+  .pattern-en { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .pattern-examples { padding: 14px 18px; background: var(--light); }
+  .pattern-ex {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #E5E7EB;
+    font-size: 0.87rem;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .pattern-ex:last-child { border-bottom: none; }
+  .ex-num {
+    background: var(--mint);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── FILL IN THE BLANK ── */
+  .word-bank {
+    background: var(--pastel-mint);
+    border: 2px dashed var(--mint);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .word-bank-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .word-bank-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wb-word {
+    background: white;
+    border: 1.5px solid var(--mint);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--navy);
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .wb-word.used { opacity: 0.35; cursor: not-allowed; }
+  .wb-word.wb-selected { outline: 2.5px solid var(--navy); background: #E5E7EB; }
+  .wb-word:hover:not(.used) { background: var(--mint-light); }
+
+  .blank-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--light);
+    margin-bottom: 12px;
+    transition: background 0.2s;
+  }
+  .blank-num {
+    background: var(--navy);
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .blank-content { flex: 1; }
+  .blank-sentence {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .blank-hint {
+    font-size: 0.8rem;
+    color: var(--gray);
+  }
+  .blank-input {
+    display: inline-block;
+    min-width: 120px;
+    min-height: 34px;
+    border: none;
+    border-bottom: 2.5px solid var(--mint);
+    background: transparent;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    outline: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    transition: border-color 0.2s, background 0.15s;
+    border-radius: 0;
+    line-height: 1.4;
+  }
+  .blank-input:empty::before { content: '　　　　'; opacity: 0; }
+  .blank-input.selected { background: var(--mint-light); border-bottom-color: var(--navy); }
+  .blank-input.correct { border-color: #10B981; color: #10B981; }
+  .blank-input.wrong { border-color: var(--coral); color: var(--coral); }
+
+  .check-btn {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .check-btn:hover { background: var(--mint); color: var(--navy); transform: translateY(-2px); }
+
+  .reset-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    background: transparent;
+    color: var(--gray);
+    border: 2px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--gray); }
+
+  .score-badge {
+    display: none;
+    text-align: center;
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .score-badge.show { display: block; }
+  .score-badge.perfect { background: #D1FAE5; color: #065F46; }
+  .score-badge.good { background: var(--gold-light); color: #92400E; }
+  .score-badge.try-again { background: var(--coral-light); color: #9F1239; }
+
+  /* ── SAY IT 3 TIMES ── */
+  .say-block {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border: 1.5px solid #E5E7EB;
+  }
+  .say-header {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--navy);
+    color: white;
+  }
+  .say-tts {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .say-tts:hover { background: var(--mint); color: var(--navy); }
+  .say-repetitions { padding: 12px 18px; background: var(--light); display: flex; gap: 8px; }
+  .rep-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 6px;
+    border: 2px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray);
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .rep-btn.done { background: var(--mint); border-color: var(--mint); color: var(--navy); }
+
+  /* ── HOMEWORK ── */
+  .homework-card {
+    background: linear-gradient(135deg, var(--purple), #4F46E5);
+    border-radius: 16px;
+    padding: 18px 24px;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 16px;
+  }
+  .hw-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.92rem;
+    opacity: 0.95;
+    line-height: 1.5;
+  }
+  .hw-en { font-size: 0.82rem; opacity: 0.72; }
+
+  /* ── FOOTER ── */
+
+  .hero-chip-story {
+    background: #FF6B6B;
+    border-color: #FF6B6B;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hero-chip-story:hover { background: #e85d5d; border-color: #e85d5d; }
+
+  .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .back-to-top:hover { background: var(--mint); color: var(--navy); transform: translateY(-2px); }
+
+  .lesson-footer { text-align: center; padding: 28px 24px 40px; }
+
+  @media (max-width: 480px) {
+    .words-grid { grid-template-columns: 1fr 1fr; }
+    .yt-buttons { flex-direction: column; }
+    .yt-btn { justify-content: center; }
+    .say-header { grid-template-columns: 36px 1fr auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">NCT Dream · A1 · Lesson 1</div>
+  <h1>Hello <span>Future</span> 🌟</h1>
+  <p class="hero-sub">NCT Dream (엔시티 드림) 노래로 배우는 한국어 🎵</p>
+  <div class="hero-chips">
+    <a class="hero-chip" href="#section-lyrics">🎵 노래 듣기</a>
+    <a class="hero-chip" href="#section-words">📖✏️ 새 단어 &amp; 패턴 드릴</a>
+    <a class="hero-chip" href="#section-blank">📝 빈칸 채우기</a>
+    <a href="nct-lesson1-story.html" class="hero-chip hero-chip-story">📚 미니동화</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SECTION 1: LYRICS + PRONUNCIATION -->
+  <div class="section-card lyrics-section" id="section-lyrics">
+    <div class="section-title">🎤 가사 + 발음 가이드 &nbsp;·&nbsp; Lyrics + Pronunciation</div>
+
+    <div class="yt-buttons">
+      <a class="yt-btn full" href="https://www.youtube.com/watch?v=MXqUMtAP1x4" target="_blank">
+        ▶ Full MV 열기 &nbsp;·&nbsp; Open on YouTube
+      </a>
+      <a class="yt-btn shorts" href="https://www.youtube.com/shorts/MXqUMtAP1x4" target="_blank">
+        🎯 후렴구 영상 &nbsp;·&nbsp; Watch the chorus
+      </a>
+    </div>
+
+    <div class="lyric-line">
+      <button class="tts-btn" onclick="speak('기다렸어 어서 와')">🔊</button>
+      <div>
+        <div class="lyric-ko">기다렸어 &nbsp; 어서 와</div>
+        <div class="lyric-rom">Gidarryeosseo &nbsp; eoseo wa</div>
+      </div>
+    </div>
+    <div class="lyric-line">
+      <button class="tts-btn" onclick="speak('어디든 위아 커밍 투게더')">🔊</button>
+      <div>
+        <div class="lyric-ko">어디든 &nbsp; we're coming together</div>
+        <div class="lyric-rom">Eo-di-deun we're coming together</div>
+      </div>
+    </div>
+    <div class="lyric-line">
+      <button class="tts-btn" onclick="speak('아무 걱정 하지 마')">🔊</button>
+      <div>
+        <div class="lyric-ko">아무 걱정 하지 마</div>
+        <div class="lyric-rom">A-mu geok-jeong ha-ji ma</div>
+      </div>
+    </div>
+    <div class="lyric-line">
+      <button class="tts-btn" onclick="speak('잘 될 거야 헬로 퓨처')">🔊</button>
+      <div>
+        <div class="lyric-ko">잘 될 거야 &nbsp; Hello Future</div>
+        <div class="lyric-rom">Jal doel geo-ya &nbsp; Hello Future</div>
+      </div>
+    </div>
+    <div class="lyric-line">
+      <button class="tts-btn" onclick="speak('너를 만나 같이 더 빛나')">🔊</button>
+      <div>
+        <div class="lyric-ko">너를 만나 &nbsp; 같이 더 빛나</div>
+        <div class="lyric-rom">Neo-reul man-na &nbsp; ga-chi deo bit-na</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: KEY WORDS -->
+  <div class="section-card" id="section-words">
+    <div class="section-title" style="color: var(--navy);">📚 Key Words</div>
+    <div class="words-grid">
+      <div class="word-card">
+        <div class="word-emoji">⏳</div>
+        <div class="word-ko">기다렸어</div>
+        <div class="word-rom">Gidarryeosseo</div>
+        <div class="word-en">I've been waiting</div>
+        <button class="word-tts" onclick="speak('기다렸어')">🔊</button>
+      </div>
+      <div class="word-card">
+        <div class="word-emoji">🙌</div>
+        <div class="word-ko">어서 와</div>
+        <div class="word-rom">Eoseo wa</div>
+        <div class="word-en">Come on in!</div>
+        <button class="word-tts" onclick="speak('어서 와')">🔊</button>
+      </div>
+      <div class="word-card">
+        <div class="word-emoji">😟</div>
+        <div class="word-ko">걱정</div>
+        <div class="word-rom">Geokjeong</div>
+        <div class="word-en">Worry</div>
+        <button class="word-tts" onclick="speak('걱정')">🔊</button>
+      </div>
+      <div class="word-card">
+        <div class="word-emoji">✨</div>
+        <div class="word-ko">빛나다</div>
+        <div class="word-rom">Bitnada</div>
+        <div class="word-en">To shine / Glow</div>
+        <button class="word-tts" onclick="speak('빛나다')">🔊</button>
+      </div>
+      <div class="word-card">
+        <div class="word-emoji">🤝</div>
+        <div class="word-ko">함께</div>
+        <div class="word-rom">Hamkke</div>
+        <div class="word-en">Together</div>
+        <button class="word-tts" onclick="speak('함께')">🔊</button>
+      </div>
+      <div class="word-card">
+        <div class="word-emoji">🔭</div>
+        <div class="word-ko">미래</div>
+        <div class="word-rom">Mirae — Future</div>
+        <div class="word-en">Future</div>
+        <div class="word-extra">과거 Past · 현재 Present</div>
+        <button class="word-tts" onclick="speak('미래')">🔊</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PATTERN DRILL -->
+  <div class="section-card">
+    <div class="section-title" style="color: var(--navy);">✏️ 패턴 드릴 &nbsp;·&nbsp; Pattern Drill</div>
+    <div class="pattern-intro">
+      💬 친구를 격려하거나 응원할 때 쓰는 표현이에요! &nbsp;·&nbsp; Expressions to encourage & cheer up a friend!
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-header">
+        <div class="pattern-emoji-big">😌</div>
+        <div>
+          <div class="pattern-ko">아무 걱정 하지 마!</div>
+          <div class="pattern-rom">A-mu geok-jeong ha-ji ma</div>
+          <div class="pattern-en">Don't worry at all!</div>
+        </div>
+        <button class="say-tts" onclick="speak('아무 걱정 하지 마')">🔊</button>
+      </div>
+      <div class="pattern-examples">
+        <div class="pattern-ex"><div class="ex-num">①</div><div>시험 전날 친구가 너무 긴장할 때<br><span style="color:#9CA3AF">Your friend is super nervous before an exam</span></div></div>
+        <div class="pattern-ex"><div class="ex-num">②</div><div>친구가 발표가 무섭다고 할 때<br><span style="color:#9CA3AF">Your friend is scared of a presentation</span></div></div>
+      </div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-header">
+        <div class="pattern-emoji-big">💪</div>
+        <div>
+          <div class="pattern-ko">잘 될 거야!</div>
+          <div class="pattern-rom">Jal doel geo-ya</div>
+          <div class="pattern-en">It'll all work out!</div>
+        </div>
+        <button class="say-tts" onclick="speak('잘 될 거야')">🔊</button>
+      </div>
+      <div class="pattern-examples">
+        <div class="pattern-ex"><div class="ex-num">①</div><div>친구가 오디션 결과를 걱정할 때<br><span style="color:#9CA3AF">Your friend is worried about audition results</span></div></div>
+        <div class="pattern-ex"><div class="ex-num">②</div><div>친구가 실수하고 자책할 때<br><span style="color:#9CA3AF">Your friend is beating themselves up after a mistake</span></div></div>
+      </div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-header">
+        <div class="pattern-emoji-big">🙌</div>
+        <div>
+          <div class="pattern-ko">어서 와!</div>
+          <div class="pattern-rom">Eoseo wa</div>
+          <div class="pattern-en">Come on in!</div>
+        </div>
+        <button class="say-tts" onclick="speak('어서 와')">🔊</button>
+      </div>
+      <div class="pattern-examples">
+        <div class="pattern-ex"><div class="ex-num">①</div><div>오랫동안 못 본 친구가 드디어 올 때<br><span style="color:#9CA3AF">A friend you haven't seen in ages is finally coming</span></div></div>
+        <div class="pattern-ex"><div class="ex-num">②</div><div>파티에 친구를 반갑게 맞이할 때<br><span style="color:#9CA3AF">Welcoming a friend warmly at a party</span></div></div>
+      </div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-header">
+        <div class="pattern-emoji-big">⏳</div>
+        <div>
+          <div class="pattern-ko">기다렸어!</div>
+          <div class="pattern-rom">Gidarryeosseo</div>
+          <div class="pattern-en">I've been waiting for you!</div>
+        </div>
+        <button class="say-tts" onclick="speak('기다렸어')">🔊</button>
+      </div>
+      <div class="pattern-examples">
+        <div class="pattern-ex"><div class="ex-num">①</div><div>약속 장소에서 친구를 드디어 만났을 때<br><span style="color:#9CA3AF">You finally meet your friend at the meeting spot</span></div></div>
+        <div class="pattern-ex"><div class="ex-num">②</div><div>새 앨범을 오래 기다렸다가 발매될 때<br><span style="color:#9CA3AF">An album you've waited forever finally drops</span></div></div>
+      </div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-header">
+        <div class="pattern-emoji-big">✨</div>
+        <div>
+          <div class="pattern-ko">같이 빛나!</div>
+          <div class="pattern-rom">Ga-chi bit-na</div>
+          <div class="pattern-en">Let's shine together!</div>
+        </div>
+        <button class="say-tts" onclick="speak('같이 빛나')">🔊</button>
+      </div>
+      <div class="pattern-examples">
+        <div class="pattern-ex"><div class="ex-num">①</div><div>무대 전 긴장한 친구에게 용기를 줄 때<br><span style="color:#9CA3AF">Giving courage to a nervous friend before the stage</span></div></div>
+        <div class="pattern-ex"><div class="ex-num">②</div><div>팀 프로젝트 발표 직전 서로 응원할 때<br><span style="color:#9CA3AF">Cheering each other on before a team presentation</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: FILL IN THE BLANK -->
+  <div class="section-card" id="section-blank">
+    <div class="section-title" style="color: var(--navy);">📝 빈칸 채우기 &nbsp;·&nbsp; Fill in the Blank</div>
+
+    <div class="word-bank">
+      <div class="word-bank-label">📦 Word Bank</div>
+      <div class="word-bank-words" id="wordBankContainer"></div>
+    </div>
+
+    <div class="blank-item" id="q1">
+      <div class="blank-num">1</div>
+      <div class="blank-content">
+        <div class="blank-sentence">아무 <button class="blank-input" id="b1" data-answer="걱정"></button> 하지 마!</div>
+        <div class="blank-hint">💡 Don't worry at all!</div>
+      </div>
+    </div>
+
+    <div class="blank-item" id="q2">
+      <div class="blank-num">2</div>
+      <div class="blank-content">
+        <div class="blank-sentence"><button class="blank-input" id="b2" data-answer="기다렸어"></button> !</div>
+        <div class="blank-hint">💡 I've been waiting!</div>
+      </div>
+    </div>
+
+    <div class="blank-item" id="q3">
+      <div class="blank-num">3</div>
+      <div class="blank-content">
+        <div class="blank-sentence">같이 더 <button class="blank-input" id="b3" data-answer="빛나"></button> yeah yeah</div>
+        <div class="blank-hint">💡 Shine together</div>
+      </div>
+    </div>
+
+    <div class="blank-item" id="q4">
+      <div class="blank-num">4</div>
+      <div class="blank-content">
+        <div class="blank-sentence">잘 <button class="blank-input" id="b4" data-answer="될 거야"></button> !</div>
+        <div class="blank-hint">💡 It'll work out!</div>
+      </div>
+    </div>
+
+    <div class="blank-item" id="q5">
+      <div class="blank-num">5</div>
+      <div class="blank-content">
+        <div class="blank-sentence"><button class="blank-input" id="b5" data-answer="어서 와"></button></div>
+        <div class="blank-hint">💡 Come on in!</div>
+      </div>
+    </div>
+
+    <button class="check-btn" onclick="checkAnswers()">✅ 정답 확인 · Check Answers</button>
+    <button class="reset-btn" onclick="resetQuiz()">🔄 다시 하기 · Try Again</button>
+    <div class="score-badge" id="scoreBadge"></div>
+  </div>
+
+  <!-- SECTION 6: SAY IT 3 TIMES -->
+  <div class="section-card">
+    <div class="section-title" style="color: var(--navy);">🗣️ 3번 말해봐요! &nbsp;·&nbsp; Say It 3 Times!</div>
+    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 20px;">크게, 자신 있게! &nbsp; Loud & proud! &nbsp;· &nbsp;각 버튼을 눌러 체크하세요.</p>
+
+    <div class="say-block">
+      <div class="say-header">
+        <div class="pattern-emoji-big">😌</div>
+        <div>
+          <div class="pattern-ko">아무 걱정 하지 마!</div>
+          <div class="pattern-en" style="opacity:0.6; font-size:0.8rem; margin-top:2px;">Don't worry at all!</div>
+        </div>
+        <button class="say-tts" onclick="speak('아무 걱정 하지 마')">🔊</button>
+      </div>
+      <div class="say-repetitions">
+        <button class="rep-btn" onclick="toggleRep(this)">1번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">2번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">3번</button>
+      </div>
+    </div>
+
+    <div class="say-block">
+      <div class="say-header">
+        <div class="pattern-emoji-big">💪</div>
+        <div>
+          <div class="pattern-ko">잘 될 거야!</div>
+          <div class="pattern-en" style="opacity:0.6; font-size:0.8rem; margin-top:2px;">It'll all work out!</div>
+        </div>
+        <button class="say-tts" onclick="speak('잘 될 거야')">🔊</button>
+      </div>
+      <div class="say-repetitions">
+        <button class="rep-btn" onclick="toggleRep(this)">1번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">2번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">3번</button>
+      </div>
+    </div>
+
+    <div class="say-block">
+      <div class="say-header">
+        <div class="pattern-emoji-big">✨</div>
+        <div>
+          <div class="pattern-ko">같이 빛나!</div>
+          <div class="pattern-en" style="opacity:0.6; font-size:0.8rem; margin-top:2px;">Let's shine together!</div>
+        </div>
+        <button class="say-tts" onclick="speak('같이 빛나')">🔊</button>
+      </div>
+      <div class="say-repetitions">
+        <button class="rep-btn" onclick="toggleRep(this)">1번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">2번</button>
+        <button class="rep-btn" onclick="toggleRep(this)">3번</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="homework-card">
+    <div class="hw-text">📌 오늘 배운 표현 3개를 친구나 가족에게 써보세요!</div>
+    <div class="hw-en">Use today's 3 expressions with a friend or family! 🌟</div>
+  </div>
+
+</div><!-- /content -->
+
+<div class="lesson-footer">
+  <button class="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆ 처음으로</button>
+</div>
+
+<script>
+// ── TTS ──
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ko-KR';
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+// ── WORD BANK: SHUFFLE & RENDER ──
+const WORDS = ['걱정', '기다렸어', '빛나', '될 거야', '어서 와'];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderWordBank() {
+  const container = document.getElementById('wordBankContainer');
+  container.innerHTML = '';
+  shuffle(WORDS).forEach(word => {
+    const btn = document.createElement('button');
+    btn.className = 'wb-word';
+    btn.id = 'wb-' + word;
+    btn.textContent = word;
+    btn.addEventListener('click', () => selectWord(word));
+    container.appendChild(btn);
+  });
+}
+
+// ── FILL IN THE BLANK ──
+let selectedWord = null;
+let selectedBlank = null;
+
+function selectWord(word) {
+  const el = document.getElementById('wb-' + word);
+  if (!el || el.classList.contains('used')) return;
+
+  // deselect previous word
+  document.querySelectorAll('.wb-word').forEach(e => e.classList.remove('wb-selected'));
+  el.classList.add('wb-selected');
+  selectedWord = word;
+
+  // if a blank is already selected, fill it immediately
+  if (selectedBlank) {
+    fillBlank(selectedBlank);
+  }
+}
+
+function selectBlank(id) {
+  // deselect previous blank
+  document.querySelectorAll('.blank-input').forEach(e => e.classList.remove('selected'));
+  selectedBlank = id;
+  const el = document.getElementById(id);
+  if (el) el.classList.add('selected');
+
+  // if a word is already selected, fill immediately
+  if (selectedWord) {
+    fillBlank(id);
+  }
+}
+
+function fillBlank(id) {
+  if (!selectedWord || !selectedBlank) return;
+  const blank = document.getElementById(id);
+  if (!blank) return;
+
+  // return previous word to bank if this blank was already filled
+  const prev = blank.getAttribute('data-filled');
+  if (prev) {
+    const prevEl = document.getElementById('wb-' + prev);
+    if (prevEl) { prevEl.classList.remove('used'); }
+  }
+
+  blank.textContent = selectedWord;
+  blank.setAttribute('data-filled', selectedWord);
+  blank.classList.remove('correct', 'wrong', 'selected');
+
+  const wbEl = document.getElementById('wb-' + selectedWord);
+  if (wbEl) { wbEl.classList.remove('wb-selected'); wbEl.classList.add('used'); }
+
+  selectedWord = null;
+  selectedBlank = null;
+}
+
+function checkAnswers() {
+  const blanks = ['b1','b2','b3','b4','b5'];
+  let correct = 0;
+  blanks.forEach(id => {
+    const el = document.getElementById(id);
+    const filled = (el.textContent || '').trim();
+    const answer = el.getAttribute('data-answer');
+    if (!filled) { el.classList.remove('correct','wrong'); return; }
+    if (filled === answer) {
+      el.classList.add('correct'); el.classList.remove('wrong'); correct++;
+    } else {
+      el.classList.add('wrong'); el.classList.remove('correct');
+    }
+  });
+  const badge = document.getElementById('scoreBadge');
+  badge.classList.add('show');
+  if (correct === 5) {
+    badge.className = 'score-badge show perfect';
+    badge.textContent = '🎉 완벽해요! 5/5 정답! Perfect!';
+  } else if (correct >= 3) {
+    badge.className = 'score-badge show good';
+    badge.textContent = `👍 잘했어요! ${correct}/5 정답! Good job!`;
+  } else {
+    badge.className = 'score-badge show try-again';
+    badge.textContent = `💪 다시 해봐요! ${correct}/5 정답. Keep trying!`;
+  }
+}
+
+function resetQuiz() {
+  ['b1','b2','b3','b4','b5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = '';
+    el.removeAttribute('data-filled');
+    el.classList.remove('correct','wrong','selected');
+  });
+  document.getElementById('scoreBadge').className = 'score-badge';
+  document.getElementById('scoreBadge').textContent = '';
+  selectedWord = null;
+  selectedBlank = null;
+  renderWordBank();
+}
+
+// ── SAY IT 3 TIMES ──
+function toggleRep(btn) { btn.classList.toggle('done'); }
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderWordBank();
+
+  // attach blank click/touch listeners
+  ['b1','b2','b3','b4','b5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('click', () => selectBlank(id));
+  });
+});
+</script>
+</body>
+</html>

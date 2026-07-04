@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Doubt Lesson 3 | ENHYPEN</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f7f0;--card:#ffffff;
+  --accent:#1a5c35;--accent2:#2d8653;
+  --green:#1a5c35;--green2:#2d8653;--green3:#4caf50;
+  --gold:#b8860a;
+  --text:#0d2b1a;--dim:#4a7a5a;--light:#7ab89a;--border:#b8d8c0;
+  --shadow:0 4px 20px rgba(26,92,53,.07);
+}
+body{background:var(--bg);font-family:"Noto Sans KR","Outfit",sans-serif;color:var(--text);min-height:100vh;}
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--green),var(--green2),var(--gold));transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(26,92,53,.1);max-width:880px;margin:0 auto}
+h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.content{display:flex;flex-direction:column;gap:14px}
+.section-label{font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--green2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+
+/* COVER */
+.cover-section{padding:36px 20px 28px;text-align:center;background:linear-gradient(160deg,#c8e6d4,#f0f7f0)}
+.cover-section>*{max-width:600px;margin-left:auto;margin-right:auto}
+.top-badge{display:inline-block;font-family:"Outfit";font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--green);border-radius:99px;padding:4px 16px;margin-bottom:14px}
+.song-title{font-family:"Outfit";font-size:clamp(38px,11vw,68px);font-weight:800;color:var(--text);line-height:1;margin-bottom:8px}
+.tagline{font-size:clamp(12px,3vw,15px);color:var(--dim);margin-bottom:20px;line-height:1.6}
+.nav-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.nav-pill{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:99px;font-size:clamp(12px,3vw,14px);font-weight:600;text-decoration:none;border:2px solid;transition:all .2s;background:none;cursor:pointer;font-family:"Noto Sans KR","Outfit",sans-serif;white-space:nowrap}
+.np1{border-color:var(--green);color:var(--green)}.np1:hover{background:rgba(26,92,53,.08)}
+.np2{border-color:var(--gold);color:var(--gold)}.np2:hover{background:rgba(184,134,10,.08)}
+.np3{border-color:#7c5cbf;color:#7c5cbf}.np3:hover{background:rgba(124,92,191,.08)}
+
+/* YT */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid var(--border);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block;transition:border-color .2s;box-shadow:var(--shadow)}
+.yt-thumb-card:hover{border-color:var(--green)}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.35)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:13px;font-weight:600}
+.yt-links{display:flex;gap:10px;margin-top:10px}
+.yt-link-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-size:clamp(12px,3.2vw,14px);font-weight:600;text-decoration:none;border:1.5px solid;transition:all .2s;text-align:center}
+.yt-lb{border-color:var(--border);color:var(--dim);background:rgba(255,255,255,.6)}.yt-lb:hover{border-color:var(--green);color:var(--green)}
+.yt-sb{border-color:rgba(26,92,53,.3);color:var(--green);background:rgba(26,92,53,.05)}.yt-sb:hover{background:rgba(26,92,53,.12)}
+
+/* Lyrics full */
+.lyric-block{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.lyric-block:hover{border-color:var(--green);background:rgba(26,92,53,.03)}
+.lyric-block.played{border-color:var(--green2)}
+.lyric-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim);margin-top:4px}
+.lyric-kr{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--text);margin-bottom:2px}
+.lyric-block-group{background:rgba(26,92,53,.04);border:1.5px solid var(--border);border-radius:14px;padding:14px}
+.lyric-highlight{color:var(--green2);font-weight:800}
+
+/* Grammar */
+.grammar-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(26,92,53,.08);border:1.5px solid rgba(26,92,53,.2);border-radius:99px;padding:5px 16px;font-size:clamp(11px,2.8vw,13px);font-weight:700;color:var(--green);margin-bottom:14px}
+.grammar-rule{background:linear-gradient(135deg,rgba(26,92,53,.08),rgba(26,92,53,.04));border:2px solid rgba(26,92,53,.2);border-radius:14px;padding:16px;margin-bottom:14px;text-align:center}
+.grammar-rule-text{font-size:clamp(16px,4.5vw,22px);font-weight:800;color:var(--green)}
+.grammar-rule-en{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:4px}
+.grammar-tip{font-size:clamp(14px,3.5vw,16px);color:#2d5a3d;background:rgba(26,92,53,.06);border-left:4px solid var(--green2);border-radius:0 10px 10px 0;padding:12px 16px;margin-top:4px;font-weight:500}
+.grammar-cards{display:grid;grid-template-columns:repeat(1,1fr);gap:10px}
+.grammar-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.grammar-card:hover{border-color:var(--green)}
+.grammar-card-tag{font-size:clamp(10px,2.3vw,11px);color:var(--dim);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.grammar-card-kr{font-size:clamp(15px,4vw,19px);font-weight:700;color:var(--text);margin-bottom:3px}
+.grammar-card-en{font-size:clamp(11px,2.8vw,13px);color:var(--green2);font-weight:600;margin-bottom:3px}
+.grammar-card-casual{font-size:clamp(14px,3.5vw,16px);color:var(--text);font-weight:500}
+
+/* Drill */
+.drill-box{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.drill-q{font-size:clamp(15px,4vw,17px);font-weight:700;color:var(--text);margin-bottom:6px}
+.drill-hint{font-size:clamp(13px,3.2vw,15px);color:var(--dim);margin-bottom:8px;font-style:italic}
+.drill-input-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%}
+.drill-input{background:#f0f7f0;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;font-size:clamp(13px,3.5vw,16px);color:var(--text);font-family:"Noto Sans KR",sans-serif;flex:1;min-width:0;width:0;outline:none;transition:border-color .2s}
+.drill-input:focus{border-color:var(--green)}
+.drill-connector{font-size:clamp(13px,3.5vw,16px);font-weight:700;color:var(--green);flex-shrink:0}
+
+/* Conversation */
+.conv-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin-bottom:4px}
+.conv-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(26,92,53,.08);border-radius:99px;padding:4px 14px;font-size:clamp(12px,3vw,14px);font-weight:700;color:var(--green);margin-bottom:10px}
+.conv-tip{font-size:clamp(12px,3vw,14px);color:var(--gold);font-weight:700;margin-bottom:8px}
+.bubble{border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:clamp(15px,4vw,18px);line-height:1.6}
+.bubble-a{background:#f0f7f0;border:1.5px solid var(--border)}
+.bubble-b{background:rgba(26,92,53,.06);border:1.5px solid rgba(26,92,53,.15)}
+.bubble-speaker{font-size:clamp(11px,2.5vw,13px);font-weight:700;color:var(--dim);margin-bottom:4px}
+.bubble-kr{font-weight:700;color:var(--text)}
+.bubble-en{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:3px}
+.bubble-highlight{color:var(--green2);font-weight:800}
+
+/* Final Plea */
+.plea-box{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.plea-text{font-size:clamp(15px,4vw,19px);line-height:1.8;color:var(--text);font-weight:500}
+.plea-blank{display:inline-block;border:2px solid var(--green);border-radius:8px;width:140px;padding:7px 10px;color:var(--green);font-weight:700;font-size:clamp(14px,3.5vw,17px);background:#f0f7f0;vertical-align:middle}
+.plea-en{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px;margin-bottom:10px;font-style:italic}
+.plea-line{font-size:clamp(15px,4vw,19px);font-weight:500;color:var(--text);margin-top:8px;line-height:1.8}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:14px;background:rgba(26,92,53,.04);border-radius:12px;border:1.5px solid rgba(26,92,53,.12)}
+.word-chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:clamp(13px,3.5vw,15px);font-weight:700;cursor:pointer;color:var(--text);transition:all .2s;user-select:none}
+.word-chip:hover{border-color:var(--green);color:var(--green)}
+
+/* Verdict */
+.verdict-box{background:linear-gradient(135deg,var(--green),var(--green2));border-radius:20px;padding:clamp(24px,5vw,40px);text-align:center;color:#fff;box-shadow:0 8px 32px rgba(26,92,53,.3)}
+.verdict-label{font-size:clamp(11px,2.8vw,14px);font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:.8;margin-bottom:8px}
+.verdict-title{font-family:"Outfit";font-size:clamp(32px,9vw,60px);font-weight:800;margin-bottom:12px}
+.verdict-kr{font-size:clamp(14px,3.8vw,18px);line-height:1.8;opacity:.95;margin-bottom:10px}
+.verdict-en{font-size:clamp(12px,3vw,15px);opacity:.75;line-height:1.6}
+.complete-footer{text-align:center;padding:20px 20px 48px;font-size:clamp(12px,3.2vw,14px);color:var(--dim)}
+
+@media(min-width:600px){
+  .grammar-cards{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+
+<!-- COVER -->
+<div class="cover-section">
+  <div>
+    <div class="top-badge">ENHYPEN &middot; B1&ndash;B2 &middot; Lesson 3</div>
+    <div class="song-title">No Doubt &#9878;&#65039;</div>
+    <div class="tagline">Prove the Love &middot; Become a Love Attorney</div>
+    <div class="nav-pills">
+      <a class="nav-pill np1" href="#lyrics">&#127911; View Lyrics</a>
+      <a class="nav-pill np2" href="#evidence">&#9878;&#65039; Evidence</a>
+      <a class="nav-pill np3" href="#plea">&#9999;&#65039; Final Plea</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: Lyrics -->
+<div class="section" id="lyrics">
+  <div class="section-label">Step 1</div>
+  <h2>&#127911; Lyrics — 2절</h2>
+  <div class="content">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0" target="_blank">
+      <img src="https://img.youtube.com/vi/X3_g_oeCTZ0/sddefault.jpg" onerror="this.src='https://i.ytimg.com/vi/X3_g_oeCTZ0/hqdefault.jpg'" alt="No Doubt MV" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div class="yt-play-overlay">
+        <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-play-label">&#9654; Full MV</div>
+      </div>
+    </a>
+    <div class="yt-links">
+      <a class="yt-link-btn yt-lb" href="https://www.youtube.com/watch?v=XKZQ3wlS9aI" target="_blank">&#128221; Lyrics Video</a>
+      <a class="yt-link-btn yt-sb" href="https://www.youtube.com/shorts/f7rsNKeXYBU" target="_blank">&#127919; Highlight Shorts</a>
+    </div>
+    <p style="font-size:clamp(12px,3vw,14px);color:var(--dim)">Click each line to hear it! &#128266;</p>
+    <div class="lyric-block" onclick="speakLine(this,'밤이 내리면 날이 섰던 내 맘은 널 안은 순간 즉시')">
+      <div class="lyric-kr">밤이 내리면 <span class="lyric-highlight">날이 섰던</span> 내 맘은 &nbsp;널 안은 순간 즉시</div>
+      <div class="lyric-en">When night falls, my sharp-edged heart — the moment I hold you, instantly</div>
+    </div>
+    <div class="lyric-block" onclick="speakLine(this,'다른 사람처럼 손끝에 쉽게 녹지')">
+      <div class="lyric-kr">다른 사람처럼 손끝에 쉽게 <span class="lyric-highlight">녹지</span> &nbsp;Tell me what you want</div>
+      <div class="lyric-en">I don't melt easily at just anyone's touch — tell me what you want</div>
+    </div>
+    <div class="lyric-block" onclick="speakLine(this,'원하면 내 사랑은 언제 얼마든')">
+      <div class="lyric-kr">원하면 내 사랑은 언제 <span class="lyric-highlight">얼마든</span> &nbsp;Prove it</div>
+      <div class="lyric-en">Whenever you want, my love is yours — as much as you need, prove it</div>
+    </div>
+    <div class="lyric-block" onclick="speakLine(this,'백번 아니 더 천 번도 더 Replay girl')">
+      <div class="lyric-kr"><span class="lyric-highlight">백번 아니 더 천 번도 더</span> &nbsp;Replay girl</div>
+      <div class="lyric-en">A hundred times — no, a thousand times more — replay, girl</div>
+    </div>
+    <div class="lyric-block" onclick="speakLine(this,'달콤했던 밤을 지나 널 보내 다시 멀어지는 너를 따라 스며들어')">
+      <div class="lyric-kr">달콤했던 밤을 지나 널 보내 &nbsp;다시 <span class="lyric-highlight">멀어지는</span> 너를 따라 스며들어</div>
+      <div class="lyric-en">Past those sweet nights, I let you go — seeping into you as you drift away again</div>
+    </div>
+    <div class="lyric-block" onclick="speakLine(this,'반복되는 시차 속에 난 깨달아')">
+      <div class="lyric-kr"><span class="lyric-highlight">반복되는 시차</span> 속에 난 깨달아</div>
+      <div class="lyric-en">In this repeating time lag, I realize</div>
+    </div>
+    <div class="lyric-block-group">
+      <p style="font-size:clamp(11px,2.8vw,13px);color:var(--green2);font-weight:700;margin-bottom:10px">&#9878;&#65039; 후렴구 Chorus &mdash; click to listen!</p>
+      <div class="lyric-block" style="margin-bottom:8px" onclick="speakLine(this,'낮이 됐건 밤이 됐건 의심 없이 I love you')">
+        <div class="lyric-kr"><span class="lyric-highlight">낮이 됐건 밤이 됐건</span> &nbsp;의심 없이 I love you</div>
+        <div class="lyric-en">Whether it's day or night — I love you without a doubt</div>
+      </div>
+      <div class="lyric-block" onclick="speakLine(this,'널 원해 괴롭지만 Oh 날 태워 증명해 Baby no doubt')">
+        <div class="lyric-kr">널 원해 괴롭지만 &nbsp;Oh 날 태워 <span class="lyric-highlight">증명해</span> Baby no doubt</div>
+        <div class="lyric-en">I want you, it's painful — burn me, prove it, baby no doubt</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: Grammar ~됐건 -->
+<div class="section">
+  <div class="section-label">Step 2</div>
+  <h2>&#9878;&#65039; Grammar &mdash; ~됐건</h2>
+  <div class="grammar-badge">&#128218; whether it's ~ or ~ &mdash; no matter what!</div>
+  <div class="grammar-rule">
+    <div class="grammar-rule-text">~됐건 &nbsp;= &nbsp;"whether it's ~ or ~"</div>
+    <div class="grammar-rule-en">Use when something doesn't matter either way</div>
+  </div>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:12px">&#128161; How to make it: &nbsp;<strong>noun + 이/가 됐건</strong> &nbsp;|&nbsp; <strong>verb stem + 됐건</strong></p>
+  <div class="grammar-cards">
+    <div class="grammar-card" onclick="speakKr('낮이 됐건 밤이 됐건 의심 없이 I love you')">
+      <div class="grammar-card-tag">&#127911; From the song</div>
+      <div class="grammar-card-kr">낮이 됐건 밤이 됐건</div>
+      <div class="grammar-card-en">Whether it's day or night</div>
+      <div class="grammar-card-casual">의심 없이 I love you</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— without a doubt, I love you</div>
+    </div>
+    <div class="grammar-card" onclick="speakKr('빵이 됐건 밥이 됐건 빨리 줘 배고파')">
+      <div class="grammar-card-tag">&#128218; Everyday example</div>
+      <div class="grammar-card-kr">빵이 됐건 밥이 됐건</div>
+      <div class="grammar-card-en">Whether it's bread or rice</div>
+      <div class="grammar-card-casual">빨리 줘. 배고파!</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— just give it to me, I'm hungry!</div>
+    </div>
+    <div class="grammar-card" onclick="speakKr('좋건 싫건 해야 해')">
+      <div class="grammar-card-tag">&#128172; Casual speech</div>
+      <div class="grammar-card-kr">좋건 싫건 해야 해</div>
+      <div class="grammar-card-en">Whether you like it or not</div>
+      <div class="grammar-card-casual">임마, 해야 해.</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— dude, you just gotta do it.</div>
+    </div>
+  </div>
+  <div class="grammar-tip">&#127911; In the song: '됐건' (standard) &mdash; in spoken Korean you'll often hear '되든' instead! &nbsp;빵이 되든 밥이 되든~</div>
+</div>
+
+<!-- SECTION 3: Grammar ~을수록 -->
+<div class="section">
+  <div class="section-label">Step 3</div>
+  <h2>&#9878;&#65039; Grammar &mdash; ~을수록</h2>
+  <div class="grammar-badge">&#128218; the more ~ the more ~!</div>
+  <div class="grammar-rule">
+    <div class="grammar-rule-text">~을수록 &nbsp;= &nbsp;"the more ~, the more ~"</div>
+    <div class="grammar-rule-en">When one thing increases, another changes too</div>
+  </div>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:12px">&#128161; How to make it: &nbsp;<strong>verb stem + (으)면 + stem + 을수록</strong> &nbsp;|&nbsp; no 받침 → ㄹ수록</p>
+  <div class="grammar-cards">
+    <div class="grammar-card" onclick="speakKr('원하면 원할수록 I feel so lonely')">
+      <div class="grammar-card-tag">&#127911; From the song</div>
+      <div class="grammar-card-kr">원하면 원할수록</div>
+      <div class="grammar-card-en">The more I want, the more~</div>
+      <div class="grammar-card-casual">I feel so lonely</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— from the song</div>
+    </div>
+    <div class="grammar-card" onclick="speakKr('공부하면 할수록 어려워 그래도 계속해야지')">
+      <div class="grammar-card-tag">&#128218; Everyday example</div>
+      <div class="grammar-card-kr">공부하면 할수록 어려워</div>
+      <div class="grammar-card-en">The more you study, the harder</div>
+      <div class="grammar-card-casual">그래도 계속해야지!</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— but you've gotta keep going!</div>
+    </div>
+    <div class="grammar-card" onclick="speakKr('볼수록 좋아져')">
+      <div class="grammar-card-tag">&#128172; Casual speech</div>
+      <div class="grammar-card-kr">볼수록 좋아져</div>
+      <div class="grammar-card-en">The more I see you, the more I like you</div>
+      <div class="grammar-card-casual">큰일났어 ㅋㅋ</div>
+      <div style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:2px">— I'm so in trouble lol</div>
+    </div>
+  </div>
+  <div class="grammar-tip">&#9878;&#65039; Key point: A하면 A할수록 = repeated emphasis! &nbsp;원하면 원할수록 = the more he wants, the MORE he wants</div>
+</div>
+
+<!-- SECTION 4: Evidence Drill -->
+<div class="section" id="evidence">
+  <div class="section-label">Step 4</div>
+  <h2>&#128269; Evidence &mdash; Grammar Drill</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:16px">Build your own sentences as evidence!</p>
+  <div class="content">
+    <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--green)">&#9878;&#65039; ~됐건 / ~되든 Drill</p>
+    <div class="drill-box">
+      <div class="drill-q">Q1. &nbsp;죽이 되든 밥이 되든 해내야지!</div>
+      <div class="drill-hint">Whether it works out or not, I'll get it done! &mdash; Say it out loud!</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer" onclick="speakKr('죽이 되든 밥이 되든 해내야지')">
+        <span style="font-size:18px">&#128266;</span>
+        <span style="font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--green)">죽이 되든 밥이 되든 해내야지!</span>
+      </div>
+    </div>
+    <div class="drill-box">
+      <div class="drill-q">Q2. &nbsp;Whatever time it is, I'll keep practising!</div>
+      <div class="drill-hint">아침이 되든 밤이 되든 ...</div>
+      <div class="drill-input-row">
+        <input class="drill-input" type="text" placeholder="아침이 되든">
+        <span class="drill-connector">되든</span>
+        <input class="drill-input" type="text" placeholder="밤이 되든">
+        <input class="drill-input" style="flex:2" type="text" placeholder="연습할 거야!">
+      </div>
+    </div>
+    <div class="drill-box">
+      <div class="drill-q">Q3. &nbsp;Make your own! &nbsp;자유롭게 만들어봐요!</div>
+      <div class="drill-input-row">
+        <input class="drill-input" type="text" placeholder="___이/가 되든">
+        <span class="drill-connector">되든</span>
+        <input class="drill-input" type="text" placeholder="___이/가 되든">
+        <input class="drill-input" style="flex:2" type="text" placeholder="___">
+      </div>
+    </div>
+    <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--green);margin-top:8px">&#128200; ~을수록 Drill</p>
+    <div class="drill-box">
+      <div class="drill-q">Q1. &nbsp;The more you study Korean, what happens?</div>
+      <div class="drill-input-row">
+        <span class="drill-connector">공부하면</span>
+        <input class="drill-input" type="text" placeholder="______">
+        <span class="drill-connector">수록</span>
+        <input class="drill-input" type="text" placeholder="______">
+      </div>
+    </div>
+    <div class="drill-box">
+      <div class="drill-q">Q2. &nbsp;The more you listen to K-pop, what happens?</div>
+      <div class="drill-input-row">
+        <span class="drill-connector">들으면</span>
+        <input class="drill-input" type="text" placeholder="______">
+        <span class="drill-connector">수록</span>
+        <input class="drill-input" type="text" placeholder="______">
+      </div>
+    </div>
+    <div class="drill-box">
+      <div class="drill-q">Q3. &nbsp;Make your own! &nbsp;자유롭게 만들어봐요!</div>
+      <div class="drill-input-row">
+        <input class="drill-input" type="text" placeholder="_______면">
+        <input class="drill-input" type="text" placeholder="_______">
+        <span class="drill-connector">수록</span>
+        <input class="drill-input" type="text" placeholder="_______">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: Conversation Practice -->
+<div class="section">
+  <div class="section-label">Step 5</div>
+  <h2>&#128172; Real Conversation Practice</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Read the situation and respond using ~됐건 or ~을수록!</p>
+  <div class="content">
+    <div class="conv-card">
+      <div class="conv-badge">&#128101; Between friends</div>
+      <div class="conv-tip">&#128161; Use: ~됐건 + ~을수록</div>
+      <div class="bubble bubble-a">
+        <div class="bubble-speaker">친구 Friend:</div>
+        <div class="bubble-kr">"한국어 공부 힘들지 않아? 그냥 포기할까봐..."</div>
+        <div class="bubble-en">Isn't studying Korean hard? I feel like giving up...</div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-speaker">나 Me:</div>
+        <div class="bubble-kr">"<span class="bubble-highlight">힘들건 쉽건 상관없어!</span> &nbsp;<span class="bubble-highlight">공부할수록 실력은 느는 거잖아~</span>"</div>
+        <div class="bubble-en">Whether it's hard or easy — the more you study, the better you get!</div>
+      </div>
+    </div>
+    <div class="conv-card">
+      <div class="conv-badge">&#128188; At work</div>
+      <div class="conv-tip">&#128161; Use: ~됐건</div>
+      <div class="bubble bubble-a">
+        <div class="bubble-speaker">상사 Boss:</div>
+        <div class="bubble-kr">"이번 프로젝트 진행하기 좀 어려운 상황인데, 계속 맡아줄 수 있어요?"</div>
+        <div class="bubble-en">This project is in a tough spot — can you keep handling it?</div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-speaker">나 Me:</div>
+        <div class="bubble-kr">"<span class="bubble-highlight">상황이 어떻게 되든</span> 끝까지 책임지겠습니다."</div>
+        <div class="bubble-en">Whatever the situation, I'll see it through to the end.</div>
+      </div>
+    </div>
+    <div class="conv-card">
+      <div class="conv-badge">&#127911; Talking about ENHYPEN</div>
+      <div class="conv-tip">&#128161; Use: ~을수록</div>
+      <div class="bubble bubble-a">
+        <div class="bubble-speaker">친구 Friend:</div>
+        <div class="bubble-kr">"엔하이픈 어때? 처음엔 별로였다고 했잖아."</div>
+        <div class="bubble-en">What do you think of ENHYPEN? You said you weren't into them at first.</div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-speaker">나 Me:</div>
+        <div class="bubble-kr">"<span class="bubble-highlight">볼수록 좋아지는 것 같아...</span> 큰일났어 ㅋㅋ"</div>
+        <div class="bubble-en">The more I see them, the more I like them... I'm in trouble lol</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: Final Plea -->
+<div class="section" id="plea">
+  <div class="section-label">Step 6</div>
+  <h2>&#9878;&#65039; Final Plea &mdash; 최후변론</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Fill in the blanks and read it aloud like a lawyer! &#128274;</p>
+  <div class="plea-box">
+    <div class="word-bank" style="margin-bottom:18px">
+      <p style="font-size:clamp(12px,3vw,14px);color:var(--green);font-weight:700;width:100%;margin-bottom:8px">&#128161; Word Bank &mdash; click a word, then click a box!</p>
+      <div class="word-chip" onclick="copyWord(this,'낮')">낮</div>
+      <div class="word-chip" onclick="copyWord(this,'밤')">밤</div>
+      <div class="word-chip" onclick="copyWord(this,'비')">비</div>
+      <div class="word-chip" onclick="copyWord(this,'눈')">눈</div>
+      <div class="word-chip" onclick="copyWord(this,'사랑하고')">사랑하고</div>
+      <div class="word-chip" onclick="copyWord(this,'원하고')">원하고</div>
+      <div class="word-chip" onclick="copyWord(this,'생각하고')">생각하고</div>
+      <div class="word-chip" onclick="copyWord(this,'그리워하고')">그리워하고</div>
+    </div>
+    <div class="plea-text">
+      <div class="plea-line">존경하는 재판장님, 이 사람은 &nbsp;<input class="plea-blank" id="p1" type="text" placeholder="낮/밤/비/눈">&nbsp;이/가 됐건</div>
+      <div class="plea-en">Your Honour, whether it's ___</div>
+      <div class="plea-line"><input class="plea-blank" id="p2" type="text" placeholder="낮/밤/비/눈">&nbsp;이/가 됐건 상관없이,</div>
+      <div class="plea-en">or ___, it doesn't matter,</div>
+      <div class="plea-line">항상 그녀를 &nbsp;<input class="plea-blank" id="p3" type="text" placeholder="사랑하고/원하고...">&nbsp;왔습니다.</div>
+      <div class="plea-en">he has always ___ her.</div>
+      <div class="plea-line" style="color:var(--text);font-weight:600">그리고 원하면 원할수록 더욱 사랑이 깊어졌습니다.</div>
+      <div class="plea-en">The more he wants her, the deeper his love.</div>
+      <div class="plea-line">따라서 이 사람은 분명히 그녀를 &nbsp;<input class="plea-blank" id="p4" type="text" placeholder="사랑하고/원하고...">&nbsp;있습니다.</div>
+      <div class="plea-en">Therefore, he is clearly ___ her.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: Verdict -->
+<div class="section" style="border-bottom:none">
+  <div class="section-label">Verdict</div>
+  <div class="verdict-box">
+    <div class="verdict-label">&#128296; 판결 VERDICT</div>
+    <div class="verdict-title">유죄 &#9878;&#65039;</div>
+    <div style="font-size:clamp(13px,3.5vw,16px);opacity:.85;margin-bottom:12px">피고인: ENHYPEN &nbsp;|&nbsp; 죄목: 사랑에 빠진 죄<br><span style="font-size:clamp(11px,2.8vw,13px);opacity:.75">Defendant: ENHYPEN &nbsp;|&nbsp; Charge: Guilty of falling in love</span></div>
+    <div class="verdict-kr">어떤 상황이 됐건, 원하면 원할수록,<br>엔하이픈이 그녀를 사랑하는 건 틀림없는 사실이야!</div>
+    <div class="verdict-en">No matter what the situation — the more they want her,<br>ENHYPEN is undeniably guilty... of being in love.</div>
+  </div>
+</div>
+<div class="complete-footer">&#9878;&#65039; Case closed! Great work, Love Attorney! &#128274;</div>
+
+<script>
+window.addEventListener("scroll",function(){
+  var h=document.documentElement;
+  var pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById("progBar").style.width=pct+"%";
+});
+function speakKr(t){var u=new SpeechSynthesisUtterance(t);u.lang="ko-KR";u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);}
+function speakLine(el,t){document.querySelectorAll(".lyric-block").forEach(function(l){l.classList.remove("played");});el.classList.add("played");speakKr(t);}
+var pleaOrder=["p1","p2","p3","p4"];var pleaIdx=0;
+document.querySelectorAll(".plea-blank").forEach(function(inp){inp.addEventListener("focus",function(){pleaIdx=pleaOrder.indexOf(inp.id);});});
+function copyWord(el,word){
+  var inputs=document.querySelectorAll(".plea-blank");
+  if(pleaIdx<inputs.length){inputs[pleaIdx].value=word;}
+}
+</script>
+</body>
+</html>

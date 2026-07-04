@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENHYPEN Polaroid Love 수업</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff0f5;
+  --card:#ffffff;
+  --accent:#e91e8c;
+  --accent2:#b5006e;
+  --pink-light:#ffd6eb;
+  --pink-mid:#ff69b4;
+  --dark:#1a1a2e;
+  --dark2:#16213e;
+  --peach:#ffb3cc;
+  --yellow:#ffd166;
+  --mint:#06d6a0;
+  --text:#2d0a1e;
+  --dim:#7a4a62;
+  --light:#c490aa;
+  --shadow:0 4px 20px rgba(233,30,140,.08);
+}
+body{
+  background:linear-gradient(160deg,#fff0f5 0%,#ffe4f0 50%,#fce4ff 100%);
+  font-family:'Noto Sans KR','Outfit',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+.progress-bar{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--pink-mid),var(--yellow));transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
+
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(233,30,140,.1);max-width:720px;margin:0 auto}
+.lesson-tag{display:inline-block;font-family:'Outfit';font-size:11px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:20px;margin-bottom:10px;background:rgba(233,30,140,.1);color:var(--accent2)}
+
+h1{font-family:'Outfit';font-size:clamp(32px,9vw,50px);font-weight:800;line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.subtitle{font-size:clamp(13px,3.6vw,16px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{display:flex;flex-direction:column;gap:14px}
+
+/* ── COVER ── */
+.cover-section{
+  padding:0;
+  background:linear-gradient(135deg,#fce4f5,#ffe4f0);
+  position:relative;
+  overflow:hidden;
+}
+.cover-inner{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  padding:28px 20px 24px 24px;
+  gap:20px;
+}
+.cover-left{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.cover-right{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.cover-badge{font-family:'Outfit';font-size:10px;font-weight:700;letter-spacing:3px;color:var(--accent2);background:rgba(233,30,140,.12);padding:4px 14px;border-radius:20px;display:inline-block;width:fit-content}
+.cover-artist{font-family:'Outfit';font-size:clamp(26px,7vw,42px);font-weight:800;color:var(--text);margin:0}
+.cover-title{font-family:'Outfit';font-size:clamp(20px,5.5vw,32px);font-weight:800;color:var(--accent);margin:0}
+.cover-sub{font-size:13px;color:var(--dim);margin-top:2px}
+.polaroid-deco{
+  background:#fff;
+  padding:10px 10px 28px 10px;
+  border-radius:4px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transform:rotate(-3deg);
+  width:90px;
+  text-align:center;
+}
+.polaroid-cam{font-size:32px;line-height:1;display:block;margin-bottom:2px}
+.polaroid-label{font-family:'Outfit';font-size:9px;font-weight:600;color:#333;margin-top:6px}
+
+.cover-nav{
+  background:#ffe4f0;
+  padding:14px 24px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  border-top:1px solid rgba(233,30,140,.12);
+}
+.nav-btn{
+  padding:9px 18px;border-radius:30px;font-size:13px;font-weight:600;
+  text-decoration:none;border:1.5px solid rgba(233,30,140,.3);color:var(--accent2);
+  cursor:pointer;background:#fff;font-family:'Noto Sans KR','Outfit',sans-serif;
+  transition:all .2s;
+}
+.nav-btn:hover{border-color:var(--accent);background:var(--pink-light)}
+
+/* ── YouTube cards ── */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid var(--pink-light);box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.35)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:12px;font-weight:600;letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.yt-note{text-align:center;font-size:14px;color:var(--dim);margin-top:4px}
+
+.yt-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* hook box */
+.hook-box{background:linear-gradient(135deg,#ffe4f0,#fce4ff);border-radius:18px;padding:22px;text-align:center;box-shadow:0 6px 24px rgba(233,30,140,.12);margin-top:4px;border:2px solid var(--pink-light)}
+.hook-kr{font-size:clamp(18px,5vw,24px);font-weight:900;margin:6px 0 4px;color:var(--accent2)}
+.hook-rom{font-size:14px;color:var(--dim);font-style:italic}
+.hook-en{font-family:'Outfit';font-size:15px;font-weight:600;color:var(--dim);margin-top:4px}
+.tip-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.tip-chip{padding:6px 14px;border-radius:30px;background:#fff;border:1.5px solid var(--pink-light);font-size:13px;color:var(--dim);font-weight:500}
+
+/* ── Today's Expression ── */
+.expr-list{display:flex;flex-direction:column;gap:10px}
+.expr-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:16px;
+  background:var(--card);border:2px solid var(--pink-light);
+  cursor:pointer;transition:all .22s;box-shadow:var(--shadow);
+}
+.expr-row:nth-child(1){border-left:5px solid #ff6b9d}
+.expr-row:nth-child(2){border-left:5px solid #c77dff}
+.expr-row:nth-child(3){border-left:5px solid #ffd166}
+.expr-row:nth-child(4){border-left:5px solid #06d6a0}
+.expr-emoji{font-size:26px;flex-shrink:0}
+.expr-body{flex:1}
+.expr-kr{font-size:18px;font-weight:900;color:var(--text)}
+.expr-rom{font-size:13px;color:var(--accent2);font-style:italic;margin-top:2px}
+.expr-en{font-size:14px;color:var(--dim);margin-top:2px}
+.tts-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--pink-mid));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;border:none;cursor:pointer;color:#fff}
+.tts-btn.playing{animation:pulse-ring 1s infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(233,30,140,.3)}50%{box-shadow:0 0 0 8px rgba(233,30,140,0)}}
+
+/* ── 새단어 & 패턴 드릴 ── */
+.drill-section{background:#fff0f8;padding:32px 20px 40px;border-bottom:1px solid rgba(233,30,140,.1)}
+.drill-section h2{color:var(--accent2)}
+.drill-section .lesson-tag{background:rgba(233,30,140,.1);color:var(--accent2)}
+
+.word-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.word-card{
+  background:#fff;border-radius:16px;border:2px solid var(--pink-light);
+  padding:18px 14px;text-align:center;cursor:pointer;transition:all .25s;
+  box-shadow:var(--shadow);
+}
+.word-card:hover{border-color:var(--pink-mid);transform:translateY(-2px)}
+.wc-emoji{font-size:28px;display:block;margin-bottom:8px}
+.wc-kr{font-size:20px;font-weight:900;color:var(--text);margin-bottom:4px}
+.wc-rom{font-size:12px;color:var(--accent2);font-style:italic;margin-bottom:6px}
+.wc-en{font-size:13px;color:var(--dim);line-height:1.4}
+
+/* ── 두근두근 표현 ── */
+.ddr-section{background:#fff8e7;padding:32px 20px 40px;border-bottom:1px solid rgba(233,30,140,.1)}
+.ddr-section h2{color:#b07800}
+.ddr-section .lesson-tag{background:rgba(255,209,102,.25);color:#b07800}
+
+.ddr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ddr-card{
+  background:#fff;border-radius:14px;border:2px solid #ffe099;
+  padding:16px 12px;text-align:center;cursor:pointer;transition:all .22s;
+  box-shadow:0 2px 12px rgba(255,180,0,.1);
+}
+.ddr-card:hover{border-color:#ffd166}
+#ddr-word:hover{transform:scale(1.18);color:var(--accent2)}
+.ddr-kr{font-size:22px;font-weight:900;color:#b07800;margin-bottom:2px}
+.ddr-rom{font-size:11px;color:var(--dim);font-style:italic;margin-bottom:4px}
+.ddr-en{font-size:13px;color:var(--dim)}
+
+.chalcak-box{
+  background:linear-gradient(135deg,#ffe4f0,#fce4ff);
+  border:2px solid var(--pink-light);border-radius:18px;
+  padding:22px;text-align:center;
+}
+.chalcak-label{font-family:'Outfit';font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent2);margin-bottom:8px}
+.chalcak-kr{font-size:clamp(36px,10vw,56px);font-weight:900;color:var(--accent2);line-height:1}
+.chalcak-rom{font-size:16px;color:var(--accent);font-style:italic;margin-top:6px}
+.gesture-steps{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.gesture-step{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;
+  background:rgba(255,255,255,.7);border-radius:12px;text-align:left;
+  border:1.5px solid var(--pink-light);
+}
+.gs-num{
+  width:28px;height:28px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit';font-weight:800;font-size:13px;color:#fff;flex-shrink:0;
+}
+.gs-text{font-size:14px;color:var(--text);font-weight:500}
+
+/* ── 내 맘에 저장 ── */
+.maeum-section{background:#f5e6ff;padding:32px 20px 40px;border-bottom:1px solid rgba(199,125,255,.2)}
+.maeum-section h2{color:#7b2fbe}
+.maeum-section .lesson-tag{background:rgba(199,125,255,.2);color:#7b2fbe}
+
+.maeum-box{
+  background:#fff;border:2px solid #e0b8ff;
+  border-radius:18px;padding:20px;text-align:center;
+  box-shadow:0 4px 20px rgba(199,125,255,.12);
+}
+.maeum-phrase{font-size:clamp(24px,7vw,36px);font-weight:900;color:#7b2fbe;margin:8px 0 4px;cursor:pointer}
+.maeum-rom{font-size:15px;color:#9b59b6;font-style:italic}
+.maeum-en{font-size:14px;color:var(--dim);margin-top:6px}
+.maeum-steps{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+
+/* ── 코러스 라인 ── */
+.line-list{display:flex;flex-direction:column;gap:10px}
+.line-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--card);border:2px solid var(--pink-light);cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.line-no{font-family:'Outfit';font-weight:800;font-size:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(233,30,140,.1);color:var(--accent2)}
+.line-kr{font-size:16px;font-weight:700}
+.line-rom{font-size:13px;color:var(--accent2);font-style:italic;margin-top:2px}
+.line-en{font-size:13px;color:var(--dim);margin-top:2px}
+
+.ac-rule{text-align:center;font-size:15px;color:var(--dim);font-weight:500}
+.jump-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.back-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 22px;border-radius:30px;font-size:15px;font-weight:600;text-decoration:none;border:2px solid var(--pink-mid);color:var(--accent2);cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s}
+
+@media(min-width:700px){
+  .section,.drill-section,.ddr-section,.maeum-section{max-width:880px;margin:0 auto;padding:48px 32px 56px}
+  .yt-row{gap:16px}
+  .word-grid{grid-template-columns:repeat(4,1fr)}
+  .ddr-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+
+<!-- ════════ COVER ════════ -->
+<div id="top">
+  <div class="cover-inner">
+    <div class="cover-left">
+      <span class="cover-badge">K-POP CLASS</span>
+      <h1 class="cover-artist" style="font-family:'Outfit'">ENHYPEN</h1>
+      <h1 class="cover-title" style="font-family:'Outfit'">Polaroid Love</h1>
+      <div class="cover-sub">노래로 배우는 한국어 ♪</div>
+    </div>
+    <div class="cover-right">
+      <div class="polaroid-deco">
+        <span class="polaroid-cam">📷</span>
+        <div class="polaroid-label">Polaroid Love</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-nav">
+    <button class="nav-btn" onclick="jump('listen')">🎵 가사 / 먼저 들어봐!</button>
+    <button class="nav-btn" onclick="jump('expr')">Today's Expression</button>
+    <button class="nav-btn" onclick="jump('drill')">새단어 &amp; 패턴 드릴</button>
+    <button class="nav-btn" onclick="jump('maeum')">📷 내 맘에 저장</button>
+  </div>
+</div>
+
+<!-- ════════ LISTEN ════════ -->
+<div class="section" id="listen">
+  <span class="lesson-tag">LESSON</span>
+  <h2>🎧 가사 + 발음 가이드</h2>
+  <div class="content">
+    <div class="yt-row">
+      <div>
+        <a class="yt-thumb-card" href="https://youtu.be/SFNryR7qZiM" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#1a0a2e,#3d0b2b)">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="yt-play-label">Full MV 열기 / Open on YouTube</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">ENHYPEN · Polaroid Love</div>
+          </div>
+        </a>
+        <div class="yt-note">Full MV</div>
+      </div>
+      <div>
+        <a class="yt-thumb-card" href="https://youtube.com/shorts/4dtRbc3Ziuw" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#2a0a1e,#1a1a2e)">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="yt-play-label">Highlight — YouTube Shorts · 후렴구 영상 보기</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">후렴구 클립 🎵</div>
+          </div>
+        </a>
+        <div class="yt-note">후렴구 Shorts</div>
+      </div>
+    </div>
+    <div class="hook-box">
+      <div class="hook-kr">촌스런 그 감정</div>
+      <div class="hook-rom">chon-seu-reun geu gam-jeong</div>
+      <div class="hook-en">that cheesy feeling</div>
+    </div>
+    <div class="tip-chips">
+      <span class="tip-chip">👂 2번 들어봐요</span>
+      <span class="tip-chip">🥁 비트 따라 탭!</span>
+      <span class="tip-chip">🔍 아는 단어 있어요?</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TODAY'S EXPRESSION ════════ -->
+<div class="section" id="expr">
+  <span class="lesson-tag">TODAY'S EXPRESSION</span>
+  <h2>💬 Today's Expression</h2>
+  <div class="content">
+    <div class="expr-list">
+      <div class="expr-row" onclick="speakKr(this,'촌스런 그 감정')">
+        <span class="expr-emoji">😅</span>
+        <div class="expr-body">
+          <div class="expr-kr">촌스런 그 감정</div>
+          <div class="expr-rom">chon-seu-reun geu gam-jeong</div>
+          <div class="expr-en">that cheesy feeling</div>
+        </div>
+        <button class="tts-btn">🔊</button>
+      </div>
+      <div class="expr-row" onclick="speakKr(this,'내 가슴이 뛰어')">
+        <span class="expr-emoji">💓</span>
+        <div class="expr-body">
+          <div class="expr-kr">내 가슴이 뛰어</div>
+          <div class="expr-rom">nae ga-seu-mi ttwi-eo</div>
+          <div class="expr-en">my heart is beating fast</div>
+        </div>
+        <button class="tts-btn">🔊</button>
+      </div>
+      <div class="expr-row" onclick="speakKr(this,'내 뜻대로 되지 않아')">
+        <span class="expr-emoji">😩</span>
+        <div class="expr-body">
+          <div class="expr-kr">내 뜻대로 되지 않아</div>
+          <div class="expr-rom">nae tteut-dae-ro doe-ji a-na</div>
+          <div class="expr-en">it doesn't go my way</div>
+        </div>
+        <button class="tts-btn">🔊</button>
+      </div>
+      <div class="expr-row" onclick="speakKr(this,'심장이 쿵쿵')">
+        <span class="expr-emoji">🥁</span>
+        <div class="expr-body">
+          <div class="expr-kr">심장이 쿵쿵</div>
+          <div class="expr-rom">sim-jang-i kung-kung</div>
+          <div class="expr-en">my heart goes thump thump</div>
+        </div>
+        <button class="tts-btn">🔊</button>
+      </div>
+    </div>
+    <div class="ac-rule">🔊 탭하면 발음을 들을 수 있어요 — tap to hear!</div>
+  </div>
+</div>
+
+<!-- ════════ 새단어 & 패턴 드릴 ════════ -->
+<div class="drill-section" id="drill">
+  <div style="max-width:720px;margin:0 auto">
+    <span class="lesson-tag">새단어 &amp; 패턴 드릴</span>
+    <h2>📚 New Words &amp; Pattern Drill</h2>
+    <div class="content">
+      <div class="word-grid">
+        <div class="word-card" onclick="speakKr(this,'촌스럽다')">
+          <span class="wc-emoji">😅</span>
+          <div class="wc-kr">촌스럽다</div>
+          <div class="wc-rom">chon-seu-reop-da</div>
+          <div class="wc-en">cheesy / old-fashioned</div>
+        </div>
+        <div class="word-card" onclick="speakKr(this,'가슴이 뛰다')">
+          <span class="wc-emoji">💓</span>
+          <div class="wc-kr">가슴이 뛰다</div>
+          <div class="wc-rom">ga-seu-mi ttwi-da</div>
+          <div class="wc-en">heart beats fast</div>
+        </div>
+        <div class="word-card" onclick="speakKr(this,'뜻대로 되지 않다')">
+          <span class="wc-emoji">😩</span>
+          <div class="wc-kr">뜻대로 되지 않다</div>
+          <div class="wc-rom">tteut-dae-ro doe-ji an-ta</div>
+          <div class="wc-en">doesn't go my way</div>
+        </div>
+        <div class="word-card" onclick="speakKr(this,'심장이 쿵쿵')">
+          <span class="wc-emoji">🥁</span>
+          <div class="wc-kr">심장이 쿵쿵</div>
+          <div class="wc-rom">sim-jang-i kung-kung</div>
+          <div class="wc-en">heart goes thump thump</div>
+        </div>
+      </div>
+      <div class="ac-rule" style="color:rgba(255,255,255,.4)">🔊 카드를 탭하면 발음을 들을 수 있어요</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ 두근두근 표현 ════════ -->
+<div class="ddr-section">
+  <div style="max-width:720px;margin:0 auto">
+    <span class="lesson-tag">따라 해봐요!</span>
+    <h2>💛 심장 <span id="ddr-word" onclick="speakKr(this,'두근두근')" style="color:var(--accent);cursor:pointer;transition:all .2s;display:inline-block">두근두근</span> 표현</h2>
+    <div class="content">
+      <div class="ac-rule" style="color:#b07800;margin-bottom:4px">heartbeat expressions — 탭해서 들어봐요!</div>
+      <div class="ddr-grid">
+        <div class="ddr-card" onclick="speakKr(this,'쿵쿵')">
+          <div class="ddr-kr">쿵쿵</div>
+          <div class="ddr-rom">kung-kung</div>
+          <div class="ddr-en">thump thump</div>
+        </div>
+        <div class="ddr-card" onclick="speakKr(this,'쿵쾅쿵쾅')">
+          <div class="ddr-kr">쿵쾅쿵쾅</div>
+          <div class="ddr-rom">kung-kwang-kung-kwang</div>
+          <div class="ddr-en">BOOM boom boom</div>
+        </div>
+        <div class="ddr-card" onclick="speakKr(this,'벌렁벌렁')">
+          <div class="ddr-kr">벌렁벌렁</div>
+          <div class="ddr-rom">beol-leong-beol-leong</div>
+          <div class="ddr-en">restless / fidgety</div>
+        </div>
+        <div class="ddr-card" onclick="speakKr(this,'콩콩')">
+          <div class="ddr-kr">콩콩</div>
+          <div class="ddr-rom">kong-kong</div>
+          <div class="ddr-en">pitter patter</div>
+        </div>
+      </div>
+      <div class="chalcak-box">
+        <div class="chalcak-label">카메라 소리 · camera shutter sound</div>
+        <div class="chalcak-kr" onclick="speakKr(this,'찰칵')">찰칵!</div>
+        <div class="chalcak-rom">chal-kak!</div>
+        <div class="gesture-steps">
+          <div class="gesture-step">
+            <div class="gs-num">①</div>
+            <div class="gs-text">사각 손모양 만들기 — make a square with your hands</div>
+          </div>
+          <div class="gesture-step">
+            <div class="gs-num">②</div>
+            <div class="gs-text">찰칵! — click! (shutter sound)</div>
+          </div>
+          <div class="gesture-step">
+            <div class="gs-num">③</div>
+            <div class="gs-text">가슴으로 당기기 — pull it to your heart!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ 내 맘에 저장 ════════ -->
+<div class="maeum-section" id="maeum">
+  <div style="max-width:720px;margin:0 auto">
+    <span class="lesson-tag">📷 Activity</span>
+    <h2>📷 내 맘에 저장!</h2>
+    <div class="content">
+      <div class="maeum-box">
+        <div style="font-size:13px;color:#9b59b6;margin-bottom:8px">박지훈 유행어 · trending phrase</div>
+        <div class="maeum-phrase" onclick="speakKr(this,'내 맘에 저장')">내 맘에 저장!</div>
+        <div class="maeum-rom">nae mam-e jeo-jang</div>
+        <div class="maeum-en">Saving it to my heart!</div>
+        <div class="maeum-steps">
+          <div class="gesture-step">
+            <div class="gs-num" style="background:#9b59b6">①</div>
+            <div class="gs-text">영상 보기 — watch the video below 👇</div>
+          </div>
+          <div class="gesture-step">
+            <div class="gs-num" style="background:#9b59b6">②</div>
+            <div class="gs-text">찰칵 제스처 + "내 맘에 저장!" 같이 따라해요!</div>
+          </div>
+        </div>
+      </div>
+      <a class="yt-thumb-card" href="https://youtube.com/shorts/6OHxvtIl0L8" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#1a0a2e,#2a0a1e)">
+          <div class="yt-play-overlay">
+            <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="yt-play-label">▶ 내 맘에 저장 영상 보기</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">박지훈 📷</div>
+          </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ 코러스 라인 ════════ -->
+<div class="section" id="chorus">
+  <span class="lesson-tag">후렴구 따라 부르기</span>
+  <h2>🎤 후렴구 따라 부르기</h2>
+  <div class="content">
+    <div class="ac-rule">🔊 탭해서 듣고 따라 읽어봐요 — tap &amp; read along!</div>
+    <div class="line-list">
+      <div class="line-row" onclick="speakKr(this,'촌스런 그 감정')">
+        <div class="line-no">1</div>
+        <button class="tts-btn">🔊</button>
+        <div>
+          <div class="line-kr">촌스런 그 감정</div>
+          <div class="line-rom">chon-seu-reun geu gam-jeong</div>
+          <div class="line-en">that cheesy feeling</div>
+        </div>
+      </div>
+      <div class="line-row" onclick="speakKr(this,'내 가슴이 뛰어')">
+        <div class="line-no">2</div>
+        <button class="tts-btn">🔊</button>
+        <div>
+          <div class="line-kr">내 가슴이 뛰어</div>
+          <div class="line-rom">nae ga-seu-mi ttwi-eo</div>
+          <div class="line-en">my heart is beating fast</div>
+        </div>
+      </div>
+      <div class="line-row" onclick="speakKr(this,'내 뜻대로 되지 않아')">
+        <div class="line-no">3</div>
+        <button class="tts-btn">🔊</button>
+        <div>
+          <div class="line-kr">내 뜻대로 되지 않아</div>
+          <div class="line-rom">nae tteut-dae-ro doe-ji a-na</div>
+          <div class="line-en">it doesn't go my way</div>
+        </div>
+      </div>
+      <div class="line-row" onclick="speakKr(this,'심장이 쿵쿵')">
+        <div class="line-no">4</div>
+        <button class="tts-btn">🔊</button>
+        <div>
+          <div class="line-kr">심장이 쿵쿵</div>
+          <div class="line-rom">sim-jang-i kung-kung</div>
+          <div class="line-en">my heart goes thump thump</div>
+        </div>
+      </div>
+    </div>
+    <div class="jump-row">
+      <button class="back-btn" onclick="jump('top')">↑ 처음으로</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const bar=document.getElementById('progBar');
+function updateProgress(){
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  bar.style.width=Math.min(100,Math.max(0,pct))+'%';
+}
+window.addEventListener('scroll',updateProgress);
+updateProgress();
+
+function jump(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function speakKr(el,text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='ko-KR';u.rate=0.95;
+  const btn=el.querySelector('.tts-btn')||el;
+  if(btn){btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing')}
+  speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>

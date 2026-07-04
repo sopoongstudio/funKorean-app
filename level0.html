@@ -19,10 +19,11 @@
   .card-consonants{grid-column:span 6;}.card-consonants:hover{box-shadow:0 12px 40px rgba(77,150,255,.2);border-color:rgba(77,150,255,.3);}
   .card-combo{grid-column:span 6;}.card-combo:hover{box-shadow:0 12px 40px rgba(255,217,61,.25);border-color:rgba(255,217,61,.4);}
   .card-quiz{grid-column:span 12;background:linear-gradient(135deg,#FFFFFF,#F0F4F8);}.card-quiz:hover{box-shadow:0 12px 40px rgba(255,217,61,.25);border-color:#FFD93D;}
-  .card-number{font-size:.72rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:.7rem;font-weight:600;}
-  .card-icon{font-size:2rem;margin-bottom:.7rem;display:block;line-height:1;}
-  .card-title-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.15rem;}
-  .card-title-en{font-size:.88rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;font-weight:600;}
+  .card-number{display:none;}
+  .card-title-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem;}
+  .card-icon{font-size:1.5rem;line-height:1;}
+  .card-title-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:0;}
+  .card-title-en{font-size:.78rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem;font-weight:600;}
   .card-desc{font-size:.82rem;color:var(--text-muted);line-height:1.5;font-weight:450;}
   .card-tag{display:inline-block;padding:.2rem .7rem;border-radius:99px;font-size:.7rem;font-weight:500;margin-top:.8rem;letter-spacing:.5px;}
   .tag-red{background:rgba(255,107,107,.12);color:#E53E3E;}.tag-blue{background:rgba(77,150,255,.12);color:#2B6CB0;}.tag-green{background:rgba(77,150,255,.12);color:#2B6CB0;}
@@ -96,7 +97,7 @@
   .score-retry{background:var(--accent);color:white;border:none;padding:.8rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;}
   @media(max-width:768px){
     header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
-    .main-grid{padding:.8rem 1rem 2rem;gap:.7rem;}.card-vowels,.card-consonants,.card-combo,.card-quiz{grid-column:span 12;}.card{padding:1.2rem;}
+    .main-grid{padding:.8rem 1rem 2rem;gap:.5rem;}.card-vowels,.card-consonants,.card-combo,.card-quiz{grid-column:span 12;}.card{padding:1rem;}
     .quiz-inner{flex-direction:column;align-items:flex-start;}.modal{padding:1.2rem;border-radius:14px;}.modal-overlay{padding:.8rem;}
     .vowel-grid{grid-template-columns:repeat(3,1fr);}
     .combo-builder{gap:.8rem;padding:1rem;}.combo-result-big{font-size:3rem;}
@@ -125,9 +126,7 @@
 
 <div class="main-grid">
   <div class="card card-vowels" onclick="openModal('vowels')">
-    <div class="card-number">01</div>
-    <span class="card-icon">🔤</span>
-    <div class="card-title-kr">모음</div>
+    <div class="card-title-row"><span class="card-icon">🔤</span><div class="card-title-kr">모음</div></div>
     <div class="card-title-en">Vowels</div>
     <div class="card-desc">10 basic vowels — the sound core of every Korean syllable.</div>
     <div class="vowel-preview"><span class="vowel-chip">ㅏ</span><span class="vowel-chip">ㅓ</span><span class="vowel-chip">ㅗ</span><span class="vowel-chip">ㅜ</span><span class="vowel-chip">ㅡ</span><span class="vowel-chip">ㅣ</span></div>
@@ -135,9 +134,7 @@
   </div>
 
   <div class="card card-consonants" onclick="openModal('consonants')">
-    <div class="card-number">02</div>
-    <span class="card-icon">🔡</span>
-    <div class="card-title-kr">자음</div>
+    <div class="card-title-row"><span class="card-icon">🔡</span><div class="card-title-kr">자음</div></div>
     <div class="card-title-en">Consonants</div>
     <div class="card-desc">14 consonants — ㄱ to ㅎ. Learn their names and sounds.</div>
     <div class="vowel-preview"><span class="con-chip">ㄱ</span><span class="con-chip">ㄴ</span><span class="con-chip">ㄷ</span><span class="con-chip">ㄹ</span><span class="con-chip">ㅁ</span><span class="con-chip">ㅂ</span></div>
@@ -145,19 +142,15 @@
   </div>
 
   <div class="card card-combo" onclick="openModal('combo')">
-    <div class="card-number">03</div>
-    <span class="card-icon">✨</span>
-    <div class="card-title-kr">조합</div>
+    <div class="card-title-row"><span class="card-icon">✨</span><div class="card-title-kr">조합</div></div>
     <div class="card-title-en">Combine</div>
     <div class="card-desc">Put consonants and vowels together to make syllables.</div>
     <div class="combo-preview"><span style="color:var(--accent4)">ㄱ</span><span class="combo-arrow">+</span><span style="color:var(--accent)">ㅏ</span><span class="combo-arrow">→</span><span class="combo-result">가</span></div>
     <span class="card-tag tag-green">Interactive</span>
   </div>
 
-  <div class="card" style="grid-column:span 6;border-color:#52b788;" onclick="openModal('firstwords')" onmouseover="this.style.background='#F0FDF4';this.style.boxShadow='0 12px 40px rgba(82,183,136,.2)'" onmouseout="this.style.background='#FFFFFF';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
-    <div class="card-number">04</div>
-    <span class="card-icon">✍️</span>
-    <div class="card-title-kr">첫 단어</div>
+  <div class="card" style="grid-column:span 12;border-color:#52b788;" onclick="openModal('firstwords')" onmouseover="this.style.background='#F0FDF4';this.style.boxShadow='0 12px 40px rgba(82,183,136,.2)'" onmouseout="this.style.background='#FFFFFF';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+    <div class="card-title-row"><span class="card-icon">✍️</span><div class="card-title-kr">첫 단어</div></div>
     <div class="card-title-en">Your First Words</div>
     <div class="card-desc">Real Korean words made from the letters you just learned.</div>
     <div class="vowel-preview" style="margin-top:.8rem;">
@@ -171,7 +164,7 @@
   <div class="card card-quiz" onclick="openModal('quiz')" style="cursor:pointer;grid-column:span 12;background:linear-gradient(135deg,#FFFBEB,#FFF9E0);border-color:#FFD93D;">
     <div class="quiz-inner">
       <div class="quiz-left">
-        <div class="card-number">05</div>
+
         <div class="card-title-kr">퀴즈 <span style="font-size:1rem;font-weight:400;color:var(--text-muted)">— 글자 읽기</span></div>
         <div class="card-title-en">Characters Quiz</div>
         <div class="card-desc">See a character — pick the correct sound. Test what you've learned!</div>

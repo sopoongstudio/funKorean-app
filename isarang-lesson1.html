@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이 사랑 통역 되나요? – Lesson 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#E879A0;
+  --pink-light:#FFF0F5;
+  --purple:#6D28D9;
+  --green:#059669;
+  --red:#EF4444;
+  --blue:#4F46E5;
+  --text:#0F172A;
+  --muted:#64748B;
+  --surface:#FFFFFF;
+  --bg:#F1F5F9;
+  --border:#E2E8F0;
+  --radius:14px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);padding-bottom:3rem;}
+
+/* HEADER */
+.lesson-header{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 1.2rem;display:flex;align-items:center;gap:.8rem;position:sticky;top:0;z-index:10;}
+.back-btn{background:var(--bg);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--text);font-size:1rem;flex-shrink:0;}
+.header-info{display:flex;flex-direction:column;}
+.header-tag{font-size:.68rem;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:1px;}
+.header-title{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;color:var(--text);}
+
+/* SECTIONS */
+.lesson-body{padding:1rem;display:flex;flex-direction:column;gap:1rem;max-width:700px;margin:0 auto;}
+
+.section{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.2rem;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.section-label{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.8rem;}
+.section-title{font-family:'Noto Sans KR',sans-serif;font-size:1.1rem;font-weight:900;color:var(--text);margin-bottom:.8rem;}
+
+/* TITLE CARD */
+.title-card{background:linear-gradient(135deg,#FFF0F5,#F5F3FF);border-color:var(--pink);}
+.title-card h1{font-family:'Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:900;color:var(--text);margin-bottom:.3rem;}
+.title-card .sub{font-size:.9rem;color:var(--muted);margin-bottom:1rem;}
+.meta-pills{display:flex;flex-wrap:wrap;gap:.4rem;}
+.meta-pill{background:rgba(110,40,217,.08);color:var(--purple);border-radius:99px;padding:.25rem .7rem;font-size:.72rem;font-weight:600;}
+
+/* VIDEO */
+.video-link{display:flex;align-items:center;justify-content:center;gap:.6rem;background:#FF0000;color:#fff;border-radius:10px;padding:.8rem 1rem;text-decoration:none;font-weight:700;font-size:.9rem;margin-bottom:.8rem;}
+.video-link:hover{background:#CC0000;}
+.listen-questions{display:flex;flex-direction:column;gap:.6rem;}
+.q-item{background:var(--bg);border-radius:10px;padding:.7rem .9rem;}
+.q-item .q-label{font-size:.82rem;font-weight:700;color:var(--purple);margin-bottom:.2rem;}
+.q-item .q-kr{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:var(--text);}
+
+/* VOCAB TABLE */
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{background:var(--bg);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:.5rem .6rem;text-align:left;border-bottom:2px solid var(--border);}
+.vocab-table td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+.vocab-table tr:last-child td{border-bottom:none;}
+.kr-word{font-family:'Noto Sans KR',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);}
+.rom{font-size:.88rem;color:var(--muted);}
+.eng{font-size:.92rem;color:var(--blue);font-weight:500;}
+.speak-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem;padding:.1rem .3rem;margin-left:.2rem;}
+.speak-btn:hover{color:var(--pink);}
+
+/* PATTERN DRILLS */
+.pattern-block{background:var(--bg);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;}
+.pattern-block .pattern-head{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem;}
+.pattern-block .pattern-head.ask{color:var(--blue);}
+.pattern-block .pattern-head.accept{color:var(--green);}
+.pattern-block .pattern-head.decline{color:var(--red);}
+.pattern-main{font-family:'Noto Sans KR',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.5rem;}
+.pattern-row{display:flex;flex-direction:column;gap:.15rem;padding:.4rem 0;border-bottom:1px solid var(--border);}
+.pattern-row:last-child{border-bottom:none;}
+.pattern-row .kr{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;white-space:nowrap;}
+.pattern-row .en{font-size:.88rem;color:var(--muted);line-height:1.4;}
+
+/* EMOTIONS */
+.emotion-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.emotion-card{border-radius:10px;padding:.8rem;border:1px solid var(--border);}
+.emotion-card.pos{background:#F0FDF4;border-color:#BBF7D0;}
+.emotion-card.neg{background:#FFF1F2;border-color:#FECDD3;}
+.emotion-card .emo-head{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem;}
+.emotion-card.pos .emo-head{color:var(--green);}
+.emotion-card.neg .emo-head{color:var(--red);}
+.emo-row{padding:.25rem 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.emo-row:last-child{border-bottom:none;}
+.emo-kr{font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;}
+.emo-ex{font-size:.84rem;color:var(--muted);}
+
+/* WORD HUNT */
+.hunt-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.hunt-card{background:var(--bg);border-radius:10px;padding:.7rem .8rem;border:1px solid var(--border);}
+.hunt-word{font-family:'Noto Sans KR',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.2rem;}
+.hunt-rom{font-size:.82rem;color:var(--muted);margin-bottom:.5rem;}
+.check-boxes{display:flex;gap:.3rem;}
+.box{width:22px;height:22px;border:2px solid var(--border);border-radius:5px;cursor:pointer;transition:all .15s;}
+.box.checked{background:var(--pink);border-color:var(--pink);}
+
+/* SPIN WHEEL */
+.wheel-section{display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.wheel-wrap{position:relative;width:220px;height:220px;}
+.wheel{width:220px;height:220px;border-radius:50%;background:conic-gradient(
+  #E879A0 0deg 60deg,
+  #A78BFA 60deg 120deg,
+  #34D399 120deg 180deg,
+  #FB923C 180deg 240deg,
+  #60A5FA 240deg 300deg,
+  #F472B6 300deg 360deg
+);position:relative;transition:transform 3s cubic-bezier(.17,.67,.12,.99);}
+.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:20px solid var(--text);z-index:2;}
+.wheel-labels{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.wheel-label{position:absolute;font-size:.65rem;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+.spin-btn{background:var(--text);color:#fff;border:none;border-radius:99px;padding:.6rem 1.4rem;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:.5rem;}
+.spin-btn:hover{background:var(--purple);}
+.spin-result{background:var(--bg);border-radius:10px;padding:1rem;text-align:center;width:100%;border:2px dashed var(--border);min-height:80px;display:flex;align-items:center;justify-content:center;}
+.spin-result-text{font-family:'Noto Sans KR',sans-serif;font-size:1.1rem;font-weight:700;color:var(--purple);}
+
+/* OUTRO */
+.outro-card{background:linear-gradient(135deg,var(--pink-light),#F5F3FF);border-color:var(--pink);text-align:center;padding:2rem 1.2rem;}
+.outro-card h2{font-family:'Noto Sans KR',sans-serif;font-size:1.4rem;font-weight:900;margin-bottom:.5rem;}
+.outro-card p{color:var(--muted);margin-bottom:1rem;}
+.outro-banner{background:var(--pink);color:#fff;border-radius:10px;padding:.6rem 1.2rem;display:inline-block;font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.5rem;}
+.outro-sub{font-size:.82rem;color:var(--muted);}
+</style>
+</head>
+<body id="top">
+
+<!-- HEADER -->
+<div class="lesson-header">
+  <a class="back-btn" href="hangul_learn_v2.html">←</a>
+  <div class="header-info">
+    <div class="header-tag">🎬 KDrama Class</div>
+    <div class="header-title">이 사랑 통역 되나요? · Lesson 1</div>
+  </div>
+</div>
+
+<div class="lesson-body">
+
+  <!-- 1. TITLE -->
+  <div class="section title-card">
+    <h1>이 사랑 통역 되나요?<br><span style="font-size:1rem;font-weight:600;color:var(--muted);">Can This Love Be Translated?</span></h1>
+    <p class="sub">나랑 오로라 보러 갈래? · <span style="color:var(--muted);">Shall We Go See the Aurora Together?</span> · Lesson 1</p>
+
+  </div>
+
+  <!-- 2. LISTEN -->
+  <div class="section">
+    <div class="section-label">▶️ Step 1</div>
+    <div class="section-title">Listen – The Hooked Part</div>
+    <a class="video-link" href="https://www.youtube.com/shorts/x5OHr4v47zI" target="_blank">
+      ▶ 시청하기 (Watch the clip)
+    </a>
+    <p style="font-size:.92rem;color:var(--muted);margin-bottom:.8rem;">Listen 2 times – just feel the rhythm! Which words do you catch?</p>
+    <div class="listen-questions">
+      <div class="q-item">
+        <div class="q-label">❓ Catch any word?</div>
+        <div class="q-kr">어떤 한국어 단어가 들렸나요?<br><span style="font-size:.88rem;color:var(--muted);font-weight:400;">What Korean words did you catch?</span></div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">💜 How does it feel?</div>
+        <div class="q-kr">영상을 볼 때 어떤 느낌이 들어요?<br><span style="font-size:.88rem;color:var(--muted);font-weight:400;">How did it feel when you watched?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. VOCAB -->
+  <div class="section">
+    <div class="section-label">⭐ Step 2</div>
+    <div class="section-title">Golden Words – Key Vocabulary</div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.8rem;">🔊 Tap the speaker to hear native pronunciation!</p>
+    <table class="vocab-table">
+      <thead>
+        <tr>
+          <th>한국어</th>
+          <th>발음</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="kr-word">오로라</span> <button class="speak-btn" onclick="speak('오로라')">🔊</button></td>
+          <td><span class="rom">o-ro-ra</span></td>
+          <td><span class="eng">Aurora / Northern Lights</span></td>
+        </tr>
+        <tr>
+          <td><span class="kr-word">인생샷 📸</span> <button class="speak-btn" onclick="speak('인생샷')">🔊</button></td>
+          <td><span class="rom">in-saeng-syat</span></td>
+          <td><span class="eng">Best photo of your life</span></td>
+        </tr>
+        <tr>
+          <td><span class="kr-word">여행</span> <button class="speak-btn" onclick="speak('여행')">🔊</button></td>
+          <td><span class="rom">yeo-haeng</span></td>
+          <td><span class="eng">Travel / Trip</span></td>
+        </tr>
+        <tr>
+          <td><span class="kr-word">같이</span> <button class="speak-btn" onclick="speak('같이')">🔊</button></td>
+          <td><span class="rom">ga-chi</span></td>
+          <td><span class="eng">Together</span></td>
+        </tr>
+        <tr>
+          <td><span class="kr-word">무서워요 👻</span> <button class="speak-btn" onclick="speak('무서워요')">🔊</button></td>
+          <td><span class="rom">mu-seo-weo-yo</span></td>
+          <td><span class="eng">Scared / Afraid</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4. PATTERN DRILL 1 -->
+  <div class="section">
+    <div class="section-label">🔁 Step 3</div>
+    <div class="section-title">Pattern Drill 1 – 제안하고 답하기</div>
+
+    <div class="pattern-block">
+      <div class="pattern-head ask">제안하기 (Ask)</div>
+      <div class="pattern-main">나랑 [명사] 보러 갈래? <button class="speak-btn" onclick="speak('나랑 보러 갈래')">🔊</button></div>
+      <div class="pattern-row"><span class="kr">나랑 <strong>오로라</strong> 보러 갈래?</span><span class="en">Will you go see the Aurora with me?</span></div>
+      <div class="pattern-row"><span class="kr">나랑 <strong>영화</strong> 보러 갈래?</span><span class="en">Will you go see a movie with me?</span></div>
+      <div class="pattern-row"><span class="kr">나랑 <strong>바다</strong> 보러 갈래?</span><span class="en">Will you go see the ocean with me?</span></div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-head accept">👍 수락 (Accept)</div>
+      <div class="pattern-main">"좋아요! 같이 가요!" <button class="speak-btn" onclick="speak('좋아요 같이 가요')">🔊</button></div>
+      <div class="pattern-row"><span class="en">Sounds great! Let's go together!</span></div>
+    </div>
+
+    <div class="pattern-block">
+      <div class="pattern-head decline">👎 거절 (Decline)</div>
+      <div class="pattern-main">"아니요, 안 갈래요." / "바빠요." <button class="speak-btn" onclick="speak('아니요 안 갈래요 바빠요')">🔊</button></div>
+      <div class="pattern-row"><span class="en">No, I'm not going. / I'm busy.</span></div>
+    </div>
+  </div>
+
+  <!-- 5. PATTERN DRILL 2 -->
+  <div class="section">
+    <div class="section-label">😊 Step 4</div>
+    <div class="section-title">Pattern Drill 2 – 감정 표현하기</div>
+    <div class="emotion-grid">
+      <div class="emotion-card pos">
+        <div class="emo-head">😊 긍정 (Positive)</div>
+        <div class="emo-row">
+          <div class="emo-kr">좋아요 <button class="speak-btn" onclick="speak('여행은 좋아요')">🔊</button></div>
+          <div class="emo-ex">여행은 좋아요!</div>
+        </div>
+        <div class="emo-row">
+          <div class="emo-kr">기뻐요 <button class="speak-btn" onclick="speak('선물은 기뻐요')">🔊</button></div>
+          <div class="emo-ex">선물은 기뻐요!</div>
+        </div>
+        <div class="emo-row">
+          <div class="emo-kr">재밌어요 <button class="speak-btn" onclick="speak('한국어는 재밌어요')">🔊</button></div>
+          <div class="emo-ex">한국어는 재밌어요!</div>
+        </div>
+      </div>
+      <div class="emotion-card neg">
+        <div class="emo-head">😢 부정 (Negative)</div>
+        <div class="emo-row">
+          <div class="emo-kr">싫어요 <button class="speak-btn" onclick="speak('공부는 싫어요')">🔊</button></div>
+          <div class="emo-ex">공부는 싫어요!</div>
+        </div>
+        <div class="emo-row">
+          <div class="emo-kr">무서워요 <button class="speak-btn" onclick="speak('귀신은 무서워요')">🔊</button></div>
+          <div class="emo-ex">귀신은 무서워요!</div>
+        </div>
+        <div class="emo-row">
+          <div class="emo-kr">슬퍼요 <button class="speak-btn" onclick="speak('이별은 슬퍼요')">🔊</button></div>
+          <div class="emo-ex">이별은 슬퍼요!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. WORD HUNT -->
+  <div class="section">
+    <div class="section-label">🎧 Step 5</div>
+    <div class="section-title">Listening Activity – Word Hunt!</div>
+    <p style="font-size:.92rem;color:var(--muted);margin-bottom:.8rem;">드라마 클립을 들으면서 단어가 들릴 때마다 박스에 체크하세요!</p>
+    <div class="hunt-grid">
+      <div class="hunt-card">
+        <div class="hunt-word">오로라 <button class="speak-btn" onclick="speak('오로라')">🔊</button></div>
+        <div class="hunt-rom">[o-ro-ra]</div>
+        <div class="check-boxes">
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+        </div>
+      </div>
+      <div class="hunt-card">
+        <div class="hunt-word">무서워요 <button class="speak-btn" onclick="speak('무서워요')">🔊</button></div>
+        <div class="hunt-rom">[mu-seo-weo-yo]</div>
+        <div class="check-boxes">
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+        </div>
+      </div>
+      <div class="hunt-card">
+        <div class="hunt-word">인생샷 📸 <button class="speak-btn" onclick="speak('인생샷')">🔊</button></div>
+        <div class="hunt-rom">[in-saeng-syat]</div>
+        <div class="check-boxes">
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+        </div>
+      </div>
+      <div class="hunt-card">
+        <div class="hunt-word">같이 <button class="speak-btn" onclick="speak('같이')">🔊</button></div>
+        <div class="hunt-rom">[ga-chi]</div>
+        <div class="check-boxes">
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+          <div class="box" onclick="this.classList.toggle('checked')"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. SPIN GAME -->
+  <div class="section">
+    <div class="section-label">🎮 Step 6</div>
+    <div class="section-title">Action Challenge – React Fast!</div>
+    <p style="font-size:.92rem;color:var(--muted);margin-bottom:1rem;">룰렛을 돌리고 나온 단어로 말하거나 표현해보세요!</p>
+    <div class="wheel-section">
+      <div class="wheel-wrap">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel"></div>
+      </div>
+      <button class="spin-btn" onclick="spinWheel()">SPIN! 🎯</button>
+      <div class="spin-result" id="spinResult">
+        <span style="color:var(--muted);font-size:.95rem;">결과가 여기에 나와요!<br><span style="font-size:.85rem;">Your result will show here!</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. OUTRO -->
+  <div class="section outro-card">
+    <h2>수고하셨습니다! 🎉</h2>
+    <a href="#top" style="display:inline-block;margin-top:1rem;background:var(--pink);color:#fff;border-radius:99px;padding:.6rem 1.6rem;font-weight:700;font-size:.9rem;text-decoration:none;">↑ 처음으로</a>
+  </div>
+
+</div>
+
+<script>
+// TTS
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ko-KR';
+  u.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// Spin Wheel
+const items = [
+  { label: '좋아요 👍', mission: '나랑 오로라 보러 갈래? 에 "좋아요!" 로 답해보세요!' },
+  { label: '무서워요 👻', mission: '"귀신은 무서워요!" 라고 말하고 무서운 표정을 지어보세요!' },
+  { label: '파란색 🌊', mission: '파란색인 것을 3가지 말해보세요!' },
+  { label: '인생샷 📸', mission: '인생샷을 찍을 장소를 한국어로 말해보세요!' },
+  { label: '싫어요 👎', mission: '"___ 는/은 싫어요!" 로 문장을 만들어보세요!' },
+  { label: '초록색 🌲', mission: '초록색인 것을 3가지 말해보세요!' },
+];
+
+let spinning = false;
+let currentAngle = 0;
+
+function spinWheel() {
+  if (spinning) return;
+  spinning = true;
+  const el = document.getElementById('wheel');
+  const extra = 1800 + Math.random() * 720;
+  currentAngle += extra;
+  el.style.transform = `rotate(${currentAngle}deg)`;
+
+  setTimeout(() => {
+    spinning = false;
+    const normalized = ((currentAngle % 360) + 360) % 360;
+    const idx = Math.floor(((360 - normalized) % 360) / 60) % 6;
+    const item = items[idx];
+    document.getElementById('spinResult').innerHTML =
+      `<div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.1rem;font-weight:900;color:var(--purple);margin-bottom:.4rem;">${item.label}</div><div style="font-size:.82rem;color:var(--muted);">${item.mission}</div></div>`;
+    speak(item.label.replace(/[👍👻🌊📸👎🌲]/g, ''));
+  }, 3100);
+}
+
+// Draw wheel labels using CSS overlay
+(function drawLabels() {
+  const labels = ['좋아요 👍','무서워요 👻','파란색 🌊','인생샷 📸','싫어요 👎','초록색 🌲'];
+  const wheel = document.getElementById('wheel');
+  labels.forEach((text, i) => {
+    const angle = i * 60 + 30;
+    const rad = (angle - 90) * Math.PI / 180;
+    const r = 70;
+    const x = 110 + r * Math.cos(rad);
+    const y = 110 + r * Math.sin(rad);
+    const span = document.createElement('span');
+    span.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotate(${angle}deg);font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;pointer-events:none;`;
+    span.textContent = text;
+    wheel.appendChild(span);
+  });
+})();
+</script>
+</body>
+</html>

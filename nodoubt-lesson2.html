@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Doubt Lesson 2 | ENHYPEN</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0fafa;--card:#ffffff;
+  --accent:#0d9488;--accent2:#14b8a6;
+  --gold:#0d9488;--ivory:#e6fafa;
+  --teal:#0d9488;--teal2:#14b8a6;
+  --text:#0d2b2b;--dim:#4a7c7c;--light:#7ab8b8;--border:#b2dede;
+  --shadow:0 4px 20px rgba(13,148,136,.07);
+}
+body{background:var(--bg);font-family:"Noto Sans KR","Outfit",sans-serif;color:var(--text);min-height:100vh;}
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--teal2),#67e8f9);transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(13,148,136,.1);max-width:880px;margin:0 auto}
+h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.content{display:flex;flex-direction:column;gap:14px}
+.section-label{font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+
+/* COVER */
+.cover-section{padding:36px 20px 28px;text-align:center;background:linear-gradient(160deg,#d4f5f5,#f0fafa)}
+.cover-section>*{max-width:600px;margin-left:auto;margin-right:auto}
+.top-badge{display:inline-block;font-family:"Outfit";font-size:clamp(10px,2.5vw,12px);font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--teal);border-radius:99px;padding:4px 16px;margin-bottom:14px}
+.song-title{font-family:"Outfit";font-size:clamp(38px,11vw,68px);font-weight:800;color:var(--text);line-height:1;margin-bottom:8px}
+.tagline{font-size:clamp(12px,3vw,15px);color:var(--dim);margin-bottom:20px;line-height:1.6}
+.nav-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.nav-pill{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:99px;font-size:clamp(12px,3vw,14px);font-weight:600;text-decoration:none;border:2px solid;transition:all .2s;background:none;cursor:pointer;font-family:"Noto Sans KR","Outfit",sans-serif;white-space:nowrap}
+.np1{border-color:var(--teal);color:var(--teal)}.np1:hover{background:rgba(13,148,136,.08)}
+.np2{border-color:#7c5cbf;color:#7c5cbf}.np2:hover{background:rgba(124,92,191,.08)}
+.np3{border-color:#e85d7a;color:#e85d7a}.np3:hover{background:rgba(232,93,122,.08)}
+
+/* YT */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid var(--border);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block;transition:border-color .2s;box-shadow:var(--shadow)}
+.yt-thumb-card:hover{border-color:var(--gold)}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.35)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:13px;font-weight:600}
+.yt-links{display:flex;gap:10px;margin-top:10px}
+.yt-link-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-size:clamp(12px,3.2vw,14px);font-weight:600;text-decoration:none;border:1.5px solid;transition:all .2s;text-align:center}
+.yt-lb{border-color:var(--border);color:var(--dim);background:rgba(255,255,255,.6)}.yt-lb:hover{border-color:var(--teal);color:var(--teal)}
+.yt-sb{border-color:rgba(13,148,136,.3);color:var(--teal);background:rgba(13,148,136,.05)}.yt-sb:hover{background:rgba(13,148,136,.12)}
+
+/* Lyric rows */
+.lyric-row{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.lyric-row:hover{border-color:var(--teal);background:rgba(13,148,136,.04)}
+.lyric-row.played{border-color:var(--teal);background:rgba(13,148,136,.06)}
+.tts-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;color:#fff;font-size:15px;box-shadow:0 2px 8px rgba(200,134,10,.2)}
+.lyric-kr{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--text)}
+.lyric-rom{font-size:clamp(11px,2.8vw,13px);color:var(--teal2);margin-top:2px}
+
+/* Vocab cards */
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.vocab-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:var(--shadow)}
+.vocab-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.vocab-card.played{border-color:var(--teal);background:rgba(13,148,136,.04)}
+.vocab-emoji{font-size:clamp(24px,6vw,36px);margin-bottom:8px}
+.vocab-kr{font-size:clamp(16px,4.5vw,22px);font-weight:700;color:var(--text);margin-bottom:3px}
+.vocab-rom{font-size:clamp(10px,2.5vw,12px);color:var(--teal2);margin-bottom:3px}
+.vocab-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim);font-weight:600}
+
+/* Pattern drill */
+.pattern-header{background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(13,148,136,.05));border:2px solid rgba(13,148,136,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px}
+.pattern-main{font-size:clamp(18px,5vw,26px);font-weight:800;color:var(--text)}
+.pattern-blank{color:var(--teal);border-bottom:3px solid var(--teal);padding:0 8px;min-width:80px;display:inline-block}
+.drill-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.drill-q{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:6px}
+.drill-a{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px}
+.drill-a:hover{color:var(--gold)}
+.drill-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim);margin-top:3px}
+
+/* Grammar */
+.grammar-badge{display:inline-block;background:rgba(124,92,191,.1);border:1.5px solid rgba(124,92,191,.3);border-radius:99px;padding:4px 14px;font-size:clamp(11px,2.8vw,13px);font-weight:700;color:#7c5cbf;margin-bottom:14px}
+.grammar-rule{background:rgba(124,92,191,.06);border:1.5px solid rgba(124,92,191,.2);border-radius:14px;padding:16px;margin-bottom:14px;text-align:center}
+.grammar-rule-text{font-size:clamp(16px,4.5vw,22px);font-weight:800;color:#7c5cbf}
+.grammar-rule-en{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-top:4px}
+.grammar-ex{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.grammar-ex:hover{border-color:#7c5cbf}
+.grammar-ex-kr{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:var(--text);margin-bottom:3px}
+.grammar-ex-rom{font-size:clamp(10px,2.5vw,12px);color:var(--gold);margin-bottom:3px}
+.grammar-ex-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim)}
+.grammar-ex-tag{font-size:clamp(10px,2.3vw,12px);color:#7c5cbf;font-weight:700;margin-bottom:6px}
+.write-box{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.write-q{font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:8px;font-weight:600}
+.write-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.write-input{background:#fdf6ee;border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:clamp(13px,3.5vw,15px);color:var(--text);font-family:"Noto Sans KR",sans-serif;flex:1;min-width:80px;outline:none;transition:border-color .2s}
+.write-input:focus{border-color:var(--teal)}
+.write-connector{font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--teal);flex-shrink:0}
+
+/* Emotion analysis */
+.emotion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.emotion-chip{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;user-select:none;box-shadow:var(--shadow)}
+.emotion-chip:hover{border-color:var(--gold);transform:translateY(-1px)}
+.emotion-chip.selected{border-color:var(--teal);background:rgba(13,148,136,.08)}
+.emotion-chip.selected .emotion-kr{color:var(--teal)}
+.emotion-emoji{font-size:clamp(20px,5vw,28px);margin-bottom:4px}
+.emotion-kr{font-size:clamp(13px,3.5vw,16px);font-weight:700;color:var(--text);transition:color .2s}
+.situation-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}
+.situation-item{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .2s;user-select:none;box-shadow:var(--shadow)}
+.situation-item:hover{border-color:var(--gold)}
+.situation-item.selected{border-color:var(--teal);background:rgba(13,148,136,.08)}
+.situation-num{font-size:clamp(11px,2.8vw,13px);color:var(--dim);margin-bottom:2px;font-weight:600}
+.situation-kr{font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text)}
+.situation-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim)}
+@media(max-width:480px){.situation-list{grid-template-columns:1fr}}
+
+/* Why cards */
+.why-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;box-shadow:var(--shadow)}
+.why-emoji{font-size:clamp(20px,5vw,26px);flex-shrink:0}
+.why-kr{font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text);margin-bottom:3px}
+.why-en{font-size:clamp(11px,2.8vw,13px);color:var(--dim)}
+.mildang-link{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;font-size:clamp(12px,3vw,14px);font-weight:600;text-decoration:none;border:2px solid var(--teal);color:var(--teal);background:rgba(13,148,136,.06);transition:all .2s;margin-top:4px}
+.mildang-link:hover{background:rgba(13,148,136,.14)}
+.mildang-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;padding:16px;background:rgba(200,134,10,.05);border-radius:14px;border:1.5px solid rgba(200,134,10,.15);margin-bottom:14px}
+.mildang-step{text-align:center;font-size:clamp(11px,2.8vw,13px);font-weight:700;color:var(--dim)}
+.mildang-step.active{color:var(--gold);font-size:clamp(12px,3vw,14px)}
+.mildang-arrow{color:var(--border);font-size:14px}
+
+/* Complete */
+.complete-box{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.complete-box h3{font-size:clamp(13px,3.5vw,16px);color:var(--teal);font-weight:700;margin-bottom:10px}
+.complete-sentence{background:#fdf6ee;border-radius:12px;padding:16px;font-size:clamp(14px,3.8vw,17px);line-height:2;color:var(--text);font-weight:500}
+.blank-input{background:rgba(13,148,136,.06);border:1.5px solid var(--teal);border-radius:8px;padding:4px 10px;font-size:clamp(14px,3.8vw,17px);color:var(--teal);font-family:"Noto Sans KR",sans-serif;font-weight:700;outline:none;min-width:100px;width:140px}
+.options-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.option-chip{background:var(--card);border:1.5px solid var(--border);border-radius:99px;padding:8px 12px;text-align:center;cursor:pointer;font-size:clamp(12px,3vw,14px);font-weight:600;color:var(--text);transition:all .2s;user-select:none}
+.option-chip:hover{border-color:var(--teal);color:var(--teal)}
+.complete-footer{text-align:center;padding:20px 20px 48px;font-size:clamp(12px,3.2vw,14px);color:var(--dim)}
+
+@media(min-width:600px){
+  .vocab-grid{grid-template-columns:repeat(3,1fr)}
+  .emotion-grid{grid-template-columns:repeat(4,1fr)}
+  .options-grid{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+
+<!-- COVER -->
+<div class="cover-section">
+  <div>
+    <div class="top-badge">ENHYPEN &middot; A2&ndash;B1 &middot; Lesson 2</div>
+    <div class="song-title">No Doubt &#128270;</div>
+    <div class="tagline">Analyse the Emotions &middot; Become an Emotion Analyst</div>
+    <div class="nav-pills">
+      <a class="nav-pill np1" href="#lyrics">&#127911; View Lyrics</a>
+      <a class="nav-pill np2" href="#analysis">&#128270; Emotion Analysis</a>
+      <a class="nav-pill np3" href="#grammar">&#9999;&#65039; Grammar Drill</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: View Lyrics -->
+<div class="section" id="lyrics">
+  <div class="section-label">Step 1</div>
+  <h2>&#127911; View Lyrics</h2>
+  <div class="content">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0" target="_blank">
+      <img src="https://img.youtube.com/vi/X3_g_oeCTZ0/sddefault.jpg" onerror="this.src='https://i.ytimg.com/vi/X3_g_oeCTZ0/hqdefault.jpg'" alt="No Doubt MV" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div class="yt-play-overlay">
+        <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-play-label">&#9654; Full MV</div>
+      </div>
+    </a>
+    <div class="yt-links">
+      <a class="yt-link-btn yt-lb" href="https://www.youtube.com/watch?v=XKZQ3wlS9aI" target="_blank">&#128221; Lyrics Video</a>
+      <a class="yt-link-btn yt-sb" href="https://www.youtube.com/shorts/f7rsNKeXYBU" target="_blank">&#127919; Highlight Shorts</a>
+    </div>
+    <p style="font-size:clamp(12px,3vw,14px);color:var(--dim)">Today's focus lines &mdash; click to listen! &#128266;</p>
+    <div class="lyric-row" onclick="speakLine(this,'널 원해 괴롭지만')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">널 원해 괴롭지만</div><div class="lyric-rom">neol wonhae goerop-ji-man</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'낮이 됐건 밤이 됐건')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">낮이 됐건 밤이 됐건</div><div class="lyric-rom">na-ji dwaet-geon bam-i dwaet-geon</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'의심 없이 I love you')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">의심 없이 I love you</div><div class="lyric-rom">ui-sim eop-si  I love you</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'원하면 원할수록')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">원하면 원할수록</div><div class="lyric-rom">won-ha-myeon won-hal-su-rok</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'미치겠어')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">미치겠어  Miss you</div><div class="lyric-rom">mi-chi-get-seo  Miss you</div></div></div>
+    <div class="lyric-row" onclick="speakLine(this,'날 태워 증명해')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">날 태워 증명해</div><div class="lyric-rom">nal tae-wo jeung-myeong-hae</div></div></div>
+  </div>
+</div>
+
+<!-- SECTION 2: New Words -->
+<div class="section">
+  <div class="section-label">Step 2</div>
+  <h2>&#128218; New Words</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Key words from the lyrics &mdash; click to listen!</p>
+  <div class="vocab-grid">
+    <div class="vocab-card" onclick="speakVocab(this,'불안해')"><div class="vocab-emoji">&#128560;</div><div class="vocab-kr">불안해</div><div class="vocab-rom">bul-an-hae</div><div class="vocab-en">anxious / uneasy</div></div>
+    <div class="vocab-card" onclick="speakVocab(this,'미치겠어')"><div class="vocab-emoji">&#129327;</div><div class="vocab-kr">미치겠어</div><div class="vocab-rom">mi-chi-get-seo</div><div class="vocab-en">going crazy</div></div>
+    <div class="vocab-card" onclick="speakVocab(this,'외로워')"><div class="vocab-emoji">&#129402;</div><div class="vocab-kr">외로워</div><div class="vocab-rom">we-ro-wo</div><div class="vocab-en">lonely</div></div>
+    <div class="vocab-card" onclick="speakVocab(this,'괴로워')"><div class="vocab-emoji">&#128547;</div><div class="vocab-kr">괴로워</div><div class="vocab-rom">gwe-ro-wo</div><div class="vocab-en">painful</div></div>
+    <div class="vocab-card" onclick="speakVocab(this,'증명해')"><div class="vocab-emoji">&#128170;</div><div class="vocab-kr">증명해</div><div class="vocab-rom">jeung-myeong-hae</div><div class="vocab-en">prove</div></div>
+    <div class="vocab-card" onclick="speakVocab(this,'원해')"><div class="vocab-emoji">&#128156;</div><div class="vocab-kr">원해</div><div class="vocab-rom">won-hae</div><div class="vocab-en">want</div></div>
+  </div>
+</div>
+
+<!-- SECTION 3: Pattern Drill -->
+<div class="section">
+  <div class="section-label">Step 3</div>
+  <h2>&#128483;&#65039; Pattern Drill</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Use the words to make sentences!</p>
+  <div class="pattern-header">
+    <div class="pattern-main">나는 (지금) <span class="pattern-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> !</div>
+  </div>
+  <div class="content">
+    <div class="drill-card">
+      <div class="drill-q">Q. How are you feeling lately? &nbsp;요즘 어때요?</div>
+      <div class="drill-a" onclick="speakKr('나는 지금 불안해')">&#128266; 나는 (지금) 불안해!</div>
+      <div class="drill-en">I'm anxious right now!</div>
+    </div>
+    <div class="drill-card">
+      <div class="drill-q">Q. Why is it hard? &nbsp;왜 힘들어요?</div>
+      <div class="drill-a" onclick="speakKr('나는 지금 괴로워')">&#128266; 나는 (지금) 괴로워!</div>
+      <div class="drill-en">I'm in pain!</div>
+    </div>
+    <div class="drill-card">
+      <div class="drill-q">Q. How do you feel alone? &nbsp;혼자 있을 때 어때요?</div>
+      <div class="drill-a" onclick="speakKr('나는 지금 외로워')">&#128266; 나는 (지금) 외로워!</div>
+      <div class="drill-en">I'm lonely!</div>
+    </div>
+    <div class="drill-card">
+      <div class="drill-q">Q. What do you want? &nbsp;뭘 원해요?</div>
+      <div class="drill-a" onclick="speakKr('나는 원해')">&#128266; 나는 ___ 원해!</div>
+      <div class="drill-en">I want ___!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: Grammar ~지만 -->
+<div class="section" id="grammar">
+  <div class="section-label">Step 4</div>
+  <h2>&#128218; Grammar &mdash; ~지만</h2>
+  <div class="grammar-badge">but / however &mdash; when two things contradict each other!</div>
+  <div class="grammar-rule">
+    <div class="grammar-rule-text">~지만 &nbsp;=&nbsp; ~ but / ~ however</div>
+    <div class="grammar-rule-en">Use when the second part is opposite or unexpected</div>
+  </div>
+  <div class="content">
+    <div class="grammar-ex" onclick="speakKr('널 원해 괴롭지만')">
+      <div class="grammar-ex-tag">&#127911; From the song</div>
+      <div class="grammar-ex-kr">널 원해 &nbsp;괴롭지만</div>
+      <div class="grammar-ex-rom">neol won-hae &nbsp;goerop-ji-man</div>
+      <div class="grammar-ex-en">I want you, but it's painful</div>
+    </div>
+    <div class="grammar-ex" onclick="speakKr('한국어가 어렵지만 재미있어요')">
+      <div class="grammar-ex-tag">&#128218; Example</div>
+      <div class="grammar-ex-kr">한국어가 어렵지만 &nbsp;재미있어요</div>
+      <div class="grammar-ex-rom">han-gu-geo-ga eo-ryeop-ji-man</div>
+      <div class="grammar-ex-en">Korean is hard, but it's fun</div>
+    </div>
+    <div class="grammar-ex" onclick="speakKr('외로워 하지만 괜찮아')">
+      <div class="grammar-ex-tag">&#128153; Example</div>
+      <div class="grammar-ex-kr">외로워 &nbsp;하지만 &nbsp;괜찮아</div>
+      <div class="grammar-ex-rom">we-ro-wo &nbsp;ha-ji-man &nbsp;gwaen-cha-na</div>
+      <div class="grammar-ex-en">I'm lonely, but I'm okay</div>
+    </div>
+    <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--teal);margin-top:4px">&#9999;&#65039; Now try it yourself!</p>
+    <div class="write-box">
+      <div class="write-q">Q1. How are you doing lately? &nbsp;요즘 어때요?</div>
+      <div class="write-input-row">
+        <input class="write-input" type="text" placeholder="어때요?">
+        <span class="write-connector">지만</span>
+        <input class="write-input" type="text" placeholder="but...">
+      </div>
+    </div>
+    <div class="write-box">
+      <div class="write-q">Q2. How is studying Korean? &nbsp;한국어 공부가 어때요?</div>
+      <div class="write-input-row">
+        <input class="write-input" type="text" placeholder="어때요?">
+        <span class="write-connector">지만</span>
+        <input class="write-input" type="text" placeholder="but...">
+      </div>
+    </div>
+    <div class="write-box">
+      <div class="write-q">Q3. Make your own! &nbsp;자유롭게 만들어봐요!</div>
+      <div class="write-input-row">
+        <input class="write-input" type="text" placeholder="______">
+        <span class="write-connector">지만</span>
+        <input class="write-input" type="text" placeholder="______">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: Emotion Analysis -->
+<div class="section" id="analysis">
+  <div class="section-label">Step 5</div>
+  <h2>&#128270; Emotion Analysis Report</h2>
+  <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Analyse ENHYPEN's emotions!</p>
+  <div class="content">
+    <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text)">Q1. What emotion is this person feeling? Circle all that apply!</p>
+    <div class="emotion-grid">
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128156;</div><div class="emotion-kr">사랑</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128560;</div><div class="emotion-kr">불안</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128522;</div><div class="emotion-kr">행복</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#129402;</div><div class="emotion-kr">외로움</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128175;</div><div class="emotion-kr">확신</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128547;</div><div class="emotion-kr">괴로움</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128147;</div><div class="emotion-kr">설렘</div></div>
+      <div class="emotion-chip" onclick="toggleEmotion(this)"><div class="emotion-emoji">&#128546;</div><div class="emotion-kr">슬픔</div></div>
+    </div>
+    <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text);margin-top:8px">Q2. What's the situation? Choose one!</p>
+    <div class="situation-list">
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9312;</div><div class="situation-kr">짝사랑 중</div><div class="situation-en">One-sided love</div></div>
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9313;</div><div class="situation-kr">이별 직후</div><div class="situation-en">Right after a breakup</div></div>
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9314;</div><div class="situation-kr">사귀는 중인데 불안해</div><div class="situation-en">Dating but feeling anxious</div></div>
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9315;</div><div class="situation-kr">오래된 연인</div><div class="situation-en">Long-term relationship</div></div>
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9316;</div><div class="situation-kr">좋아하는데 고백을 못 해</div><div class="situation-en">Likes someone but can't confess</div></div>
+      <div class="situation-item" onclick="selectSituation(this)"><div class="situation-num">&#9317;</div><div class="situation-kr">상대방이 날 좋아하는지 모르겠어</div><div class="situation-en">Not sure if they feel the same</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: Why? -->
+<div class="section">
+  <div class="section-label">Step 6</div>
+  <h2>&#128172; Why the Anxiety?</h2>
+  <div class="mildang-flow">
+    <div class="mildang-step">&#128140; Flirting</div><div class="mildang-arrow">&#8594;</div>
+    <div class="mildang-step">&#127744; Talking</div><div class="mildang-arrow">&#8594;</div>
+    <div class="mildang-step">&#127917; Push &amp; Pull</div><div class="mildang-arrow">&#8594;</div>
+    <div class="mildang-step active">&#9989; No Doubt!</div>
+  </div>
+  <p style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--text);margin-bottom:12px">They're certain now &mdash; so why the anxiety? &#129300;</p>
+  <div class="content">
+    <div class="why-card"><div class="why-emoji">&#128532;</div><div><div class="why-kr">상대가 나한테 너무 과분해</div><div class="why-en">They're out of my league</div></div></div>
+    <div class="why-card"><div class="why-emoji">&#128151;</div><div><div class="why-kr">너무 사랑해서 잃을까봐</div><div class="why-en">I love them too much to lose them</div></div></div>
+    <div class="why-card"><div class="why-emoji">&#128560;</div><div><div class="why-kr">진짜 내 모습을 알면 떠날까봐</div><div class="why-en">If they see the real me, they'll leave</div></div></div>
+    <div class="why-card"><div class="why-emoji">&#128241;</div><div><div class="why-kr">상대 반응에 너무 예민해</div><div class="why-en">Overreacting to every small change in their mood</div></div></div>
+    <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);text-align:center">&#127757; This feeling exists everywhere &mdash; in Korea and beyond!</p>
+    <div style="text-align:center">
+      <a class="mildang-link" href="mildang-discussion.html" target="_blank">&#128172; Explore the Push &amp; Pull stages &#8594;</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: Complete -->
+<div class="section" id="complete" style="border-bottom:none">
+  <div class="section-label">Step 7</div>
+  <h2>&#9989; Analysis Complete!</h2>
+  <p style="font-size:clamp(13px,3.5vw,16px);color:var(--dim);margin-bottom:16px">You nailed the analysis! &#128270;</p>
+  <div class="complete-box">
+    <h3>&#127919; What is ENHYPEN trying to say?</h3>
+    <div class="complete-sentence">
+      This song is about &nbsp;<input class="blank-input" id="b1" type="text" placeholder="______">&nbsp;.<br>
+      Because this person &nbsp;<input class="blank-input" id="b2" type="text" placeholder="______"><br>
+      &nbsp;but &nbsp;<input class="blank-input" id="b3" type="text" placeholder="______">&nbsp;.
+    </div>
+    <p style="font-size:clamp(11px,2.8vw,13px);color:var(--dim);margin-top:12px;margin-bottom:8px">&#128161; Options &mdash; pick and type!</p>
+    <div class="options-grid">
+      <div class="option-chip" onclick="copyOption(this)">사랑</div>
+      <div class="option-chip" onclick="copyOption(this)">외로움</div>
+      <div class="option-chip" onclick="copyOption(this)">불안</div>
+      <div class="option-chip" onclick="copyOption(this)">괴로움</div>
+      <div class="option-chip" onclick="copyOption(this)">확신</div>
+      <div class="option-chip" onclick="copyOption(this)">그리움</div>
+      <div class="option-chip" onclick="copyOption(this)">집착</div>
+      <div class="option-chip" onclick="copyOption(this)">희망</div>
+      <div class="option-chip" onclick="copyOption(this)">두려움</div>
+    </div>
+  </div>
+</div>
+<div class="complete-footer">&#128270; Analysis complete! Great work, Emotion Analyst! &#128270;</div>
+
+<script>
+window.addEventListener("scroll",function(){
+  var h=document.documentElement;
+  var pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById("progBar").style.width=pct+"%";
+});
+function speakKr(t){var u=new SpeechSynthesisUtterance(t);u.lang="ko-KR";u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);}
+function speakLine(el,t){document.querySelectorAll(".lyric-row").forEach(function(l){l.classList.remove("played");});el.classList.add("played");speakKr(t);}
+function speakVocab(el,t){document.querySelectorAll(".vocab-card").forEach(function(c){c.classList.remove("played");});el.classList.add("played");speakKr(t);}
+function toggleEmotion(el){el.classList.toggle("selected");}
+function selectSituation(el){document.querySelectorAll(".situation-item").forEach(function(s){s.classList.remove("selected");});el.classList.add("selected");}
+var lastFocused=null;
+document.querySelectorAll(".blank-input").forEach(function(inp){inp.addEventListener("focus",function(){lastFocused=inp;});});
+function copyOption(el){
+  var text=el.textContent;
+  if(lastFocused){lastFocused.value=text;lastFocused.focus();}
+}
+</script>
+</body>
+</html>

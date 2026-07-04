@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello Future – Mini Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#10B981;
+  --green-light:#ECFDF5;
+  --green-dark:#065F46;
+  --purple:#6D28D9;
+  --blue:#4F46E5;
+  --orange:#F97316;
+  --text:#0F172A;
+  --muted:#64748B;
+  --surface:#FFFFFF;
+  --bg:#F1F5F9;
+  --border:#E2E8F0;
+  --radius:14px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);padding-bottom:3rem;}
+
+/* HEADER */
+.lesson-header{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 1.2rem;display:flex;align-items:center;gap:.8rem;position:sticky;top:0;z-index:10;}
+.back-btn{background:var(--bg);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--text);font-size:1rem;flex-shrink:0;}
+.header-info{display:flex;flex-direction:column;}
+.header-tag{font-size:.68rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;}
+.header-title{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;color:var(--text);}
+
+/* BODY */
+.lesson-body{padding:1rem;display:flex;flex-direction:column;gap:1rem;max-width:700px;margin:0 auto;}
+
+.section{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.2rem;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.section-label{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.8rem;}
+.section-title{font-family:'Noto Sans KR',sans-serif;font-size:1.1rem;font-weight:900;color:var(--text);margin-bottom:.4rem;}
+.section-sub{font-size:.85rem;color:var(--muted);margin-bottom:1rem;}
+
+/* TITLE CARD */
+.title-card{background:linear-gradient(135deg,#ECFDF5,#F0FDF4);border-color:var(--green);}
+.title-card h1{font-family:'Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:900;color:var(--text);margin-bottom:.3rem;}
+.title-card .sub{font-size:.88rem;color:var(--muted);}
+
+/* STORY CARDS */
+.story-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.story-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.story-body{padding:1rem;}
+.story-scene{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;}
+.story-kr{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.2rem;}
+.story-en{font-size:.85rem;color:var(--muted);font-style:italic;margin-bottom:.8rem;}
+.speech-bubble{border-radius:10px;padding:.7rem 1rem;font-family:'Noto Sans KR',sans-serif;font-weight:700;}
+.speech-bubble.purple{background:#F3E8FF;color:#6D28D9;}
+.speech-bubble.orange{background:#FFF7ED;color:#C2410C;}
+.speech-bubble.blue{background:#EFF6FF;color:#1D4ED8;}
+.speech-bubble-en{font-size:.78rem;color:var(--muted);margin-top:.3rem;font-style:italic;font-family:'DM Sans',sans-serif;font-weight:400;}
+
+/* WORD STRIP */
+.word-strip{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:var(--muted);text-align:center;margin-top:.5rem;}
+.word-strip span{color:var(--text);font-weight:700;}
+
+/* TRANSLATION BOX */
+.trans-box{background:#F0FDF4;border:1px solid #A7F3D0;border-radius:10px;padding:.8rem 1rem;margin-top:.5rem;}
+.trans-title{font-size:.7rem;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem;}
+.trans-row{font-size:.82rem;color:var(--text);margin-bottom:.2rem;}
+.trans-row span{color:var(--muted);}
+
+/* LOOK & SPEAK */
+.speak-prompt{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:.7rem 1rem;margin-top:.8rem;}
+.speak-prompt-label{font-size:.72rem;font-weight:700;color:#92400E;margin-bottom:.3rem;}
+.speak-prompt-text{font-size:.85rem;color:#78350F;font-style:italic;}
+.speak-answer{display:none;margin-top:.5rem;background:#F0FDF4;border-radius:8px;padding:.6rem .9rem;font-family:'Noto Sans KR',sans-serif;font-weight:700;color:var(--green-dark);font-size:.9rem;}
+.reveal-btn{margin-top:.6rem;background:none;border:1.5px solid var(--green);color:var(--green-dark);border-radius:99px;padding:.35rem 1rem;font-size:.78rem;font-weight:700;cursor:pointer;}
+
+/* SAY IT 3 TIMES */
+.speak-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1rem;border:1px solid var(--border);border-radius:10px;margin-bottom:.6rem;}
+.speak-kr{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;color:var(--text);}
+.speak-rom{font-size:.75rem;color:var(--muted);margin:.1rem 0;}
+.speak-en{font-size:.78rem;color:var(--green-dark);font-weight:600;}
+.speak-btn{background:none;border:none;cursor:pointer;font-size:1rem;padding:0 .3rem;}
+.speak-btn-dark{background:none;border:none;cursor:pointer;font-size:.95rem;padding:0 .2rem;opacity:0.75;}
+.speak-btn-dark:hover{opacity:1;}
+.count-btns{display:flex;gap:.4rem;flex-shrink:0;}
+.count-btn{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-weight:700;font-size:.82rem;cursor:pointer;transition:.2s;}
+.play-all-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#fff;border:none;border-radius:99px;padding:.5rem 1.2rem;font-size:.82rem;font-weight:700;cursor:pointer;margin-bottom:1rem;transition:background .15s;}
+.play-all-btn:hover{background:var(--green-dark);}
+.play-all-btn.playing{background:#F97316;}
+
+/* OUTRO */
+.outro-card{background:linear-gradient(135deg,#ECFDF5,#F0FDF4);border-color:var(--green);text-align:center;}
+.outro-card h2{font-family:'Noto Sans KR',sans-serif;font-size:1.2rem;font-weight:900;margin-bottom:.8rem;}
+.hw-box{background:#fff;border-radius:10px;padding:.8rem 1rem;text-align:left;margin-bottom:.8rem;}
+.hw-title{font-size:.75rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;}
+.hw-box p{font-size:.85rem;color:var(--text);line-height:1.5;}
+</style>
+</head>
+<body id="top">
+
+<!-- HEADER -->
+<div class="lesson-header">
+  <a class="back-btn" href="nct-lesson1.html">←</a>
+  <div class="header-info">
+    <div class="header-tag">📖 NCT Dream · Mini Story</div>
+    <div class="header-title">Hello Future · 미니 동화</div>
+  </div>
+</div>
+
+<div class="lesson-body">
+
+  <!-- TITLE -->
+  <div class="section title-card">
+    <h1>📖 미니 동화<br><span style="font-size:1rem;font-weight:600;color:var(--muted);">Mini Story</span></h1>
+    <p class="sub">NCT Dream (엔시티 드림) · Hello Future</p>
+  </div>
+
+  <!-- STEP 5: MINI STORY -->
+  <div class="section">
+    <div class="section-label">📖 Step 5</div>
+    <div class="section-title">미니 동화</div>
+    <div class="section-sub">Mini Story</div>
+    <button class="play-all-btn" onclick="playAll()">▶ 전체 듣기 · Play All</button>
+
+    <!-- Scene 1 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-1.png" alt="별소년 혼자">
+      <div class="story-body">
+        <div class="story-scene">Scene 1</div>
+        <div class="story-kr">별소년은 혼자 무서웠어요. <button class="speak-btn" onclick="speak('별소년은 혼자 무서웠어요')">🔊</button></div>
+        <div class="story-en">The star-boy was all alone and scared.</div>
+        <div class="speech-bubble purple">"미래가 무서워..." <button class="speak-btn" onclick="speak('미래가 무서워')">🔊</button></div>
+        <div class="speech-bubble-en">"The future scares me..."</div>
+      </div>
+    </div>
+
+    <!-- Scene 2 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-2.png" alt="여우 나타남">
+      <div class="story-body">
+        <div class="story-scene">Scene 2</div>
+        <div class="story-kr">그때 깜찍 여우가 나타났어요! <button class="speak-btn" onclick="speak('그때 깜찍 여우가 나타났어요')">🔊</button></div>
+        <div class="story-en">Just then a cute fox suddenly appeared!</div>
+      </div>
+    </div>
+
+    <!-- Scene 3 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-3.png" alt="여우가 말함">
+      <div class="story-body">
+        <div class="story-scene">Scene 3</div>
+        <div class="story-kr">여우가 말했어요. <button class="speak-btn" onclick="speak('여우가 말했어요')">🔊</button></div>
+        <div class="story-en">The fox said:</div>
+        <div class="speech-bubble orange">"어서 와!" <button class="speak-btn" onclick="speak('어서 와')">🔊</button></div>
+        <div class="speech-bubble-en">"Come quickly!"</div>
+      </div>
+    </div>
+
+    <!-- Scene 4 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-4.png" alt="별소년이 말함">
+      <div class="story-body">
+        <div class="story-scene">Scene 4</div>
+        <div class="story-kr">별소년이 말했어요. <button class="speak-btn" onclick="speak('별소년이 말했어요')">🔊</button></div>
+        <div class="story-en">The star-boy said:</div>
+        <div class="speech-bubble blue">"기다렸어! 아무 걱정 하지 마! 잘 될 거야!" <button class="speak-btn" onclick="speak('기다렸어! 아무 걱정 하지 마! 잘 될 거야!')">🔊</button></div>
+        <div class="speech-bubble-en">"I've been waiting! Don't worry at all! It'll all work out!"</div>
+      </div>
+    </div>
+
+    <!-- Scene 5 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-5.png" alt="둘이 함께">
+      <div class="story-body">
+        <div class="story-scene">Scene 5</div>
+        <div class="story-kr">둘이 함께 빛났어요! ✨ <button class="speak-btn" onclick="speak('둘이 함께 빛났어요')">🔊</button></div>
+        <div class="story-en">Together, they shone brighter than ever!</div>
+      </div>
+    </div>
+
+    <!-- Word Strip -->
+    <div class="word-strip">
+      🗝️ <span>어서 와</span> · <span>기다렸어</span> · <span>아무 걱정 하지 마</span> · <span>잘 될 거야</span> · <span>같이 빛나</span>
+    </div>
+
+    <!-- Translation Box -->
+    <div class="trans-box" style="margin-top:.8rem;">
+      <div class="trans-title">← 대사 영어 번역 Dialogue Translation</div>
+      <div class="trans-row">기다렸어! <span>→ I've been waiting!</span></div>
+      <div class="trans-row">아무 걱정 하지 마 <span>→ Don't worry at all!</span></div>
+      <div class="trans-row">잘 될 거야 <span>→ It'll all work out!</span></div>
+    </div>
+  </div>
+
+  <!-- STEP 6: LOOK & SPEAK -->
+  <div class="section">
+    <div class="section-label">💬 Step 6</div>
+    <div class="section-title">그림 보고 말해봐요!</div>
+    <div class="section-sub">Look &amp; Speak!</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">아래 그림을 보고 이 상황에서 뭐라고 할까요? 오늘 배운 표현을 골라보세요!</p>
+
+    <div class="word-strip" style="margin-bottom:1rem;">
+      <span>기다렸어!</span> · <span>어서 와!</span> · <span>아무 걱정 하지 마!</span> · <span>잘 될 거야!</span> · <span>같이 빛나!</span>
+    </div>
+
+    <!-- Look & Speak 1 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-3.png" alt="여우가 별소년을 만남">
+      <div class="story-body">
+        <div class="story-kr" style="font-size:.9rem;">여우가 혼자 있던 별소년을 만났어요. <button class="speak-btn" onclick="speak('여우가 혼자 있던 별소년을 만났어요')">🔊</button></div>
+        <div class="story-en">The fox met the lonely star-boy.</div>
+        <div class="speak-prompt">
+          <div class="speak-prompt-label">What would you say?</div>
+          <div class="speak-prompt-text">"__________"</div>
+        </div>
+        <button class="reveal-btn" onclick="toggleAnswer(this)">정답 보기</button>
+        <div class="speak-answer">어서 와! 🙌 <button class="speak-btn speak-btn-dark" onclick="speak('어서 와')">🔊</button></div>
+      </div>
+    </div>
+
+    <!-- Look & Speak 2 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-4.png" alt="여우가 별소년을 격려">
+      <div class="story-body">
+        <div class="story-kr" style="font-size:.9rem;">여우가 별소년을 격려해 줘요. <button class="speak-btn" onclick="speak('여우가 별소년을 격려해 줘요')">🔊</button></div>
+        <div class="story-en">The fox is encouraging the star-boy.</div>
+        <div class="speak-prompt">
+          <div class="speak-prompt-label">What would you say?</div>
+          <div class="speak-prompt-text">"__________"</div>
+        </div>
+        <button class="reveal-btn" onclick="toggleAnswer(this)">정답 보기</button>
+        <div class="speak-answer">아무 걱정 하지 마! / 잘 될 거야! 💪 <button class="speak-btn speak-btn-dark" onclick="speak('아무 걱정 하지 마, 잘 될 거야')">🔊</button></div>
+      </div>
+    </div>
+
+    <!-- Look & Speak 3 -->
+    <div class="story-card" style="margin-bottom:.8rem;">
+      <img class="story-img" src="nct_img/nct-story-5.png" alt="둘이 함께 별을 봄">
+      <div class="story-body">
+        <div class="story-kr" style="font-size:.9rem;">둘이 함께 별을 보고 있어요. <button class="speak-btn" onclick="speak('둘이 함께 별을 보고 있어요')">🔊</button></div>
+        <div class="story-en">They are watching the stars together.</div>
+        <div class="speak-prompt">
+          <div class="speak-prompt-label">What would you say?</div>
+          <div class="speak-prompt-text">"__________"</div>
+        </div>
+        <button class="reveal-btn" onclick="toggleAnswer(this)">정답 보기</button>
+        <div class="speak-answer">같이 빛나! ✨ <button class="speak-btn speak-btn-dark" onclick="speak('같이 빛나')">🔊</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7: SAY IT 3 TIMES -->
+  <div class="section">
+    <div class="section-label">🗣️ Step 7</div>
+    <div class="section-title">3번 말해봐요!</div>
+    <div class="section-sub">Say It 3 Times! 크게, 자신 있게! Loud &amp; proud!</div>
+
+    <div class="speak-card">
+      <div>
+        <div class="speak-kr">아무 걱정 하지 마! <button class="speak-btn" onclick="speak('아무 걱정 하지 마')">🔊</button></div>
+        <div class="speak-rom">A-mu geok-jeong ha-ji ma</div>
+        <div class="speak-en">Don't worry at all!</div>
+      </div>
+      <div class="count-btns">
+        <button class="count-btn" onclick="this.classList.toggle('done')">1</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">2</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">3</button>
+      </div>
+    </div>
+
+    <div class="speak-card">
+      <div>
+        <div class="speak-kr">잘 될 거야! <button class="speak-btn" onclick="speak('잘 될 거야')">🔊</button></div>
+        <div class="speak-rom">Jal doel geo-ya</div>
+        <div class="speak-en">It'll all work out!</div>
+      </div>
+      <div class="count-btns">
+        <button class="count-btn" onclick="this.classList.toggle('done')">1</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">2</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">3</button>
+      </div>
+    </div>
+
+    <div class="speak-card">
+      <div>
+        <div class="speak-kr">같이 빛나! <button class="speak-btn" onclick="speak('같이 빛나')">🔊</button></div>
+        <div class="speak-rom">Ga-chi bit-na</div>
+        <div class="speak-en">Let's shine together!</div>
+      </div>
+      <div class="count-btns">
+        <button class="count-btn" onclick="this.classList.toggle('done')">1</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">2</button>
+        <button class="count-btn" onclick="this.classList.toggle('done')">3</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 처음으로 버튼 -->
+  <div style="text-align:center;">
+    <a href="#top" style="display:inline-block;background:var(--green);color:#fff;border-radius:99px;padding:.6rem 1.6rem;font-weight:700;font-size:.9rem;text-decoration:none;">↑ 처음으로</a>
+  </div>
+
+</div>
+
+<script>
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ko-KR';
+  u.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+const storyLines = [
+  '별소년은 혼자 무서웠어요.',
+  '미래가 무서워.',
+  '그때 깜찍 여우가 나타났어요.',
+  '여우가 말했어요.',
+  '어서 와!',
+  '별소년이 말했어요.',
+  '기다렸어! 아무 걱정 하지 마! 잘 될 거야!',
+  '둘이 함께 빛났어요.'
+];
+
+function playAll() {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const btn = document.querySelector('.play-all-btn');
+  btn.classList.add('playing');
+  btn.textContent = '⏹ 멈추기 · Stop';
+  btn.onclick = stopAll;
+
+  let i = 0;
+  function next() {
+    if (i >= storyLines.length) {
+      btn.classList.remove('playing');
+      btn.textContent = '▶ 전체 듣기 · Play All';
+      btn.onclick = playAll;
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(storyLines[i++]);
+    u.lang = 'ko-KR';
+    u.rate = 0.85;
+    u.onend = () => setTimeout(next, 600);
+    window.speechSynthesis.speak(u);
+  }
+  next();
+}
+
+function stopAll() {
+  window.speechSynthesis.cancel();
+  const btn = document.querySelector('.play-all-btn');
+  btn.classList.remove('playing');
+  btn.textContent = '▶ 전체 듣기 · Play All';
+  btn.onclick = playAll;
+}
+
+function toggleAnswer(btn) {
+  const answer = btn.nextElementSibling;
+  if (answer.style.display === 'block') {
+    answer.style.display = 'none';
+    btn.textContent = '정답 보기';
+  } else {
+    answer.style.display = 'block';
+    btn.textContent = '정답 숨기기';
+  }
+}
+</script>
+</body>
+</html>
