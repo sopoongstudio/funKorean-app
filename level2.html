@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기본 문장 — Learn Korean</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--bg:#F0F4F8;--surface:#FFFFFF;--surface2:#F0F4F8;--accent:#FF6B6B;--accent2:#FFD93D;--accent3:#4D96FF;--accent4:#4D96FF;--text:#0F172A;--text-muted:#475569;--border:#CBD5E1;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{font-size:17px;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans','Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;font-weight:450;-webkit-font-smoothing:antialiased;}
+  header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;border-bottom:1px solid var(--border);background:rgba(240,244,248,.95);position:sticky;top:0;z-index:10;}
+  .logo{display:flex;align-items:baseline;gap:.6rem;}
+  .logo-hangul{font-family:'Noto Sans KR',sans-serif;font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-1px;}
+  .logo-en{font-size:.85rem;color:var(--text-muted);font-weight:300;letter-spacing:2px;text-transform:uppercase;}
+  .vcat-select{width:100%;padding:.65rem 1rem;border-radius:12px;border:2px solid #52b788;background:#f0faf4;color:#276749;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:1.2rem;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23276749' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-color:#f0faf4;}
+  @media(max-width:768px){
+    header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
+    .content{padding:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <a href="hangul_learn_v2.html" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-decoration:none;">←</a>
+    <div class="logo"><span class="logo-hangul">한글</span><span class="logo-en">Learn Korean</span></div>
+  </div>
+  <div style="display:inline-block;background:rgba(82,183,136,.15);color:#276749;border:1px solid rgba(82,183,136,.4);padding:.3rem .9rem;border-radius:99px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;">LEVEL 2 · 기본 문장</div>
+</header>
+
+<section style="max-width:1100px;margin:0 auto;padding:2rem 1.5rem 1rem;">
+  <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.15;margin-bottom:.6rem;letter-spacing:-.5px;">기본 문장<br><span style="color:#52b788;font-family:'Noto Sans KR',sans-serif;font-size:.7em;">Basic Sentences</span></h1>
+  <p style="color:var(--text-muted);font-size:.95rem;line-height:1.7;margin-bottom:1.5rem;">Tap any text to hear it. Practice sentences, dialogues, and speaking.</p>
+
+  <!-- Category dropdown -->
+  <select class="vcat-select" id="sentence-tabs" onchange="showSentenceCat(this.value,this)">
+    <option value="0">👋 인사하기 · Greetings</option>
+    <option value="1">🏫 교실에서 · In the Classroom</option>
+    <option value="2">✈️ 한국 여행 · Travel in Korea</option>
+    <option value="3">🍜 음식 주문하기 · Ordering Food</option>
+    <option value="4">🛍️ 쇼핑하기 · Shopping</option>
+    <option value="5">🏥 병원·약국 · Hospital & Pharmacy</option>
+    <option value="6">🚇 교통·길 찾기 · Transport & Directions</option>
+    <option value="7">🙋 자기소개 · Introducing Yourself</option>
+    <option value="8">🤝 부탁·거절하기 · Requests & Declining</option>
+  </select>
+  <div id="sentence-content"></div>
+</section>
+
+<script>
+function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.85;u.pitch=1;window.speechSynthesis.speak(u);}
+function shuffleArr(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const l2Categories = [
+
+// ── 0. 인사하기 ──
+{id:'greet',cat:'👋 인사하기',
+desc:'Greetings Koreans actually use — from first hellos to goodbyes',
+patterns:[],
+sentences:[
+  {kr:'안녕하세요!',rom:'an-nyeong-ha-se-yo',en:'Hello! (polite)'},
+  {kr:'안녕!',rom:'an-nyeong',en:'Hey! (casual, to close friends)'},
+  {kr:'처음 뵙겠습니다',rom:'cheo-eum boep-get-seum-ni-da',en:'Nice to meet you (formal)'},
+  {kr:'만나서 반가워요',rom:'man-na-seo ban-ga-wo-yo',en:'Nice to meet you (warm, everyday)'},
+  {kr:'오랜만이에요!',rom:'o-raen-ma-ni-e-yo',en:'Long time no see!'},
+  {kr:'잘 지냈어요?',rom:'jal ji-nae-sseo-yo',en:'Have you been well?'},
+  {kr:'네, 잘 지냈어요. 당신은요?',rom:'ne, jal ji-nae-sseo-yo. dang-sin-eun-yo?',en:'Yes, I\'ve been well. And you?'},
+  {kr:'요즘 어떻게 지내요?',rom:'yo-jeum eo-tteo-ke ji-nae-yo',en:'How have you been lately?'},
+  {kr:'바빠요? 잘 지내고 있어요.',rom:'ba-ppa-yo? jal ji-nae-go i-sseo-yo',en:'Busy? I\'m doing well.'},
+  {kr:'안녕히 가세요',rom:'an-nyeong-hi ga-se-yo',en:'Goodbye (said to someone leaving)'},
+  {kr:'안녕히 계세요',rom:'an-nyeong-hi gye-se-yo',en:'Goodbye (said to someone staying)'},
+  {kr:'또 봐요!',rom:'tto bwa-yo',en:'See you again!'},
+  {kr:'나중에 봐요',rom:'na-jung-e bwa-yo',en:'See you later'},
+  {kr:'조심히 들어가세요',rom:'jo-sim-hi deu-reo-ga-se-yo',en:'Get home safe'},
+  {kr:'반가웠어요!',rom:'ban-ga-wo-sseo-yo',en:'It was great to see you!'},
+],
+dialogues:[
+  {title:'처음 만났을 때',titleEn:'Meeting someone for the first time',lines:[
+    {speaker:'민준',kr:'안녕하세요! 저는 민준이에요.',rom:'an-nyeong-ha-se-yo! jeo-neun min-ju-ni-e-yo.',en:'Hello! I\'m Minjun.',isMe:false},
+    {speaker:'나',kr:'안녕하세요! 저는 사라예요. 만나서 반가워요.',rom:'an-nyeong-ha-se-yo! jeo-neun sa-ra-ye-yo. man-na-seo ban-ga-wo-yo.',en:'Hello! I\'m Sara. Nice to meet you.',isMe:true},
+    {speaker:'민준',kr:'어디서 오셨어요?',rom:'eo-di-seo o-syeo-sseo-yo?',en:'Where are you from?',isMe:false},
+    {speaker:'나',kr:'캐나다에서 왔어요. 한국어 배우고 있어요.',rom:'kae-na-da-e-seo wa-sseo-yo. han-guk-eo bae-u-go i-sseo-yo.',en:'I\'m from Canada. I\'m learning Korean.',isMe:true},
+    {speaker:'민준',kr:'우와, 한국어 잘하시네요!',rom:'u-wa, han-guk-eo jal-ha-si-ne-yo!',en:'Wow, your Korean is great!',isMe:false},
+  ]},
+  {title:'오랜만에 친구를 만났을 때',titleEn:'Running into a friend you haven\'t seen in a while',lines:[
+    {speaker:'지수',kr:'어머, 오랜만이에요! 잘 지냈어요?',rom:'eo-meo, o-raen-ma-ni-e-yo! jal ji-nae-sseo-yo?',en:'Oh wow, long time no see! Have you been well?',isMe:false},
+    {speaker:'나',kr:'네! 잘 지냈어요. 요즘 어떻게 지내요?',rom:'ne! jal ji-nae-sseo-yo. yo-jeum eo-tteo-ke ji-nae-yo?',en:'Yes! I\'ve been great. How have you been lately?',isMe:true},
+    {speaker:'지수',kr:'좀 바빴는데 괜찮아요. 오늘 시간 있어요?',rom:'jom ba-ppa-sseum-neun-de gwaen-cha-na-yo. o-neul si-gan i-sseo-yo?',en:'Been a bit busy but I\'m okay. Do you have time today?',isMe:false},
+    {speaker:'나',kr:'네, 같이 커피 마실까요?',rom:'ne, ga-chi keo-pi ma-sil-kka-yo?',en:'Yes, shall we grab a coffee together?',isMe:true},
+  ]},
+  {title:'헤어질 때',titleEn:'Saying goodbye',lines:[
+    {speaker:'나',kr:'이제 가봐야 해요. 오늘 정말 좋았어요!',rom:'i-je ga-bwa-ya hae-yo. o-neul jeong-mal jo-a-sseo-yo!',en:'I have to get going now. Today was really great!',isMe:true},
+    {speaker:'태양',kr:'저도요! 또 봐요. 조심히 들어가세요.',rom:'jeo-do-yo! tto bwa-yo. jo-sim-hi deu-reo-ga-se-yo.',en:'Me too! See you again. Get home safe.',isMe:false},
+    {speaker:'나',kr:'네, 안녕히 계세요!',rom:'ne, an-nyeong-hi gye-se-yo!',en:'Yes, goodbye!',isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'처음 만난 사람에게 인사하세요.',situationEn:'Greet someone you\'re meeting for the first time.',hint:'안녕하세요!'},
+  {situation:'오랜만에 친구를 봤어요. 어떻게 지냈냐고 물어보세요.',situationEn:'You see a friend after a long time. Ask how they\'ve been.',hint:'잘 지냈어요?'},
+  {situation:'먼저 자리를 떠납니다. 작별 인사를 하세요.',situationEn:'You\'re leaving first. Say goodbye.',hint:'안녕히 계세요!'},
+  {situation:'"안녕하세요"라는 인사를 받았어요. 어떻게 대답해요?',situationEn:'Someone greeted you with "annyeonghaseyo." Respond warmly.',hint:'안녕하세요! 만나서 반가워요.'},
+  {situation:'친구에게 오늘 만나서 좋았다고 말하세요.',situationEn:'Tell your friend it was great to see them today.',hint:'반가웠어요!'},
+]},
+
+// ── 1. 교실에서 ──
+{id:'classroom',cat:'🏫 교실에서',
+desc:'What you actually say — and hear — in a Korean language class',
+patterns:[
+  {pattern:'다시 말해 주세요',hint:'Please say that again'},
+  {pattern:'천천히 말해 주세요',hint:'Please speak slowly'},
+  {pattern:'어떻게 써요?',hint:'How do you write it?'},
+  {pattern:'맞아요?',hint:'Is that right?'},
+  {pattern:'잘 모르겠어요',hint:'I\'m not sure / I don\'t understand'},
+  {pattern:'예문 하나 더 주세요',hint:'Can I have one more example?'},
+],
+sentences:[
+  {kr:'다시 말해 주세요',rom:'da-si mal-hae ju-se-yo',en:'Please say that again'},
+  {kr:'천천히 말해 주세요',rom:'cheon-cheon-hi mal-hae ju-se-yo',en:'Please speak slowly'},
+  {kr:'이게 한국어로 뭐예요?',rom:'i-ge han-guk-eo-ro mwo-ye-yo?',en:'What is this in Korean?'},
+  {kr:'어떻게 써요?',rom:'eo-tteo-ke sseo-yo?',en:'How do you write it?'},
+  {kr:'어떻게 읽어요?',rom:'eo-tteo-ke il-geo-yo?',en:'How do you read this?'},
+  {kr:'잘 모르겠어요',rom:'jal mo-reu-get-seo-yo',en:'I\'m not sure / I don\'t understand'},
+  {kr:'아직 모르겠어요',rom:'a-jik mo-reu-get-seo-yo',en:'I still don\'t get it'},
+  {kr:'맞아요?',rom:'ma-ja-yo?',en:'Is that right?'},
+  {kr:'네, 알겠어요',rom:'ne, al-ge-sseo-yo',en:'Yes, I understand'},
+  {kr:'잠깐만요',rom:'jam-kkan-man-yo',en:'Just a moment / Hold on'},
+  {kr:'질문 있어요',rom:'jil-mun i-sseo-yo',en:'I have a question'},
+  {kr:'예문 하나 더 주세요',rom:'ye-mun ha-na deo ju-se-yo',en:'Can I have one more example?'},
+  {kr:'발음이 맞아요?',rom:'ba-reum-i ma-ja-yo?',en:'Is my pronunciation right?'},
+  {kr:'숙제가 있어요?',rom:'suk-jje-ga i-sseo-yo?',en:'Is there homework?'},
+  {kr:'오늘 배운 거 복습할게요',rom:'o-neul bae-un geo bok-sup-hal-ge-yo',en:'I\'ll review what I learned today'},
+],
+dialogues:[
+  {title:'수업 중 모를 때',titleEn:'When you don\'t understand something in class',lines:[
+    {speaker:'선생님',kr:'이 표현 이해했어요?',rom:'i pyo-hyeon i-hae-hae-sseo-yo?',en:'Did you understand this expression?',isMe:false},
+    {speaker:'나',kr:'잘 모르겠어요. 다시 한 번 말해 주세요.',rom:'jal mo-reu-get-seo-yo. da-si han beon mal-hae ju-se-yo.',en:'I\'m not sure. Could you say it again?',isMe:true},
+    {speaker:'선생님',kr:'물론이죠. 천천히 할게요.',rom:'mul-lon-i-jyo. cheon-cheon-hi hal-ge-yo.',en:'Of course. I\'ll go slowly.',isMe:false},
+    {speaker:'나',kr:'아, 이제 알겠어요! 이렇게 쓰면 맞아요?',rom:'a, i-je al-ge-sseo-yo! i-reo-ke sseu-myeon ma-ja-yo?',en:'Oh, I get it now! If I write it like this, is that right?',isMe:true},
+    {speaker:'선생님',kr:'네, 맞아요! 잘했어요.',rom:'ne, ma-ja-yo! jal-hae-sseo-yo.',en:'Yes, that\'s right! Well done.',isMe:false},
+  ]},
+  {title:'수업 시작 전',titleEn:'Before class starts',lines:[
+    {speaker:'선생님',kr:'안녕하세요! 오늘도 잘 부탁드려요.',rom:'an-nyeong-ha-se-yo! o-neul-do jal bu-tak-deu-ryeo-yo.',en:'Hello! Thanks for joining today.',isMe:false},
+    {speaker:'나',kr:'안녕하세요! 그런데 숙제가 있어요?',rom:'an-nyeong-ha-se-yo! geu-reon-de suk-jje-ga i-sseo-yo?',en:'Hello! By the way, is there homework?',isMe:true},
+    {speaker:'선생님',kr:'오늘은 없어요. 수업 시작해요!',rom:'o-neul-eun eop-seo-yo. su-eop si-jak-hae-yo!',en:'Not today. Let\'s start class!',isMe:false},
+  ]},
+  {title:'수업이 끝날 때',titleEn:'At the end of class',lines:[
+    {speaker:'선생님',kr:'오늘 수업 어땠어요?',rom:'o-neul su-eop eo-ttae-sseo-yo?',en:'How was today\'s class?',isMe:false},
+    {speaker:'나',kr:'재미있었어요! 발음이 좀 어려웠지만요.',rom:'jae-mi-i-sseo-sseo-yo! ba-reum-i jom eo-ryeo-wo-sseum-ji-man-yo.',en:'It was fun! The pronunciation was a bit hard though.',isMe:true},
+    {speaker:'선생님',kr:'많이 들으면 자연스러워질 거예요. 오늘 배운 거 꼭 복습하세요!',rom:'ma-ni deu-reu-myeon ja-yeon-seu-reo-wo-jil geo-ye-yo. o-neul bae-un geo kkok bok-sup-ha-se-yo!',en:'If you listen a lot it\'ll feel natural. Make sure to review today\'s material!',isMe:false},
+    {speaker:'나',kr:'네! 안녕히 계세요.',rom:'ne! an-nyeong-hi gye-se-yo.',en:'Yes! Goodbye.',isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'선생님이 너무 빠르게 말했어요.',situationEn:'The teacher spoke too fast. Ask them to slow down.',hint:'천천히 말해 주세요'},
+  {situation:'방금 말한 걸 못 들었어요.',situationEn:'You missed what was just said. Ask them to repeat.',hint:'다시 말해 주세요'},
+  {situation:'"커피"가 한국어로 어떻게 쓰는지 모르겠어요.',situationEn:'You don\'t know how to write "coffee" in Korean. Ask.',hint:'어떻게 써요?'},
+  {situation:'방금 배운 문법이 맞는지 확인하고 싶어요.',situationEn:'You want to check if your grammar is correct.',hint:'맞아요?'},
+  {situation:'숙제가 있는지 선생님께 물어보세요.',situationEn:'Ask the teacher if there\'s homework.',hint:'숙제가 있어요?'},
+]},
+
+// ── 2. 한국 여행 ──
+{id:'travel',cat:'✈️ 한국 여행',
+desc:'Getting around Korea — airports, taxis, hotels and more',
+patterns:[
+  {pattern:'~는 어디예요?',hint:'Where is ~?'},
+  {pattern:'~까지 얼마나 걸려요?',hint:'How long does it take to ~?'},
+  {pattern:'~해도 돼요?',hint:'Is it okay to ~? / May I ~?'},
+  {pattern:'사진 찍어도 돼요?',hint:'May I take a photo?'},
+  {pattern:'영어로 말해도 돼요?',hint:'May I speak in English?'},
+  {pattern:'추천해 주세요',hint:'Please recommend (something)'},
+],
+sentences:[
+  {kr:'인천공항에 가주세요',rom:'in-cheon gong-hang-e ga-ju-se-yo',en:'Please take me to Incheon Airport'},
+  {kr:'지하철역이 어디예요?',rom:'ji-ha-cheol-yeok-i eo-di-e-yo?',en:'Where is the subway station?'},
+  {kr:'명동까지 얼마나 걸려요?',rom:'myeong-dong-kka-ji eol-ma-na geol-lyeo-yo?',en:'How long does it take to Myeongdong?'},
+  {kr:'이 근처에 편의점 있어요?',rom:'i geun-cheo-e pyeon-ui-jeom i-sseo-yo?',en:'Is there a convenience store nearby?'},
+  {kr:'사진 찍어도 돼요?',rom:'sa-jin jji-geo-do dwae-yo?',en:'May I take a photo?'},
+  {kr:'한국 음식 추천해 주세요',rom:'han-guk eum-sik chu-cheon-hae ju-se-yo',en:'Please recommend Korean food'},
+  {kr:'환전소가 어디예요?',rom:'hwan-jeon-so-ga eo-di-e-yo?',en:'Where is the currency exchange?'},
+  {kr:'지도 보여 주세요',rom:'ji-do bo-yeo ju-se-yo',en:'Please show me on the map'},
+  {kr:'걸어서 얼마나 걸려요?',rom:'geo-reo-seo eol-ma-na geol-lyeo-yo?',en:'How long does it take on foot?'},
+  {kr:'영어 메뉴 있어요?',rom:'yeong-eo me-nyu i-sseo-yo?',en:'Do you have an English menu?'},
+  {kr:'입장료가 얼마예요?',rom:'ip-jang-nyo-ga eol-ma-ye-yo?',en:'How much is the entrance fee?'},
+  {kr:'짐을 맡길 수 있어요?',rom:'ji-meul mat-kil su i-sseo-yo?',en:'Can I store my luggage here?'},
+  {kr:'오늘 몇 시에 닫아요?',rom:'o-neul myeot si-e da-da-yo?',en:'What time do you close today?'},
+  {kr:'와이파이 비밀번호가 뭐예요?',rom:'wa-i-pa-i bi-mil-beon-ho-ga mwo-ye-yo?',en:'What\'s the Wi-Fi password?'},
+  {kr:'한국어를 조금 해요',rom:'han-guk-eo-reul jo-geum hae-yo',en:'I speak a little Korean'},
+],
+dialogues:[
+  {title:'택시 타기',titleEn:'Taking a taxi',lines:[
+    {speaker:'기사',kr:'어디 가세요?',rom:'eo-di ga-se-yo?',en:'Where are you going?',isMe:false},
+    {speaker:'나',kr:'명동이요. 얼마나 걸려요?',rom:'myeong-dong-i-yo. eol-ma-na geol-lyeo-yo?',en:'Myeongdong please. How long will it take?',isMe:true},
+    {speaker:'기사',kr:'지금 막히면 한 20분이요.',rom:'ji-geum ma-ki-myeon han i-sip-bu-ni-yo.',en:'With traffic, about 20 minutes.',isMe:false},
+    {speaker:'나',kr:'저기서 세워 주세요.',rom:'jeo-gi-seo se-wo ju-se-yo.',en:'Please stop over there.',isMe:true},
+    {speaker:'기사',kr:'만이천 원이에요.',rom:'man-i-cheon wo-ni-e-yo.',en:'That\'s 12,000 won.',isMe:false},
+    {speaker:'나',kr:'카드 돼요?',rom:'ka-deu dwae-yo?',en:'Can I pay by card?',isMe:true},
+  ]},
+  {title:'관광지에서',titleEn:'At a tourist spot',lines:[
+    {speaker:'나',kr:'저기요, 사진 찍어도 돼요?',rom:'jeo-gi-yo, sa-jin jji-geo-do dwae-yo?',en:'Excuse me, may I take a photo?',isMe:true},
+    {speaker:'직원',kr:'네, 괜찮아요. 여기서 찍으세요.',rom:'ne, gwaen-cha-na-yo. yeo-gi-seo jji-geu-se-yo.',en:'Yes, that\'s fine. Take it here.',isMe:false},
+    {speaker:'나',kr:'감사해요! 혹시 맛있는 식당 추천해 주세요.',rom:'gam-sa-hae-yo! hok-si ma-si-neun sik-dang chu-cheon-hae ju-se-yo.',en:'Thank you! By the way, can you recommend a good restaurant?',isMe:true},
+    {speaker:'직원',kr:'이 근처에 삼겹살 맛집이 있어요.',rom:'i geun-cheo-e sam-gyeop-sal mat-ji-bi i-sseo-yo.',en:'There\'s a great samgyeopsal place nearby.',isMe:false},
+  ]},
+  {title:'숙소 체크인',titleEn:'Hotel check-in',lines:[
+    {speaker:'직원',kr:'예약하셨어요?',rom:'ye-yak-ha-syeo-sseo-yo?',en:'Do you have a reservation?',isMe:false},
+    {speaker:'나',kr:'네, 사라 이름으로 예약했어요.',rom:'ne, sa-ra i-reum-eu-ro ye-yak-hae-sseo-yo.',en:'Yes, I have a reservation under the name Sara.',isMe:true},
+    {speaker:'직원',kr:'여권 주시겠어요?',rom:'yeo-gwon ju-si-ge-sseo-yo?',en:'May I have your passport?',isMe:false},
+    {speaker:'나',kr:'네, 여기요. 와이파이 비밀번호가 뭐예요?',rom:'ne, yeo-gi-yo. wa-i-pa-i bi-mil-beon-ho-ga mwo-ye-yo?',en:'Here you go. What\'s the Wi-Fi password?',isMe:true},
+    {speaker:'직원',kr:'영수증에 써 드릴게요.',rom:'yeong-su-jeung-e sseo deu-ril-ge-yo.',en:'I\'ll write it on your receipt.',isMe:false},
+  ]},
+],
+speaking:[
+  {situation:'택시 기사에게 명동에 가달라고 하세요.',situationEn:'Tell the taxi driver you want to go to Myeongdong.',hint:'명동이요'},
+  {situation:'근처 편의점이 어디 있는지 물어보세요.',situationEn:'Ask where the nearest convenience store is.',hint:'이 근처에 편의점 있어요?'},
+  {situation:'사진 찍어도 되는지 물어보세요.',situationEn:'Ask if you may take a photo.',hint:'사진 찍어도 돼요?'},
+  {situation:'한국 음식을 추천해달라고 해보세요.',situationEn:'Ask someone to recommend Korean food.',hint:'한국 음식 추천해 주세요'},
+  {situation:'와이파이 비밀번호를 물어보세요.',situationEn:'Ask for the Wi-Fi password.',hint:'와이파이 비밀번호가 뭐예요?'},
+]},
+
+// ── 3. 음식 주문하기 ──
+{id:'food',cat:'🍜 음식 주문하기',
+desc:'Ordering food like a local — real situations, not just textbook phrases',
+patterns:[
+  {pattern:'~주세요',hint:'Please give me ~'},
+  {pattern:'~있어요/없어요?',hint:'Do you have ~? / Is there ~?'},
+  {pattern:'이게/저게 뭐예요?',hint:'What is this/that?'},
+  {pattern:'~개 주세요',hint:'Give me ~ (number) of these'},
+  {pattern:'~게 해주세요',hint:'Please make it ~'},
+  {pattern:'계산해주세요',hint:'Check please / Bill please'},
+],
+sentences:[
+  {kr:'메뉴판 주세요',rom:'me-nyu-pan ju-se-yo',en:'Menu please'},
+  {kr:'물 주세요',rom:'mul ju-se-yo',en:'Water please'},
+  {kr:'영어 메뉴 있어요?',rom:'yeong-eo me-nyu i-sseo-yo?',en:'Do you have an English menu?'},
+  {kr:'포크 있어요?',rom:'po-keu i-sseo-yo?',en:'Do you have a fork?'},
+  {kr:'이게 뭐예요?',rom:'i-ge mwo-ye-yo?',en:'What is this?'},
+  {kr:'저게 뭐예요?',rom:'jeo-ge mwo-ye-yo?',en:'What is that?'},
+  {kr:'비빔밥 하나 주세요',rom:'bi-bim-bap ha-na ju-se-yo',en:'One bibimbap please'},
+  {kr:'이거 두 개 주세요',rom:'i-geo du gae ju-se-yo',en:'Two of these please'},
+  {kr:'덜 맵게 해주세요',rom:'deol maep-ge hae-ju-se-yo',en:'Less spicy please'},
+  {kr:'따뜻하게 해주세요',rom:'tta-tteu-ta-ge hae-ju-se-yo',en:'Warm please'},
+  {kr:'많이 주세요',rom:'ma-ni ju-se-yo',en:'Give me a lot please'},
+  {kr:'조금만 주세요',rom:'jo-geum-man ju-se-yo',en:'Just a little please'},
+  {kr:'계산해주세요',rom:'gye-san-hae-ju-se-yo',en:'Check please'},
+  {kr:'영수증 주세요',rom:'yeong-su-jeung ju-se-yo',en:'Receipt please'},
+  {kr:'카드 돼요?',rom:'ka-deu dwae-yo?',en:'Can I pay by card?'},
+],
+dialogues:[
+  {title:'식당 들어갔을 때',titleEn:'Entering a restaurant',lines:[
+    {speaker:'직원',kr:'어서오세요~ 몇 분이세요?',rom:'eo-seo-o-se-yo~ myeot bu-ni-se-yo?',en:'Welcome! How many people?',isMe:false},
+    {speaker:'나',kr:'두 명이요',rom:'du myeong-i-yo',en:'Two people',isMe:true},
+    {speaker:'직원',kr:'이쪽으로 오세요. 여기 메뉴판이요.',rom:'i-jjo-geu-ro o-se-yo. yeo-gi me-nyu-pa-ni-yo.',en:'This way please. Here is the menu.',isMe:false},
+    {speaker:'나',kr:'감사합니다. 이게 뭐예요?',rom:'gam-sa-ham-ni-da. i-ge mwo-ye-yo?',en:'Thank you. What is this?',isMe:true},
+    {speaker:'직원',kr:'된장찌개예요. 인기 메뉴예요.',rom:'doen-jang-jji-gae-ye-yo. in-gi me-nyu-ye-yo.',en:'It\'s doenjang jjigae. It\'s a popular dish.',isMe:false},
+    {speaker:'나',kr:'그럼 이거 하나 주세요.',rom:'geu-reom i-geo ha-na ju-se-yo.',en:'Then one of this please.',isMe:true},
+  ]},
+  {title:'주문할 때',titleEn:'Ordering your food',lines:[
+    {speaker:'직원',kr:'주문하시겠어요?',rom:'ju-mun-ha-si-ge-sseo-yo?',en:'Are you ready to order?',isMe:false},
+    {speaker:'나',kr:'네, 비빔밥 하나하고 물 주세요.',rom:'ne, bi-bim-bap ha-na-ha-go mul ju-se-yo.',en:'Yes, one bibimbap and water please.',isMe:true},
+    {speaker:'직원',kr:'혹시 매운 거 괜찮으세요?',rom:'hok-si mae-un geo gwaen-cha-neu-se-yo?',en:'Is spicy food okay for you?',isMe:false},
+    {speaker:'나',kr:'아, 덜 맵게 해주세요.',rom:'a, deol maep-ge hae-ju-se-yo.',en:'Oh, less spicy please.',isMe:true},
+    {speaker:'직원',kr:'네, 알겠습니다!',rom:'ne, al-get-seum-ni-da!',en:'Of course!',isMe:false},
+  ]},
+  {title:'계산할 때',titleEn:'Paying the bill',lines:[
+    {speaker:'나',kr:'저기요, 계산해주세요.',rom:'jeo-gi-yo, gye-san-hae-ju-se-yo.',en:'Excuse me, the bill please.',isMe:true},
+    {speaker:'직원',kr:'만이천 원이에요.',rom:'man-i-cheon wo-ni-e-yo.',en:'That\'s 12,000 won.',isMe:false},
+    {speaker:'나',kr:'카드 돼요?',rom:'ka-deu dwae-yo?',en:'Can I pay by card?',isMe:true},
+    {speaker:'직원',kr:'네, 됩니다.',rom:'ne, doem-ni-da.',en:'Yes, of course.',isMe:false},
+    {speaker:'나',kr:'영수증 주세요.',rom:'yeong-su-jeung ju-se-yo.',en:'Receipt please.',isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'식당에서 두 명이라고 말하세요.',situationEn:'At a restaurant. Say there are two of you.',hint:'두 명이요'},
+  {situation:'메뉴에서 모르는 음식을 봤어요. 물어보세요.',situationEn:'You see an unfamiliar dish on the menu. Ask what it is.',hint:'이게 뭐예요?'},
+  {situation:'비빔밥 하나 주문하세요.',situationEn:'Order one bibimbap.',hint:'비빔밥 하나 주세요'},
+  {situation:'음식이 너무 매울 것 같아요. 요청하세요.',situationEn:'You think it might be too spicy. Ask for it less spicy.',hint:'덜 맵게 해주세요'},
+  {situation:'다 먹었어요. 계산을 부탁하세요.',situationEn:'You\'ve finished eating. Ask for the bill.',hint:'계산해주세요'},
+]},
+
+// ── 4. 쇼핑하기 ──
+{id:'shopping',cat:'🛍️ 쇼핑하기',
+desc:'Shopping in Korea — trying things on, bargaining, and returning items',
+patterns:[
+  {pattern:'입어봐도 돼요?',hint:'Can I try this on?'},
+  {pattern:'다른 ~ 있어요?',hint:'Do you have a different ~?'},
+  {pattern:'너무 ~아요/어요',hint:'Too ~ (adjective)'},
+  {pattern:'깎아 주세요',hint:'Can you give me a discount?'},
+  {pattern:'~로 할게요',hint:'I\'ll take ~ / I\'ll go with ~'},
+  {pattern:'환불/교환 돼요?',hint:'Can I get a refund/exchange?'},
+],
+sentences:[
+  {kr:'이거 얼마예요?',rom:'i-geo eol-ma-ye-yo?',en:'How much is this?'},
+  {kr:'이거 입어봐도 돼요?',rom:'i-geo i-beo-bwa-do dwae-yo?',en:'Can I try this on?'},
+  {kr:'다른 색 있어요?',rom:'da-reun saek i-sseo-yo?',en:'Do you have another color?'},
+  {kr:'M 사이즈 있어요?',rom:'em sa-i-jeu i-sseo-yo?',en:'Do you have size M?'},
+  {kr:'너무 커요',rom:'neo-mu keo-yo',en:'It\'s too big'},
+  {kr:'너무 작아요',rom:'neo-mu ja-ga-yo',en:'It\'s too small'},
+  {kr:'너무 비싸요',rom:'neo-mu bi-ssa-yo',en:'It\'s too expensive'},
+  {kr:'좀 깎아 주세요',rom:'jom kka-kka ju-se-yo',en:'Can you give me a discount?'},
+  {kr:'이걸로 할게요',rom:'i-geol-lo hal-ge-yo',en:'I\'ll take this one'},
+  {kr:'그냥 볼게요',rom:'geu-nyang bol-ge-yo',en:'I\'m just browsing'},
+  {kr:'포장해 주세요',rom:'po-jang-hae ju-se-yo',en:'Please gift-wrap it'},
+  {kr:'봉투 주세요',rom:'bong-tu ju-se-yo',en:'A bag please'},
+  {kr:'환불 돼요?',rom:'hwan-bul dwae-yo?',en:'Can I get a refund?'},
+  {kr:'영수증 주세요',rom:'yeong-su-jeung ju-se-yo',en:'Receipt please'},
+  {kr:'할인 해요?',rom:'ha-rin hae-yo?',en:'Is there a discount?'},
+],
+dialogues:[
+  {title:'옷 사러 갔을 때',titleEn:'Shopping for clothes',lines:[
+    {speaker:'직원',kr:'어서오세요! 찾으시는 거 있어요?',rom:'eo-seo-o-se-yo! cha-jeu-si-neun geo i-sseo-yo?',en:'Welcome! Is there something you\'re looking for?',isMe:false},
+    {speaker:'나',kr:'그냥 볼게요. 이거 얼마예요?',rom:'geu-nyang bol-ge-yo. i-geo eol-ma-ye-yo?',en:'Just browsing. How much is this?',isMe:true},
+    {speaker:'직원',kr:'사만 원이에요.',rom:'sa-man wo-ni-e-yo.',en:'It\'s 40,000 won.',isMe:false},
+    {speaker:'나',kr:'이거 입어봐도 돼요?',rom:'i-geo i-beo-bwa-do dwae-yo?',en:'Can I try this on?',isMe:true},
+    {speaker:'직원',kr:'네, 탈의실은 저쪽이에요.',rom:'ne, ta-ri-sil-eun jeo-jjo-gi-e-yo.',en:'Yes, the fitting room is over there.',isMe:false},
+    {speaker:'나',kr:'좀 커요. M 사이즈 있어요?',rom:'jom keo-yo. em sa-i-jeu i-sseo-yo?',en:'It\'s a bit big. Do you have a size M?',isMe:true},
+  ]},
+  {title:'가격 흥정',titleEn:'Negotiating the price',lines:[
+    {speaker:'나',kr:'너무 비싸요. 좀 깎아 주세요.',rom:'neo-mu bi-ssa-yo. jom kka-kka ju-se-yo.',en:'It\'s too expensive. Can you give me a discount?',isMe:true},
+    {speaker:'상인',kr:'에이, 이미 싼 거예요. 어디 가도 이 가격 없어요.',rom:'e-i, i-mi ssan geo-ye-yo. eo-di ga-do i ga-gyeok eop-seo-yo.',en:'Come on, this is already cheap. You won\'t find this price anywhere.',isMe:false},
+    {speaker:'나',kr:'두 개 살 건데요. 조금만요.',rom:'du gae sal geon-de-yo. jo-geum-man-yo.',en:'I\'m buying two. Just a little off.',isMe:true},
+    {speaker:'상인',kr:'그럼 두 개에 오만 원이요.',rom:'geu-reom du gae-e o-man wo-ni-yo.',en:'Okay, 50,000 for two.',isMe:false},
+    {speaker:'나',kr:'좋아요! 카드 돼요?',rom:'jo-a-yo! ka-deu dwae-yo?',en:'Deal! Can I pay by card?',isMe:true},
+  ]},
+  {title:'환불할 때',titleEn:'Returning an item',lines:[
+    {speaker:'나',kr:'저기요, 이거 환불하고 싶어요.',rom:'jeo-gi-yo, i-geo hwan-bul-ha-go si-peo-yo.',en:'Excuse me, I\'d like to return this.',isMe:true},
+    {speaker:'직원',kr:'영수증 있으세요?',rom:'yeong-su-jeung i-sseu-se-yo?',en:'Do you have your receipt?',isMe:false},
+    {speaker:'나',kr:'네, 여기요. 사이즈가 안 맞아서요.',rom:'ne, yeo-gi-yo. sa-i-jeu-ga an ma-ja-seo-yo.',en:'Yes, here. The size doesn\'t fit.',isMe:true},
+    {speaker:'직원',kr:'확인해볼게요. 잠깐만요.',rom:'hwa-gin-hae-bol-ge-yo. jam-kkan-man-yo.',en:'Let me check. One moment.',isMe:false},
+  ]},
+],
+speaking:[
+  {situation:'마음에 드는 옷을 입어보고 싶어요.',situationEn:'You want to try on a piece of clothing. Ask.',hint:'이거 입어봐도 돼요?'},
+  {situation:'옷이 좀 커요. 다른 사이즈를 요청하세요.',situationEn:'The clothes are a bit big. Ask for a different size.',hint:'M 사이즈 있어요?'},
+  {situation:'가격이 마음에 안 들어요. 할인 요청을 해보세요.',situationEn:'The price seems high. Ask for a discount.',hint:'좀 깎아 주세요'},
+  {situation:'선물용으로 포장해달라고 하세요.',situationEn:'Ask them to gift-wrap it.',hint:'포장해 주세요'},
+  {situation:'다른 색이 있는지 물어보세요.',situationEn:'Ask if they have it in another color.',hint:'다른 색 있어요?'},
+]},
+
+// ── 5. 병원·약국 ──
+{id:'medical',cat:'🏥 병원·약국',
+desc:'Real phrases for the doctor\'s office and pharmacy — when you need them most',
+patterns:[
+  {pattern:'~가 아파요',hint:'My ~ hurts'},
+  {pattern:'여기가 아파요',hint:'It hurts here (pointing)'},
+  {pattern:'~한 지 며칠 됐어요',hint:'It\'s been a few days since ~'},
+  {pattern:'처방전 있어요?',hint:'Do you have a prescription?'},
+  {pattern:'하루에 몇 번 먹어요?',hint:'How many times a day do I take it?'},
+  {pattern:'병원에 가야 해요?',hint:'Do I need to see a doctor?'},
+],
+sentences:[
+  {kr:'머리가 아파요',rom:'meo-ri-ga a-pa-yo',en:'I have a headache'},
+  {kr:'배가 아파요',rom:'bae-ga a-pa-yo',en:'My stomach hurts'},
+  {kr:'목이 아파요',rom:'mo-gi a-pa-yo',en:'My throat hurts'},
+  {kr:'열이 있어요',rom:'yeo-ri i-sseo-yo',en:'I have a fever'},
+  {kr:'기침이 심해요',rom:'gi-chi-mi sim-hae-yo',en:'I have a bad cough'},
+  {kr:'이틀 됐어요',rom:'i-teul dwae-sseo-yo',en:'It\'s been two days'},
+  {kr:'여기가 아파요',rom:'yeo-gi-ga a-pa-yo',en:'It hurts here'},
+  {kr:'알레르기가 있어요',rom:'al-le-reu-gi-ga i-sseo-yo',en:'I have an allergy'},
+  {kr:'두통약 있어요?',rom:'du-tong-yak i-sseo-yo?',en:'Do you have headache medicine?'},
+  {kr:'처방전 없어도 돼요?',rom:'cheo-bang-jeon eop-seo-do dwae-yo?',en:'Is it okay without a prescription?'},
+  {kr:'하루에 몇 번 먹어요?',rom:'ha-ru-e myeot beon meo-geo-yo?',en:'How many times a day do I take it?'},
+  {kr:'식후에 드세요',rom:'si-ku-e deu-se-yo',en:'Take it after meals'},
+  {kr:'병원에 가야 해요?',rom:'byeong-wo-ne ga-ya hae-yo?',en:'Do I need to see a doctor?'},
+  {kr:'빨리 나으세요',rom:'ppal-li na-eu-se-yo',en:'Get well soon'},
+  {kr:'보험이 돼요?',rom:'bo-heo-mi dwae-yo?',en:'Does insurance cover it?'},
+],
+dialogues:[
+  {title:'약국에서',titleEn:'At the pharmacy',lines:[
+    {speaker:'나',kr:'저기요, 두통약 있어요?',rom:'jeo-gi-yo, du-tong-yak i-sseo-yo?',en:'Excuse me, do you have headache medicine?',isMe:true},
+    {speaker:'약사',kr:'네, 타이레놀이요, 아니면 다른 거요?',rom:'ne, ta-i-re-nol-i-yo, a-ni-myeon da-reun geo-yo?',en:'Yes. Tylenol, or something else?',isMe:false},
+    {speaker:'나',kr:'타이레놀 주세요. 하루에 몇 번 먹어요?',rom:'ta-i-re-nol ju-se-yo. ha-ru-e myeot beon meo-geo-yo?',en:'Tylenol please. How many times a day?',isMe:true},
+    {speaker:'약사',kr:'하루 세 번, 식후에 드세요.',rom:'ha-ru se beon, si-ku-e deu-se-yo.',en:'Three times a day, after meals.',isMe:false},
+    {speaker:'나',kr:'알겠어요. 얼마예요?',rom:'al-ge-sseo-yo. eol-ma-ye-yo?',en:'Got it. How much?',isMe:true},
+  ]},
+  {title:'병원 접수할 때',titleEn:'Checking in at the clinic',lines:[
+    {speaker:'접수',kr:'어디가 불편해서 오셨어요?',rom:'eo-di-ga bul-pyeon-hae-seo o-syeo-sseo-yo?',en:'What brings you in today?',isMe:false},
+    {speaker:'나',kr:'목이 아프고 열이 있어요. 이틀 됐어요.',rom:'mo-gi a-peu-go yeo-ri i-sseo-yo. i-teul dwae-sseo-yo.',en:'My throat hurts and I have a fever. It\'s been two days.',isMe:true},
+    {speaker:'접수',kr:'잠깐 기다려 주세요.',rom:'jam-kkan gi-da-ryeo ju-se-yo.',en:'Please wait a moment.',isMe:false},
+    {speaker:'나',kr:'보험이 돼요?',rom:'bo-heo-mi dwae-yo?',en:'Does insurance cover it?',isMe:true},
+    {speaker:'접수',kr:'네, 건강보험 카드 있으세요?',rom:'ne, geon-gang-bo-heom ka-deu i-sseu-se-yo?',en:'Yes, do you have your health insurance card?',isMe:false},
+  ]},
+  {title:'친구가 아플 때',titleEn:'When a friend is sick',lines:[
+    {speaker:'친구',kr:'오늘 못 갈 것 같아. 배가 너무 아파.',rom:'o-neul mot gal geot ga-ta. bae-ga neo-mu a-pa.',en:'I don\'t think I can make it today. My stomach really hurts.',isMe:false},
+    {speaker:'나',kr:'어머, 괜찮아? 병원 갔어?',rom:'eo-meo, gwaen-cha-na? byeong-won ga-sseo?',en:'Oh no, are you okay? Did you see a doctor?',isMe:true},
+    {speaker:'친구',kr:'아직 안 갔어.',rom:'a-jik an ga-sseo.',en:'Not yet.',isMe:false},
+    {speaker:'나',kr:'심하면 꼭 가봐. 빨리 나아!',rom:'sim-ha-myeon kkok ga-bwa. ppal-li na-a!',en:'If it\'s bad, you should go. Get well soon!',isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'두통이 있어요. 어떻게 말해요?',situationEn:'You have a headache. Say so.',hint:'머리가 아파요'},
+  {situation:'이틀 전부터 열이 있어요. 설명하세요.',situationEn:'You\'ve had a fever for two days. Explain.',hint:'열이 있어요. 이틀 됐어요.'},
+  {situation:'어디가 아픈지 가리키면서 말하세요.',situationEn:'Point to where it hurts and say it.',hint:'여기가 아파요'},
+  {situation:'두통약을 사고 싶어요. 약사에게 말하세요.',situationEn:'You want to buy headache medicine. Tell the pharmacist.',hint:'두통약 있어요?'},
+  {situation:'친구가 아파요. 빨리 낫길 바란다고 말하세요.',situationEn:'Your friend is sick. Tell them to get well soon.',hint:'빨리 나으세요'},
+]},
+
+// ── 6. 교통·길 찾기 ──
+{id:'transport',cat:'🚇 교통·길 찾기',
+desc:'Getting around Korea by subway, bus, and taxi — like a local',
+patterns:[
+  {pattern:'~까지 얼마예요?',hint:'How much to ~?'},
+  {pattern:'~에서 내려요',hint:'I get off at ~'},
+  {pattern:'~행 버스 있어요?',hint:'Is there a bus going to ~?'},
+  {pattern:'세워 주세요',hint:'Please stop here'},
+  {pattern:'다음 역이 어디예요?',hint:'What\'s the next station?'},
+  {pattern:'어디서 환승해요?',hint:'Where do I transfer?'},
+],
+sentences:[
+  {kr:'명동까지 얼마예요?',rom:'myeong-dong-kka-ji eol-ma-ye-yo?',en:'How much to Myeongdong?'},
+  {kr:'이 버스 명동 가요?',rom:'i beo-seu myeong-dong ga-yo?',en:'Does this bus go to Myeongdong?'},
+  {kr:'다음 역이 어디예요?',rom:'da-eum yeok-i eo-di-e-yo?',en:'What\'s the next stop?'},
+  {kr:'여기서 내려요',rom:'yeo-gi-seo nae-ryeo-yo',en:'I\'m getting off here'},
+  {kr:'여기서 세워 주세요',rom:'yeo-gi-seo se-wo ju-se-yo',en:'Please stop here'},
+  {kr:'지하철 몇 호선이에요?',rom:'ji-ha-cheol myeot ho-seo-ni-e-yo?',en:'Which subway line is it?'},
+  {kr:'어디서 환승해요?',rom:'eo-di-seo hwan-seung-hae-yo?',en:'Where do I transfer?'},
+  {kr:'교통카드 충전할 수 있어요?',rom:'gyo-tong-ka-deu chung-jeon-hal su i-sseo-yo?',en:'Can I top up my transit card?'},
+  {kr:'막차가 몇 시예요?',rom:'mak-cha-ga myeot si-ye-yo?',en:'What time is the last train?'},
+  {kr:'빨리 가 주세요',rom:'ppal-li ga ju-se-yo',en:'Please hurry'},
+  {kr:'천천히 가 주세요',rom:'cheon-cheon-hi ga ju-se-yo',en:'Please drive slowly'},
+  {kr:'저기서 오른쪽으로 가세요',rom:'jeo-gi-seo o-reun-jjok-eu-ro ga-se-yo',en:'Turn right over there'},
+  {kr:'쭉 가세요',rom:'jjuk ga-se-yo',en:'Go straight'},
+  {kr:'지하철이 더 빨라요?',rom:'ji-ha-cheol-i deo ppal-la-yo?',en:'Is the subway faster?'},
+  {kr:'몇 번 출구로 나가요?',rom:'myeot beon chul-gu-ro na-ga-yo?',en:'Which exit should I use?'},
+],
+dialogues:[
+  {title:'택시 타고 이동',titleEn:'Taking a taxi',lines:[
+    {speaker:'기사',kr:'어디 가세요?',rom:'eo-di ga-se-yo?',en:'Where are you going?',isMe:false},
+    {speaker:'나',kr:'명동이요. 얼마나 걸려요?',rom:'myeong-dong-i-yo. eol-ma-na geol-lyeo-yo?',en:'Myeongdong. How long will it take?',isMe:true},
+    {speaker:'기사',kr:'지금 막히면 한 20분이요.',rom:'ji-geum ma-ki-myeon han i-sip-bu-ni-yo.',en:'With traffic, about 20 minutes.',isMe:false},
+    {speaker:'나',kr:'저기서 세워 주세요.',rom:'jeo-gi-seo se-wo ju-se-yo.',en:'Please stop over there.',isMe:true},
+    {speaker:'기사',kr:'네. 만이천 원이에요.',rom:'ne. man-i-cheon wo-ni-e-yo.',en:'Sure. That\'s 12,000 won.',isMe:false},
+  ]},
+  {title:'지하철에서',titleEn:'On the subway',lines:[
+    {speaker:'나',kr:'저기요, 이 열차 명동 가요?',rom:'jeo-gi-yo, i yeol-cha myeong-dong ga-yo?',en:'Excuse me, does this train go to Myeongdong?',isMe:true},
+    {speaker:'승객',kr:'아니요, 반대쪽 타야 해요.',rom:'a-ni-yo, ban-dae-jjok ta-ya hae-yo.',en:'No, you need to take the opposite direction.',isMe:false},
+    {speaker:'나',kr:'아, 감사합니다. 어디서 환승해요?',rom:'a, gam-sa-ham-ni-da. eo-di-seo hwan-seung-hae-yo?',en:'Oh, thank you. Where do I transfer?',isMe:true},
+    {speaker:'승객',kr:'시청역에서 환승하면 돼요.',rom:'si-cheong-yeok-e-seo hwan-seung-ha-myeon dwae-yo.',en:'Transfer at City Hall station.',isMe:false},
+    {speaker:'나',kr:'몇 번 출구로 나가요?',rom:'myeot beon chul-gu-ro na-ga-yo?',en:'Which exit should I use?',isMe:true},
+  ]},
+  {title:'버스에서',titleEn:'On the bus',lines:[
+    {speaker:'나',kr:'저기요, 이 버스 경복궁 가요?',rom:'jeo-gi-yo, i beo-seu gyeong-bok-gung ga-yo?',en:'Excuse me, does this bus go to Gyeongbokgung?',isMe:true},
+    {speaker:'기사',kr:'네, 다섯 정거장이에요.',rom:'ne, da-seot jeong-geo-jang-i-e-yo.',en:'Yes, five stops away.',isMe:false},
+    {speaker:'나',kr:'도착하면 알려 주실 수 있어요?',rom:'do-cha-ka-myeon al-lyeo ju-sil su i-sseo-yo?',en:'Can you let me know when we arrive?',isMe:true},
+    {speaker:'기사',kr:'네, 알겠습니다.',rom:'ne, al-get-seum-ni-da.',en:'Sure, I will.',isMe:false},
+  ]},
+],
+speaking:[
+  {situation:'택시 기사에게 명동에 가달라고 하세요.',situationEn:'Tell the taxi driver you want to go to Myeongdong.',hint:'명동이요'},
+  {situation:'이 버스가 명동 가는지 물어보세요.',situationEn:'Ask if this bus goes to Myeongdong.',hint:'이 버스 명동 가요?'},
+  {situation:'택시에서 여기서 세워달라고 하세요.',situationEn:'Ask the taxi to stop here.',hint:'여기서 세워 주세요'},
+  {situation:'다음 지하철역이 어디인지 물어보세요.',situationEn:'Ask what the next subway station is.',hint:'다음 역이 어디예요?'},
+  {situation:'막차 시간을 물어보세요.',situationEn:'Ask what time the last train is.',hint:'막차가 몇 시예요?'},
+]},
+
+// ── 7. 자기소개 ──
+{id:'intro',cat:'🙋 자기소개',
+desc:'Introduce yourself naturally — country, job, hobbies and why you came to Korea',
+patterns:[
+  {pattern:'저는 ~에서 왔어요',hint:'I am from ~'},
+  {pattern:'저는 ~에서 일하고 있어요',hint:'I work at ~'},
+  {pattern:'~을/를 전공했어요',hint:'I majored in ~'},
+  {pattern:'한국에 온 이유는 ~ 때문이에요',hint:'The reason I came to Korea is ~'},
+],
+sentences:[
+  {kr:'저는 캐나다 토론토 출신이에요.',rom:'jeo-neun kae-na-da to-ron-to chul-si-ni-e-yo',en:'I am from Toronto, Canada.'},
+  {kr:'저는 IT 회사에서 개발자로 일하고 있어요.',rom:'jeo-neun IT hoe-sa-e-seo gae-bal-ja-ro il-ha-go i-sseo-yo',en:'I work as a developer at an IT company.'},
+  {kr:'대학교에서 경영학을 전공했어요.',rom:'dae-hak-gyo-e-seo gyeong-yeong-hak-eul jeon-gong-hae-sseo-yo',en:'I majored in business administration at university.'},
+  {kr:'저는 올해 서른 살이에요.',rom:'jeo-neun ol-hae seo-reun sa-ri-e-yo',en:'I am thirty years old this year.'},
+  {kr:'주말에는 주로 등산을 하거나 카페에서 책을 읽어요.',rom:'ju-ma-re-neun ju-ro deung-sa-neul ha-geo-na ka-pe-e-seo chaek-eul il-geo-yo',en:'On weekends I usually hike or read at a café.'},
+  {kr:'K-팝을 좋아해서 한국어에 관심을 갖게 됐어요.',rom:'K-pa-beul jo-a-hae-seo han-gu-geo-e gwan-si-meul gat-ge dwaes-seo-yo',en:'I got interested in Korean because I love K-pop.'},
+  {kr:'회사 때문에 한국에 왔는데 이제 한국이 너무 좋아요.',rom:'hoe-sa ttae-mu-ne han-gu-ge wan-neun-de i-je han-gu-gi neo-mu jo-a-yo',en:'I came to Korea for work but now I love it here.'},
+  {kr:'저는 프리랜서 디자이너예요.',rom:'jeo-neun peu-ri-raen-seo di-ja-i-neo-ye-yo',en:'I am a freelance designer.'},
+  {kr:'지금 대학원에서 한국어학을 공부하고 있어요.',rom:'ji-geum dae-hak-wo-ne-seo han-gu-geo-ha-geul gong-bu-ha-go i-sseo-yo',en:'I am currently studying Korean linguistics in graduate school.'},
+  {kr:'만나서 정말 반가워요!',rom:'man-na-seo jeong-mal ban-ga-wo-yo',en:'I am really glad to meet you!'},
+],
+dialogues:[
+  {title:'온라인 언어교환',titleEn:'Online language exchange — first meeting',lines:[
+    {speaker:'민준',kr:'안녕하세요! 저는 민준이에요. 언어교환 신청해 주셔서 감사해요.',rom:'an-nyeong-ha-se-yo! jeo-neun min-jun-i-e-yo. eon-eo-gyo-hwan sin-cheong-hae ju-syeo-seo gam-sa-hae-yo.',en:"Hello! I'm Minjun. Thank you for applying for the language exchange.",isMe:false},
+    {speaker:'나',kr:'안녕하세요! 저는 사라예요. 저야말로요, 잘 부탁드려요!',rom:'an-nyeong-ha-se-yo! jeo-neun sa-ra-ye-yo. jeo-ya-mal-lo-yo, jal bu-tak-deu-ryeo-yo!',en:"Hello! I'm Sara. Likewise, nice to meet you!",isMe:true},
+    {speaker:'민준',kr:'사라 씨는 어느 나라에서 왔어요?',rom:'sa-ra ssi-neun eo-neu na-ra-e-seo wa-sseo-yo?',en:'Sara, which country are you from?',isMe:false},
+    {speaker:'나',kr:'저는 캐나다 토론토 출신이에요. 지금은 서울에 살고 있어요.',rom:'jeo-neun kae-na-da to-ron-to chul-si-ni-e-yo. ji-geu-meun seo-u-re sal-go i-sseo-yo.',en:"I'm from Toronto, Canada. I'm living in Seoul now.",isMe:true},
+    {speaker:'민준',kr:'오! 서울 어디에 살아요?',rom:'o! seo-ul eo-di-e sa-ra-yo?',en:'Oh! Which part of Seoul do you live in?',isMe:false},
+    {speaker:'나',kr:'홍대 근처에 살아요. 분위기가 너무 좋아요!',rom:'hong-dae geun-cheo-e sa-ra-yo. bu-nwi-gi-ga neo-mu jo-a-yo!',en:'I live near Hongdae. The vibe is really great!',isMe:true},
+    {speaker:'민준',kr:'맞아요! 사라 씨는 무슨 일 해요?',rom:'ma-ja-yo! sa-ra ssi-neun mu-seun il hae-yo?',en:'True! What do you do for work, Sara?',isMe:false},
+    {speaker:'나',kr:'저는 IT 회사에서 개발자로 일하고 있어요. 민준 씨는요?',rom:'jeo-neun IT hoe-sa-e-seo gae-bal-ja-ro il-ha-go i-sseo-yo. min-jun ssi-neun-yo?',en:'I work as a developer at an IT company. What about you, Minjun?',isMe:true},
+    {speaker:'민준',kr:'저는 대학원에서 영어교육을 공부하고 있어요.',rom:'jeo-neun dae-hak-wo-ne-seo yeong-eo-gyo-yu-geul gong-bu-ha-go i-sseo-yo.',en:"I'm studying English education in graduate school.",isMe:false},
+    {speaker:'나',kr:'우와, 그래서 영어교환 하고 싶으셨군요! 저도 한국어 많이 배우고 싶어요.',rom:'u-wa, geu-rae-seo yeong-eo-gyo-hwan ha-go si-peu-syeot-gun-yo! jeo-do han-gu-geo ma-ni bae-u-go si-peo-yo.',en:"Wow, so that's why you wanted a language exchange! I really want to learn a lot of Korean too.",isMe:true},
+  ]},
+  {title:'한국어 수업 첫날',titleEn:'First day of Korean class',lines:[
+    {speaker:'선생님',kr:'안녕하세요, 여러분! 자기소개를 해볼까요? 먼저 이름이랑 나라를 말해 주세요.',rom:'an-nyeong-ha-se-yo, yeo-reo-bun! ja-gi-so-gae-reul hae-bol-kka-yo? meon-jeo i-reu-mi-rang na-ra-reul mal-hae ju-se-yo.',en:"Hello everyone! Shall we introduce ourselves? First, please tell us your name and country.",isMe:false},
+    {speaker:'나',kr:'안녕하세요! 저는 앤디예요. 영국 런던 출신이에요.',rom:'an-nyeong-ha-se-yo! jeo-neun aen-di-ye-yo. yeong-guk reon-don chul-si-ni-e-yo.',en:"Hello! I'm Andy. I'm from London, UK.",isMe:true},
+    {speaker:'선생님',kr:'앤디 씨, 반가워요! 한국어는 왜 배우게 됐어요?',rom:'aen-di ssi, ban-ga-wo-yo! han-gu-geo-neun wae bae-u-ge dwaes-seo-yo?',en:"Nice to meet you, Andy! Why did you start learning Korean?",isMe:false},
+    {speaker:'나',kr:'K-드라마를 정말 좋아하는데, 자막 없이 이해하고 싶어서요.',rom:'K-deu-ra-ma-reul jeong-mal jo-a-ha-neun-de, ja-mak eop-si i-hae-ha-go si-peo-seo-yo.',en:"I really love K-dramas and I want to understand them without subtitles.",isMe:true},
+    {speaker:'선생님',kr:'좋은 이유예요! 취미는 뭐예요?',rom:'jo-eun i-yu-ye-yo! chwi-mi-neun mwo-ye-yo?',en:"That's a great reason! What are your hobbies?",isMe:false},
+    {speaker:'나',kr:'요리하는 걸 좋아해요. 한국 음식도 자주 만들어요.',rom:'yo-ri-ha-neun geol jo-a-hae-yo. han-guk eum-sik-do ja-ju man-deu-reo-yo.',en:"I like cooking. I often make Korean food too.",isMe:true},
+    {speaker:'선생님',kr:'오, 대단해요! 좋아하는 한국 음식이 있어요?',rom:'o, dae-dan-hae-yo! jo-a-ha-neun han-guk eum-si-gi i-sseo-yo?',en:"Oh, impressive! Do you have a favourite Korean dish?",isMe:false},
+    {speaker:'나',kr:'된장찌개를 제일 좋아해요. 만들기도 어렵지 않아서요.',rom:'doen-jang-jji-gae-reul je-il jo-a-hae-yo. man-deul-gi-do eo-ryeop-ji a-na-seo-yo.',en:"I like doenjang jjigae the most. It's not too hard to make either.",isMe:true},
+  ]},
+  {title:'직장 동료와 점심',titleEn:'Lunch with a Korean colleague',lines:[
+    {speaker:'지원',kr:'민지 씨, 오늘 점심 같이 먹을래요?',rom:'ji-won ssi, o-neul jeom-sim ga-chi meo-geul-lae-yo?',en:"Jiwon, do you want to have lunch together today?",isMe:false},
+    {speaker:'나',kr:'네, 좋아요! 어디로 갈까요?',rom:'ne, jo-a-yo! eo-di-ro gal-kka-yo?',en:"Yes, sounds good! Where should we go?",isMe:true},
+    {speaker:'지원',kr:'근처에 한식 뷔페 있는데 거기 어때요?',rom:'geun-cheo-e han-sik bwi-pe it-neun-de geo-gi eo-ttae-yo?',en:"There's a Korean buffet nearby — how about there?",isMe:false},
+    {speaker:'나',kr:'좋아요! 그런데 지원 씨는 회사에서 무슨 일 해요?',rom:'jo-a-yo! geu-reon-de ji-won ssi-neun hoe-sa-e-seo mu-seun il hae-yo?',en:"Sounds good! By the way, what do you do at the company, Jiwon?",isMe:true},
+    {speaker:'지원',kr:'저는 마케팅 팀에서 일해요. 민지 씨는요?',rom:'jeo-neun ma-ke-ting ti-me-seo il-hae-yo. min-ji ssi-neun-yo?',en:"I work in the marketing team. What about you, Minji?",isMe:false},
+    {speaker:'나',kr:'저는 개발팀이에요. 한국에 온 지 얼마나 됐어요?',rom:'jeo-neun gae-bal-ti-mi-e-yo. han-gu-ge on ji eol-ma-na dwaes-seo-yo?',en:"I'm in the development team. How long have you been in Korea?",isMe:true},
+    {speaker:'지원',kr:'저는 태어날 때부터요! 민지 씨는요?',rom:'jeo-neun tae-eo-nal ttae-bu-teo-yo! min-ji ssi-neun-yo?',en:"Since I was born! What about you, Minji?",isMe:false},
+    {speaker:'나',kr:'저는 2년 됐어요. 처음엔 힘들었는데 이제 많이 적응했어요.',rom:'jeo-neun i-nyeon dwaes-seo-yo. cheo-eu-men him-deu-reot-neun-de i-je ma-ni jeo-geung-haes-seo-yo.',en:"It's been two years for me. It was tough at first but I've settled in a lot now.",isMe:true},
+    {speaker:'지원',kr:'한국어도 정말 잘하시네요!',rom:'han-gu-geo-do jeong-mal jal-ha-si-ne-yo!',en:"Your Korean is really great too!",isMe:false},
+    {speaker:'나',kr:'아, 아직 많이 부족해요. 더 열심히 공부해야 해요.',rom:'a, a-jik ma-ni bu-jo-kae-yo. deo yeol-sim-hi gong-bu-hae-ya hae-yo.',en:"Oh, I still have a long way to go. I need to study harder.",isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'처음 만난 사람에게 어느 나라 출신인지 말해 보세요.',situationEn:'Tell someone you just met which country you are from.',hint:'저는 ~에서 왔어요 / ~ 출신이에요'},
+  {situation:'자신의 직업이나 전공을 소개해 보세요.',situationEn:'Introduce your job or area of study.',hint:'저는 ~에서 일하고 있어요 / ~을 전공했어요'},
+  {situation:'한국어를 배우는 이유를 설명해 보세요.',situationEn:'Explain why you are learning Korean.',hint:'~을/를 좋아해서 / ~ 때문에 관심을 갖게 됐어요'},
+  {situation:'자신의 취미를 이야기해 보세요.',situationEn:'Talk about your hobbies.',hint:'주말에는 주로 ~을/를 해요'},
+]},
+
+// ── 8. 부탁·거절하기 ──
+{id:'request',cat:'🤝 부탁·거절하기',
+desc:'Make requests and decline politely — practical expressions for real-life situations',
+patterns:[
+  {pattern:'~해 줄 수 있어요?',hint:'Can you ~ for me?'},
+  {pattern:'~하기가 좀 어려울 것 같아요',hint:'I think it might be a bit difficult to ~'},
+  {pattern:'혹시 괜찮으시면 ~해 주실 수 있을까요?',hint:'If it\'s okay with you, could you possibly ~?'},
+  {pattern:'이번에는 좀 힘들 것 같아요',hint:'I think this time is going to be a bit tough'},
+],
+sentences:[
+  {kr:'이사하는 거 좀 도와줄 수 있어요?',rom:'i-sa-ha-neun geo jom do-wa-jul su i-sseo-yo?',en:'Could you help me move?'},
+  {kr:'짐이 많지 않아서 금방 끝날 거예요.',rom:'ji-mi man-chi a-na-seo geum-bang kkeut-nal geo-ye-yo.',en:"There isn't much stuff so it should be done quickly."},
+  {kr:'이번 주말은 좀 힘들 것 같아요.',rom:'i-beon ju-ma-leun jom him-deul geot ga-ta-yo.',en:'This weekend is going to be a bit tough for me.'},
+  {kr:'다음에 꼭 도와드릴게요.',rom:'da-eu-me kkok do-wa-deu-ril-ge-yo.',en:"I'll definitely help you next time."},
+  {kr:'오늘 야근이 좀 어려울 것 같아요.',rom:'o-neul ya-geu-ni jom eo-ryeo-ul geot ga-ta-yo.',en:"I think working late tonight is going to be a bit difficult."},
+  {kr:'집에 일이 좀 있어서요.',rom:'ji-be i-ri jom i-sseo-seo-yo.',en:'I have something to take care of at home.'},
+  {kr:'다음번에는 꼭 남을게요.',rom:'da-eum-beo-ne-neun kkok na-meul-ge-yo.',en:"I'll definitely stay next time."},
+  {kr:'오늘은 먼저 일어나도 될까요?',rom:'o-neu-reun meon-jeo i-reo-na-do doel-kka-yo?',en:'Would it be okay if I left a bit early today?'},
+  {kr:'내일 중요한 약속이 있어서요.',rom:'nae-il jung-yo-han yak-so-gi i-sseo-seo-yo.',en:'I have an important appointment tomorrow.'},
+  {kr:'혹시 괜찮으시면 다음에 자리를 만들어요.',rom:'hok-si gwaen-cha-neu-si-myeon da-eu-me ja-ri-reul man-deu-reo-yo.',en:"If it's okay, let's arrange another time."},
+],
+dialogues:[
+  {title:'친구에게 이사 도움 부탁하기',titleEn:'Asking a friend to help you move',lines:[
+    {speaker:'나',kr:'야, 나 이번 주말에 이사하는데 혹시 도와줄 수 있어?',rom:'ya, na i-beon ju-ma-re i-sa-ha-neun-de hok-si do-wa-jul su i-sseo?',en:"Hey, I'm moving this weekend — could you help me out?",isMe:true},
+    {speaker:'수진',kr:'이번 주말? 음… 토요일이야, 일요일이야?',rom:'i-beon ju-mal? eum... to-yo-i-ri-ya, i-ryo-i-ri-ya?',en:'This weekend? Hmm… is it Saturday or Sunday?',isMe:false},
+    {speaker:'나',kr:'토요일 오전이야. 짐이 많지 않아서 두세 시간이면 끝날 것 같아.',rom:'to-yo-il o-jeo-ni-ya. ji-mi man-chi a-na-seo du-se si-ga-ni-myeon kkeut-nal geot ga-ta.',en:"Saturday morning. There isn't much stuff so I think it'll be done in a couple of hours.",isMe:true},
+    {speaker:'수진',kr:'아, 토요일은 좀 힘들 것 같아. 그날 가족 행사가 있어서.',rom:'a, to-yo-i-reun jom him-deul geot ga-ta. geu-nal ga-jok haeng-sa-ga i-sseo-seo.',en:"Ah, Saturday is going to be a bit tough. I have a family event that day.",isMe:false},
+    {speaker:'나',kr:'아, 그렇구나. 괜찮아, 이해해!',rom:'a, geu-reo-ku-na. gwaen-cha-na, i-hae-hae!',en:"Oh, I see. No worries, I totally understand!",isMe:true},
+    {speaker:'수진',kr:'미안해. 다음에 뭔가 필요하면 꼭 말해!',rom:'mi-an-hae. da-eu-me mwon-ga pi-ryo-ha-myeon kkok mal-hae!',en:"Sorry about that. Next time you need something, definitely let me know!",isMe:false},
+    {speaker:'나',kr:'당연하지! 고마워.',rom:'dang-yeon-ha-ji! go-ma-wo.',en:"Of course! Thanks.",isMe:true},
+  ]},
+  {title:'야근 거절하기',titleEn:'Declining overtime politely',lines:[
+    {speaker:'팀장',kr:'오 씨, 오늘 야근 가능해요? 급하게 처리할 게 생겼어요.',rom:'o ssi, o-neul ya-geun ga-neung-hae-yo? geu-pa-ge cheo-ri-hal ge saeng-gyeo-sseo-yo.',en:"Oh, is it possible for you to work late tonight? Something urgent has come up.",isMe:false},
+    {speaker:'나',kr:'죄송한데요, 오늘은 좀 어려울 것 같아요. 집에 개인적인 일이 있어서요.',rom:'joe-song-han-de-yo, o-neu-reun jom eo-ryeo-ul geot ga-ta-yo. ji-be gae-in-jeo-gin i-ri i-sseo-seo-yo.',en:"I'm sorry, I think tonight is going to be a bit difficult. I have a personal matter at home.",isMe:true},
+    {speaker:'팀장',kr:'아, 그래요? 많이 급한 건 아닌가요?',rom:'a, geu-rae-yo? ma-ni geu-pan geon a-nin-ga-yo?',en:"Oh, is that right? Is it not too urgent?",isMe:false},
+    {speaker:'나',kr:'네, 미리 잡아 둔 약속이라서요. 내일 아침 일찍 와서 처리하면 안 될까요?',rom:'ne, mi-ri ja-ba dun yak-so-gi-ra-seo-yo. nae-il a-chim il-jjik wa-seo cheo-ri-ha-myeon an doel-kka-yo?',en:"Yes, it's an appointment I made in advance. Would it be okay if I came in early tomorrow morning to handle it?",isMe:true},
+    {speaker:'팀장',kr:'알겠어요. 그럼 내일 부탁할게요.',rom:'al-ge-sseo-yo. geu-reom nae-il bu-ta-kal-ge-yo.',en:"Understood. I'll count on you tomorrow then.",isMe:false},
+    {speaker:'나',kr:'감사합니다. 내일 일찍 처리하겠습니다.',rom:'gam-sa-ham-ni-da. nae-il il-jjik cheo-ri-ha-get-seum-ni-da.',en:"Thank you. I'll take care of it first thing tomorrow.",isMe:true},
+  ]},
+  {title:'회식 자리 일찍 나오기',titleEn:'Leaving a work dinner after the first round',lines:[
+    {speaker:'동료',kr:'다들 2차 가요! 노래방 어때요?',rom:'da-deul i-cha ga-yo! no-rae-bang eo-ttae-yo?',en:"Everyone's heading to the second round! How about karaoke?",isMe:false},
+    {speaker:'나',kr:'저는 오늘은 여기서 먼저 일어날게요. 내일 아침 일찍 약속이 있어서요.',rom:'jeo-neun o-neu-reun yeo-gi-seo meon-jeo i-reo-nal-ge-yo. nae-il a-chim il-jjik yak-so-gi i-sseo-seo-yo.',en:"I'll head off from here tonight. I have an early morning appointment tomorrow.",isMe:true},
+    {speaker:'동료',kr:'에이, 조금만 더 있다 가요!',rom:'e-i, jo-geum-man deo it-da ga-yo!',en:"Aw, come on, stay just a little longer!",isMe:false},
+    {speaker:'나',kr:'정말 죄송해요, 다음번엔 꼭 같이 갈게요!',rom:'jeong-mal joe-song-hae-yo, da-eum-beo-nen kkok ga-chi gal-ge-yo!',en:"I'm really sorry, I'll definitely join next time!",isMe:true},
+    {speaker:'동료',kr:'알겠어요, 조심히 들어가요!',rom:'al-ge-sseo-yo, jo-sim-hi deu-reo-ga-yo!',en:"Alright, get home safe!",isMe:false},
+    {speaker:'나',kr:'감사해요! 다들 재미있게 즐기세요~',rom:'gam-sa-hae-yo! da-deul jae-mi-it-ge jeul-gi-se-yo~',en:"Thank you! Have a great time everyone~",isMe:true},
+  ]},
+],
+speaking:[
+  {situation:'친구에게 주말에 같이 카페에 가자고 부탁해 보세요.',situationEn:'Ask a friend to go to a café together this weekend.',hint:'혹시 주말에 카페 같이 갈 수 있어?'},
+  {situation:'오늘 야근이 힘들다고 정중하게 거절해 보세요.',situationEn:'Politely decline working late tonight.',hint:'오늘은 좀 어려울 것 같아요'},
+  {situation:'회식 자리에서 일찍 먼저 나가겠다고 말해 보세요.',situationEn:'Tell your colleagues you need to leave the dinner early.',hint:'오늘은 먼저 일어날게요'},
+  {situation:'도움을 줄 수 없을 때 다음에 꼭 도와주겠다고 말해 보세요.',situationEn:"When you can't help, say you'll definitely help next time.",hint:'다음에 꼭 도와드릴게요'},
+]},
+
+];
+
+function showSentenceCat(idx, btn) {
+  const cat = l2Categories[idx];
+  if (!cat) return;
+  if (cat.comingSoon || !cat.sentences || cat.sentences.length === 0) {
+    document.getElementById('sentence-content').innerHTML = `
+      <div style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">🚧</div>
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.5rem;">${cat.cat}</div>
+        <div style="font-size:.9rem;color:var(--text-muted);">${cat.desc}</div>
+        <div style="margin-top:1.5rem;font-size:.85rem;color:#94A3B8;">Coming soon — 곧 업데이트될 예정이에요!</div>
+      </div>`;
+    return;
+  }
+  renderL2Category(cat);
+}
+
+function renderL2Category(cat) {
+  window._activeL2Cat = cat;
+  const el = document.getElementById('sentence-content');
+  el.innerHTML = `
+    <div style="display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border);padding-bottom:.8rem;flex-wrap:wrap;" id="l2-section-nav">
+      <button class="l2-sec-btn active" onclick="switchL2Section('sentences',this)" style="background:#52b788;color:white;border:none;padding:.45rem 1rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;">📋 문장</button>
+      <button class="l2-sec-btn" onclick="switchL2Section('dialogue',this)" style="background:var(--surface2);color:var(--text-muted);border:1.5px solid var(--border);padding:.45rem 1rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;">💬 대화 드릴</button>
+      <button class="l2-sec-btn" onclick="switchL2Section('quiz',this)" style="background:var(--surface2);color:var(--text-muted);border:1.5px solid var(--border);padding:.45rem 1rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;">🧩 퀴즈</button>
+    </div>
+    <div id="l2-section-content"></div>`;
+  renderL2Sentences(cat);
+}
+
+function switchL2Section(section, btn) {
+  document.querySelectorAll('.l2-sec-btn').forEach(b=>{b.style.background='var(--surface2)';b.style.color='var(--text-muted)';b.style.border='1.5px solid var(--border)';});
+  btn.style.background='#52b788';btn.style.color='white';btn.style.border='none';
+  const cat = window._activeL2Cat || l2Categories[3];
+  if (section==='sentences') renderL2Sentences(cat);
+  else if (section==='dialogue') renderL2Dialogue(cat);
+  else if (section==='quiz') renderL2Quiz(cat);
+}
+
+function renderL2Sentences(cat) {
+  const el = document.getElementById('l2-section-content');
+  let patternsHtml = '';
+  if (cat.patterns && cat.patterns.length > 0) {
+    patternsHtml = `<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;">`;
+    cat.patterns.forEach(p => {
+      const cp = p.pattern.replace(/~/g,'').replace(/[?!]/g,'').trim().split('/')[0].trim();
+      patternsHtml += `<div onclick="speak('${cp}')" style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:.35rem .8rem;font-size:.78rem;color:#276749;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.4rem;" onmouseover="this.style.background='#DCFCE7'" onmouseout="this.style.background='#F0FDF4'"><span style="font-family:'Noto Sans KR',sans-serif;">${p.pattern}</span><span style="color:#94A3B8;font-weight:400;">= ${p.hint}</span><span style="font-size:.7rem;color:#86EFAC;">🔊</span></div>`;
+    });
+    patternsHtml += `</div>`;
+  }
+  let sentHtml = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;">
+      <span style="font-size:.8rem;color:var(--text-muted);font-weight:600;">Show:</span>
+      <button onclick="toggleSentenceView('kr')" id="sent-btn-kr" style="background:#52b788;color:white;border:none;padding:.3rem .8rem;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🇰🇷 Korean first</button>
+      <button onclick="toggleSentenceView('en')" id="sent-btn-en" style="background:var(--surface2);color:var(--text-muted);border:1.5px solid var(--border);padding:.3rem .8rem;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🇬🇧 English first</button>
+    </div>
+    <div id="sentence-cards-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.7rem;">`;
+  cat.sentences.forEach(s => {
+    sentHtml += `<div class="sent-card" data-kr="${s.kr.replace(/"/g,'&quot;')}" style="background:#FAFFFE;border:1.5px solid rgba(82,183,136,.3);border-radius:14px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;" onclick="speak(this.dataset.kr)" onmouseover="this.style.borderColor='#52b788';this.style.background='#F0FDF4'" onmouseout="this.style.borderColor='rgba(82,183,136,.3)';this.style.background='#FAFFFE'">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;">
+        <div style="flex:1;">
+          <div class="sc-kr-text" style="font-family:'Noto Sans KR',sans-serif;font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:.2rem;">${s.kr}</div>
+          <div class="sc-rom-text" style="font-size:.72rem;color:#4D96FF;margin-bottom:.15rem;">${s.rom}</div>
+          <div class="sc-en-text" style="font-size:.82rem;color:#475569;">${s.en}</div>
+        </div>
+        <div style="font-size:1rem;color:#CBD5E1;flex-shrink:0;">🔊</div>
+      </div>
+    </div>`;
+  });
+  sentHtml += `</div>`;
+  el.innerHTML = patternsHtml + sentHtml;
+}
+
+function toggleSentenceView(mode) {
+  const cards = document.querySelectorAll('.sent-card');
+  const btnKr = document.getElementById('sent-btn-kr'), btnEn = document.getElementById('sent-btn-en');
+  if (mode==='en') {
+    btnEn.style.background='#52b788';btnEn.style.color='white';btnEn.style.border='none';
+    btnKr.style.background='var(--surface2)';btnKr.style.color='var(--text-muted)';btnKr.style.border='1.5px solid var(--border)';
+    cards.forEach(c=>{c.querySelector('.sc-kr-text').style.display='none';c.querySelector('.sc-rom-text').style.display='none';c.querySelector('.sc-en-text').style.fontSize='1rem';c.querySelector('.sc-en-text').style.fontWeight='700';c.querySelector('.sc-en-text').style.color='#0F172A';});
+  } else {
+    btnKr.style.background='#52b788';btnKr.style.color='white';btnKr.style.border='none';
+    btnEn.style.background='var(--surface2)';btnEn.style.color='var(--text-muted)';btnEn.style.border='1.5px solid var(--border)';
+    cards.forEach(c=>{c.querySelector('.sc-kr-text').style.display='';c.querySelector('.sc-rom-text').style.display='';c.querySelector('.sc-en-text').style.fontSize='.82rem';c.querySelector('.sc-en-text').style.fontWeight='400';c.querySelector('.sc-en-text').style.color='#475569';});
+  }
+}
+
+function renderL2Dialogue(cat) {
+  const el = document.getElementById('l2-section-content');
+  let html = `<div style="font-size:.75rem;color:var(--text-muted);margin-bottom:1rem;">🔊 tap to listen &nbsp;·&nbsp; 🎤 tap to speak</div>`;
+  cat.dialogues.forEach((dlg, dIdx) => {
+    html += `<div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <div><div style="font-size:.7rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:.2rem;">대화 ${dIdx+1}</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;">${dlg.title}</div><div style="font-size:.78rem;color:var(--text-muted);">${dlg.titleEn}</div></div>
+        <button onclick="playFullDialogue(${dIdx})" style="background:#4D96FF;color:white;border:none;padding:.45rem 1rem;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;">▶ 전체 듣기</button>
+      </div>`;
+    dlg.lines.forEach((line, lIdx) => {
+      const feedbackId = `dlg-fb-${dIdx}-${lIdx}`;
+      const kc = line.kr.replace(/~/g,'');
+      html += `<div class="dlg-line" data-kr="${kc.replace(/"/g,'&quot;')}" style="background:${line.isMe?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'white'};border:${line.isMe?'2px solid #52b788':'1px solid var(--border)'};border-radius:12px;padding:.8rem 1rem;margin-bottom:0;display:flex;gap:.8rem;align-items:center;">
+        <div style="font-size:.68rem;font-weight:700;color:${line.isMe?'#276749':'#64748B'};min-width:2rem;flex-shrink:0;text-transform:uppercase;">${line.speaker}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:${line.isMe?'800':'600'};color:${line.isMe?'#0F172A':'#334155'};margin-bottom:.15rem;">${line.kr}</div>
+          <div style="font-size:.68rem;color:#4D96FF;margin-bottom:.1rem;">${line.rom}</div>
+          <div style="font-size:.76rem;color:var(--text-muted);">${line.en}</div>
+        </div>
+        <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:.3rem;">
+          <button onclick="speak('${kc.replace(/'/g,"\\'")}');highlightDlgLine(this.closest('.dlg-line'))" style="background:none;border:none;color:#4D96FF;font-size:1.2rem;cursor:pointer;padding:.2rem;line-height:1;">🔊</button>
+          <button onclick="startDlgSpeech('${kc.replace(/'/g,"\\'")}',this,'${feedbackId}')" style="background:none;border:none;color:#52b788;font-size:1.2rem;cursor:pointer;padding:.2rem;line-height:1;">🎤</button>
+        </div>
+      </div><div id="${feedbackId}" style="margin-bottom:.5rem;min-height:0;"></div>`;
+    });
+    html += `</div>`;
+  });
+  el.innerHTML = html;
+}
+
+function highlightDlgLine(el){el.style.boxShadow='0 0 0 2px #52b788';setTimeout(()=>el.style.boxShadow='',800);}
+
+function startDlgSpeech(expected, btn, feedbackId) {
+  const resultEl = feedbackId ? document.getElementById(feedbackId) : document.getElementById('dlg-speak-result');
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ Speech recognition not supported. Try Chrome!</div>`;
+    return;
+  }
+  const orig = '🎤';
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SR();
+  // continuous=true so pauses mid-sentence don't cut off the recording
+  recognition.lang = 'ko-KR'; recognition.continuous = true; recognition.interimResults = true;
+  let mediaRecorder = null, audioChunks = [], recordingReady = false;
+  let finalTranscript = '';
+  let stopBtn = null;
+
+  function showStopBtn() {
+    // Inject a 🛑 stop button into the feedback div so user can finish when ready
+    if(resultEl) resultEl.innerHTML = `
+      <div style="color:#FF6B6B;font-size:.88rem;font-weight:700;padding:.6rem 1rem;background:#FFF0EA;border-radius:10px;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;animation:pulse 1s infinite;">
+        <span>🎙️ 말하세요…</span>
+        <button id="dlg-stop-btn-${feedbackId||'global'}" onclick="window._stopDlgSpeech&&window._stopDlgSpeech()" style="background:#FF6B6B;color:white;border:none;border-radius:99px;padding:.25rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;animation:none;">🛑 완료</button>
+      </div>`;
+    if(resultEl) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  function doRecord(stream) {
+    mediaRecorder = new MediaRecorder(stream); audioChunks = []; finalTranscript = '';
+    mediaRecorder.ondataavailable = e => { if(e.data.size>0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      const blob=new Blob(audioChunks,{type:'audio/webm'});
+      window._lastRecordingUrl=URL.createObjectURL(blob);
+      recordingReady=true;
+      const pb=document.getElementById('dlg-playback-btn');
+      if(pb) pb.disabled=false;
+    };
+    btn.textContent = '⏳'; btn.style.color = '#F59E0B';
+    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⏳ 준비 중...</div>`;
+    mediaRecorder.start();
+    setTimeout(() => {
+      btn.textContent = '🎙️'; btn.style.color = '#FF6B6B';
+      showStopBtn();
+      recognition.start();
+    }, 600);
+  }
+
+  // Stop handler — triggered by 🛑 button
+  window._stopDlgSpeech = () => {
+    recognition.stop();
+    if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
+  };
+
+  if (window._micStream && window._micStream.active) {
+    doRecord(window._micStream);
+  } else {
+    navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+      window._micStream = stream;
+      doRecord(stream);
+    }).catch(() => {
+      btn.textContent = orig; btn.style.color = '#52b788';
+      if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 마이크 권한이 필요해요.</div>`;
+    });
+  }
+
+  function buildResult(match, transcript) {
+    btn.textContent = orig; btn.style.color = '#52b788';
+    if (resultEl) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+    const pb = `<button id="dlg-playback-btn" onclick="playMyRecording(this)" style="background:var(--surface2);border:1.5px solid var(--border);color:var(--text-muted);border-radius:99px;padding:.25rem .7rem;font-size:.72rem;font-weight:600;cursor:pointer;" ${recordingReady?'':'disabled'}>🔊 내 발음</button>`;
+    if (match) resultEl.innerHTML = `<div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#276749;font-weight:700;">✅ 잘했어요!</span><span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${transcript}"</span>${pb}</div>`;
+    else resultEl.innerHTML = `<div style="background:#FFF8F6;border:1.5px solid rgba(255,107,107,.4);border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#E53E3E;font-weight:700;">🔄 다시!</span><span style="font-size:.8rem;color:var(--text-muted);">You: <span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${transcript}"</span></span><span style="font-size:.8rem;color:var(--text-muted);">→ <span style="font-family:'Noto Sans KR',sans-serif;color:#52b788;font-weight:700;">"${expected}"</span></span>${pb}</div>`;
+  }
+
+  // Accumulate all interim+final results
+  recognition.onresult = e => {
+    finalTranscript = '';
+    for (let i = 0; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript;
+    }
+  };
+
+  recognition.onend = () => {
+    if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
+    const t = finalTranscript.trim();
+    if (!t) {
+      btn.textContent = orig; btn.style.color = '#52b788';
+      if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.8rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 못 들었어요. 다시 눌러보세요!</div>`;
+      return;
+    }
+    const clean = s => s.replace(/[?!.,~\s]/g,'').toLowerCase();
+    buildResult(clean(t) === clean(expected), t);
+  };
+
+  recognition.onerror = e => {
+    if(e.error === 'no-speech') return; // ignore mid-pause no-speech, user will press 🛑
+    if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
+    btn.textContent = orig; btn.style.color = '#52b788';
+    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.8rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 못 들었어요. 다시 눌러보세요!</div>`;
+  };
+}
+
+function playFullDialogue(dIdx) {
+  const cat = window._activeL2Cat || l2Categories[3];
+  const lines = cat.dialogues[dIdx].lines;
+  let i = 0;
+  function playNext() {
+    if (i >= lines.length) return;
+    const u = new SpeechSynthesisUtterance(lines[i].kr.replace(/~/g,''));
+    u.lang = 'ko-KR'; u.rate = 0.85; u.pitch = 1;
+    u.onend = () => { i++; playNext(); };
+    window.speechSynthesis.speak(u);
+  }
+  window.speechSynthesis.cancel();
+  playNext();
+}
+
+function playMyRecording(btn) {
+  if (!window._lastRecordingUrl) return;
+  const audio = new Audio(window._lastRecordingUrl); audio.play();
+  if (btn) { const orig=btn.textContent; btn.textContent='▶ 재생 중...'; audio.onended=()=>btn.textContent=orig; }
+}
+
+// DYNAMIC QUIZ
+function generateL2Quiz(cat) {
+  const allKr = [];
+  cat.sentences.forEach(s=>allKr.push(s.kr));
+  cat.dialogues.forEach(dlg=>dlg.lines.forEach(l=>{if(!allKr.includes(l.kr))allKr.push(l.kr);}));
+  function makeWrongs(correct){return shuffleArr(allKr.filter(k=>k!==correct)).slice(0,3);}
+  const typeA = shuffleArr([...cat.sentences]).slice(0,4).map(s=>({type:'A',prompt:s.en,answer:s.kr,options:shuffleArr([s.kr,...makeWrongs(s.kr)]),answerRom:s.rom}));
+  const cCandidates=[];
+  cat.dialogues.forEach(dlg=>dlg.lines.forEach((line,i)=>{if(line.isMe&&i>0)cCandidates.push({line,prevLine:dlg.lines[i-1]});}));
+  const typeC = shuffleArr(cCandidates).slice(0,2).map(c=>({type:'C',context:`${c.prevLine.speaker}: "${c.prevLine.kr}"`,contextEn:c.prevLine.en,prompt:c.line.en,answer:c.line.kr,options:shuffleArr([c.line.kr,...makeWrongs(c.line.kr)]),answerRom:c.line.rom}));
+  return shuffleArr([...typeA,...typeC]);
+}
+
+let l2QuizState = {idx:0,score:0,answered:false,shuffled:[]};
+
+function renderL2Quiz(cat) {
+  l2QuizState = {idx:0,score:0,answered:false,shuffled:generateL2Quiz(cat)};
+  document.getElementById('l2-section-content').innerHTML = `<div id="l2-quiz-inner"></div>`;
+  showL2Question();
+}
+
+function showL2Question() {
+  const el = document.getElementById('l2-quiz-inner');
+  const q = l2QuizState.shuffled[l2QuizState.idx];
+  const total = l2QuizState.shuffled.length;
+  let promptBox = '';
+  if (q.type==='C'&&q.context) {
+    promptBox = `<div style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:12px;padding:1rem 1.2rem;margin-bottom:.8rem;text-align:left;"><div style="font-size:.68rem;color:#3B82F6;letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;">💬 상황 Context</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:#1E293B;margin-bottom:.2rem;">${q.context}</div><div style="font-size:.78rem;color:#64748B;">${q.contextEn}</div></div><div style="background:var(--surface2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;"><div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.5rem;">How do you respond?</div><div style="font-size:1.1rem;font-weight:600;color:var(--text);">${q.prompt}</div></div>`;
+  } else {
+    promptBox = `<div style="background:var(--surface2);border-radius:14px;padding:1.5rem;margin-bottom:1rem;"><div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.8rem;">How do you say this in Korean?</div><div style="font-size:1.4rem;font-weight:700;color:var(--text);">${q.prompt}</div></div>`;
+  }
+  el.innerHTML = `
+    <div style="text-align:center;margin-bottom:1rem;">
+      <div style="font-size:.75rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:.3rem;">문제 ${l2QuizState.idx+1} / ${total}</div>
+      ${promptBox}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;" id="l2-quiz-opts">
+      ${q.options.map(opt=>`<button onclick="answerL2Quiz('${opt.replace(/'/g,"\\'")}','${q.answer.replace(/'/g,"\\'")}',this)" style="background:var(--surface2);border:2px solid var(--border);color:var(--text);padding:1rem .8rem;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;" onmouseover="if(!this.disabled){this.style.borderColor='#52b788';this.style.background='#F0FDF4'}" onmouseout="if(!this.disabled){this.style.borderColor='var(--border)';this.style.background='var(--surface2)'}">${opt}</button>`).join('')}
+    </div>
+    <div id="l2-quiz-feedback" style="min-height:2rem;text-align:center;margin-bottom:.8rem;"></div>
+    <div style="text-align:center;"><button id="l2-quiz-next" onclick="nextL2Question()" style="display:none;background:#52b788;color:white;border:none;padding:.7rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.9rem;">다음 →</button></div>`;
+}
+
+function answerL2Quiz(chosen, correct, btn) {
+  if (l2QuizState.answered) return;
+  l2QuizState.answered = true;
+  const q = l2QuizState.shuffled[l2QuizState.idx];
+  document.querySelectorAll('#l2-quiz-opts button').forEach(b=>{b.disabled=true;b.onmouseover=null;b.onmouseout=null;if(b.textContent.trim()===correct){b.style.background='rgba(82,183,136,.2)';b.style.borderColor='#52b788';b.style.color='#276749';}});
+  const fb = document.getElementById('l2-quiz-feedback');
+  const romHint = q.answerRom ? `<div style="font-size:.75rem;color:#4D96FF;margin-top:.3rem;">${q.answerRom}</div>` : '';
+  if (chosen.trim()===correct.trim()) {
+    l2QuizState.score++;
+    btn.style.background='rgba(82,183,136,.2)';btn.style.borderColor='#52b788';btn.style.color='#276749';
+    fb.innerHTML = `<span style="color:#276749;font-weight:700;">✅ 정답! Correct!</span>${romHint}`;
+    speak(correct);
+  } else {
+    btn.style.background='rgba(255,107,107,.1)';btn.style.borderColor='#FF6B6B';btn.style.color='#E53E3E';
+    fb.innerHTML = `<span style="color:#E53E3E;font-weight:700;">✗</span> <span style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;color:#52b788;font-weight:700;">${correct}</span>${romHint}`;
+    speak(correct);
+  }
+  document.getElementById('l2-quiz-next').style.display = 'inline-block';
+}
+
+function nextL2Question() {
+  l2QuizState.idx++; l2QuizState.answered = false;
+  if (l2QuizState.idx >= l2QuizState.shuffled.length) showL2QuizScore();
+  else showL2Question();
+}
+
+function showL2QuizScore() {
+  const score=l2QuizState.score,total=l2QuizState.shuffled.length,pct=score/total;
+  const label=pct<.5?'화이팅! 💪 Keep going!':pct<.8?'잘했어요! 😊 Good job!':pct<1?'훌륭해요! 🎉 Great work!':'완벽해요! 🌟 Perfect!';
+  document.getElementById('l2-quiz-inner').innerHTML = `<div style="text-align:center;padding:2rem 1rem;"><div style="font-size:4rem;font-weight:700;color:#52b788;margin-bottom:.5rem;">${score}/${total}</div><div style="color:var(--text-muted);font-size:1rem;margin-bottom:1.5rem;">${label}</div><div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;"><button onclick="renderL2Quiz(window._activeL2Cat||l2Categories[3])" style="background:#FF6B6B;color:white;border:none;padding:.8rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">↺ 다시 도전</button><button onclick="switchL2Section('sentences',document.querySelector('.l2-sec-btn'))" style="background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:.8rem 1.5rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">← 문장으로</button></div></div>`;
+}
+
+// VOCAB DATA
+const vocabData={
+  // ── 어휘 ──
+  '👨‍👩‍👧 Family 가족':[{emoji:'👩',kr:'엄마',rom:'eom-ma',en:'mom'},{emoji:'👨',kr:'아빠',rom:'a-ppa',en:'dad'},{emoji:'👵',kr:'할머니',rom:'hal-meo-ni',en:'grandmother'},{emoji:'👴',kr:'할아버지',rom:'ha-ra-beo-ji',en:'grandfather'},{emoji:'👧',kr:'언니',rom:'eon-ni',en:'older sister (f)'},{emoji:'👦',kr:'오빠',rom:'o-ppa',en:'older brother (f)'},{emoji:'👱‍♀️',kr:'누나',rom:'nu-na',en:'older sister (m)'},{emoji:'👱‍♂️',kr:'형',rom:'hyeong',en:'older brother (m)'},{emoji:'🧒',kr:'동생',rom:'dong-saeng',en:'younger sibling'},{emoji:'👶',kr:'아기',rom:'a-gi',en:'baby'}],
+  '💼 Jobs 직업':[{emoji:'👩‍🏫',kr:'선생님',rom:'seon-saeng-nim',en:'teacher'},{emoji:'🧑‍🎓',kr:'학생',rom:'hak-saeng',en:'student'},{emoji:'👨‍⚕️',kr:'의사',rom:'ui-sa',en:'doctor'},{emoji:'👩‍⚕️',kr:'간호사',rom:'gan-ho-sa',en:'nurse'},{emoji:'👨‍🍳',kr:'요리사',rom:'yo-ri-sa',en:'chef'},{emoji:'👮',kr:'경찰',rom:'gyeong-chal',en:'police officer'},{emoji:'👔',kr:'회사원',rom:'hoe-sa-won',en:'office worker'},{emoji:'🎤',kr:'가수',rom:'ga-su',en:'singer'},{emoji:'🎭',kr:'배우',rom:'bae-u',en:'actor'},{emoji:'⚽',kr:'운동선수',rom:'un-dong-seon-su',en:'athlete'}],
+  '🏫 Places 장소':[{emoji:'🏫',kr:'학교',rom:'hak-gyo',en:'school'},{emoji:'🏥',kr:'병원',rom:'byeong-won',en:'hospital'},{emoji:'☕',kr:'카페',rom:'ka-pe',en:'cafe'},{emoji:'🍽️',kr:'식당',rom:'sik-dang',en:'restaurant'},{emoji:'🌳',kr:'공원',rom:'gong-won',en:'park'},{emoji:'🏠',kr:'집',rom:'jip',en:'home'},{emoji:'🏪',kr:'편의점',rom:'pyeon-ui-jeom',en:'convenience store'},{emoji:'📚',kr:'도서관',rom:'do-seo-gwan',en:'library'},{emoji:'🚇',kr:'지하철역',rom:'ji-ha-cheol-yeok',en:'subway station'},{emoji:'💊',kr:'약국',rom:'yak-guk',en:'pharmacy'},{emoji:'🛒',kr:'마트',rom:'ma-teu',en:'supermarket'},{emoji:'✈️',kr:'공항',rom:'gong-hang',en:'airport'}],
+  '🍎 Food 음식':[{emoji:'🍚',kr:'밥',rom:'bap',en:'rice / meal'},{emoji:'💧',kr:'물',rom:'mul',en:'water'},{emoji:'🥬',kr:'김치',rom:'gim-chi',en:'kimchi'},{emoji:'🍞',kr:'빵',rom:'ppang',en:'bread'},{emoji:'🍜',kr:'라면',rom:'ra-myeon',en:'ramen'},{emoji:'☕',kr:'커피',rom:'keo-pi',en:'coffee'},{emoji:'🥚',kr:'계란',rom:'gye-ran',en:'egg'},{emoji:'🍗',kr:'치킨',rom:'chi-kin',en:'fried chicken'},{emoji:'🍖',kr:'고기',rom:'go-gi',en:'meat'},{emoji:'🍵',kr:'차',rom:'cha',en:'tea'}],
+  '🎨 Colors 색깔':[{emoji:'❤️',kr:'빨간색',rom:'ppal-gan-saek',en:'red'},{emoji:'🧡',kr:'주황색',rom:'ju-hwang-saek',en:'orange'},{emoji:'💛',kr:'노란색',rom:'no-ran-saek',en:'yellow'},{emoji:'💚',kr:'초록색',rom:'cho-rok-saek',en:'green'},{emoji:'💙',kr:'파란색',rom:'pa-ran-saek',en:'blue'},{emoji:'💜',kr:'보라색',rom:'bo-ra-saek',en:'purple'},{emoji:'🖤',kr:'검은색',rom:'geo-meun-saek',en:'black'},{emoji:'🤍',kr:'하얀색',rom:'ha-yan-saek',en:'white'},{emoji:'🩷',kr:'분홍색',rom:'bun-hong-saek',en:'pink'},{emoji:'🩵',kr:'하늘색',rom:'ha-neul-saek',en:'sky blue'}],
+  '😊 Feelings 감정':[{emoji:'😊',kr:'행복해요',rom:'haeng-bo-kae-yo',en:'happy'},{emoji:'😢',kr:'슬퍼요',rom:'seul-peo-yo',en:'sad'},{emoji:'😴',kr:'피곤해요',rom:'pi-gon-hae-yo',en:'tired'},{emoji:'😪',kr:'졸려요',rom:'jol-lyeo-yo',en:'sleepy'},{emoji:'🤒',kr:'아파요',rom:'a-pa-yo',en:'sick'},{emoji:'🍽️',kr:'배고파요',rom:'bae-go-pa-yo',en:'hungry'},{emoji:'🤤',kr:'배불러요',rom:'bae-bul-leo-yo',en:'full'},{emoji:'😌',kr:'좋아요',rom:'jo-a-yo',en:'good'},{emoji:'😒',kr:'싫어요',rom:'si-reo-yo',en:'dislike'},{emoji:'😨',kr:'무서워요',rom:'mu-seo-wo-yo',en:'scared'},{emoji:'😔',kr:'우울해요',rom:'u-ul-hae-yo',en:'down'},{emoji:'🥱',kr:'심심해요',rom:'sim-sim-hae-yo',en:'bored'},{emoji:'🤩',kr:'신나요',rom:'sin-na-yo',en:'excited'}],
+  '🚂 Transport 교통':[{emoji:'🚇',kr:'지하철',rom:'ji-ha-cheol',en:'subway'},{emoji:'🚕',kr:'택시',rom:'taek-si',en:'taxi'},{emoji:'✈️',kr:'비행기',rom:'bi-haeng-gi',en:'airplane'},{emoji:'🚲',kr:'자전거',rom:'ja-jeon-geo',en:'bicycle'},{emoji:'⛴️',kr:'배',rom:'bae',en:'boat / ship'},{emoji:'🛣️',kr:'길',rom:'gil',en:'road / street'},{emoji:'🚉',kr:'역',rom:'yeok',en:'station'},{emoji:'🎫',kr:'표',rom:'pyo',en:'ticket'},{emoji:'🛫',kr:'출발',rom:'chul-bal',en:'departure'},{emoji:'🛬',kr:'도착',rom:'do-chak',en:'arrival'}],
+  '🏠 Home 집':[{emoji:'🛏️',kr:'방',rom:'bang',en:'room'},{emoji:'🍳',kr:'부엌',rom:'bu-eok',en:'kitchen'},{emoji:'🚿',kr:'화장실',rom:'hwa-jang-sil',en:'bathroom'},{emoji:'🚪',kr:'문',rom:'mun',en:'door'},{emoji:'🪟',kr:'창문',rom:'chang-mun',en:'window'},{emoji:'🛋️',kr:'소파',rom:'so-pa',en:'sofa'},{emoji:'🛏️',kr:'침대',rom:'chim-dae',en:'bed'},{emoji:'❄️',kr:'냉장고',rom:'naeng-jang-go',en:'refrigerator'},{emoji:'🪜',kr:'계단',rom:'gye-dan',en:'stairs'},{emoji:'🛋️',kr:'거실',rom:'geo-sil',en:'living room'}],
+  '👕 Clothes 옷':[{emoji:'👖',kr:'바지',rom:'ba-ji',en:'pants'},{emoji:'👗',kr:'치마',rom:'chi-ma',en:'skirt'},{emoji:'👔',kr:'셔츠',rom:'syeo-cheu',en:'shirt'},{emoji:'👗',kr:'원피스',rom:'won-pi-seu',en:'dress'},{emoji:'👟',kr:'신발',rom:'sin-bal',en:'shoes'},{emoji:'🧦',kr:'양말',rom:'yang-mal',en:'socks'},{emoji:'🧥',kr:'코트',rom:'ko-teu',en:'coat'},{emoji:'👜',kr:'가방',rom:'ga-bang',en:'bag'},{emoji:'👓',kr:'안경',rom:'an-gyeong',en:'glasses'},{emoji:'💍',kr:'반지',rom:'ban-ji',en:'ring'}],
+  '🌡️ Weather 날씨':[{emoji:'☀️',kr:'맑아요',rom:'mal-ga-yo',en:"It's sunny"},{emoji:'☁️',kr:'흐려요',rom:'heu-ryeo-yo',en:"It's cloudy"},{emoji:'🌧️',kr:'비',rom:'bi',en:'rain'},{emoji:'❄️',kr:'눈',rom:'nun',en:'snow'},{emoji:'💨',kr:'바람',rom:'ba-ram',en:'wind'},{emoji:'🥵',kr:'더워요',rom:'deo-wo-yo',en:"It's hot"},{emoji:'🥶',kr:'추워요',rom:'chu-wo-yo',en:"It's cold"},{emoji:'😎',kr:'시원해요',rom:'si-won-hae-yo',en:"It's cool"},{emoji:'🌤️',kr:'따뜻해요',rom:'tta-tteu-tae-yo',en:"It's warm"},{emoji:'🌫️',kr:'안개',rom:'an-gae',en:'fog'}],
+  '🐶 Animals 동물':[{emoji:'🐶',kr:'강아지',rom:'gang-a-ji',en:'dog / puppy'},{emoji:'🐱',kr:'고양이',rom:'go-yang-i',en:'cat'},{emoji:'🐰',kr:'토끼',rom:'to-kki',en:'rabbit'},{emoji:'🐦',kr:'새',rom:'sae',en:'bird'},{emoji:'🐟',kr:'물고기',rom:'mul-go-gi',en:'fish'},{emoji:'🐴',kr:'말',rom:'mal',en:'horse'},{emoji:'🐷',kr:'돼지',rom:'dwae-ji',en:'pig'},{emoji:'🐻',kr:'곰',rom:'gom',en:'bear'},{emoji:'🐘',kr:'코끼리',rom:'ko-kki-ri',en:'elephant'},{emoji:'🐒',kr:'원숭이',rom:'won-sung-i',en:'monkey'}],
+  '📱 Objects 물건':[{emoji:'📱',kr:'핸드폰',rom:'haen-deu-pon',en:'phone'},{emoji:'💻',kr:'컴퓨터',rom:'keom-pyu-teo',en:'computer'},{emoji:'📚',kr:'책',rom:'chaek',en:'book'},{emoji:'🔑',kr:'열쇠',rom:'yeol-soe',en:'key'},{emoji:'👛',kr:'지갑',rom:'ji-gap',en:'wallet'},{emoji:'✂️',kr:'가위',rom:'ga-wi',en:'scissors'},{emoji:'☂️',kr:'우산',rom:'u-san',en:'umbrella'},{emoji:'⌚',kr:'시계',rom:'si-gye',en:'clock / watch'},{emoji:'🪞',kr:'거울',rom:'geo-ul',en:'mirror'},{emoji:'🗑️',kr:'쓰레기통',rom:'sseu-re-gi-tong',en:'trash can'}],
+  '🏥 Body 신체':[{emoji:'👤',kr:'머리',rom:'meo-ri',en:'head'},{emoji:'👁️',kr:'눈',rom:'nun',en:'eyes'},{emoji:'👃',kr:'코',rom:'ko',en:'nose'},{emoji:'👄',kr:'입',rom:'ip',en:'mouth'},{emoji:'👂',kr:'귀',rom:'gwi',en:'ear'},{emoji:'🤲',kr:'손',rom:'son',en:'hand'},{emoji:'🦶',kr:'발',rom:'bal',en:'foot'},{emoji:'💪',kr:'팔',rom:'pal',en:'arm'},{emoji:'🦵',kr:'다리',rom:'da-ri',en:'leg'},{emoji:'🫁',kr:'배',rom:'bae',en:'stomach'},{emoji:'🫀',kr:'어깨',rom:'eo-kkae',en:'shoulder'},{emoji:'🧍',kr:'허리',rom:'heo-ri',en:'waist / lower back'},{emoji:'🍑',kr:'엉덩이',rom:'eong-deong-i',en:'hip / bottom'}],
+  // ── 숫자 ──
+  '🔢 Native Numbers 고유어':[{emoji:'1️⃣',kr:'하나',rom:'ha-na',en:'one'},{emoji:'2️⃣',kr:'둘',rom:'dul',en:'two'},{emoji:'3️⃣',kr:'셋',rom:'set',en:'three'},{emoji:'4️⃣',kr:'넷',rom:'net',en:'four'},{emoji:'5️⃣',kr:'다섯',rom:'da-seot',en:'five'},{emoji:'6️⃣',kr:'여섯',rom:'yeo-seot',en:'six'},{emoji:'7️⃣',kr:'일곱',rom:'il-gop',en:'seven'},{emoji:'8️⃣',kr:'여덟',rom:'yeo-deol',en:'eight'},{emoji:'9️⃣',kr:'아홉',rom:'a-hop',en:'nine'},{emoji:'🔟',kr:'열',rom:'yeol',en:'ten'},{emoji:'2️⃣0️⃣',kr:'스물',rom:'seu-mul',en:'twenty'},{emoji:'3️⃣0️⃣',kr:'서른',rom:'seo-reun',en:'thirty'}],
+  '🔢 Sino Numbers 한자어':[{emoji:'1️⃣',kr:'일',rom:'il',en:'one'},{emoji:'2️⃣',kr:'이',rom:'i',en:'two'},{emoji:'3️⃣',kr:'삼',rom:'sam',en:'three'},{emoji:'4️⃣',kr:'사',rom:'sa',en:'four'},{emoji:'5️⃣',kr:'오',rom:'o',en:'five'},{emoji:'6️⃣',kr:'육',rom:'yuk',en:'six'},{emoji:'7️⃣',kr:'칠',rom:'chil',en:'seven'},{emoji:'8️⃣',kr:'팔',rom:'pal',en:'eight'},{emoji:'9️⃣',kr:'구',rom:'gu',en:'nine'},{emoji:'🔟',kr:'십',rom:'sip',en:'ten'},{emoji:'💯',kr:'백',rom:'baek',en:'hundred'},{emoji:'🔢',kr:'천',rom:'cheon',en:'thousand'}],
+  '🏅 Ordinal Numbers 서수':[{emoji:'🥇',kr:'첫째',rom:'cheot-jjae',en:'first'},{emoji:'🥈',kr:'둘째',rom:'dul-jjae',en:'second'},{emoji:'🥉',kr:'셋째',rom:'set-jjae',en:'third'},{emoji:'4️⃣',kr:'넷째',rom:'net-jjae',en:'fourth'},{emoji:'5️⃣',kr:'다섯째',rom:'da-seot-jjae',en:'fifth'},{emoji:'6️⃣',kr:'여섯째',rom:'yeo-seot-jjae',en:'sixth'},{emoji:'7️⃣',kr:'일곱째',rom:'il-gop-jjae',en:'seventh'},{emoji:'8️⃣',kr:'여덟째',rom:'yeo-deol-jjae',en:'eighth'},{emoji:'9️⃣',kr:'아홉째',rom:'a-hop-jjae',en:'ninth'},{emoji:'🔟',kr:'열째',rom:'yeol-jjae',en:'tenth'},{emoji:'🏆',kr:'첫 번째',rom:'cheot beon-jjae',en:'the first (formal)'},{emoji:'📌',kr:'마지막',rom:'ma-ji-mak',en:'last / final'}],
+  // ── 시간 ──
+  '🌸 Seasons 계절':[{emoji:'🌸',kr:'봄',rom:'bom',en:'spring'},{emoji:'☀️',kr:'여름',rom:'yeo-reum',en:'summer'},{emoji:'🍂',kr:'가을',rom:'ga-eul',en:'autumn'},{emoji:'⛄',kr:'겨울',rom:'gyeo-ul',en:'winter'}],
+  '📅 Days of the Week 요일':[{emoji:'📅',kr:'월요일',rom:'wol-yo-il',en:'Monday'},{emoji:'📅',kr:'화요일',rom:'hwa-yo-il',en:'Tuesday'},{emoji:'📅',kr:'수요일',rom:'su-yo-il',en:'Wednesday'},{emoji:'📅',kr:'목요일',rom:'mok-yo-il',en:'Thursday'},{emoji:'📅',kr:'금요일',rom:'geum-yo-il',en:'Friday'},{emoji:'📅',kr:'토요일',rom:'to-yo-il',en:'Saturday'},{emoji:'📅',kr:'일요일',rom:'il-yo-il',en:'Sunday'}],
+  '☀️ Time of Day 하루':[{emoji:'🌙',kr:'새벽',rom:'sae-byeok',en:'dawn / early morning'},{emoji:'🌅',kr:'아침',rom:'a-chim',en:'morning'},{emoji:'☀️',kr:'점심',rom:'jeom-sim',en:'noon / lunch time'},{emoji:'🌤️',kr:'오후',rom:'o-hu',en:'afternoon'},{emoji:'🌆',kr:'저녁',rom:'jeo-nyeok',en:'evening'},{emoji:'🌙',kr:'밤',rom:'bam',en:'night'},{emoji:'🌑',kr:'자정',rom:'ja-jeong',en:'midnight'}],
+  '📆 Dates & Time 날짜·기간':[{emoji:'📆',kr:'그저께',rom:'geu-jeo-kke',en:'the day before yesterday'},{emoji:'⬅️',kr:'어제',rom:'eo-je',en:'yesterday'},{emoji:'📍',kr:'오늘',rom:'o-neul',en:'today'},{emoji:'➡️',kr:'내일',rom:'nae-il',en:'tomorrow'},{emoji:'⏱️',kr:'지금',rom:'ji-geum',en:'now'},{emoji:'🏖️',kr:'주말',rom:'ju-mal',en:'weekend'},{emoji:'🔁',kr:'매일',rom:'mae-il',en:'every day'},{emoji:'📅',kr:'이번 주',rom:'i-beon ju',en:'this week'},{emoji:'⏭️',kr:'다음 주',rom:'da-eum ju',en:'next week'}],
+};
+const vocabCategories={
+  vocab:['👨‍👩‍👧 Family 가족','💼 Jobs 직업','🏫 Places 장소','🍎 Food 음식','🎨 Colors 색깔','😊 Feelings 감정','🚂 Transport 교통','🏠 Home 집','👕 Clothes 옷','🌡️ Weather 날씨','🐶 Animals 동물','📱 Objects 물건','🏥 Body 신체'],
+  numbers:['🔢 Native Numbers 고유어','🔢 Sino Numbers 한자어','🏅 Ordinal Numbers 서수'],
+  time:['🌸 Seasons 계절','📅 Days of the Week 요일','☀️ Time of Day 하루','📆 Dates & Time 날짜·기간'],
+};
+let currentVocabMain='vocab';
+
+// Init — show first category on load
+document.addEventListener('DOMContentLoaded', () => {
+  showSentenceCat(0, document.getElementById('sentence-tabs'));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한글 입문 — Learn Hangul</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--bg:#F0F4F8;--surface:#FFFFFF;--surface2:#F0F4F8;--accent:#FF6B6B;--accent2:#FFD93D;--accent3:#4D96FF;--accent4:#4D96FF;--text:#0F172A;--text-muted:#475569;--border:#CBD5E1;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{font-size:17px;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans','Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;font-weight:450;-webkit-font-smoothing:antialiased;}
+  header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;border-bottom:1px solid var(--border);background:rgba(240,244,248,.95);position:sticky;top:0;z-index:10;}
+  .logo{display:flex;align-items:baseline;gap:.6rem;}
+  .logo-hangul{font-family:'Noto Sans KR',sans-serif;font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-1px;}
+  .logo-en{font-size:.85rem;color:var(--text-muted);font-weight:300;letter-spacing:2px;text-transform:uppercase;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.5rem;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;color:inherit;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,.06);align-self:stretch;}
+  .card:hover{transform:translateY(-3px);}
+  .card-vowels{grid-column:span 6;}.card-vowels:hover{box-shadow:0 12px 40px rgba(255,107,107,.2);border-color:rgba(255,107,107,.3);}
+  .card-consonants{grid-column:span 6;}.card-consonants:hover{box-shadow:0 12px 40px rgba(77,150,255,.2);border-color:rgba(77,150,255,.3);}
+  .card-combo{grid-column:span 6;}.card-combo:hover{box-shadow:0 12px 40px rgba(255,217,61,.25);border-color:rgba(255,217,61,.4);}
+  .card-quiz{grid-column:span 12;background:linear-gradient(135deg,#FFFFFF,#F0F4F8);}.card-quiz:hover{box-shadow:0 12px 40px rgba(255,217,61,.25);border-color:#FFD93D;}
+  .card-number{font-size:.72rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:.7rem;font-weight:600;}
+  .card-icon{font-size:2rem;margin-bottom:.7rem;display:block;line-height:1;}
+  .card-title-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.15rem;}
+  .card-title-en{font-size:.88rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;font-weight:600;}
+  .card-desc{font-size:.82rem;color:var(--text-muted);line-height:1.5;font-weight:450;}
+  .card-tag{display:inline-block;padding:.2rem .7rem;border-radius:99px;font-size:.7rem;font-weight:500;margin-top:.8rem;letter-spacing:.5px;}
+  .tag-red{background:rgba(255,107,107,.12);color:#E53E3E;}.tag-blue{background:rgba(77,150,255,.12);color:#2B6CB0;}.tag-green{background:rgba(77,150,255,.12);color:#2B6CB0;}
+  .vowel-preview{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.8rem;}
+  .vowel-chip{background:#FFF0EA;border:1px solid rgba(255,107,107,.25);border-radius:8px;padding:.4rem .7rem;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:#FF6B6B;transition:all .2s;cursor:pointer;}
+  .vowel-chip:hover{background:#FF6B6B;color:white;border-color:#FF6B6B;transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+  .con-chip{background:#EBF4FF;border:1px solid rgba(77,150,255,.25);border-radius:8px;padding:.4rem .7rem;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:#4D96FF;transition:all .2s;cursor:pointer;}
+  .con-chip:hover{background:#4D96FF;color:white;border-color:#4D96FF;transform:translateY(-2px);box-shadow:0 4px 12px rgba(77,150,255,.3);}
+  .combo-preview{display:flex;align-items:center;gap:.6rem;margin-top:1.2rem;font-family:'Noto Sans KR',sans-serif;font-size:1.4rem;font-weight:700;}
+  .combo-arrow{color:var(--text-muted);font-size:1rem;font-family:'DM Sans';}
+  .combo-result{color:var(--accent3);}
+  .quiz-inner{display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+  .quiz-left{flex:1;}
+  .quiz-sample{display:flex;gap:1rem;align-items:center;}
+  .quiz-sample-char{width:72px;height:72px;background:#FFD93D;border:none;border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans KR',sans-serif;font-size:2.2rem;font-weight:900;color:#7B5200;box-shadow:0 4px 16px rgba(255,217,61,.4);}
+  .quiz-sample-q{font-size:.85rem;color:var(--text-muted);}
+  .main-grid{max-width:1100px;margin:0 auto;padding:1.5rem 1.5rem 4rem;display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;align-items:stretch;}
+  @media(min-width:768px){.main-grid{padding:2rem 3rem 5rem;}}
+  /* MODALS */
+  .modal-overlay{position:fixed;inset:0;background:rgba(240,244,248,.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;pointer-events:none;}
+  .modal-overlay.open{display:flex;pointer-events:auto;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:820px;padding:2rem;margin:auto;position:relative;animation:modalIn .3s ease;box-shadow:0 20px 60px rgba(0,0,0,.12);}
+  @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .modal-close{position:absolute;top:1.2rem;right:1.2rem;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .modal-close:hover{color:var(--text);background:var(--border);}
+  .modal-title-kr{font-family:'Noto Sans KR',sans-serif;font-size:2rem;font-weight:900;margin-bottom:.3rem;}
+  .modal-title-en{font-size:.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;font-weight:600;}
+  .vowel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.8rem;}
+  .vowel-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1rem;text-align:center;cursor:pointer;transition:all .2s;}
+  .vowel-item:hover{border-color:var(--accent);background:rgba(232,93,74,.08);transform:translateY(-2px);}
+  .vowel-item.active{border-color:var(--accent);background:rgba(232,93,74,.12);}
+  .vi-char{font-family:'Noto Sans KR',sans-serif;font-size:2.8rem;font-weight:900;color:var(--accent);display:block;margin-bottom:.4rem;}
+  .vi-rom{font-size:.88rem;color:var(--text-muted);letter-spacing:1px;margin-bottom:.2rem;font-weight:600;}
+  .vi-sound{font-size:.82rem;color:var(--text-muted);font-style:italic;font-weight:500;}
+  .detail-panel{margin-top:1.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:none;}
+  .detail-panel.show{display:block;animation:fadeIn .2s ease;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .detail-top{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
+  .detail-char-big{font-family:'Noto Sans KR',sans-serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;min-width:80px;text-align:center;}
+  .detail-info h3{font-size:1.1rem;margin-bottom:.3rem;}
+  .detail-info p{font-size:.85rem;color:var(--text-muted);line-height:1.6;}
+  .syllable-row{display:flex;gap:.5rem;flex-wrap:wrap;}
+  .syllable-chip{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.5rem .9rem;text-align:center;min-width:72px;}
+  .sc-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent3);display:block;}
+  .sc-rom{font-size:.65rem;color:var(--text-muted);margin-top:2px;}
+  .combo-builder{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;background:var(--surface2);border-radius:12px;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .combo-box{text-align:center;}
+  .combo-box label{font-size:.7rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:.5rem;}
+  .combo-select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.7rem 1.2rem;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:700;cursor:pointer;outline:none;transition:border-color .2s;}
+  .combo-select:focus{border-color:var(--accent3);}
+  .combo-plus,.combo-equals{font-size:1.5rem;color:var(--text-muted);margin-top:1.5rem;}
+  .combo-result-big{font-family:'Noto Sans KR',sans-serif;font-size:4rem;font-weight:900;color:var(--accent3);min-width:80px;text-align:center;margin-top:1rem;}
+  .combo-result-rom{font-size:.85rem;color:var(--text-muted);text-align:center;margin-top:.3rem;}
+  .quiz-question{text-align:center;padding:2rem;background:var(--surface2);border-radius:12px;margin-bottom:1.5rem;}
+  .quiz-q-label{font-size:.75rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
+  .quiz-q-char{font-family:'Noto Sans KR',sans-serif;font-size:5rem;font-weight:900;color:var(--text);margin-bottom:.5rem;}
+  .quiz-q-hint{font-size:.8rem;color:var(--text-muted);}
+  .quiz-options{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1rem;}
+  .quiz-opt{background:var(--surface2);border:2px solid var(--border);color:var(--text);padding:1rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;}
+  .quiz-opt:hover{border-color:var(--accent4);background:rgba(76,201,240,.08);}
+  .quiz-opt.correct{border-color:var(--accent3);background:rgba(82,183,136,.15);color:var(--accent3);}
+  .quiz-opt.wrong{border-color:var(--accent);background:rgba(232,93,74,.1);color:var(--accent);}
+  .quiz-feedback{text-align:center;font-size:.9rem;padding:.7rem;border-radius:8px;display:none;}
+  .quiz-feedback.show{display:block;}.quiz-feedback.ok{color:var(--accent3);}.quiz-feedback.no{color:var(--accent);}
+  .quiz-next-btn{display:none;margin:1rem auto 0;background:var(--accent3);color:#0f0f13;border:none;padding:.7rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;}
+  .quiz-next-btn.show{display:block;}
+  .quiz-score{text-align:center;padding:2rem;display:none;}
+  .quiz-score.show{display:block;}
+  .score-num{font-size:4rem;font-weight:700;color:var(--accent3);margin-bottom:.5rem;}
+  .score-label{color:var(--text-muted);margin-bottom:1.5rem;}
+  .score-retry{background:var(--accent);color:white;border:none;padding:.8rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;}
+  @media(max-width:768px){
+    header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
+    .main-grid{padding:.8rem 1rem 2rem;gap:.7rem;}.card-vowels,.card-consonants,.card-combo,.card-quiz{grid-column:span 12;}.card{padding:1.2rem;}
+    .quiz-inner{flex-direction:column;align-items:flex-start;}.modal{padding:1.2rem;border-radius:14px;}.modal-overlay{padding:.8rem;}
+    .vowel-grid{grid-template-columns:repeat(3,1fr);}
+    .combo-builder{gap:.8rem;padding:1rem;}.combo-result-big{font-size:3rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <a href="hangul_learn_v2.html" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-decoration:none;">←</a>
+    <div class="logo"><span class="logo-hangul">한글</span><span class="logo-en">Learn Korean</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <button onclick="openModal('about')" style="background:#FF6B6B;border:none;color:#fff;padding:.5rem 1.2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;font-weight:600;box-shadow:0 4px 12px rgba(255,107,107,.35);">✦ About Hangul</button>
+    <button onclick="openModal('song')" style="background:#52b788;border:none;color:#fff;padding:.5rem 1.2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;font-weight:600;box-shadow:0 4px 12px rgba(82,183,136,.35);">🎵 Song</button>
+  </div>
+</header>
+
+<section style="max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 1.5rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:0;right:0;width:60%;height:100%;display:flex;flex-wrap:wrap;gap:1.2rem;padding:2rem;opacity:.06;font-family:'Noto Sans KR',sans-serif;font-size:2.8rem;font-weight:900;color:#1A202C;pointer-events:none;align-content:flex-start;overflow:hidden;">ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ 가 나 다 라 마 바 사 아 자 하 고 도 소 보</div>
+  <div style="display:inline-block;background:rgba(255,217,61,.2);color:#7B5200;border:1px solid rgba(255,217,61,.5);padding:.3rem .9rem;border-radius:99px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.2rem;font-weight:600;">LEVEL 0 · 한글 입문</div>
+  <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:.8rem;letter-spacing:-1px;">Read Korean.<br><span style="color:var(--accent);font-family:'Noto Sans KR',sans-serif;">Start here.</span></h1>
+  <p style="color:var(--text-muted);font-size:1rem;max-width:480px;line-height:1.7;">Learn to read Hangul step by step — from vowels and consonants to real words you see in Korea every day.</p>
+</section>
+
+<div class="main-grid">
+  <div class="card card-vowels" onclick="openModal('vowels')">
+    <div class="card-number">01</div>
+    <span class="card-icon">🔤</span>
+    <div class="card-title-kr">모음</div>
+    <div class="card-title-en">Vowels</div>
+    <div class="card-desc">10 basic vowels — the sound core of every Korean syllable.</div>
+    <div class="vowel-preview"><span class="vowel-chip">ㅏ</span><span class="vowel-chip">ㅓ</span><span class="vowel-chip">ㅗ</span><span class="vowel-chip">ㅜ</span><span class="vowel-chip">ㅡ</span><span class="vowel-chip">ㅣ</span></div>
+    <span class="card-tag tag-red">10 vowels</span>
+  </div>
+
+  <div class="card card-consonants" onclick="openModal('consonants')">
+    <div class="card-number">02</div>
+    <span class="card-icon">🔡</span>
+    <div class="card-title-kr">자음</div>
+    <div class="card-title-en">Consonants</div>
+    <div class="card-desc">14 consonants — ㄱ to ㅎ. Learn their names and sounds.</div>
+    <div class="vowel-preview"><span class="con-chip">ㄱ</span><span class="con-chip">ㄴ</span><span class="con-chip">ㄷ</span><span class="con-chip">ㄹ</span><span class="con-chip">ㅁ</span><span class="con-chip">ㅂ</span></div>
+    <span class="card-tag tag-blue">14 consonants</span>
+  </div>
+
+  <div class="card card-combo" onclick="openModal('combo')">
+    <div class="card-number">03</div>
+    <span class="card-icon">✨</span>
+    <div class="card-title-kr">조합</div>
+    <div class="card-title-en">Combine</div>
+    <div class="card-desc">Put consonants and vowels together to make syllables.</div>
+    <div class="combo-preview"><span style="color:var(--accent4)">ㄱ</span><span class="combo-arrow">+</span><span style="color:var(--accent)">ㅏ</span><span class="combo-arrow">→</span><span class="combo-result">가</span></div>
+    <span class="card-tag tag-green">Interactive</span>
+  </div>
+
+  <div class="card" style="grid-column:span 6;border-color:#52b788;" onclick="openModal('firstwords')" onmouseover="this.style.background='#F0FDF4';this.style.boxShadow='0 12px 40px rgba(82,183,136,.2)'" onmouseout="this.style.background='#FFFFFF';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+    <div class="card-number">04</div>
+    <span class="card-icon">✍️</span>
+    <div class="card-title-kr">첫 단어</div>
+    <div class="card-title-en">Your First Words</div>
+    <div class="card-desc">Real Korean words made from the letters you just learned.</div>
+    <div class="vowel-preview" style="margin-top:.8rem;">
+      <span style="background:#F0FDF4;border:1px solid rgba(82,183,136,.4);border-radius:8px;padding:.35rem .65rem;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;color:#276749;">🥛 우유</span>
+      <span style="background:#F0FDF4;border:1px solid rgba(82,183,136,.4);border-radius:8px;padding:.35rem .65rem;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;color:#276749;">🦋 나비</span>
+      <span style="background:#F0FDF4;border:1px solid rgba(82,183,136,.4);border-radius:8px;padding:.35rem .65rem;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;color:#276749;">🌊 바다</span>
+    </div>
+    <span class="card-tag" style="background:rgba(82,183,136,.12);color:#276749;">42 words · Tap to hear</span>
+  </div>
+
+  <div class="card card-quiz" onclick="openModal('quiz')" style="cursor:pointer;grid-column:span 12;background:linear-gradient(135deg,#FFFBEB,#FFF9E0);border-color:#FFD93D;">
+    <div class="quiz-inner">
+      <div class="quiz-left">
+        <div class="card-number">05</div>
+        <div class="card-title-kr">퀴즈 <span style="font-size:1rem;font-weight:400;color:var(--text-muted)">— 글자 읽기</span></div>
+        <div class="card-title-en">Characters Quiz</div>
+        <div class="card-desc">See a character — pick the correct sound. Test what you've learned!</div>
+      </div>
+      <div>
+        <div class="quiz-sample">
+          <div class="quiz-sample-char">가</div>
+          <div class="quiz-sample-q"><div style="font-size:.8rem;color:var(--text-muted);margin-bottom:.3rem">What sound?</div><div style="font-size:.85rem">ga · na · da · ba?</div></div>
+        </div>
+        <button style="margin-top:.8rem;background:#FFD93D;border:none;color:#7B5200;padding:.6rem 1.5rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">Start Quiz →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="modal-about">
+  <div class="modal" style="max-width:680px;">
+    <button class="modal-close" onclick="closeModal('about')">✕</button>
+    <div style="text-align:center;margin-bottom:2rem;"><div style="font-size:.75rem;color:#94A3B8;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">The Story of the Korean Alphabet</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:2.2rem;font-weight:900;color:#1E293B;margin-bottom:.3rem;">한글 Hangul</div><div style="font-size:.9rem;color:#64748B;">Created in 1443 · One of the world's most scientific writing systems</div></div>
+    <div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:16px;padding:1.5rem;margin-bottom:1.2rem;display:flex;gap:1.2rem;align-items:flex-start;"><div style="font-size:3rem;">👑</div><div><div style="font-weight:700;font-size:1rem;color:#1E293B;margin-bottom:.4rem;">King Sejong the Great (세종대왕)</div><div style="font-size:.85rem;color:#475569;line-height:1.7;">In 1443, King Sejong created Hangul so <strong>everyone could read and write</strong>. <em>"A wise man can acquaint himself with them before the morning is over."</em></div></div></div>
+    <div style="background:#F8FAFC;border-left:4px solid #F59E0B;border-radius:0 10px 10px 0;padding:1rem 1.2rem;font-size:.85rem;color:#475569;line-height:1.7;">💡 Hangul has only <strong>14 consonants</strong> and <strong>10 vowels</strong> — just 24 characters. Most people can learn to <em>read</em> Hangul in a single afternoon!</div>
+  </div>
+</div>
+
+<!-- SONG MODAL -->
+<div class="modal-overlay" id="modal-song">
+  <div class="modal" style="max-width:700px;">
+    <button class="modal-close" onclick="closeModal('song')">✕</button>
+    <div style="text-align:center;margin-bottom:1.5rem;"><div style="font-size:.75rem;color:#94A3B8;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">Korean Folk Song</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:2rem;font-weight:900;">🎵 아리랑</div><div style="font-size:.85rem;color:#64748B;margin-top:.3rem;">A-ri-rang — Korea's Most Beloved Folk Song</div></div>
+    <div style="text-align:center;margin-bottom:1.5rem;"><a href="https://www.youtube.com/watch?v=3Y1_UcxpSZA" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:#FF0000;color:white;text-decoration:none;padding:.6rem 1.4rem;border-radius:99px;font-size:.85rem;font-weight:600;">▶ Watch on YouTube</a></div>
+    <div style="display:flex;flex-direction:column;gap:.8rem;">
+      <div style="background:#FFF0EA;border:1.5px solid #FF6B6B;border-radius:14px;padding:1.2rem 1.5rem;"><div style="font-size:.7rem;color:#FF6B6B;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">♪ Chorus</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:.3rem;">아리랑 아리랑 아라리요</div><div style="font-size:.78rem;color:#4D96FF;margin-bottom:.2rem;">a-ri-rang a-ri-rang a-ra-ri-yo</div><div style="font-size:.82rem;color:#475569;">Arirang, Arirang, Arariyo</div></div>
+      <div style="background:#FFF0EA;border:1.5px solid #FF6B6B;border-radius:14px;padding:1.2rem 1.5rem;"><div style="font-size:.7rem;color:#FF6B6B;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">♪ Chorus</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:.3rem;">아리랑 고개로 넘어간다</div><div style="font-size:.78rem;color:#4D96FF;margin-bottom:.2rem;">a-ri-rang go-gae-ro neo-meo-gan-da</div><div style="font-size:.82rem;color:#475569;">Crossing over the Arirang hill</div></div>
+      <div style="background:#EFF6FF;border:1.5px solid #4D96FF;border-radius:14px;padding:1.2rem 1.5rem;"><div style="font-size:.7rem;color:#4D96FF;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">♪ Verse 1</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:.3rem;">나를 버리고 가시는 님은</div><div style="font-size:.78rem;color:#4D96FF;margin-bottom:.2rem;">na-reul beo-ri-go ga-si-neun ni-meun</div><div style="font-size:.82rem;color:#475569;">The one who abandons and leaves me</div></div>
+    </div>
+    <div style="margin-top:1.2rem;background:#F8FAFC;border-left:4px solid #F59E0B;border-radius:0 10px 10px 0;padding:.9rem 1.2rem;font-size:.82rem;color:#475569;line-height:1.7;">💡 <strong style="color:#1E293B;">Did you know?</strong> "아리랑" has no direct translation. Over 3,600 variations and UNESCO Intangible Cultural Heritage.</div>
+  </div>
+</div>
+
+<!-- VOWELS MODAL -->
+<div class="modal-overlay" id="modal-vowels">
+  <div class="modal"><button class="modal-close" onclick="closeModal('vowels')">✕</button><div class="modal-title-kr">모음 — Vowels</div><div class="modal-title-en">Click any vowel to see how it combines with consonants</div><div class="vowel-grid" id="vowel-grid"></div><div class="detail-panel" id="vowel-detail"><div class="detail-top"><div class="detail-char-big" id="vd-char">ㅏ</div><div class="detail-info"><h3 id="vd-name">ㅏ</h3><p id="vd-desc"></p></div></div><div style="font-size:.75rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem">Syllables with ㅇ (silent) +</div><div class="syllable-row" id="vd-syllables"></div></div></div>
+</div>
+
+<!-- CONSONANTS MODAL -->
+<div class="modal-overlay" id="modal-consonants">
+  <div class="modal"><button class="modal-close" onclick="closeModal('consonants')">✕</button><div class="modal-title-kr">자음 — Consonants</div><div class="modal-title-en">14 basic consonants — click to learn each one</div><div class="vowel-grid" id="consonant-grid"></div><div class="detail-panel" id="consonant-detail"><div class="detail-top"><div class="detail-char-big" id="cd-char" style="color:var(--accent4)">ㄱ</div><div class="detail-info"><h3 id="cd-name">기역</h3><p id="cd-desc"></p></div></div><div style="font-size:.75rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem">Example syllables</div><div class="syllable-row" id="cd-syllables"></div></div></div>
+</div>
+
+<!-- COMBO MODAL -->
+<div class="modal-overlay" id="modal-combo">
+  <div class="modal"><button class="modal-close" onclick="closeModal('combo')">✕</button><div class="modal-title-kr">조합 — Combine</div><div class="modal-title-en">Select a consonant + vowel to build a syllable</div>
+    <div class="combo-builder">
+      <div class="combo-box"><label>자음 Consonant</label><select class="combo-select" id="combo-con" onchange="updateCombo()"><option value="ㄱ|g">ㄱ</option><option value="ㄴ|n">ㄴ</option><option value="ㄷ|d">ㄷ</option><option value="ㄹ|r">ㄹ</option><option value="ㅁ|m">ㅁ</option><option value="ㅂ|b">ㅂ</option><option value="ㅅ|s">ㅅ</option><option value="ㅇ|">ㅇ</option><option value="ㅈ|j">ㅈ</option><option value="ㅊ|ch">ㅊ</option><option value="ㅋ|k">ㅋ</option><option value="ㅌ|t">ㅌ</option><option value="ㅍ|p">ㅍ</option><option value="ㅎ|h">ㅎ</option></select></div>
+      <div class="combo-plus">+</div>
+      <div class="combo-box"><label>모음 Vowel</label><select class="combo-select" id="combo-vow" onchange="updateCombo()" style="color:var(--accent)"><option value="ㅏ|a">ㅏ</option><option value="ㅑ|ya">ㅑ</option><option value="ㅓ|eo">ㅓ</option><option value="ㅕ|yeo">ㅕ</option><option value="ㅗ|o">ㅗ</option><option value="ㅛ|yo">ㅛ</option><option value="ㅜ|u">ㅜ</option><option value="ㅠ|yu">ㅠ</option><option value="ㅡ|eu">ㅡ</option><option value="ㅣ|i">ㅣ</option></select></div>
+      <div class="combo-equals">=</div>
+      <div><div class="combo-result-big" id="combo-result">가</div><div class="combo-result-rom" id="combo-rom">ga</div></div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:1.2rem;font-size:.85rem;color:var(--text-muted);line-height:1.7">💡 The consonant <strong style="color:var(--text)">ㅇ</strong> is silent at the start — so <strong style="color:var(--accent)">아</strong> = just "a".</div>
+    <div style="margin-top:1.5rem;text-align:center;"><div style="font-size:.75rem;color:#94A3B8;letter-spacing:2px;text-transform:uppercase;margin-bottom:.8rem;">✏️ Writing Practice</div><canvas id="write-canvas" width="320" height="320" style="width:180px;height:180px;background:white;border-radius:14px;border:2px dashed #CBD5E1;cursor:crosshair;display:block;margin:0 auto;touch-action:none;box-shadow:0 2px 8px rgba(0,0,0,.06);"></canvas><button onclick="clearWriteCanvas()" style="margin-top:.7rem;background:none;border:1px solid #E2E8F0;color:#64748B;padding:.35rem 1rem;border-radius:99px;font-size:.78rem;cursor:pointer;">↺ Clear</button></div>
+  </div>
+</div>
+
+<!-- FIRST WORDS MODAL -->
+<div class="modal-overlay" id="modal-firstwords">
+  <div class="modal" style="max-width:680px;">
+    <button class="modal-close" onclick="closeModal('firstwords')">✕</button>
+    <div class="modal-title-kr">첫 단어</div>
+    <div class="modal-title-en">Your First Words — click any word to hear it</div>
+    <div style="display:flex;gap:.5rem;margin-bottom:1.2rem;">
+      <button id="fw-tab-1" onclick="switchFWTab(1)" style="padding:.45rem 1.2rem;border-radius:99px;border:2px solid #52b788;background:#52b788;color:white;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;">받침 없는 단어</button>
+      <button id="fw-tab-2" onclick="switchFWTab(2)" style="padding:.45rem 1.2rem;border-radius:99px;border:2px solid #E2E8F0;background:#F8FAFC;color:#94A3B8;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;">받침 있는 단어</button>
+    </div>
+    <div id="firstwords-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.8rem;"></div>
+  </div>
+</div>
+
+<!-- QUIZ MODAL -->
+<div class="modal-overlay" id="modal-quiz">
+  <div class="modal" style="max-width:640px;"><button class="modal-close" onclick="closeModal('quiz')">✕</button><div class="modal-title-kr">퀴즈 — Quiz</div>
+    <div id="quiz-level-select">
+      <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.2rem;">Choose a level:</div>
+      <div style="display:flex;flex-direction:column;gap:.8rem;">
+        <div onclick="startQuiz()" style="cursor:pointer;background:var(--surface2);border:2px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:all .2s;" onmouseover="this.style.borderColor='#FF6B6B';this.style.background='#FFF0EA'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--surface2)'">
+          <div style="width:48px;height:48px;background:#FF6B6B;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🔤</div>
+          <div><div style="font-weight:700;font-size:1rem;">한글 읽기</div><div style="font-size:.82rem;color:var(--text-muted);">See a character, pick the correct sound</div></div>
+          <div style="margin-left:auto;color:#FF6B6B;">→</div>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-area" style="display:none;">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;"><button onclick="backToLevelSelect()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.3rem .8rem;font-size:.8rem;cursor:pointer;color:var(--text-muted);">← Back</button><div id="quiz-level-badge" style="font-size:.75rem;font-weight:600;padding:.2rem .8rem;border-radius:99px;background:#FFF0EA;color:#FF6B6B;">Level 0 — 한글 읽기</div></div>
+      <div class="quiz-question"><div class="quiz-q-label" id="q-counter">Question 1 / 6</div><div class="quiz-q-char" id="q-char" style="cursor:pointer;" onclick="speak(this.textContent)">가</div><div class="quiz-q-hint" id="q-hint">What sound does this make? 🔊 Click to hear</div></div>
+      <div class="quiz-options" id="q-options"></div>
+      <div class="quiz-feedback" id="q-feedback"></div>
+      <button class="quiz-next-btn" id="q-next" onclick="nextQuestion()">Next →</button>
+    </div>
+    <div class="quiz-score" id="quiz-score"><div class="score-num" id="score-num">6/6</div><div class="score-label" id="score-label">Great job!</div><div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;"><button class="score-retry" onclick="startQuiz()">Try again</button><button onclick="backToLevelSelect()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:.8rem 1.5rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">Choose level</button></div></div>
+  </div>
+</div>
+
+<script>
+// TTS
+function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.85;u.pitch=1;window.speechSynthesis.speak(u);}
+
+// DATA
+const firstWordsData2=[
+  {kr:'밥',rom:'bap',en:'rice / meal',emoji:'🍚',rule:'연음',hint:'밥이 → [바비]'},
+  {kr:'책',rom:'chaek',en:'book',emoji:'📚',rule:'연음',hint:'책이 → [채기]'},
+  {kr:'집',rom:'jip',en:'house',emoji:'🏠',rule:'연음',hint:'집에 → [지베]'},
+  {kr:'꽃',rom:'kkot',en:'flower',emoji:'🌸',rule:'연음',hint:'꽃이 → [꼬치]'},
+  {kr:'닭',rom:'dak',en:'chicken',emoji:'🐔',rule:'연음',hint:'닭이 → [달기]'},
+  {kr:'삶',rom:'salm',en:'life',emoji:'🌿',rule:'연음',hint:'삶이 → [살미]'},
+  {kr:'흙',rom:'heuk',en:'soil',emoji:'🌱',rule:'연음',hint:'흙이 → [흘기]'},
+  {kr:'몸',rom:'mom',en:'body',emoji:'💪',rule:'연음',hint:'몸이 → [모미]'},
+  {kr:'국',rom:'guk',en:'soup',emoji:'🍲',rule:'경음화',hint:'국밥 → [국빱]'},
+  {kr:'숲',rom:'sup',en:'forest',emoji:'🌲',rule:'경음화',hint:'숲속 → [숩쏙]'},
+  {kr:'학',rom:'hak',en:'crane',emoji:'🦢',rule:'경음화',hint:'학교 → [학꾜]'},
+  {kr:'식',rom:'sik',en:'meal (식사)',emoji:'🍽️',rule:'경음화',hint:'식당 → [식땅]'},
+  {kr:'입',rom:'ip',en:'mouth',emoji:'👄',rule:'경음화',hint:'입구 → [입꾸]'},
+  {kr:'좋아',rom:'jo-a',en:'like / good',emoji:'😊',rule:'ㅎ탈락',hint:'좋아 → [조아]'},
+  {kr:'많아',rom:'ma-na',en:'a lot',emoji:'😯',rule:'ㅎ탈락',hint:'많아 → [마나]'},
+  {kr:'싫어',rom:'si-reo',en:'dislike',emoji:'😤',rule:'ㅎ탈락',hint:'싫어 → [시러]'},
+  {kr:'괜찮아',rom:'gwaen-cha-na',en:"it's okay",emoji:'😌',rule:'ㅎ탈락',hint:'괜찮아 → [괜차나]'},
+  {kr:'놓아',rom:'no-a',en:'let go',emoji:'🕊️',rule:'ㅎ탈락',hint:'놓아 → [노아]'},
+  {kr:'산',rom:'san',en:'mountain',emoji:'⛰️',rule:'',hint:''},
+  {kr:'달',rom:'dal',en:'moon',emoji:'🌙',rule:'',hint:''},
+  {kr:'별',rom:'byeol',en:'star',emoji:'⭐',rule:'',hint:''},
+];
+
+const firstWordsData=[
+  {kr:'우유',rom:'u-yu',en:'milk',emoji:'🥛'},{kr:'소',rom:'so',en:'cow',emoji:'🐄'},{kr:'해',rom:'hae',en:'sun',emoji:'☀️'},
+  {kr:'가수',rom:'ga-su',en:'singer',emoji:'🎤'},{kr:'나비',rom:'na-bi',en:'butterfly',emoji:'🦋'},{kr:'모자',rom:'mo-ja',en:'hat',emoji:'🎩'},
+  {kr:'바나나',rom:'ba-na-na',en:'banana',emoji:'🍌'},{kr:'고구마',rom:'go-gu-ma',en:'sweet potato',emoji:'🍠'},{kr:'오이',rom:'o-i',en:'cucumber',emoji:'🥒'},
+  {kr:'기차',rom:'gi-cha',en:'train',emoji:'🚂'},{kr:'바다',rom:'ba-da',en:'sea',emoji:'🌊'},{kr:'여우',rom:'yeo-u',en:'fox',emoji:'🦊'},
+  {kr:'아기',rom:'a-gi',en:'baby',emoji:'👶'},{kr:'포도',rom:'po-do',en:'grapes',emoji:'🍇'},{kr:'피자',rom:'pi-ja',en:'pizza',emoji:'🍕'},
+  {kr:'다리',rom:'da-ri',en:'bridge',emoji:'🌉'},{kr:'지구',rom:'ji-gu',en:'earth',emoji:'🌍'},{kr:'카메라',rom:'ka-me-ra',en:'camera',emoji:'📷'},
+  {kr:'나라',rom:'na-ra',en:'country',emoji:'🌏'},{kr:'버스',rom:'beo-su',en:'bus',emoji:'🚌'},{kr:'야구',rom:'ya-gu',en:'baseball',emoji:'⚾'},
+];
+
+function buildFirstWords(){ switchFWTab(1); }
+function switchFWTab(n){
+  const g=document.getElementById('firstwords-grid');if(!g)return;
+  const t1=document.getElementById('fw-tab-1');
+  const t2=document.getElementById('fw-tab-2');
+  if(n===1){
+    t1.style.cssText='padding:.45rem 1.2rem;border-radius:99px;border:2px solid #52b788;background:#52b788;color:white;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';
+    t2.style.cssText='padding:.45rem 1.2rem;border-radius:99px;border:2px solid #E2E8F0;background:#F8FAFC;color:#94A3B8;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';
+    g.style.gridTemplateColumns='repeat(3,1fr)';g.style.gap='.6rem';
+    g.innerHTML=firstWordsData.map(w=>`<div onclick="speak('${w.kr}')" style="background:#FAFFFE;border:1.5px solid rgba(82,183,136,.25);border-radius:12px;padding:.8rem .6rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.7rem;" onmouseover="this.style.borderColor='#52b788';this.style.background='#F0FDF4'" onmouseout="this.style.borderColor='rgba(82,183,136,.25)';this.style.background='#FAFFFE'"><div style="font-size:1.6rem;flex-shrink:0;">${w.emoji}</div><div style="text-align:left;min-width:0;"><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.15rem;font-weight:900;color:#0F172A;">${w.kr}</div><div style="font-size:.68rem;color:#4D96FF;">${w.rom}</div><div style="font-size:.72rem;color:#475569;font-weight:500;">${w.en}</div></div></div>`).join('');
+  } else {
+    t2.style.cssText='padding:.45rem 1.2rem;border-radius:99px;border:2px solid #52b788;background:#52b788;color:white;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';
+    t1.style.cssText='padding:.45rem 1.2rem;border-radius:99px;border:2px solid #E2E8F0;background:#F8FAFC;color:#94A3B8;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';
+    const ruleColors={'연음':'#4D96FF','경음화':'#FF6B6B','ㅎ탈락':'#F59E0B','':'#94A3B8'};
+    const ruleBg={'연음':'#EFF6FF','경음화':'#FFF1F1','ㅎ탈락':'#FFFBEB','':'#F8FAFC'};
+    g.style.gridTemplateColumns='repeat(auto-fill,minmax(150px,1fr))';g.style.gap='.7rem';
+    g.innerHTML=firstWordsData2.map(w=>`<div onclick="speak('${w.kr}')" style="background:#FAFFFE;border:1.5px solid rgba(82,183,136,.25);border-radius:12px;padding:.8rem .7rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#52b788';this.style.background='#F0FDF4'" onmouseout="this.style.borderColor='rgba(82,183,136,.25)';this.style.background='#FAFFFE'"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;"><span style="font-size:1.5rem;">${w.emoji}</span><div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1.2rem;font-weight:900;color:#0F172A;">${w.kr}</div><div style="font-size:.68rem;color:#4D96FF;">${w.rom}</div></div></div><div style="font-size:.72rem;color:#475569;font-weight:500;margin-bottom:.3rem;">${w.en}</div>${w.hint?`<div style="font-size:.65rem;color:${ruleColors[w.rule]};font-weight:700;background:${ruleBg[w.rule]};border-radius:6px;padding:.2rem .45rem;display:inline-block;">${w.hint}</div>`:''}</div>`).join('');
+  }
+}
+
+const vowels=[
+  {char:'ㅏ',rom:'a',sound:'like "a" in f-a-ther',desc:'The most common vowel. Open mouth wide.'},
+  {char:'ㅑ',rom:'ya',sound:'like "ya" in y-ard',desc:'ㅏ with a "y" before it.'},
+  {char:'ㅓ',rom:'eo',sound:'like "u" in u-p',desc:'Relaxed, open sound.'},
+  {char:'ㅕ',rom:'yeo',sound:'like "yo" in y-our',desc:'ㅓ with a "y" before it.'},
+  {char:'ㅗ',rom:'o',sound:'like "o" in g-o',desc:'Round lips, pure "o" sound.'},
+  {char:'ㅛ',rom:'yo',sound:'like "yo" in y-oga',desc:'ㅗ with a "y" before it.'},
+  {char:'ㅜ',rom:'u',sound:'like "oo" in m-oo-n',desc:'Lips pushed forward.'},
+  {char:'ㅠ',rom:'yu',sound:'like "you"',desc:'ㅜ with a "y" before it.'},
+  {char:'ㅡ',rom:'eu',sound:'like "oo" but flat lips',desc:'No English equivalent.'},
+  {char:'ㅣ',rom:'i',sound:'like "ee" in s-ee',desc:'Bright, high "ee" sound.'},
+];
+const consonants=[
+  {char:'ㄱ',rom:'g/k',sound:'"g" as in go',desc:'Like "g" in go or "k" in sock.',ex:['가','기','구']},
+  {char:'ㄴ',rom:'n',sound:'"n" as in no',desc:'Like "n" in no.',ex:['나','니','누']},
+  {char:'ㄷ',rom:'d/t',sound:'"d" as in do',desc:'Like "d" in do or "t" in hat.',ex:['다','디','두']},
+  {char:'ㄹ',rom:'r/l',sound:'between "r" and "l"',desc:'Tongue flaps lightly.',ex:['라','리','루']},
+  {char:'ㅁ',rom:'m',sound:'"m" as in me',desc:'Like "m" in me.',ex:['마','미','무']},
+  {char:'ㅂ',rom:'b/p',sound:'"b" as in boy',desc:'Like "b" in boy.',ex:['바','비','부']},
+  {char:'ㅅ',rom:'s',sound:'"s" as in sun',desc:'Like "s" in sun.',ex:['사','시','수']},
+  {char:'ㅇ',rom:'(silent)',sound:'silent at start',desc:'Silent at start. "ng" at end.',ex:['아','이','우']},
+  {char:'ㅈ',rom:'j',sound:'"j" as in jump',desc:'Like "j" in jump.',ex:['자','지','주']},
+  {char:'ㅊ',rom:'ch',sound:'"ch" as in cheese',desc:'Like "ch" in cheese.',ex:['차','치','추']},
+  {char:'ㅋ',rom:'k',sound:'"k" with strong air',desc:'Aspirated "k".',ex:['카','키','쿠']},
+  {char:'ㅌ',rom:'t',sound:'"t" with strong air',desc:'Aspirated "t".',ex:['타','티','투']},
+  {char:'ㅍ',rom:'p',sound:'"p" with strong air',desc:'Aspirated "p".',ex:['파','피','푸']},
+  {char:'ㅎ',rom:'h',sound:'"h" as in hello',desc:'Like "h" in hello.',ex:['하','히','후']},
+];
+const comboMap={
+  'ㄱ':{'ㅏ':'가','ㅑ':'갸','ㅓ':'거','ㅕ':'겨','ㅗ':'고','ㅛ':'교','ㅜ':'구','ㅠ':'규','ㅡ':'그','ㅣ':'기'},
+  'ㄴ':{'ㅏ':'나','ㅑ':'냐','ㅓ':'너','ㅕ':'녀','ㅗ':'노','ㅛ':'뇨','ㅜ':'누','ㅠ':'뉴','ㅡ':'느','ㅣ':'니'},
+  'ㄷ':{'ㅏ':'다','ㅑ':'댜','ㅓ':'더','ㅕ':'뎌','ㅗ':'도','ㅛ':'됴','ㅜ':'두','ㅠ':'듀','ㅡ':'드','ㅣ':'디'},
+  'ㄹ':{'ㅏ':'라','ㅑ':'랴','ㅓ':'러','ㅕ':'려','ㅗ':'로','ㅛ':'료','ㅜ':'루','ㅠ':'류','ㅡ':'르','ㅣ':'리'},
+  'ㅁ':{'ㅏ':'마','ㅑ':'먀','ㅓ':'머','ㅕ':'며','ㅗ':'모','ㅛ':'묘','ㅜ':'무','ㅠ':'뮤','ㅡ':'므','ㅣ':'미'},
+  'ㅂ':{'ㅏ':'바','ㅑ':'뱌','ㅓ':'버','ㅕ':'벼','ㅗ':'보','ㅛ':'뵤','ㅜ':'부','ㅠ':'뷰','ㅡ':'브','ㅣ':'비'},
+  'ㅅ':{'ㅏ':'사','ㅑ':'샤','ㅓ':'서','ㅕ':'셔','ㅗ':'소','ㅛ':'쇼','ㅜ':'수','ㅠ':'슈','ㅡ':'스','ㅣ':'시'},
+  'ㅇ':{'ㅏ':'아','ㅑ':'야','ㅓ':'어','ㅕ':'여','ㅗ':'오','ㅛ':'요','ㅜ':'우','ㅠ':'유','ㅡ':'으','ㅣ':'이'},
+  'ㅈ':{'ㅏ':'자','ㅑ':'쟈','ㅓ':'저','ㅕ':'져','ㅗ':'조','ㅛ':'죠','ㅜ':'주','ㅠ':'쥬','ㅡ':'즈','ㅣ':'지'},
+  'ㅊ':{'ㅏ':'차','ㅑ':'챠','ㅓ':'처','ㅕ':'쳐','ㅗ':'초','ㅛ':'쵸','ㅜ':'추','ㅠ':'츄','ㅡ':'츠','ㅣ':'치'},
+  'ㅋ':{'ㅏ':'카','ㅑ':'캬','ㅓ':'커','ㅕ':'켜','ㅗ':'코','ㅛ':'쿄','ㅜ':'쿠','ㅠ':'큐','ㅡ':'크','ㅣ':'키'},
+  'ㅌ':{'ㅏ':'타','ㅑ':'탸','ㅓ':'터','ㅕ':'텨','ㅗ':'토','ㅛ':'툐','ㅜ':'투','ㅠ':'튜','ㅡ':'트','ㅣ':'티'},
+  'ㅍ':{'ㅏ':'파','ㅑ':'퍄','ㅓ':'퍼','ㅕ':'펴','ㅗ':'포','ㅛ':'표','ㅜ':'푸','ㅠ':'퓨','ㅡ':'프','ㅣ':'피'},
+  'ㅎ':{'ㅏ':'하','ㅑ':'햐','ㅓ':'허','ㅕ':'혀','ㅗ':'호','ㅛ':'효','ㅜ':'후','ㅠ':'휴','ㅡ':'흐','ㅣ':'히'},
+};
+
+// VOWEL / CONSONANT GRIDS
+function buildVowelGrid(){document.getElementById('vowel-grid').innerHTML=vowels.map((v,i)=>`<div class="vowel-item" onclick="showVowelDetail(${i});speak('${v.char}')"><span class="vi-char">${v.char}</span><div class="vi-rom">${v.rom}</div><div class="vi-sound">${v.sound}</div></div>`).join('');}
+function showVowelDetail(i){const v=vowels[i];document.querySelectorAll('.vowel-item').forEach((el,j)=>el.classList.toggle('active',j===i));document.getElementById('vd-char').textContent=v.char;document.getElementById('vd-name').textContent=v.char+' ('+v.rom+')';document.getElementById('vd-desc').textContent=v.desc;const syl=consonants.slice(0,8).map(c=>{const r=comboMap[c.char];return r?r[v.char]:'—';});document.getElementById('vd-syllables').innerHTML=syl.map((s,j)=>`<div class="syllable-chip" onclick="speak('${s||''}')" style="cursor:pointer;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background=''"><span class="sc-kr">${s||'—'}</span><div class="sc-rom">${consonants[j].char==='ㅇ'?'':consonants[j].rom.split('/')[0]}${v.rom}</div></div>`).join('');document.getElementById('vowel-detail').classList.add('show');}
+function buildConsonantGrid(){document.getElementById('consonant-grid').innerHTML=consonants.map((c,i)=>`<div class="vowel-item" onclick="showConsonantDetail(${i});speak('${c.char}')"><span class="vi-char" style="color:var(--accent4)">${c.char}</span><div class="vi-rom">${c.rom}</div><div class="vi-sound">${c.sound}</div></div>`).join('');}
+function showConsonantDetail(i){const c=consonants[i];document.querySelectorAll('#consonant-grid .vowel-item').forEach((el,j)=>el.classList.toggle('active',j===i));document.getElementById('cd-char').textContent=c.char;document.getElementById('cd-name').textContent=c.char+' — '+c.sound;document.getElementById('cd-desc').textContent=c.desc;const row=comboMap[c.char]||{};document.getElementById('cd-syllables').innerHTML=Object.entries(row).slice(0,8).map(([vow,s])=>{const vo=vowels.find(x=>x.char===vow);return`<div class="syllable-chip" onclick="speak('${s}')" style="cursor:pointer;" onmouseover="this.style.background='#FFF0EA'" onmouseout="this.style.background=''"><span class="sc-kr" style="color:var(--accent4)">${s}</span><div class="sc-rom">${c.rom.split('/')[0]}${vo?vo.rom:''}</div></div>`;}).join('');document.getElementById('consonant-detail').classList.add('show');}
+
+// COMBO
+function updateCombo(){const con=document.getElementById('combo-con').value.split('|'),vow=document.getElementById('combo-vow').value.split('|');const result=(comboMap[con[0]]&&comboMap[con[0]][vow[0]])?comboMap[con[0]][vow[0]]:'?';const rom=con[0]==='ㅇ'?vow[1]:con[1]+vow[1];document.getElementById('combo-result').textContent=result;document.getElementById('combo-rom').textContent=rom;if(result!=='?')speak(result);}
+function clearWriteCanvas(){const c=document.getElementById('write-canvas');if(c)c.getContext('2d').clearRect(0,0,c.width,c.height);}
+function initWriteCanvas(){const canvas=document.getElementById('write-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');ctx.strokeStyle='#1E293B';ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';let drawing=false,lx=0,ly=0;function pos(e){const r=canvas.getBoundingClientRect(),sx=canvas.width/r.width,sy=canvas.height/r.height,cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;return{x:(cx-r.left)*sx,y:(cy-r.top)*sy};}canvas.addEventListener('mousedown',e=>{drawing=true;const p=pos(e);lx=p.x;ly=p.y;});canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.stroke();lx=p.x;ly=p.y;});canvas.addEventListener('mouseup',()=>drawing=false);canvas.addEventListener('mouseleave',()=>drawing=false);canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=pos(e);lx=p.x;ly=p.y;},{passive:false});canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});canvas.addEventListener('touchend',()=>drawing=false);}
+
+// QUIZ
+const conRomMap={'ㄱ':'g','ㄴ':'n','ㄷ':'d','ㄹ':'r','ㅁ':'m','ㅂ':'b','ㅅ':'s','ㅇ':'','ㅈ':'j','ㅊ':'ch','ㅋ':'k','ㅌ':'t','ㅍ':'p','ㅎ':'h'};
+const vowRomMap={'ㅏ':'a','ㅑ':'ya','ㅓ':'eo','ㅕ':'yeo','ㅗ':'o','ㅛ':'yo','ㅜ':'u','ㅠ':'yu','ㅡ':'eu','ㅣ':'i'};
+function generateQuizData(){const allRoms=[];Object.keys(conRomMap).forEach(c=>Object.keys(vowRomMap).forEach(v=>allRoms.push(conRomMap[c]+vowRomMap[v])));const data=[];Object.keys(conRomMap).forEach(con=>{Object.keys(vowRomMap).forEach(vow=>{const syl=comboMap[con]&&comboMap[con][vow]?comboMap[con][vow]:null;if(!syl)return;const answer=conRomMap[con]+vowRomMap[vow];const wrongs=shuffleArr(allRoms.filter(r=>r!==answer)).slice(0,3);const options=shuffleArr([answer,...wrongs]);data.push({char:syl,options,answer});});});return data;}
+function shuffleArr(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const quizData=generateQuizData();
+let quizIndex=0,quizScore=0,answered=false,shuffledQuiz=[];
+
+function startQuiz(){
+  shuffledQuiz=shuffleArr(quizData).slice(0,6);
+  quizIndex=0;quizScore=0;answered=false;
+  document.getElementById('quiz-level-select').style.display='none';
+  document.getElementById('quiz-score').classList.remove('show');
+  document.getElementById('quiz-area').style.display='block';
+  showQuestion();
+}
+function backToLevelSelect(){document.getElementById('quiz-area').style.display='none';document.getElementById('quiz-score').classList.remove('show');document.getElementById('quiz-level-select').style.display='block';}
+function showQuestion(){
+  const q=shuffledQuiz[quizIndex];answered=false;
+  document.getElementById('q-counter').textContent=`Question ${quizIndex+1} / ${shuffledQuiz.length}`;
+  document.getElementById('q-feedback').classList.remove('show','ok','no');
+  document.getElementById('q-next').classList.remove('show');
+  document.getElementById('q-char').textContent=q.char;
+  document.getElementById('q-options').innerHTML=q.options.map(opt=>`<button class="quiz-opt" onclick="answerQuiz('${opt}','${q.answer}',this)">${opt}</button>`).join('');
+}
+function answerQuiz(chosen,correct,btn){if(answered)return;answered=true;document.querySelectorAll('.quiz-opt').forEach(b=>{if(b.textContent.trim()===correct.trim())b.classList.add('correct');});if(chosen===correct){quizScore++;btn.classList.add('correct');document.getElementById('q-feedback').textContent='✓ Correct!';document.getElementById('q-feedback').className='quiz-feedback show ok';}else{btn.classList.add('wrong');document.getElementById('q-feedback').textContent='✗ "'+correct+'"';document.getElementById('q-feedback').className='quiz-feedback show no';}document.getElementById('q-next').classList.add('show');}
+function nextQuestion(){quizIndex++;if(quizIndex>=shuffledQuiz.length){document.getElementById('quiz-area').style.display='none';document.getElementById('score-num').textContent=`${quizScore}/${shuffledQuiz.length}`;const pct=quizScore/shuffledQuiz.length;document.getElementById('score-label').textContent=pct<.5?'화이팅! 💪':pct<.8?'잘했어요! 😊':pct<1?'훌륭해요! 🎉':'완벽해요! 🌟';document.getElementById('quiz-score').classList.add('show');}else showQuestion();}
+
+// MODAL
+function openModal(type){const overlay=document.getElementById('modal-'+type);if(!overlay)return;overlay.classList.add('open');document.body.style.overflow='hidden';if(type==='vowels')buildVowelGrid();if(type==='consonants')buildConsonantGrid();if(type==='combo'){updateCombo();setTimeout(()=>initWriteCanvas(),100);}if(type==='firstwords')buildFirstWords();if(type==='quiz'){document.getElementById('quiz-level-select').style.display='block';document.getElementById('quiz-area').style.display='none';document.getElementById('quiz-score').classList.remove('show');}}
+function closeModal(type){const el=document.getElementById('modal-'+type);if(el)el.classList.remove('open');document.body.style.overflow='';document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('show'));}
+document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id.replace('modal-',''));});});
+</script>
+</body>
+</html>

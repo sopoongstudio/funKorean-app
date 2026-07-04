@@ -28,6 +28,7 @@ body{
   color:var(--text);
   overflow:hidden;height:100vh;
   display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;
 }
 body::before{
   content:'';position:fixed;inset:0;
@@ -35,7 +36,7 @@ body::before{
              radial-gradient(circle at 80% 20%,rgba(206,147,216,.06),transparent 50%);
   pointer-events:none;z-index:0;
 }
-.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(233,30,140,.08),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
+.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;min-height:min(54vw,720px);overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(233,30,140,.08),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
 .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(28px,4.5vw,56px);
   background:linear-gradient(160deg,rgba(255,240,246,.4),rgba(255,255,255,.9) 40%,rgba(253,246,255,.4) 100%);
   opacity:0;transition:opacity .35s;visibility:hidden}
@@ -49,7 +50,7 @@ h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-
 
 /* Nav - TWS style */
 .nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px clamp(18px,3vw,36px);background:linear-gradient(transparent,rgba(255,255,255,.95) 40%);z-index:10}
-.nav-btn{padding:8px 24px;border-radius:30px;border:2px solid #e2e8f0;background:white;color:var(--text);cursor:pointer;font-size:13px;transition:all .25s;font-family:'Outfit';font-weight:600;letter-spacing:.3px}
+.nav-btn{padding:8px 24px;border-radius:30px;border:2px solid #e2e8f0;background:white;color:var(--text);cursor:pointer;font-size:13px;transition:all .25s;font-family:'Outfit';font-weight:600;letter-spacing:.3px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .nav-btn:hover{border-color:var(--accent);background:rgba(233,30,140,.04)}
 .nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(233,30,140,.2)}
 .nav-btn.primary:hover{transform:scale(1.03)}
@@ -146,6 +147,7 @@ h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-
 .complete-emoji{font-size:clamp(48px,7vw,80px);margin-bottom:16px}
 .complete-title{font-size:clamp(24px,3.5vw,48px);font-weight:800;color:var(--accent2);margin-bottom:8px}
 .complete-sub{font-size:clamp(14px,1.5vw,20px);color:var(--dim)}
+
 </style>
 </head>
 <body>
@@ -356,7 +358,7 @@ h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-
   <div class="slide" id="s6">
     <div class="slide-num">6 / 6</div>
     <h2 style="margin-bottom:8px">🎯 퀴즈 Quiz!</h2>
-    <div id="quizArea" style="flex:1;position:relative;width:100%;display:flex;flex-direction:column;overflow:hidden;min-height:0;"></div>
+    <div id="quizArea" style="flex:1;position:relative;width:100%;display:flex;flex-direction:column;min-height:0;"></div>
     <div style="text-align:center;padding:4px 0;position:relative;z-index:20">
       <button onclick="skipQuiz()" id="skipBtn" style="background:none;border:none;font-size:clamp(11px,1vw,13px);color:#94a3b8;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif">퀴즈 건너뛰기 Skip quiz →</button>
     </div>
@@ -370,6 +372,13 @@ h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-
 </div>
 
 <script>
+// ── Landscape lock ──
+(function(){
+  if(screen.orientation && screen.orientation.lock){
+    screen.orientation.lock('landscape').catch(()=>{});
+  }
+})();
+
 // ── Slide nav ──
 let cur=1;const total=6;
 
@@ -530,42 +539,24 @@ function renderQuiz(){
   const shuffled=[...allWords].sort(()=>Math.random()-.5);
   area.innerHTML=`
     <div class="quiz-progress">${qIdx+1} / ${quizQs.length}</div>
-    <div style="position:relative;flex:1;width:100%;min-height:280px;" id="quizInner">
-      <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);text-align:center;z-index:2;">
-        <div style="font-size:clamp(24px,3.5vw,44px)">${q.emoji}</div>
-        <div style="font-size:clamp(15px,2vw,26px);font-weight:700;white-space:nowrap"><span id="blankSlot" style="color:var(--accent)">_____</span>${ig} 왔어요</div>
-      </div>
-      <div id="wordScatter" style="position:absolute;inset:0;"></div>
-      <div id="quizMsg" style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:clamp(14px,1.6vw,20px);font-weight:700;white-space:nowrap;"></div>
+    <div style="text-align:center;margin:8px 0 12px;">
+      <div style="font-size:clamp(24px,3.5vw,44px)">${q.emoji}</div>
+      <div style="font-size:clamp(15px,2vw,26px);font-weight:700;white-space:nowrap"><span id="blankSlot" style="color:var(--accent)">_____</span>${ig} 왔어요</div>
     </div>
+    <div id="wordScatter" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-content:flex-start;flex:1;padding:4px 8px;"></div>
+    <div id="quizMsg" style="text-align:center;font-size:clamp(14px,1.6vw,20px);font-weight:700;min-height:28px;padding:4px 0;"></div>
   `;
-  setTimeout(()=>{
-    const inner=document.getElementById('quizInner');
-    const scatter=document.getElementById('wordScatter');
-    const W=inner.offsetWidth||700;
-    const H=inner.offsetHeight||280;
-    shuffled.forEach((w)=>{
-      const d=document.createElement('div');
-      d.className='scatter-word';
-      d.textContent=w;
-      d.style.cssText='position:absolute;padding:7px 18px;border-radius:99px;border:1.5px solid #e2e8f0;background:white;font-size:clamp(15px,1.8vw,22px);font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);color:#1e293b;white-space:nowrap;';
-      // random position across full area, avoid centre-top question area
-      let x,y,tries=0;
-      do {
-        x=10+Math.random()*(W-100);
-        y=10+Math.random()*(H-40);
-        tries++;
-      } while(tries<30 && x>W/2-140 && x<W/2+80 && y<90);
-      const rot=(Math.random()-0.5)*20;
-      d.style.left=x+'px';
-      d.style.top=y+'px';
-      d.style.transform='rotate('+rot+'deg)';
-      d.onmouseenter=()=>{d.style.borderColor='#e91e8c';d.style.background='rgba(233,30,140,.06)'};
-      d.onmouseleave=()=>{if(!d.classList.contains('used')){d.style.borderColor='#e2e8f0';d.style.background='white'}};
-      d.onclick=()=>checkAnswer(w,d,q);
-      scatter.appendChild(d);
-    });
-  }, 200);
+  const scatter=document.getElementById('wordScatter');
+  shuffled.forEach((w)=>{
+    const d=document.createElement('div');
+    d.textContent=w;
+    const rot=(Math.random()-0.5)*12;
+    d.style.cssText=`padding:8px 18px;border-radius:99px;border:1.5px solid #e2e8f0;background:white;font-size:clamp(14px,1.6vw,20px);font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);color:#1e293b;white-space:nowrap;transform:rotate(${rot}deg);transition:border-color .2s,background .2s;`;
+    d.onmouseenter=()=>{d.style.borderColor='#e91e8c';d.style.background='rgba(233,30,140,.06)'};
+    d.onmouseleave=()=>{if(!d.classList.contains('used')){d.style.borderColor='#e2e8f0';d.style.background='white'}};
+    d.onclick=()=>checkAnswer(w,d,q);
+    scatter.appendChild(d);
+  });
 }
 
 function checkAnswer(word,el,q){

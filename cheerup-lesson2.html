@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TWICE Cheer Up 수업</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e6fbfa;
+  --card:#ffffff;
+  --accent:#14b8a6;
+  --accent2:#0d9488;
+  --teal-light:#5eead4;
+  --coral:#fb7185;
+  --coral2:#e11d48;
+  --peach:#fbbf24;
+  --lavender:#a78bfa;
+  --text:#134e4a;
+  --dim:#5f7c7a;
+  --light:#94b8b5;
+  --shadow:0 4px 20px rgba(20,184,166,.08);
+}
+body{
+  background:linear-gradient(160deg,#ccfbf1 0%,#e0f7fa 35%,#fff1f2 100%);
+  font-family:'Noto Sans KR','Outfit',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+.progress-bar{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--teal-light),var(--coral));transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
+
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(20,184,166,.12);max-width:720px;margin:0 auto}
+.lesson-tag{display:inline-block;font-family:'Outfit';font-size:11px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:20px;margin-bottom:10px}
+.lt1{background:rgba(20,184,166,.1);color:var(--accent2)}
+.lt2{background:rgba(251,113,133,.12);color:var(--coral2)}
+
+h1{font-family:'Outfit';font-size:clamp(32px,9vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.subtitle{font-size:clamp(13px,3.6vw,16px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{display:flex;flex-direction:column;gap:14px}
+
+/* cover */
+.cover-section{padding:40px 20px 32px;text-align:center;background:linear-gradient(160deg,#ccfbf1,#e0f7fa)}
+.cover-section>*{max-width:480px;margin-left:auto;margin-right:auto}
+.cover-section .lesson-links{max-width:480px}
+.cover-badge{font-family:'Outfit';font-size:12px;font-weight:700;letter-spacing:3px;color:var(--coral2);background:rgba(251,113,133,.1);padding:6px 22px;border-radius:30px;margin-bottom:10px;display:inline-block}
+.cover-hook{font-size:clamp(15px,4vw,19px);color:var(--dim);font-weight:500;margin-top:6px}
+.lesson-links{display:flex;flex-direction:column;gap:10px;margin-top:22px;align-items:center}
+.lesson-link{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 22px;border-radius:30px;font-size:15px;font-weight:600;text-decoration:none;border:2px solid;cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s}
+.ll1{border-color:var(--accent);color:var(--accent2);background:rgba(20,184,166,.06)}
+.ll2{border-color:var(--coral);color:var(--coral2);background:rgba(251,113,133,.06)}
+
+/* YouTube thumbnail cards */
+.yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #d1ece9;box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;text-decoration:none;display:block}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.32)}
+.yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
+.yt-play-label{color:#fff;font-size:12px;font-weight:600;letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.yt-note{text-align:center;font-size:14px;color:var(--dim);margin-top:6px}
+
+.hook-box{background:linear-gradient(135deg,var(--accent),var(--teal-light));border-radius:18px;padding:22px;text-align:center;color:#fff;box-shadow:0 6px 24px rgba(20,184,166,.25);margin-top:14px}
+.hook-en{font-family:'Outfit';font-size:18px;font-weight:800;letter-spacing:1px}
+.hook-kr{font-size:26px;font-weight:900;margin:8px 0 4px}
+.hook-rom{font-size:15px;opacity:.9;font-style:italic}
+.tip-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.tip-chip{padding:7px 16px;border-radius:30px;background:var(--card);border:1.5px solid #d1ece9;font-size:14px;color:var(--dim);font-weight:500}
+
+/* golden words */
+.gw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.gw-card{background:var(--card);border-radius:16px;border:2px solid #d1ece9;border-top:6px solid var(--accent);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:var(--shadow)}
+.gw-card:nth-child(2){border-top-color:var(--coral)}
+.gw-card:nth-child(3){border-top-color:var(--peach)}
+.gw-card:nth-child(4){border-top-color:var(--lavender)}
+.gw-card:nth-child(5){border-top-color:var(--coral)}
+.gw-card:nth-child(6){border-top-color:var(--accent)}
+.gw-emoji{font-size:24px}
+.gw-kr{font-size:20px;font-weight:900;margin:4px 0 2px}
+.gw-rom{font-size:13px;color:var(--accent2);font-weight:600;font-style:italic}
+.gw-en{font-size:14px;color:var(--dim);margin-top:4px;line-height:1.4}
+.gw-hint{text-align:center;font-size:15px;color:var(--dim);margin-top:8px;font-weight:500}
+
+/* pattern drill */
+.pd-grid{display:flex;flex-direction:column;gap:12px}
+.pd-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;padding:14px;box-shadow:var(--shadow)}
+.pd-title{font-size:16px;font-weight:800;margin-bottom:2px}
+.pd-c1 .pd-title{color:#d97706}.pd-c2 .pd-title{color:var(--accent2)}.pd-c3 .pd-title{color:#16a34a}.pd-c4 .pd-title{color:#7c3aed}
+.pd-sub{font-size:14px;color:var(--dim);font-style:italic;margin-bottom:10px}
+.pd-ex{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-radius:12px;background:var(--card);border:2px solid #d1ece9;margin-bottom:7px;cursor:pointer;font-size:17px;font-weight:600;box-shadow:var(--shadow)}
+.pd-ex .rom{font-size:.78em;color:var(--dim);font-style:italic}
+.pd-ex .tag{font-size:.85em}
+
+/* action challenge */
+.ac-grid{display:flex;flex-direction:column;gap:12px}
+.ac-card{background:var(--card);border-radius:16px;border:2px solid #d1ece9;padding:16px;box-shadow:var(--shadow)}
+.ac-num{display:inline-block;font-family:'Outfit';font-weight:800;font-size:12px;background:rgba(251,113,133,.12);color:var(--coral2);border-radius:8px;padding:2px 10px;margin-bottom:6px}
+.ac-q{font-size:15px;font-weight:600}
+.ac-reveal{margin-top:8px;width:100%;padding:11px;border-radius:12px;border:2px dashed var(--teal-light);background:rgba(20,184,166,.04);color:var(--accent2);font-weight:800;font-size:16px;cursor:pointer;font-family:'Noto Sans KR';transition:all .25s}
+.ac-reveal.shown{border-style:solid;background:rgba(20,184,166,.1)}
+.ac-rule{text-align:center;font-size:15px;color:var(--dim);font-weight:500}
+
+/* word hunt */
+.wh-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.wh-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;border-top:5px solid var(--accent);padding:14px;text-align:center;box-shadow:var(--shadow)}
+.wh-card:nth-child(2n){border-top-color:var(--coral)}
+.wh-card:nth-child(3n){border-top-color:var(--peach)}
+.wh-kr{font-size:19px;font-weight:900;cursor:pointer}
+.wh-rom{font-size:13px;color:var(--accent2);font-style:italic}
+.wh-en{font-size:13px;color:var(--dim);margin:2px 0 8px}
+.wh-boxes{display:flex;gap:6px;justify-content:center}
+.wh-box{width:22px;height:22px;border-radius:6px;border:2px solid #d1ece9;background:#f6fdfc;cursor:pointer;transition:all .2s}
+.wh-box.checked{background:var(--accent);border-color:var(--accent2)}
+
+/* chorus lines */
+.line-list{display:flex;flex-direction:column;gap:10px}
+.line-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--card);border:2px solid #d1ece9;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.line-no{font-family:'Outfit';font-weight:800;font-size:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(20,184,166,.1);color:var(--accent2)}
+.line-row.new .line-no{background:rgba(251,113,133,.12);color:var(--coral2)}
+.tts-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;border:none;cursor:pointer;color:#fff}
+.tts-btn.playing{animation:pulse-ring 1s infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(20,184,166,.3)}50%{box-shadow:0 0 0 8px rgba(20,184,166,0)}}
+.line-kr{font-size:16px;font-weight:700}
+.line-rom{font-size:14px;color:var(--accent2);font-style:italic;margin-top:1px}
+.line-en{font-size:14px;color:var(--dim);margin-top:1px}
+
+/* discussion */
+.disc-hero{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border:2px solid #fecdd3;border-radius:18px;padding:20px;text-align:center}
+.disc-q{font-size:18px;font-weight:900;color:var(--coral2)}
+.disc-grid{display:flex;flex-direction:column;gap:10px}
+.disc-card{background:var(--card);border-radius:14px;border:2px solid #d1ece9;padding:14px;text-align:center;font-size:15px;font-weight:600;color:var(--text);box-shadow:var(--shadow);line-height:1.5}
+.disc-card .em{font-size:20px;display:block;margin-bottom:6px}
+.disc-note{text-align:center;font-size:14px;color:var(--light);font-style:italic}
+
+/* game link buttons */
+.game-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:40px;background:linear-gradient(135deg,var(--coral2),var(--coral));color:#fff;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(225,29,72,.22);font-family:'Noto Sans KR'}
+.game-btn.teal{background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 4px 16px rgba(20,184,166,.25)}
+.game-frame{width:100%;height:500px;border:2px solid #d1ece9;border-radius:14px;background:#f0fafa}
+
+/* footer nav between lesson chunks */
+.jump-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+
+/* ── Desktop / wider screens ── */
+@media (min-width:700px){
+  .section{max-width:880px;padding:48px 32px 56px}
+  .cover-section>*{max-width:640px}
+  .cover-section .lesson-links{flex-direction:row;max-width:640px;justify-content:center}
+  .gw-grid{grid-template-columns:repeat(3,1fr)}
+  .wh-grid{grid-template-columns:repeat(3,1fr)}
+  .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .disc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .jump-row{flex-direction:row}
+  .lesson-link{width:auto}
+}
+@media (min-width:1100px){
+  .section{max-width:1040px}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progBar"></div>
+
+<!-- ════════ COVER ════════ -->
+<div class="cover-section" id="top">
+  <div class="cover-badge">KPOP CLASS</div>
+  <h1>TWICE</h1>
+  <h1 style="color:var(--coral2)">Cheer Up 📣</h1>
+  <div class="cover-hook">밀당 & Full Chorus</div>
+  <div class="subtitle">Dating culture · Full chorus practice</div>
+  <div class="lesson-links">
+    <button class="lesson-link ll2" onclick="jump('lesson2')">💕 밀당 &amp; Full Chorus</button>
+    <button class="lesson-link ll1" onclick="jump('games')">🎮 Game Time</button>
+  </div>
+</div>
+
+<div class="section" id="lesson2">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>💕 밀당 — Korean Dating Culture</h2>
+  <div class="content">
+    <div class="disc-hero">
+      <div class="disc-q">Have you ever done 밀당<br>(push &amp; pull) with someone?</div>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card"><span class="em">💬</span>Did you text back late on purpose?</div>
+      <div class="disc-card"><span class="em">😏</span>Did you act casual around your crush?</div>
+      <div class="disc-card"><span class="em">🤔</span>What's 밀당 like in your country?</div>
+    </div>
+    <div class="jump-row">
+      <a class="game-btn teal" href="gen_z_dating_4stages.html" target="_blank" rel="noopener">📖 젠지 연애 4단계 — Dating Culture 읽기</a>
+      <a class="game-btn" href="mildang-discussion.html" target="_blank" rel="noopener" id="discussLink">💬 토론에 참여하기 — Share Your Story</a>
+    </div>
+    <div class="disc-note">Read the culture guide, then share your 밀당 story with other learners!</div>
+  </div>
+</div>
+
+<!-- ════════ L2 GOLDEN WORDS ════════ -->
+<div class="section">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>⭐ Golden Words — Today's New Words</h2>
+  <div class="content">
+    <div class="gw-grid">
+      <div class="gw-card" onclick="speakKr(this,'연기')"><div class="gw-emoji">🎭</div><div class="gw-kr">연기</div><div class="gw-rom">yeon-gi</div><div class="gw-en">Acting / Pretending</div></div>
+      <div class="gw-card" onclick="speakKr(this,'모르게')"><div class="gw-emoji">🤫</div><div class="gw-kr">모르게</div><div class="gw-rom">mo-reu-ge</div><div class="gw-en">Secretly / Without knowing</div></div>
+      <div class="gw-card" onclick="speakKr(this,'밀당')"><div class="gw-emoji">💕</div><div class="gw-kr">밀당</div><div class="gw-rom">mil-dang</div><div class="gw-en">Push &amp; Pull (in dating)</div></div>
+      <div class="gw-card" onclick="speakKr(this,'태연하게')"><div class="gw-emoji">😌</div><div class="gw-kr">태연하게</div><div class="gw-rom">tae-yeon-ha-ge</div><div class="gw-en">Casually / As if nothing</div></div>
+      <div class="gw-card" onclick="speakKr(this,'할래')"><div class="gw-emoji">🙋</div><div class="gw-kr">할래 (할거야)</div><div class="gw-rom">hal-lae (hal-geo-ya)</div><div class="gw-en">Shall we? / Wanna do it?</div></div>
+      <div class="gw-card" onclick="speakKr(this,'아무렇지 않게')"><div class="gw-emoji">🪨</div><div class="gw-kr">아무렇지 않게</div><div class="gw-rom">a-mu-reo-chi an-ke</div><div class="gw-en">No big deal / Hiding real feelings</div></div>
+    </div>
+    <div class="gw-hint">🔊 이 단어들이 오늘 배울 후렴구에 나와요!</div>
+  </div>
+</div>
+
+<!-- ════════ L2 NEW LINES ════════ -->
+<div class="section">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>🆕 Today's New Lines — Learn These 3!</h2>
+  <div class="content">
+    <div class="line-list">
+      <div class="line-row new" onclick="speakKr(this,'태연하게 연기할래 아무렇지 않게')"><div class="line-no">5</div><button class="tts-btn">🔊</button><div><div class="line-kr">태연하게 연기할래 아무렇지 않게</div><div class="line-rom">tae-yeon-ha-ge yeon-gi-hal-lae a-mu-reot-ji an-ke</div><div class="line-en">I'll act all casual, as if I don't care</div></div></div>
+      <div class="line-row new" onclick="speakKr(this,'내가 널 좋아하는 맘 모르게')"><div class="line-no">6</div><button class="tts-btn">🔊</button><div><div class="line-kr">내가 널 좋아하는 맘 모르게</div><div class="line-rom">nae-ga neol jo-a-ha-neun mam mo-reu-ge</div><div class="line-en">So you won't know how much I like you</div></div></div>
+      <div class="line-row new" onclick="speakKr(this,'just get it together and then baby CHEER UP')"><div class="line-no">7</div><button class="tts-btn">🔊</button><div><div class="line-kr">just get it together and then baby CHEER UP</div><div class="line-en">Just get it together and then baby CHEER UP</div></div></div>
+    </div>
+    <div class="ac-rule">각 줄을 3번씩 읽어요 — 천천히, 그다음 빠르게!</div>
+  </div>
+</div>
+
+<!-- ════════ GAME TIME (embedded games) ════════ -->
+<div class="section" id="games">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>🎮 Game Time — Study Room</h2>
+  <iframe class="game-frame" src="CheerUp_Lesson2_Games.html" title="Cheer Up Lesson 2 Games"></iframe>
+</div>
+
+<!-- ════════ FULL CHORUS ════════ -->
+<div class="section">
+  <span class="lesson-tag lt2">LESSON 2</span>
+  <h2>🎤 Full Chorus — Sing All 7 Lines!</h2>
+  <div class="content">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=c7rCyll5AeY" target="_blank" rel="noopener">
+      <img src="https://img.youtube.com/vi/c7rCyll5AeY/hqdefault.jpg" alt="TWICE Cheer Up MV">
+      <div class="yt-play-overlay">
+        <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-play-label">▶ MV와 함께 불러보기</div>
+      </div>
+    </a>
+    <div class="yt-note">후렴구: 1:07부터 · 줄을 탭하면 발음을 들을 수 있어요</div>
+    <div class="line-list">
+      <div class="line-row" onclick="speakKr(this,'CHEER UP BABY, CHEER UP BABY')"><div class="line-no">1</div><div class="line-kr">CHEER UP BABY, CHEER UP BABY</div></div>
+      <div class="line-row" onclick="speakKr(this,'좀 더 힘을 내')"><div class="line-no">2</div><div class="line-kr">좀 더 힘을 내</div></div>
+      <div class="line-row" onclick="speakKr(this,'여자가 쉽게 맘을 주면 안돼')"><div class="line-no">3</div><div class="line-kr">여자가 쉽게 맘을 주면 안돼</div></div>
+      <div class="line-row" onclick="speakKr(this,'그래야 니가 날 더 좋아하게 될걸')"><div class="line-no">4</div><div class="line-kr">그래야 니가 날 더 좋아하게 될걸</div></div>
+      <div class="line-row new" onclick="speakKr(this,'태연하게 연기할래 아무렇지 않게')"><div class="line-no">5</div><div class="line-kr">태연하게 연기할래 아무렇지 않게</div></div>
+      <div class="line-row new" onclick="speakKr(this,'내가 널 좋아하는 맘 모르게')"><div class="line-no">6</div><div class="line-kr">내가 널 좋아하는 맘 모르게</div></div>
+      <div class="line-row new" onclick="speakKr(this,'just get it together and then baby CHEER UP')"><div class="line-no">7</div><div class="line-kr">just get it together... CHEER UP</div></div>
+    </div>
+    <div class="jump-row"><button class="lesson-link ll1" onclick="jump('top')" style="border-radius:30px">↑ 처음으로</button></div>
+  </div>
+</div>
+
+<script>
+// ── Scroll progress bar (replaces slide-based progress) ──
+const bar=document.getElementById('progBar');
+function updateProgress(){
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  bar.style.width=Math.min(100,Math.max(0,pct))+'%';
+}
+window.addEventListener('scroll',updateProgress);
+updateProgress();
+
+function jump(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// TTS
+let ttsRate=1.0;
+function speakKr(el,text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=ttsRate;
+  if(el){const btn=el.querySelector('.tts-btn')||el;btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing')}
+  speechSynthesis.speak(u);
+}
+
+// Action challenge reveal
+function reveal(btn,answer){
+  if(btn.classList.contains('shown'))return;
+  btn.classList.add('shown');btn.textContent=answer;
+  speakKr(btn,answer.split(' (')[0]);
+  event.stopPropagation();
+}
+</script>
+</body>
+</html>
