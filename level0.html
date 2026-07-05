@@ -97,7 +97,7 @@
   .score-retry{background:var(--accent);color:white;border:none;padding:.8rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;}
   @media(max-width:768px){
     header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
-    .main-grid{padding:.8rem 1rem 2rem;gap:.5rem;}.card-vowels,.card-consonants,.card-combo,.card-quiz{grid-column:span 12;}.card{padding:1rem;}
+    .main-grid{padding:.8rem 1rem 2rem;gap:.5rem;}.card-vowels,.card-consonants,.card-combo,.card-quiz{grid-column:span 12;}.card[style*="span 6"]{grid-column:span 12!important;}.card{padding:1rem;}
     .quiz-inner{flex-direction:column;align-items:flex-start;}.modal{padding:1.2rem;border-radius:14px;}.modal-overlay{padding:.8rem;}
     .vowel-grid{grid-template-columns:repeat(3,1fr);}
     .combo-builder{gap:.8rem;padding:1rem;}.combo-result-big{font-size:3rem;}
@@ -149,7 +149,7 @@
     <span class="card-tag tag-green">Interactive</span>
   </div>
 
-  <div class="card" style="grid-column:span 12;border-color:#52b788;" onclick="openModal('firstwords')" onmouseover="this.style.background='#F0FDF4';this.style.boxShadow='0 12px 40px rgba(82,183,136,.2)'" onmouseout="this.style.background='#FFFFFF';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
+  <div class="card" style="grid-column:span 6;border-color:#52b788;" onclick="openModal('firstwords')" onmouseover="this.style.background='#F0FDF4';this.style.boxShadow='0 12px 40px rgba(82,183,136,.2)'" onmouseout="this.style.background='#FFFFFF';this.style.boxShadow='0 2px 12px rgba(0,0,0,.06)'">
     <div class="card-title-row"><span class="card-icon">✍️</span><div class="card-title-kr">첫 단어</div></div>
     <div class="card-title-en">Your First Words</div>
     <div class="card-desc">Real Korean words made from the letters you just learned.</div>
@@ -161,7 +161,7 @@
     <span class="card-tag" style="background:rgba(82,183,136,.12);color:#276749;">42 words · Tap to hear</span>
   </div>
 
-  <div class="card card-quiz" onclick="openModal('quiz')" style="cursor:pointer;grid-column:span 12;background:linear-gradient(135deg,#FFFBEB,#FFF9E0);border-color:#FFD93D;">
+  <div class="card card-quiz" onclick="openModal('quiz')" style="cursor:pointer;grid-column:span 6;background:linear-gradient(135deg,#FFFBEB,#FFF9E0);border-color:#FFD93D;">
     <div class="quiz-inner">
       <div class="quiz-left">
 
