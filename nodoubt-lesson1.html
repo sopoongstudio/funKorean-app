@@ -119,6 +119,9 @@ h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--accent);margin-bot
 </style>
 </head>
 <body>
+<div style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1.2rem;">
+  <button onclick="location.href='level3.html'" style="background:none;border:none;color:#6D28D9;font-size:.9rem;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:.4rem;">← Back</button>
+</div>
 <div class="progress-bar" id="progBar"></div>
 
 <!-- COVER -->
@@ -141,7 +144,7 @@ h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--accent);margin-bot
   <div class="section-label">Step 1</div>
   <h2>&#127911; Listen &mdash; Today's Lyrics</h2>
   <div class="content">
-    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0" target="_blank">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=X3_g_oeCTZ0">
       <img src="https://img.youtube.com/vi/X3_g_oeCTZ0/sddefault.jpg" onerror="this.src='https://i.ytimg.com/vi/X3_g_oeCTZ0/hqdefault.jpg'" alt="No Doubt MV" style="width:100%;height:100%;object-fit:cover;display:block">
       <div class="yt-play-overlay">
         <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
@@ -149,8 +152,8 @@ h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--accent);margin-bot
       </div>
     </a>
     <div class="yt-links">
-      <a class="yt-link-btn yt-lb" href="https://www.youtube.com/watch?v=XKZQ3wlS9aI" target="_blank">&#128221; Lyrics Video</a>
-      <a class="yt-link-btn yt-sb" href="https://www.youtube.com/shorts/f7rsNKeXYBU" target="_blank">&#127919; Highlight Shorts</a>
+      <a class="yt-link-btn yt-lb" href="https://www.youtube.com/watch?v=XKZQ3wlS9aI">&#128221; Lyrics Video</a>
+      <a class="yt-link-btn yt-sb" href="https://www.youtube.com/shorts/f7rsNKeXYBU">&#127919; Highlight Shorts</a>
     </div>
     <p style="font-size:clamp(12px,3vw,14px);color:var(--dim)">Click each line to hear it! &#128266;</p>
     <div class="lyric-row" onclick="speakLine(this,'낮이 됐건 밤이 됐건')"><button class="tts-btn">&#128266;</button><div><div class="lyric-kr">낮이 됐건 밤이 됐건</div><div class="lyric-rom">Na-ji dwaet-geon bam-i dwaet-geon</div></div></div>
@@ -166,7 +169,7 @@ h2{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--accent);margin-bot
 <div class="section" id="decode">
   <div class="section-label">Step 2</div>
   <h2>&#128066; Listening Mission</h2>
-  <a class="listen-play-btn" href="https://www.youtube.com/shorts/f7rsNKeXYBU" target="_blank">&#9654; Play the MV</a>
+  <a class="listen-play-btn" href="https://www.youtube.com/shorts/f7rsNKeXYBU">&#9654; Play the MV</a>
   <p style="font-size:clamp(12px,3vw,14px);color:var(--dim);margin-bottom:14px">Check each word when you hear it in the song!</p>
   <div class="listen-grid">
     <div class="listen-card" onclick="toggleCheck(this)"><div class="lcheck">&#9634;</div><div class="lkr">낮</div><div class="lrom">nat</div><div class="len">daytime</div></div>

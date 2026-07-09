@@ -159,6 +159,9 @@ h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bo
 </style>
 </head>
 <body>
+<div style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1.2rem;">
+  <button onclick="location.href='level3.html'" style="background:none;border:none;color:#6D28D9;font-size:.9rem;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:.4rem;">← Back</button>
+</div>
 <div class="progress-bar" id="progBar"></div>
 
 <!-- ════════ COVER ════════ -->
@@ -179,7 +182,7 @@ h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bo
   <span class="lesson-tag lt1">LESSON 1</span>
   <h2>🎧 Listen — The Hooked Part</h2>
   <div class="content">
-    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=gYGukeZIhxg&t=67s" target="_blank" rel="noopener">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=gYGukeZIhxg&t=67s" rel="noopener">
       <img src="https://img.youtube.com/vi/gYGukeZIhxg/hqdefault.jpg" alt="TWICE Cheer Up lyrics video">
       <div class="yt-play-overlay">
         <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
@@ -273,7 +276,7 @@ h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bo
   <h2>🔎 Listening Activity — Word Hunt!</h2>
   <div class="content">
     <div class="ac-rule">1절을 들으며 단어가 들릴 때마다 박스를 체크! Check a box each time you hear the word.
-      <br><a href="https://www.youtube.com/watch?v=c7rCyll5AeY" target="_blank" rel="noopener" style="color:var(--coral2);font-weight:700;text-decoration:none">▶ MV 듣기</a></div>
+      <br><a href="https://www.youtube.com/watch?v=c7rCyll5AeY" rel="noopener" style="color:var(--coral2);font-weight:700;text-decoration:none">▶ MV 듣기</a></div>
     <div class="wh-grid">
       <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'매일')">매일</div><div class="wh-rom">mae-il</div><div class="wh-en">every day</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
       <div class="wh-card"><div class="wh-kr" onclick="speakKr(this,'몰라')">몰라</div><div class="wh-rom">mol-la</div><div class="wh-en">I don't know</div><div class="wh-boxes"><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div><div class="wh-box" onclick="this.classList.toggle('checked')"></div></div></div>
