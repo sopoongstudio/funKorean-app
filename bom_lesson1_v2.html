@@ -8,403 +8,263 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --card:#ffffff;
-  --accent:#e91e8c;
-  --accent2:#c2185b;
-  --pink:#f48fb1;
-  --mint:#34d399;
-  --mint2:#10b981;
-  --coral:#fb7185;
-  --lavender:#a78bfa;
-  --text:#1e293b;
-  --dim:#64748b;
-  --light:#94a3b8;
-  --border:#cbd5e1;
+  --card:#ffffff;--accent:#e91e8c;--accent2:#c2185b;--pink:#f48fb1;
+  --mint:#34d399;--mint2:#10b981;--lavender:#a78bfa;
+  --text:#1e293b;--dim:#64748b;--light:#94a3b8;--border:#cbd5e1;
   --shadow:0 4px 20px rgba(233,30,140,.08);
 }
-body{
-  background:linear-gradient(135deg,#fce4ec 0%,#fdf2f8 30%,#fdf6ff 60%,#fff0f6 100%);
-  font-family:'Noto Sans KR','Outfit',sans-serif;
-  color:var(--text);
-  overflow:hidden;height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  touch-action:manipulation;
-}
-body::before{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(circle at 20% 80%,rgba(244,143,177,.1),transparent 50%),
-             radial-gradient(circle at 80% 20%,rgba(206,147,216,.06),transparent 50%);
-  pointer-events:none;z-index:0;
-}
-.deck{position:relative;width:min(1280px,96vw);aspect-ratio:16/9;min-height:min(54vw,720px);overflow:hidden;border-radius:24px;box-shadow:0 8px 60px rgba(233,30,140,.08),0 2px 8px rgba(0,0,0,.04);z-index:1;background:var(--card)}
-.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(28px,4.5vw,56px);
-  background:linear-gradient(160deg,rgba(255,240,246,.4),rgba(255,255,255,.9) 40%,rgba(253,246,255,.4) 100%);
-  opacity:0;transition:opacity .35s;visibility:hidden}
-.slide.active{display:flex;opacity:1;visibility:visible}
-.progress-bar{position:absolute;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--pink),var(--lavender));transition:width .5s;z-index:50;border-radius:0 3px 3px 0}
-.slide-num{position:absolute;top:16px;right:24px;font-family:'Outfit';font-size:12px;color:var(--light);letter-spacing:1.5px;font-weight:500}
-h1{font-family:'Outfit';font-size:clamp(26px,3.8vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
-h2{font-size:clamp(18px,2.4vw,32px);font-weight:700;color:var(--accent2);margin-bottom:clamp(12px,2vw,28px);display:flex;align-items:center;gap:10px}
-.subtitle{font-size:clamp(13px,1.4vw,18px);color:var(--dim);margin-top:6px;line-height:1.6}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,16px);overflow-y:auto;padding-bottom:36px}
+body{background:linear-gradient(160deg,#fce4ec 0%,#fdf2f8 30%,#fdf6ff 60%,#fff0f6 100%);font-family:'Noto Sans KR','Outfit',sans-serif;color:var(--text);min-height:100vh}
+.progress-bar{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--pink),var(--lavender));width:0%;transition:width .25s;z-index:50;border-radius:0 3px 3px 0}
 
-/* Nav - TWS style */
-.nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px clamp(18px,3vw,36px);background:linear-gradient(transparent,rgba(255,255,255,.95) 40%);z-index:10}
-.nav-btn{padding:8px 24px;border-radius:30px;border:2px solid #e2e8f0;background:white;color:var(--text);cursor:pointer;font-size:13px;transition:all .25s;font-family:'Outfit';font-weight:600;letter-spacing:.3px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-.nav-btn:hover{border-color:var(--accent);background:rgba(233,30,140,.04)}
-.nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(233,30,140,.2)}
-.nav-btn.primary:hover{transform:scale(1.03)}
-.nav-btn.invisible{visibility:hidden}
-.nav-dots{display:flex;gap:7px}
-.nav-dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s}
-.nav-dot.active{background:var(--accent);width:26px;border-radius:5px}
+.section{padding:32px 20px 40px;border-bottom:1px solid rgba(233,30,140,.1);max-width:880px;margin:0 auto}
+h1{font-family:'Outfit';font-size:clamp(32px,9vw,50px);font-weight:800;color:var(--accent2);line-height:1.2;margin-bottom:6px}
+h2{font-size:clamp(19px,5vw,26px);font-weight:700;color:var(--accent2);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.subtitle{font-size:clamp(13px,3.6vw,16px);color:var(--dim);margin-top:6px;line-height:1.6}
+.content{display:flex;flex-direction:column;gap:16px}
 
-/* Slide 1 - title */
-.lesson-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.lesson-link{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:30px;font-size:clamp(12px,1.2vw,15px);font-weight:600;text-decoration:none;border:2px solid;cursor:pointer;background:none;font-family:'Noto Sans KR','Outfit',sans-serif;transition:all .22s;white-space:nowrap;overflow:hidden}
-.ll-sub{font-size:.78em;opacity:.65;font-weight:400;display:inline}
-.ll1{border-color:var(--accent);color:var(--accent);background:rgba(233,30,140,.05)}.ll1:hover{background:rgba(233,30,140,.12);transform:translateY(-1px)}
-.ll2{border-color:#8b5cf6;color:#7c3aed;background:rgba(139,92,246,.05)}.ll2:hover{background:rgba(139,92,246,.12);transform:translateY(-1px)}
-.ll3{border-color:#10b981;color:#059669;background:rgba(16,185,129,.05)}.ll3:hover{background:rgba(16,185,129,.12);transform:translateY(-1px)}
-.today-box{background:#f8fafc;border-radius:16px;padding:clamp(14px,2vw,24px);margin-top:16px;border:1.5px solid #e2e8f0}
-.today-box h3{font-size:clamp(13px,1.3vw,16px);color:#c2185b;font-weight:700;margin-bottom:10px}
-.today-items{display:flex;gap:10px;flex-wrap:wrap}
-.today-item{background:white;border-radius:10px;padding:8px 16px;font-size:clamp(12px,1.1vw,14px);color:var(--text);border:1.5px solid #e2e8f0;display:flex;align-items:center;gap:6px}
+/* Cover */
+.cover-section{padding:40px 20px 32px;text-align:center;background:linear-gradient(160deg,#fce4ec,#fdf6ff)}
+.cover-section>*{max-width:720px;margin-left:auto;margin-right:auto}
+.lesson-nav-card{background:white;border-radius:18px;padding:18px;transition:all .22s;box-shadow:0 2px 12px rgba(233,30,140,.07);text-align:left;margin-bottom:14px;cursor:pointer;text-decoration:none;display:block}
+.lesson-nav-card:hover{transform:translateY(-2px)}
 
-/* Slide 2 - vocab */
-.vocab-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(8px,1.2vw,16px)}
-.vocab-card{background:white;border:1.5px solid #e2e8f0;border-radius:16px;padding:clamp(10px,1.5vw,20px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.vocab-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 24px rgba(233,30,140,.1)}
-.vocab-card.played{border-color:var(--mint2);background:#f0fdf4}
-.vocab-emoji{font-size:clamp(28px,3.5vw,48px);margin-bottom:8px}
-.vocab-kr{font-size:clamp(16px,2vw,26px);font-weight:700;color:var(--text);margin-bottom:4px}
-.vocab-rom{font-size:clamp(10px,1vw,13px);color:#e91e8c;margin-bottom:2px}
-.vocab-en{font-size:clamp(10px,1vw,13px);color:var(--dim)}
-
-/* Slide 3 - lyrics */
-.lyrics-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,28px);height:100%}
-.yt-side{display:flex;flex-direction:column;gap:12px}
+/* YT */
 .yt-thumb-card{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:2px solid #fce4ec;box-shadow:var(--shadow);background:#0f0f0f;cursor:pointer;display:block;text-decoration:none}
-.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.yt-thumb-card:hover img{transform:scale(1.04)}
+.yt-thumb-card img{width:100%;height:100%;object-fit:cover;display:block}
 .yt-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,.32)}
 .yt-play-icon{width:52px;height:52px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .yt-play-icon svg{fill:#fff;width:22px;height:22px;margin-left:3px}
-.yt-play-label{color:#fff;font-size:12px;font-weight:600}
-.lyric-side{display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.5vw,20px)}
-.lyric-big{background:#f8fafc;border-radius:16px;padding:clamp(16px,2vw,28px);text-align:center;cursor:pointer;border:1.5px solid #e2e8f0;transition:all .2s}
-.lyric-big:hover{border-color:var(--accent);transform:scale(1.02)}
-.lyric-big .kr{font-size:clamp(18px,2.5vw,34px);font-weight:700;color:#880e4f;line-height:1.6}
-.lyric-big .rom{font-size:clamp(11px,1.1vw,15px);color:#c2185b;margin-top:6px}
-.lyric-big .en{font-size:clamp(11px,1.1vw,14px);color:var(--dim);margin-top:4px}
-.speak-hint{font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center}
+.yt-play-label{color:#fff;font-size:13px;font-weight:600}
 
-/* Slide 4 - seasons */
-.season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,16px);margin-bottom:clamp(10px,1.5vw,20px)}
-.season-card{background:white;border:1.5px solid #e2e8f0;border-radius:16px;padding:clamp(10px,1.5vw,20px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.season-card:hover{transform:translateY(-4px)}
+/* Lyric */
+.lyric-block{background:white;border-radius:16px;padding:18px;cursor:pointer;border:2px solid #e2e8f0;transition:all .2s;box-shadow:var(--shadow)}
+.lyric-block:hover{border-color:var(--accent);transform:scale(1.01)}
+.lyric-block .kr{font-size:clamp(17px,4.6vw,24px);font-weight:700;color:#880e4f;line-height:1.7}
+.lyric-block .kr .highlight{color:var(--accent);background:rgba(233,30,140,.08);border-radius:6px;padding:0 4px}
+.lyric-block .rom{font-size:14px;color:#c2185b;margin-top:4px;font-weight:600}
+.lyric-block .en{font-size:14px;color:var(--dim);margin-top:4px;line-height:1.5;font-weight:500}
+
+/* Vocab */
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.vocab-card{background:white;border:2px solid #e2e8f0;border-radius:16px;padding:16px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.vocab-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px rgba(233,30,140,.1)}
+.vocab-card.played{border-color:var(--mint2);background:#f0fdf4}
+.vocab-emoji{font-size:32px;margin-bottom:8px}
+.vocab-kr{font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px}
+.vocab-rom{font-size:13px;color:#e91e8c;margin-bottom:2px;font-weight:600}
+.vocab-en{font-size:13px;color:var(--dim)}
+
+/* Seasons */
+.season-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.season-card{background:white;border:2px solid #e2e8f0;border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.season-card:hover{transform:translateY(-3px)}
 .season-card.active{border-color:var(--accent);background:rgba(233,30,140,.04)}
-.season-card:nth-child(1):hover{border-color:#e91e8c}
-.season-card:nth-child(2):hover{border-color:#f59e0b}
-.season-card:nth-child(3):hover{border-color:#f97316}
-.season-card:nth-child(4):hover{border-color:#3b82f6}
-.season-emoji{font-size:clamp(28px,3.5vw,48px);margin-bottom:8px}
-.season-kr{font-size:clamp(16px,2vw,26px);font-weight:700;margin-bottom:4px}
-.season-en{font-size:clamp(10px,1vw,13px);color:var(--dim)}
-.pattern-result{background:#f8fafc;border-radius:14px;padding:clamp(12px,1.5vw,20px);text-align:center;border:1.5px solid #e2e8f0;min-height:60px;display:flex;align-items:center;justify-content:center}
-.pattern-text{font-size:clamp(18px,2.5vw,34px);font-weight:700;color:var(--accent2)}
-.pattern-placeholder{font-size:clamp(14px,1.8vw,22px);color:var(--light);font-weight:500}
+.season-emoji{font-size:36px;margin-bottom:8px}
+.season-kr{font-size:22px;font-weight:700;margin-bottom:4px}
+.season-en{font-size:13px;color:var(--dim)}
+.pattern-result{background:white;border-radius:14px;padding:20px;text-align:center;border:2px solid #e2e8f0;min-height:60px;display:flex;align-items:center;justify-content:center}
+.pattern-text{font-size:clamp(20px,5vw,30px);font-weight:700;color:var(--accent2)}
 
-/* Slide 5 - make your own */
-.pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,1vw,12px);margin-bottom:clamp(10px,1.5vw,18px)}
-.pick-card{background:white;border:1.5px solid #e2e8f0;border-radius:14px;padding:clamp(8px,1.2vw,16px);text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.pick-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+/* Pick */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.pick-card{background:white;border:2px solid #e2e8f0;border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pick-card:hover{border-color:var(--accent);transform:translateY(-2px)}
 .pick-card.selected{border-color:var(--accent);background:rgba(233,30,140,.04)}
-.pick-emoji{font-size:clamp(22px,2.8vw,38px);margin-bottom:6px}
-.pick-kr{font-size:clamp(13px,1.5vw,20px);font-weight:700}
-.pick-en{font-size:clamp(10px,1vw,12px);color:var(--dim);margin-top:2px}
-.my-sentence{background:#f8fafc;border-radius:14px;padding:clamp(12px,1.5vw,20px);text-align:center;border:1.5px solid #e2e8f0}
-.my-sentence-text{font-size:clamp(18px,2.5vw,34px);font-weight:700;color:var(--accent2);min-height:44px}
-.say-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 28px;border-radius:30px;background:var(--accent);color:white;border:none;font-size:clamp(13px,1.3vw,16px);font-weight:700;cursor:pointer;font-family:'Noto Sans KR';margin-top:10px;transition:all .2s}
-.say-btn:hover{background:var(--accent2);transform:scale(1.03)}
-.say-count{font-size:clamp(11px,1vw,13px);color:var(--dim);margin-top:6px}
+.pick-emoji{font-size:28px;margin-bottom:6px}
+.pick-kr{font-size:18px;font-weight:700}
+.pick-en{font-size:12px;color:var(--dim);margin-top:2px}
+.my-sentence{background:white;border-radius:14px;padding:20px;text-align:center;border:2px solid #e2e8f0}
+.my-sentence-text{font-size:clamp(20px,5vw,28px);font-weight:700;color:var(--accent2);min-height:40px}
+.say-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:30px;background:var(--accent);color:white;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR';margin-top:12px;transition:all .2s}
+.say-btn:hover{background:var(--accent2)}
 
-/* Slide 6 - quiz */
-.quiz-slide-inner{position:relative;width:100%;height:100%;flex:1}
-.quiz-question-mini{position:absolute;top:0;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
-.quiz-q-emoji{font-size:clamp(24px,3.5vw,44px)}
-.quiz-blank{font-size:clamp(15px,2vw,26px);font-weight:700;color:var(--text);white-space:nowrap}
-.quiz-blank span{color:var(--accent)}
-.word-scatter{position:absolute;inset:0}
-.scatter-word{position:absolute;padding:clamp(5px,0.6vw,8px) clamp(10px,1.2vw,16px);border-radius:99px;border:1.5px solid #e2e8f0;background:white;font-size:clamp(12px,1.3vw,17px);font-weight:600;cursor:pointer;transition:border-color .2s,background .2s;box-shadow:0 2px 8px rgba(0,0,0,.07);color:var(--text);white-space:nowrap;z-index:1}
+/* Quiz */
+.quiz-wrap{background:white;border-radius:16px;padding:24px;border:2px solid #e2e8f0;box-shadow:var(--shadow)}
+.quiz-q-top{text-align:center;margin-bottom:16px}
+.quiz-progress{font-size:13px;color:var(--dim);margin-bottom:8px}
+.word-cloud{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+.scatter-word{padding:10px 18px;border-radius:99px;border:1.5px solid #e2e8f0;background:white;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);color:#1e293b;transition:border-color .2s,background .2s;font-family:'Noto Sans KR',sans-serif}
 .scatter-word:hover{border-color:var(--accent);background:rgba(233,30,140,.06)}
 .scatter-word.used{opacity:.2;pointer-events:none}
-.quiz-msg{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:clamp(14px,1.6vw,20px);font-weight:700;text-align:center;white-space:nowrap}
-.quiz-progress{font-size:clamp(12px,1.1vw,15px);color:var(--dim);text-align:center;margin-bottom:8px}
-
-/* Complete */
-.complete-box{text-align:center;padding:clamp(20px,3vw,40px)}
-.complete-emoji{font-size:clamp(48px,7vw,80px);margin-bottom:16px}
-.complete-title{font-size:clamp(24px,3.5vw,48px);font-weight:800;color:var(--accent2);margin-bottom:8px}
-.complete-sub{font-size:clamp(14px,1.5vw,20px);color:var(--dim)}
-
+.quiz-msg{text-align:center;font-size:18px;font-weight:700;min-height:28px;padding:8px 0}
+.complete-box{text-align:center;padding:32px 20px}
+.complete-emoji{font-size:64px;margin-bottom:16px}
+.complete-title{font-size:32px;font-weight:800;color:var(--accent2);margin-bottom:8px}
+.complete-sub{font-size:16px;color:var(--dim)}
 </style>
 </head>
 <body>
-<div class="deck">
+<div class="progress-bar" id="progressBar"></div>
 
-  <div class="progress-bar" id="progressBar"></div>
+<!-- COVER -->
+<div class="cover-section">
+  <h1>봄 봄 봄 🌸</h1>
+  <p class="subtitle">Roy Kim (로이킴) 노래로 배우는 한국어 🎵</p>
 
-  <!-- SLIDE 1: Lesson Selector -->
-  <div class="slide active" id="s1">
-    <div class="slide-num">1 / 6</div>
-    <div class="content" style="justify-content:center;gap:clamp(10px,1.5vw,20px)">
-      <h1>봄 봄 봄 🌸</h1>
-      <p class="subtitle">Roy Kim (로이킴) 노래로 배우는 한국어 🎵</p>
+  <div style="margin-top:24px;max-width:720px;margin-left:auto;margin-right:auto">
 
-      <!-- Lesson 1 -->
-      <div style="background:white;border:2px solid #f9a8d4;border-radius:18px;padding:clamp(14px,2vw,24px);cursor:pointer;transition:all .22s;box-shadow:0 2px 12px rgba(233,30,140,.07)" onmouseover="this.style.borderColor='#e91e8c';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#f9a8d4';this.style.transform=''" onclick="goSlide(2)">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <span style="background:rgba(233,30,140,.1);color:#e91e8c;font-size:clamp(10px,1vw,13px);font-weight:700;border-radius:99px;padding:4px 12px">A1</span>
-            <span style="font-size:clamp(14px,1.6vw,20px);font-weight:700;color:#c2185b">Lesson 1</span>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🎵 노래 듣기</span>
-            <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🍂 계절</span>
-            <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🌸 새 단어 &amp; 패턴</span>
-            <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🎯 퀴즈</span>
-          </div>
+    <a class="lesson-nav-card" style="border:2px solid #f9a8d4" href="bom_lesson1_v2.html">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(233,30,140,.1);color:#e91e8c;font-size:13px;font-weight:700;border-radius:99px;padding:4px 12px">A1</span>
+          <span style="font-size:18px;font-weight:700;color:#c2185b">Lesson 1 ← 지금 여기!</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">🎵 노래 듣기</span>
+          <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">🍂 계절</span>
+          <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">🌸 새 단어 &amp; 패턴</span>
+          <span style="background:#fce4ec;color:#c2185b;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">🎯 퀴즈</span>
         </div>
       </div>
+    </a>
 
-      <!-- Lesson 2 -->
-      <div style="background:white;border:2px solid #ddd6fe;border-radius:18px;padding:clamp(14px,2vw,24px);cursor:pointer;transition:all .22s;box-shadow:0 2px 12px rgba(139,92,246,.07)" onmouseover="this.style.borderColor='#7c3aed';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#ddd6fe';this.style.transform=''" onclick="window.open('bom_lesson2.html','lesson')">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <span style="background:rgba(139,92,246,.1);color:#7c3aed;font-size:clamp(10px,1vw,13px);font-weight:700;border-radius:99px;padding:4px 12px">A1–A2</span>
-            <span style="font-size:clamp(14px,1.6vw,20px);font-weight:700;color:#6d28d9">Lesson 2</span>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🎵 노래 듣기</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">📚 단어</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">💡 패턴</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">✏️ 말하기</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lesson 3 -->
-      <div style="background:white;border:2px solid #c4b5fd;border-radius:18px;padding:clamp(14px,2vw,24px);cursor:pointer;transition:all .22s;box-shadow:0 2px 12px rgba(124,58,237,.07)" onmouseover="this.style.borderColor='#7c3aed';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#c4b5fd';this.style.transform=''" onclick="window.open('bom_lesson3.html','lesson')">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <span style="background:rgba(124,58,237,.1);color:#7c3aed;font-size:clamp(10px,1vw,13px);font-weight:700;border-radius:99px;padding:4px 12px">B1</span>
-            <span style="font-size:clamp(14px,1.6vw,20px);font-weight:700;color:#6d28d9">Lesson 3</span>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🎵 노래 듣기</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🔍 가사 분석</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🔀 문장 만들기</span>
-            <span style="background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:clamp(10px,1vw,13px);font-weight:600">🌸 한국의 봄</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </div>
+</div>
 
-  <!-- SLIDE 2: was slide 1 content - now Song -->
-  <div class="slide" id="s1b" style="display:none"></div>
-
-  <!-- SLIDE 2: Song + Lyrics -->
-  <div class="slide" id="s2">
-    <div class="slide-num">2 / 6</div>
-    <h2>🎵 노래 Song</h2>
-    <div class="content">
-      <div class="lyrics-layout">
-        <div class="yt-side">
-          <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=k3-BDy55tq4" target="_blank">
-            <img src="https://img.youtube.com/vi/k3-BDy55tq4/hqdefault.jpg" alt="봄봄봄 Roy Kim">
-            <div class="yt-play-overlay">
-              <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-              <div class="yt-play-label">YouTube에서 보기</div>
-            </div>
-          </a>
-          <p style="font-size:clamp(11px,1vw,13px);color:var(--dim);text-align:center">🌸 한국 봄마다 어디서나 들리는 노래예요!</p>
-        </div>
-        <div class="lyric-side">
-          <p style="font-size:clamp(12px,1.2vw,16px);color:var(--dim)">오늘의 가사 Today's lyric:</p>
-          <div class="lyric-big" onclick="speakKr('봄 봄 봄 봄이 왔네요')">
-            <div class="kr">봄 봄 봄 봄이 왔네요</div>
-            <div class="rom">Bom bom bom bomi wanneyo</div>
-            <div class="en">Spring, spring, spring — spring has come!</div>
-          </div>
-          <p class="speak-hint">👆 클릭하면 들을 수 있어요! Click to listen!</p>
-          <div class="lyric-big" onclick="speakKr('봄 봄 봄 봄이 왔네요')" style="padding:clamp(8px,1vw,14px)">
-            <div style="font-size:clamp(11px,1.1vw,14px);color:var(--dim);margin-bottom:6px">같이 따라 해봐요! Say it together:</div>
-            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-              <span style="background:rgba(233,30,140,.08);border-radius:8px;padding:4px 12px;font-weight:700;color:var(--accent);font-size:clamp(14px,1.6vw,20px)">봄</span>
-              <span style="font-size:clamp(14px,1.6vw,20px);color:var(--dim)">봄</span>
-              <span style="background:rgba(233,30,140,.08);border-radius:8px;padding:4px 12px;font-weight:700;color:var(--accent);font-size:clamp(14px,1.6vw,20px)">봄</span>
-              <span style="font-size:clamp(14px,1.6vw,20px);color:var(--dim)">봄이 왔네요</span>
-            </div>
-          </div>
-        </div>
+<!-- SONG -->
+<div class="section">
+  <h2>🎵 노래 Song</h2>
+  <div class="content">
+    <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=k3-BDy55tq4">
+      <img src="https://img.youtube.com/vi/k3-BDy55tq4/hqdefault.jpg" alt="봄봄봄 Roy Kim">
+      <div class="yt-play-overlay">
+        <div class="yt-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-play-label">YouTube에서 보기</div>
+      </div>
+    </a>
+    <p style="font-size:13px;color:var(--dim);text-align:center">🌸 한국 봄마다 어디서나 들리는 노래예요!</p>
+    <div class="lyric-block" onclick="speakKr('봄 봄 봄 봄이 왔네요')">
+      <div class="kr">봄 봄 봄 봄이 왔네요</div>
+      <div class="rom">Bom bom bom bomi wanneyo</div>
+      <div class="en">Spring, spring, spring — spring has come!</div>
+    </div>
+    <div style="background:#fdf2f8;border-radius:14px;padding:16px;text-align:center">
+      <div style="font-size:13px;color:var(--dim);margin-bottom:10px">같이 따라 해봐요! Say it together:</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <span style="background:rgba(233,30,140,.08);border-radius:8px;padding:4px 12px;font-weight:700;color:var(--accent);font-size:20px">봄</span>
+        <span style="font-size:20px;color:var(--dim)">봄</span>
+        <span style="background:rgba(233,30,140,.08);border-radius:8px;padding:4px 12px;font-weight:700;color:var(--accent);font-size:20px">봄</span>
+        <span style="font-size:20px;color:var(--dim)">봄이 왔네요</span>
       </div>
     </div>
+    <p style="text-align:center;font-size:13px;color:var(--dim)">👆 가사를 클릭하면 들을 수 있어요!</p>
   </div>
+</div>
 
-  <!-- SLIDE 3: Vocab -->
-  <div class="slide" id="s3">
-    <div class="slide-num">3 / 6</div>
-    <h2>📚 단어 Words</h2>
-    <div class="content">
-      <div class="vocab-grid">
-        <div class="vocab-card" onclick="speakVocab(this,'봄')">
-          <div class="vocab-emoji">🌸</div>
-          <div class="vocab-kr">봄</div>
-          <div class="vocab-rom">bom</div>
-          <div class="vocab-en">spring</div>
-        </div>
-        <div class="vocab-card" onclick="speakVocab(this,'벤치')">
-          <div class="vocab-emoji">🪑</div>
-          <div class="vocab-kr">벤치</div>
-          <div class="vocab-rom">ben-chi</div>
-          <div class="vocab-en">bench</div>
-        </div>
-        <div class="vocab-card" onclick="speakVocab(this,'나무')">
-          <div class="vocab-emoji">🌳</div>
-          <div class="vocab-kr">나무</div>
-          <div class="vocab-rom">na-mu</div>
-          <div class="vocab-en">tree</div>
-        </div>
-        <div class="vocab-card" onclick="speakVocab(this,'꽃')">
-          <div class="vocab-emoji">🌺</div>
-          <div class="vocab-kr">꽃</div>
-          <div class="vocab-rom">kkot</div>
-          <div class="vocab-en">flower</div>
-        </div>
-        <div class="vocab-card" onclick="speakVocab(this,'벚꽃')">
-          <div class="vocab-emoji">🌸</div>
-          <div class="vocab-kr">벚꽃</div>
-          <div class="vocab-rom">beot-kkot</div>
-          <div class="vocab-en">cherry blossom</div>
-        </div>
+<!-- VOCAB -->
+<div class="section">
+  <h2>📚 단어 Words</h2>
+  <div class="content">
+    <div class="vocab-grid">
+      <div class="vocab-card" onclick="speakVocab(this,'봄')">
+        <div class="vocab-emoji">🌸</div>
+        <div class="vocab-kr">봄</div>
+        <div class="vocab-rom">bom</div>
+        <div class="vocab-en">spring</div>
       </div>
-      <p style="text-align:center;font-size:clamp(12px,1.1vw,14px);color:var(--dim);margin-top:8px">👆 카드를 클릭해서 들어보세요! Click each card to hear it!</p>
-    </div>
-  </div>
-
-  <!-- SLIDE 4: Seasons + Pattern -->
-  <div class="slide" id="s4">
-    <div class="slide-num">4 / 6</div>
-    <h2>🍂 계절 Seasons + 패턴 Pattern</h2>
-    <div class="content">
-      <div class="season-grid">
-        <div class="season-card" onclick="pickSeason(this,'봄','spring','🌸')">
-          <div class="season-emoji">🌸</div>
-          <div class="season-kr">봄</div>
-          <div class="season-en">spring</div>
-        </div>
-        <div class="season-card" onclick="pickSeason(this,'여름','summer','☀️')">
-          <div class="season-emoji">☀️</div>
-          <div class="season-kr">여름</div>
-          <div class="season-en">summer</div>
-        </div>
-        <div class="season-card" onclick="pickSeason(this,'가을','autumn','🍂')">
-          <div class="season-emoji">🍂</div>
-          <div class="season-kr">가을</div>
-          <div class="season-en">autumn</div>
-        </div>
-        <div class="season-card" onclick="pickSeason(this,'겨울','winter','❄️')">
-          <div class="season-emoji">❄️</div>
-          <div class="season-kr">겨울</div>
-          <div class="season-en">winter</div>
-        </div>
+      <div class="vocab-card" onclick="speakVocab(this,'벤치')">
+        <div class="vocab-emoji">🪑</div>
+        <div class="vocab-kr">벤치</div>
+        <div class="vocab-rom">ben-chi</div>
+        <div class="vocab-en">bench</div>
       </div>
-      <div class="pattern-result" id="patternResult">
-        <div class="pattern-placeholder">👆 계절을 클릭해보세요!</div>
+      <div class="vocab-card" onclick="speakVocab(this,'나무')">
+        <div class="vocab-emoji">🌳</div>
+        <div class="vocab-kr">나무</div>
+        <div class="vocab-rom">na-mu</div>
+        <div class="vocab-en">tree</div>
+      </div>
+      <div class="vocab-card" onclick="speakVocab(this,'꽃')">
+        <div class="vocab-emoji">🌺</div>
+        <div class="vocab-kr">꽃</div>
+        <div class="vocab-rom">kkot</div>
+        <div class="vocab-en">flower</div>
+      </div>
+      <div class="vocab-card" onclick="speakVocab(this,'벚꽃')">
+        <div class="vocab-emoji">🌸</div>
+        <div class="vocab-kr">벚꽃</div>
+        <div class="vocab-rom">beot-kkot</div>
+        <div class="vocab-en">cherry blossom</div>
       </div>
     </div>
+    <p style="text-align:center;font-size:13px;color:var(--dim)">👆 카드를 클릭해서 들어보세요!</p>
   </div>
+</div>
 
-  <!-- SLIDE 5: Make your own -->
-  <div class="slide" id="s5">
-    <div class="slide-num">5 / 6</div>
-    <h2>✏️ 내 문장 만들기 Make your own!</h2>
-    <div class="content">
-      <p style="font-size:clamp(12px,1.2vw,15px);color:var(--dim)">골라봐요! Pick one and make a sentence:</p>
-      <div class="pick-grid" style="grid-template-columns:repeat(5,1fr)">
-        <div class="pick-card" onclick="pickWord(this,'봄','spring')"><div class="pick-emoji">🌸</div><div class="pick-kr">봄</div><div class="pick-en">spring</div></div>
-        <div class="pick-card" onclick="pickWord(this,'여름','summer')"><div class="pick-emoji">☀️</div><div class="pick-kr">여름</div><div class="pick-en">summer</div></div>
-        <div class="pick-card" onclick="pickWord(this,'가을','autumn')"><div class="pick-emoji">🍂</div><div class="pick-kr">가을</div><div class="pick-en">autumn</div></div>
-        <div class="pick-card" onclick="pickWord(this,'겨울','winter')"><div class="pick-emoji">❄️</div><div class="pick-kr">겨울</div><div class="pick-en">winter</div></div>
-        <div class="pick-card" onclick="pickWord(this,'방학','vacation')"><div class="pick-emoji">🎒</div><div class="pick-kr">방학</div><div class="pick-en">vacation</div></div>
-        <div class="pick-card" onclick="pickWord(this,'생일','birthday')"><div class="pick-emoji">🎂</div><div class="pick-kr">생일</div><div class="pick-en">birthday</div></div>
-        <div class="pick-card" onclick="pickWord(this,'주말','weekend')"><div class="pick-emoji">🎉</div><div class="pick-kr">주말</div><div class="pick-en">weekend</div></div>
-        <div class="pick-card" onclick="pickWord(this,'아침','morning')"><div class="pick-emoji">🌅</div><div class="pick-kr">아침</div><div class="pick-en">morning</div></div>
-        <div class="pick-card" onclick="pickWord(this,'비','rain')"><div class="pick-emoji">🌧️</div><div class="pick-kr">비</div><div class="pick-en">rain</div></div>
-        <div class="pick-card" onclick="pickWord(this,'눈','snow')"><div class="pick-emoji">❄️</div><div class="pick-kr">눈</div><div class="pick-en">snow</div></div>
+<!-- SEASONS + PATTERN -->
+<div class="section">
+  <h2>🍂 계절 Seasons + 패턴 Pattern</h2>
+  <div class="content">
+    <div class="season-grid">
+      <div class="season-card" onclick="pickSeason(this,'봄','spring','🌸')">
+        <div class="season-emoji">🌸</div>
+        <div class="season-kr">봄</div>
+        <div class="season-en">spring</div>
       </div>
-      <div class="my-sentence">
-        <div class="my-sentence-text" id="mySentence">골라보세요~ 👆</div>
-        <button class="say-btn" id="sayBtn" onclick="saySentence()" style="display:none">🔊 말해봐요!</button>
-        <div class="say-count" id="sayCount"></div>
+      <div class="season-card" onclick="pickSeason(this,'여름','summer','☀️')">
+        <div class="season-emoji">☀️</div>
+        <div class="season-kr">여름</div>
+        <div class="season-en">summer</div>
+      </div>
+      <div class="season-card" onclick="pickSeason(this,'가을','autumn','🍂')">
+        <div class="season-emoji">🍂</div>
+        <div class="season-kr">가을</div>
+        <div class="season-en">autumn</div>
+      </div>
+      <div class="season-card" onclick="pickSeason(this,'겨울','winter','❄️')">
+        <div class="season-emoji">❄️</div>
+        <div class="season-kr">겨울</div>
+        <div class="season-en">winter</div>
       </div>
     </div>
-  </div>
-
-  <!-- SLIDE 6: Quiz -->
-  <div class="slide" id="s6">
-    <div class="slide-num">6 / 6</div>
-    <h2 style="margin-bottom:8px">🎯 퀴즈 Quiz!</h2>
-    <div id="quizArea" style="flex:1;position:relative;width:100%;display:flex;flex-direction:column;min-height:0;"></div>
-    <div style="text-align:center;padding:4px 0;position:relative;z-index:20">
-      <button onclick="skipQuiz()" id="skipBtn" style="background:none;border:none;font-size:clamp(11px,1vw,13px);color:#94a3b8;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif">퀴즈 건너뛰기 Skip quiz →</button>
+    <div class="pattern-result" id="patternResult">
+      <div style="font-size:18px;color:var(--light);font-weight:500">👆 계절을 클릭해보세요!</div>
     </div>
   </div>
+</div>
 
-  <div class="nav">
-    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 이전</button>
-    <div class="nav-dots" id="dotsBar"></div>
-    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">다음 →</button>
+<!-- MAKE YOUR OWN -->
+<div class="section">
+  <h2>✏️ 내 문장 만들기 Make your own!</h2>
+  <div class="content">
+    <p style="font-size:14px;color:var(--dim)">골라봐요! Pick one and make a sentence:</p>
+    <div class="pick-grid">
+      <div class="pick-card" onclick="pickWord(this,'봄','spring')"><div class="pick-emoji">🌸</div><div class="pick-kr">봄</div><div class="pick-en">spring</div></div>
+      <div class="pick-card" onclick="pickWord(this,'여름','summer')"><div class="pick-emoji">☀️</div><div class="pick-kr">여름</div><div class="pick-en">summer</div></div>
+      <div class="pick-card" onclick="pickWord(this,'가을','autumn')"><div class="pick-emoji">🍂</div><div class="pick-kr">가을</div><div class="pick-en">autumn</div></div>
+      <div class="pick-card" onclick="pickWord(this,'겨울','winter')"><div class="pick-emoji">❄️</div><div class="pick-kr">겨울</div><div class="pick-en">winter</div></div>
+      <div class="pick-card" onclick="pickWord(this,'방학','vacation')"><div class="pick-emoji">🎒</div><div class="pick-kr">방학</div><div class="pick-en">vacation</div></div>
+      <div class="pick-card" onclick="pickWord(this,'생일','birthday')"><div class="pick-emoji">🎂</div><div class="pick-kr">생일</div><div class="pick-en">birthday</div></div>
+      <div class="pick-card" onclick="pickWord(this,'주말','weekend')"><div class="pick-emoji">🎉</div><div class="pick-kr">주말</div><div class="pick-en">weekend</div></div>
+      <div class="pick-card" onclick="pickWord(this,'아침','morning')"><div class="pick-emoji">🌅</div><div class="pick-kr">아침</div><div class="pick-en">morning</div></div>
+      <div class="pick-card" onclick="pickWord(this,'비','rain')"><div class="pick-emoji">🌧️</div><div class="pick-kr">비</div><div class="pick-en">rain</div></div>
+      <div class="pick-card" onclick="pickWord(this,'눈','snow')"><div class="pick-emoji">❄️</div><div class="pick-kr">눈</div><div class="pick-en">snow</div></div>
+    </div>
+    <div class="my-sentence">
+      <div class="my-sentence-text" id="mySentence">골라보세요~ 👆</div>
+      <button class="say-btn" id="sayBtn" onclick="saySentence()" style="display:none">🔊 말해봐요!</button>
+      <div style="font-size:13px;color:var(--dim);margin-top:8px" id="sayCount"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" style="border-bottom:none;padding-bottom:60px">
+  <h2>🎯 퀴즈 Quiz!</h2>
+  <div class="quiz-wrap" id="quizArea"></div>
+  <div style="text-align:center;margin-top:12px">
+    <button onclick="skipQuiz()" id="skipBtn" style="background:none;border:none;font-size:13px;color:#94a3b8;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif">퀴즈 건너뛰기 Skip quiz →</button>
   </div>
 </div>
 
 <script>
-// ── Landscape lock ──
-(function(){
-  if(screen.orientation && screen.orientation.lock){
-    screen.orientation.lock('landscape').catch(()=>{});
-  }
-})();
+// Progress bar on scroll
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop||document.body.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+});
 
-// ── Slide nav ──
-let cur=1;const total=6;
-
-// ── Dots ──
-function initDots(){
-  const bar=document.getElementById('dotsBar');
-  bar.innerHTML='';
-  for(let i=1;i<=total;i++){
-    const d=document.createElement('div');
-    d.className='nav-dot'+(i===1?' active':'');
-    d.onclick=()=>goSlide(i);
-    bar.appendChild(d);
-  }
-}
-function updateDots(){
-  document.querySelectorAll('.nav-dot').forEach((d,i)=>{
-    d.classList.toggle('active',i+1===cur);
-  });
-  document.getElementById('prevBtn').className='nav-btn'+(cur===1?' invisible':'');
-  document.getElementById('nextBtn').className='nav-btn'+(cur<total?' primary':' invisible');
-}
-initDots();
-updateDots();
-document.getElementById('progressBar').style.width=(1/total*100)+'%';
-
-// ── TTS ──
 function speakKr(text){
   const u=new SpeechSynthesisUtterance(text);
   u.lang='ko-KR';u.rate=0.85;
@@ -416,34 +276,6 @@ function speakVocab(el,word){
   el.classList.add('played');
 }
 
-function goSlide(n){
-  document.getElementById('s'+cur).classList.remove('active');
-  document.getElementById('s'+cur).style.display='none';
-  cur=n;
-  const s=document.getElementById('s'+cur);
-  s.style.display='flex';s.classList.add('active');
-  document.getElementById('progressBar').style.width=(cur/total*100)+'%';
-  document.getElementById('prevBtn').style.display=cur>1?'':'none';
-  document.getElementById('nextBtn').style.display=cur<total?'':'none';
-  updateDots();
-  if(cur===6)setTimeout(initQuiz,150);
-}
-function changeSlide(dir){
-  document.getElementById('s'+cur).classList.remove('active');
-  document.getElementById('s'+cur).style.display='none';
-  cur=Math.max(1,Math.min(total,cur+dir));
-  const nextSlide=document.getElementById('s'+cur);
-  nextSlide.style.display='flex';
-  nextSlide.classList.add('active');
-  document.getElementById('progressBar').style.width=(cur/total*100)+'%';
-  document.getElementById('prevBtn').style.display=cur>1?'':'none';
-  document.getElementById('nextBtn').style.display=cur<total?'':'none';
-  updateDots();
-  if(cur===6) setTimeout(initQuiz, 150);
-}
-document.getElementById('progressBar').style.width=(1/total*100)+'%';
-
-// ── 이/가 helper ──
 function igа(kr){
   const code=kr.charCodeAt(kr.length-1);
   const hasBatchim=(code-0xAC00)%28!==0;
@@ -451,23 +283,20 @@ function igа(kr){
 }
 function makeSentence(kr){return kr+igа(kr)+' 왔어요';}
 
-// ── Slide 4: Seasons ──
 function pickSeason(el,kr,en,emoji){
   document.querySelectorAll('.season-card').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   const sentence=makeSentence(kr);
   document.getElementById('patternResult').innerHTML=
-    '<div class="pattern-text">'+emoji+' '+sentence+'<br><span style="font-size:clamp(11px,1vw,14px);color:var(--dim);font-weight:400">'+kr+' has come!</span></div>';
+    '<div class="pattern-text">'+emoji+' '+sentence+'<br><span style="font-size:16px;color:var(--dim);font-weight:400">'+kr+' has come!</span></div>';
   speakKr(sentence);
 }
 
-// ── Slide 5: Make your own ──
 let sayCounter=0;let currentWord='';
 function pickWord(el,kr,en){
   document.querySelectorAll('.pick-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
-  currentWord=kr;
-  sayCounter=0;
+  currentWord=kr;sayCounter=0;
   const sentence=makeSentence(kr);
   document.getElementById('mySentence').textContent=sentence;
   document.getElementById('sayBtn').style.display='inline-flex';
@@ -478,59 +307,32 @@ function saySentence(){
   if(!currentWord)return;
   speakKr(makeSentence(currentWord));
   sayCounter++;
-  const msgs=['', '한 번! 👏', '두 번! 👏👏', '세 번! 🎉 완벽해요!', '대단해요! ✨','천재예요! 🌟'];
+  const msgs=['','한 번! 👏','두 번! 👏👏','세 번! 🎉 완벽해요!','대단해요! ✨','천재예요! 🌟'];
   document.getElementById('sayCount').textContent=msgs[Math.min(sayCounter,msgs.length-1)];
 }
 
-// ── Slide 6: Quiz ──
+// Quiz
 const quizQs=[
   {emoji:'❄️',answer:'겨울',sentence:'겨울이 왔어요'},
   {emoji:'🌸',answer:'봄',sentence:'봄이 왔어요'},
   {emoji:'☀️',answer:'여름',sentence:'여름이 왔어요'},
 ];
 const allWords=['겨울','봄','봉','범','몸','곰','굴','울','겨','보름','겨자','고울','가을','여름','봄비'];
-
 let qIdx=0,score=0,answered=false;
 
-// Sound effects
 function playFanfare(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [[523,.1],[659,.2],[784,.3],[1047,.5]].forEach(([f,t])=>{
-      const o=ctx.createOscillator();const g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=f;g.gain.setValueAtTime(.3,ctx.currentTime+t);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.3);
-      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.4);
-    });
-  }catch(e){}
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();[[523,.1],[659,.2],[784,.3],[1047,.5]].forEach(([f,t])=>{const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.3,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.3);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.4);});}catch(e){}
 }
 function playWrong(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [[200,.0],[180,.15],[160,.3]].forEach(([f,t])=>{
-      const o=ctx.createOscillator();const g=ctx.createGain();
-      o.type='sawtooth';o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=f;g.gain.setValueAtTime(.2,ctx.currentTime+t);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.12);
-      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.15);
-    });
-  }catch(e){}
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();[[200,.0],[180,.15],[160,.3]].forEach(([f,t])=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='sawtooth';o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.2,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.12);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.15);});}catch(e){}
 }
 
-function initQuiz(){qIdx=0;score=0;answered=false;renderQuiz();}
-function skipQuiz(){
-  document.getElementById('skipBtn').style.display='none';
-  goSlide(1);
-}
+function skipQuiz(){document.getElementById('skipBtn').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
 
 function renderQuiz(){
   const area=document.getElementById('quizArea');
-  area.style.position='relative';
-  area.style.flex='1';
-  area.style.width='100%';
   if(qIdx>=quizQs.length){
-    area.innerHTML='<div class="complete-box"><div class="complete-emoji">🎉</div><div class="complete-title">완벽해요!</div><div class="complete-sub">'+score+'/'+quizQs.length+' 정답! 대단해요! 🌸</div><button class="say-btn" style="margin-top:20px" onclick="initQuiz()">다시 하기 🔄</button></div>';
+    area.innerHTML='<div class="complete-box"><div class="complete-emoji">🎉</div><div class="complete-title">완벽해요!</div><div class="complete-sub">'+score+'/'+quizQs.length+' 정답! 대단해요! 🌸</div><button class="say-btn" style="margin-top:20px" onclick="qIdx=0;score=0;answered=false;renderQuiz()">다시 하기 🔄</button></div>';
     if(score===quizQs.length)playFanfare();
     return;
   }
@@ -538,22 +340,18 @@ function renderQuiz(){
   const ig=igа(q.answer);
   const shuffled=[...allWords].sort(()=>Math.random()-.5);
   area.innerHTML=`
-    <div class="quiz-progress">${qIdx+1} / ${quizQs.length}</div>
-    <div style="text-align:center;margin:8px 0 12px;">
-      <div style="font-size:clamp(24px,3.5vw,44px)">${q.emoji}</div>
-      <div style="font-size:clamp(15px,2vw,26px);font-weight:700;white-space:nowrap"><span id="blankSlot" style="color:var(--accent)">_____</span>${ig} 왔어요</div>
+    <div class="quiz-q-top">
+      <div class="quiz-progress">${qIdx+1} / ${quizQs.length}</div>
+      <div style="font-size:44px;margin:8px 0">${q.emoji}</div>
+      <div style="font-size:clamp(18px,5vw,26px);font-weight:700"><span id="blankSlot" style="color:var(--accent)">_____</span>${ig} 왔어요</div>
     </div>
-    <div id="wordScatter" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-content:flex-start;flex:1;padding:4px 8px;"></div>
-    <div id="quizMsg" style="text-align:center;font-size:clamp(14px,1.6vw,20px);font-weight:700;min-height:28px;padding:4px 0;"></div>
+    <div class="word-cloud" id="wordScatter"></div>
+    <div class="quiz-msg" id="quizMsg"></div>
   `;
   const scatter=document.getElementById('wordScatter');
-  shuffled.forEach((w)=>{
-    const d=document.createElement('div');
-    d.textContent=w;
-    const rot=(Math.random()-0.5)*12;
-    d.style.cssText=`padding:8px 18px;border-radius:99px;border:1.5px solid #e2e8f0;background:white;font-size:clamp(14px,1.6vw,20px);font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);color:#1e293b;white-space:nowrap;transform:rotate(${rot}deg);transition:border-color .2s,background .2s;`;
-    d.onmouseenter=()=>{d.style.borderColor='#e91e8c';d.style.background='rgba(233,30,140,.06)'};
-    d.onmouseleave=()=>{if(!d.classList.contains('used')){d.style.borderColor='#e2e8f0';d.style.background='white'}};
+  shuffled.forEach(w=>{
+    const d=document.createElement('button');
+    d.textContent=w;d.className='scatter-word';
     d.onclick=()=>checkAnswer(w,d,q);
     scatter.appendChild(d);
   });
@@ -568,8 +366,7 @@ function checkAnswer(word,el,q){
     document.getElementById('quizMsg').innerHTML='🎉 <strong>정답!</strong> '+q.sentence;
     document.getElementById('quizMsg').style.color='#10b981';
     el.style.background='#d1fae5';el.style.borderColor='#10b981';
-    speakKr(q.sentence);
-    playFanfare();
+    speakKr(q.sentence);playFanfare();
     setTimeout(()=>{qIdx++;answered=false;renderQuiz();},1800);
   } else {
     el.classList.add('used');
@@ -578,6 +375,7 @@ function checkAnswer(word,el,q){
     playWrong();
   }
 }
+renderQuiz();
 </script>
 </body>
 </html>
