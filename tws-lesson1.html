@@ -198,6 +198,9 @@ h2.l2{color:#5b21b6}
 </head>
 <body>
 <div class="progress-bar" id="progBar"></div>
+<div style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(59,130,246,.1);padding:.6rem 1.2rem;">
+  <button onclick="history.back()" style="background:none;border:none;color:#3b82f6;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;display:flex;align-items:center;gap:.4rem;">← 목록으로</button>
+</div>
 
 <!-- ════════ LESSON 1 COVER ════════ -->
 <div class="cover-section" id="top">
@@ -218,19 +221,19 @@ h2.l2{color:#5b21b6}
     <div class="lyrics-layout">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--dim);margin-bottom:6px;letter-spacing:.5px">🎬 FULL MV</div>
-        <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s" target="_blank">
+        <a class="yt-thumb-card" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s">
           <img src="https://img.youtube.com/vi/hVAc1Vf2ITU/hqdefault.jpg" alt="TWS MV">
           <div class="yt-play-overlay">
             <div class="yt-play-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div>
             <span class="yt-play-label">YouTube에서 보기 / Watch on YouTube</span>
           </div>
         </a>
-        <a class="yt-open-btn" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s" target="_blank" style="margin-top:10px">
+        <a class="yt-open-btn" href="https://www.youtube.com/watch?v=hVAc1Vf2ITU&t=22s" style="margin-top:10px">
           ▶ Full MV 열기 &nbsp;<span style="font-size:.85em;opacity:.7">Open on YouTube</span>
         </a>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" target="_blank" style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(135deg,rgba(251,113,133,.08),rgba(244,114,182,.04));border:1.5px solid #fda4af;border-radius:12px;text-decoration:none;color:#e11d48;font-weight:600;font-size:14px">
+        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(135deg,rgba(251,113,133,.08),rgba(244,114,182,.04));border:1.5px solid #fda4af;border-radius:12px;text-decoration:none;color:#e11d48;font-weight:600;font-size:14px">
           <span style="font-size:18px">🎯</span>
           <div><div>Highlight — YouTube Shorts</div><div style="font-size:12px;color:var(--dim);font-weight:400;margin-top:1px">후렴구 영상 보기 / Watch the chorus</div></div>
           <span style="margin-left:auto">↗</span>
@@ -361,7 +364,7 @@ h2.l2{color:#5b21b6}
       </div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
         <button class="chorus-play-btn" style="background:linear-gradient(135deg,#3b82f6,#7dd3fc)" onclick="speakKr(null,'셋, 둘, 하나. 첫 만남은 너무 어려워. 계획대로 되는 게 없어서. 첫 만남은 너무 어려워. 내 이름은 말야.')">📖 읽기 (TTS)</button>
-        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" target="_blank" class="chorus-play-btn" style="background:linear-gradient(135deg,#e11d48,#fb7185);text-decoration:none;display:inline-flex;align-items:center;gap:8px">▶️ 노래 재생<span style="font-size:.8em;opacity:.8"> / Play Song</span></a>
+        <a href="https://www.youtube.com/shorts/LcmLNfrkp9I" class="chorus-play-btn" style="background:linear-gradient(135deg,#e11d48,#fb7185);text-decoration:none;display:inline-flex;align-items:center;gap:8px">▶️ 노래 재생<span style="font-size:.8em;opacity:.8"> / Play Song</span></a>
       </div>
     </div>
   </div>
