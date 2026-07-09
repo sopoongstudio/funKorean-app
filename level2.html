@@ -695,26 +695,22 @@ function highlightDlgLine(el){el.style.boxShadow='0 0 0 2px #52b788';setTimeout(
 
 function startDlgSpeech(expected, btn, feedbackId) {
   const resultEl = feedbackId ? document.getElementById(feedbackId) : document.getElementById('dlg-speak-result');
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ Speech recognition not supported. Try Chrome!</div>`;
-    return;
-  }
   const orig = '🎤';
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SR();
-  // continuous=true so pauses mid-sentence don't cut off the recording
-  recognition.lang = 'ko-KR'; recognition.continuous = true; recognition.interimResults = true;
   let mediaRecorder = null, audioChunks = [], recordingReady = false;
   let finalTranscript = '';
-  let stopBtn = null;
+  let recognition = null;
 
-  function showStopBtn() {
-    // Inject a 🛑 stop button into the feedback div so user can finish when ready
-    if(resultEl) resultEl.innerHTML = `
-      <div style="color:#FF6B6B;font-size:.88rem;font-weight:700;padding:.6rem 1rem;background:#FFF0EA;border-radius:10px;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;animation:pulse 1s infinite;">
-        <span>🎙️ 말하세요…</span>
-        <button id="dlg-stop-btn-${feedbackId||'global'}" onclick="window._stopDlgSpeech&&window._stopDlgSpeech()" style="background:#FF6B6B;color:white;border:none;border-radius:99px;padding:.25rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;animation:none;">🛑 완료</button>
-      </div>`;
+  function showPlaybackResult() {
+    btn.textContent = orig; btn.style.color = '#52b788';
+    const pb = `<button onclick="playMyRecording(this)" style="background:var(--surface2);border:1.5px solid var(--border);color:var(--text-muted);border-radius:99px;padding:.25rem .7rem;font-size:.72rem;font-weight:600;cursor:pointer;">🔊 내 발음</button>`;
+    if(finalTranscript) {
+      const clean = s => s.replace(/[?!.,~\s]/g,'').toLowerCase();
+      const match = clean(finalTranscript) === clean(expected);
+      if(match) resultEl.innerHTML = `<div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#276749;font-weight:700;">✅ 잘했어요!</span><span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${finalTranscript}"</span>${pb}</div>`;
+      else resultEl.innerHTML = `<div style="background:#FFF8F6;border:1.5px solid rgba(255,107,107,.4);border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#E53E3E;font-weight:700;">🔄 다시!</span><span style="font-size:.8rem;color:var(--text-muted);">You: <span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${finalTranscript}"</span></span><span style="font-size:.8rem;color:var(--text-muted);">→ <span style="font-family:'Noto Sans KR',sans-serif;color:#52b788;font-weight:700;">"${expected}"</span></span>${pb}</div>`;
+    } else {
+      resultEl.innerHTML = `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;">${pb}<span style="font-size:.75rem;color:var(--text-muted);">녹음됐어요! 들어보세요 👂</span></div>`;
+    }
     if(resultEl) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
   }
 
@@ -722,29 +718,46 @@ function startDlgSpeech(expected, btn, feedbackId) {
     mediaRecorder = new MediaRecorder(stream); audioChunks = []; finalTranscript = '';
     mediaRecorder.ondataavailable = e => { if(e.data.size>0) audioChunks.push(e.data); };
     mediaRecorder.onstop = () => {
-      const blob=new Blob(audioChunks,{type:'audio/webm'});
-      window._lastRecordingUrl=URL.createObjectURL(blob);
-      recordingReady=true;
-      const pb=document.getElementById('dlg-playback-btn');
-      if(pb) pb.disabled=false;
+      const blob = new Blob(audioChunks,{type:'audio/webm'});
+      window._lastRecordingUrl = URL.createObjectURL(blob);
+      recordingReady = true;
+      showPlaybackResult();
     };
-    btn.textContent = '⏳'; btn.style.color = '#F59E0B';
-    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⏳ 준비 중...</div>`;
+
+    btn.textContent = '🎙️'; btn.style.color = '#FF6B6B';
     mediaRecorder.start();
-    setTimeout(() => {
-      btn.textContent = '🎙️'; btn.style.color = '#FF6B6B';
-      showStopBtn();
-      recognition.start();
-    }, 600);
+    resultEl.innerHTML = `
+      <div style="color:#FF6B6B;font-size:.88rem;font-weight:700;padding:.6rem 1rem;background:#FFF0EA;border-radius:10px;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+        <span>🎙️ 말하세요…</span>
+        <button onclick="window._stopDlgSpeech&&window._stopDlgSpeech()" style="background:#FF6B6B;color:white;border:none;border-radius:99px;padding:.25rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;">🛑 완료</button>
+      </div>`;
+    if(resultEl) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+    // Try speech recognition (optional)
+    if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SR();
+      recognition.lang = 'ko-KR'; recognition.continuous = false; recognition.interimResults = true;
+      recognition.onresult = e => {
+        finalTranscript = '';
+        for(let i=0;i<e.results.length;i++){if(e.results[i].isFinal)finalTranscript+=e.results[i][0].transcript;}
+      };
+      recognition.onend = () => {
+        if(mediaRecorder && mediaRecorder.state==='recording') {
+          setTimeout(()=>{ try{recognition.start();}catch(e){} },300);
+        }
+      };
+      recognition.onerror = e => { if(e.error==='no-speech') return; };
+      try { recognition.start(); } catch(e) {}
+    }
   }
 
-  // Stop handler — triggered by 🛑 button
   window._stopDlgSpeech = () => {
-    recognition.stop();
+    if(recognition){ try{recognition.stop();}catch(e){} }
     if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
   };
 
-  if (window._micStream && window._micStream.active) {
+  if(window._micStream && window._micStream.active) {
     doRecord(window._micStream);
   } else {
     navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
@@ -755,41 +768,6 @@ function startDlgSpeech(expected, btn, feedbackId) {
       if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.82rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 마이크 권한이 필요해요.</div>`;
     });
   }
-
-  function buildResult(match, transcript) {
-    btn.textContent = orig; btn.style.color = '#52b788';
-    if (resultEl) resultEl.scrollIntoView({behavior:'smooth', block:'nearest'});
-    const pb = `<button id="dlg-playback-btn" onclick="playMyRecording(this)" style="background:var(--surface2);border:1.5px solid var(--border);color:var(--text-muted);border-radius:99px;padding:.25rem .7rem;font-size:.72rem;font-weight:600;cursor:pointer;" ${recordingReady?'':'disabled'}>🔊 내 발음</button>`;
-    if (match) resultEl.innerHTML = `<div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#276749;font-weight:700;">✅ 잘했어요!</span><span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${transcript}"</span>${pb}</div>`;
-    else resultEl.innerHTML = `<div style="background:#FFF8F6;border:1.5px solid rgba(255,107,107,.4);border-radius:10px;padding:.6rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;"><span style="color:#E53E3E;font-weight:700;">🔄 다시!</span><span style="font-size:.8rem;color:var(--text-muted);">You: <span style="font-family:'Noto Sans KR',sans-serif;color:#0F172A;">"${transcript}"</span></span><span style="font-size:.8rem;color:var(--text-muted);">→ <span style="font-family:'Noto Sans KR',sans-serif;color:#52b788;font-weight:700;">"${expected}"</span></span>${pb}</div>`;
-  }
-
-  // Accumulate all interim+final results
-  recognition.onresult = e => {
-    finalTranscript = '';
-    for (let i = 0; i < e.results.length; i++) {
-      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript;
-    }
-  };
-
-  recognition.onend = () => {
-    if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
-    const t = finalTranscript.trim();
-    if (!t) {
-      btn.textContent = orig; btn.style.color = '#52b788';
-      if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.8rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 못 들었어요. 다시 눌러보세요!</div>`;
-      return;
-    }
-    const clean = s => s.replace(/[?!.,~\s]/g,'').toLowerCase();
-    buildResult(clean(t) === clean(expected), t);
-  };
-
-  recognition.onerror = e => {
-    if(e.error === 'no-speech') return; // ignore mid-pause no-speech, user will press 🛑
-    if(mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
-    btn.textContent = orig; btn.style.color = '#52b788';
-    if(resultEl) resultEl.innerHTML = `<div style="color:#F59E0B;font-size:.8rem;padding:.5rem 1rem;background:#FEF3C7;border-radius:10px;margin-bottom:.5rem;">⚠️ 못 들었어요. 다시 눌러보세요!</div>`;
-  };
 }
 
 function playFullDialogue(dIdx) {

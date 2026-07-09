@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Culture — funKorean</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--bg:#F0F4F8;--surface:#FFFFFF;--surface2:#F0F4F8;--accent:#FF6B6B;--accent2:#FFD93D;--accent3:#4D96FF;--accent4:#4D96FF;--text:#0F172A;--text-muted:#475569;--border:#CBD5E1;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{font-size:17px;}
+  body{background:var(--surface);color:var(--text);font-family:'DM Sans','Noto Sans KR',sans-serif;font-weight:450;-webkit-font-smoothing:antialiased;padding:2rem;}
+  @media(max-width:480px){body{padding:1.2rem;}}
+  .modal-title-kr{font-family:'Noto Sans KR',sans-serif;font-size:2rem;font-weight:900;margin-bottom:.3rem;color:#6D28D9;}
+  .modal-title-en{font-size:.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;font-weight:600;}
+  /* K-Culture */
+  .kculture-section{margin-bottom:1.2rem;}
+  .kculture-section-header{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:#F8FAFC;border-radius:10px;margin-bottom:.5rem;font-weight:700;font-size:.9rem;cursor:pointer;user-select:none;border:1.5px solid #E2E8F0;transition:all .2s;}
+  .kculture-section-header:hover{border-color:#CBD5E1;background:#F1F5F9;}
+  .kculture-section-header .chevron{margin-left:auto;transition:transform .2s;font-size:.8rem;color:var(--text-muted);}
+  .kculture-section-header.open .chevron{transform:rotate(180deg);}
+  .kculture-artist{border:1.5px solid #E2E8F0;border-radius:12px;overflow:hidden;margin-bottom:.5rem;}
+  .kculture-artist-header{display:flex;align-items:center;gap:.7rem;padding:.65rem 1rem;background:#FAFBFC;cursor:pointer;user-select:none;transition:background .15s;}
+  .kculture-artist-header:hover{background:#F1F5F9;}
+  .kculture-artist-header .chevron{margin-left:auto;transition:transform .2s;font-size:.75rem;color:var(--text-muted);}
+  .kculture-artist-header.open .chevron{transform:rotate(180deg);}
+  .kculture-songs{display:none;padding:.4rem .6rem .6rem;background:white;}
+  .kculture-song-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.55rem .5rem;border-radius:9px;transition:background .15s;flex-wrap:wrap;}
+  .kculture-song-row:hover{background:#F8FAFC;}
+  .song-title{font-family:'Noto Sans KR',sans-serif;font-size:.92rem;font-weight:700;color:var(--text);}
+  .song-sub{font-size:.72rem;color:var(--text-muted);margin-top:.1rem;}
+  .level-badge{font-size:.65rem;font-weight:700;letter-spacing:.5px;padding:.25rem .6rem;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+  .badge-a1{background:rgba(82,183,136,.15);color:#276749;}
+  .badge-a1a2{background:rgba(77,150,255,.12);color:#2B6CB0;}
+  .badge-a2{background:rgba(255,217,61,.2);color:#7B5200;}
+  .badge-a1b1{background:rgba(167,139,250,.15);color:#5B21B6;}
+  .badge-a2b1{background:rgba(255,107,107,.12);color:#C53030;}
+  .badge-b1{background:rgba(239,68,68,.12);color:#991B1B;}
+  .song-btn{display:inline-block;background:#6D28D9;color:#fff;text-decoration:none;padding:.3rem .85rem;border-radius:99px;font-size:.75rem;font-weight:600;white-space:nowrap;transition:background .15s;}
+  .song-btn:hover{background:#5B21B6;}
+  .song-btn-quiz{display:inline-block;background:#FEF3C7;color:#78350F;text-decoration:none;padding:.3rem .85rem;border-radius:99px;font-size:.75rem;font-weight:600;white-space:nowrap;border:1.5px solid #F59E0B;transition:background .15s;}
+  .song-btn-quiz:hover{background:#FDE68A;}
+  @media(max-width:480px){
+    .kculture-song-row{flex-direction:column;align-items:stretch;gap:.5rem;}.song-info{width:100%;}
+  }
+</style>
+</head>
+<body>
+  <div class="modal-title-kr">K-Culture 🎵</div>
+  <div class="modal-title-en">K-POP · 드라마 · 동화 · K-FOOD · K-ENTS</div>
+
+  <div class="kculture-section">
+    <div class="kculture-section-header" onclick="toggleKSection(this)" id="kpop-header"><span style="font-size:1.1rem;">🎵</span><span>K-Pop</span><span class="chevron">▼</span></div>
+    <div id="kpop-body" style="display:none;">
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">👑</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">2NE1</div><div style="font-size:.72rem;color:var(--text-muted);">YG Entertainment · 2009–2016</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">내가 제일 잘나가 👑</div><div class="song-sub">I Am the Best · 2011</div></div><span class="level-badge badge-a1">A1</span><a href="kpop_korean_trial.html" target="_blank" class="song-btn">레슨 열기</a><a href="quiz_naega.html" target="_blank" class="song-btn-quiz">퀴즈 🎯</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🌱</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">TWS (투어스)</div><div style="font-size:.72rem;color:var(--text-muted);">PLEDIS Entertainment · 2024–</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">첫 만남은 계획대로 되지 않아 🌱</div><div class="song-sub">First Love Wasn't Smooth · 2024</div></div><span class="level-badge badge-a1a2">A1–A2</span><a href="tws-lesson1.html" target="_blank" class="song-btn">Lesson 1</a><a href="tws-lesson2.html" target="_blank" class="song-btn">Lesson 2</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🌸</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">로이킴 (Roy Kim)</div><div style="font-size:.72rem;color:var(--text-muted);">Stone Music Entertainment · 2012–</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">봄봄봄 🌸</div><div class="song-sub">Spring Spring Spring · 2013</div></div><span class="level-badge badge-a1b1">A1–B1</span><a href="bom_lesson1_v2.html" target="_blank" class="song-btn">Lesson 1</a><a href="bom_lesson2.html" target="_blank" class="song-btn">Lesson 2</a><a href="bom_lesson3.html" target="_blank" class="song-btn">Lesson 3</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">📣</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">TWICE (트와이스)</div><div style="font-size:.72rem;color:var(--text-muted);">JYP Entertainment · 2015–</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">Cheer Up 📣</div><div class="song-sub">밀당 문화 + 게임 · 2016</div></div><span class="level-badge badge-a2">A2</span><a href="cheerup-lesson1.html" target="_blank" class="song-btn">Lesson 1</a><a href="cheerup-lesson2.html" target="_blank" class="song-btn">Lesson 2</a><a href="CheerUp_Lesson2_Games.html" target="_blank" class="song-btn">Games</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🌙</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">ENHYPEN (엔하이픈)</div><div style="font-size:.72rem;color:var(--text-muted);">HYBE · 2020–</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">Polaroid Love 📸</div><div class="song-sub">사랑 표현 · 2021</div></div><span class="level-badge badge-a1a2">A1–A2</span><a href="polaroid-lesson1.html" target="_blank" class="song-btn">Lesson 1</a></div>
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">No Doubt 🌙</div><div class="song-sub">감정 표현 · 2023</div></div><span class="level-badge badge-a2">A2</span><a href="nodoubt-lesson1.html" target="_blank" class="song-btn">Lesson 1</a><a href="nodoubt-lesson2.html" target="_blank" class="song-btn">Lesson 2</a><a href="nodoubt-lesson3.html" target="_blank" class="song-btn">Lesson 3</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🌈</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">NCT Dream</div><div style="font-size:.72rem;color:var(--text-muted);">SM Entertainment · 2016–</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">Hello Future 🌟</div><div class="song-sub">격려 표현 + 미래 · 2021</div></div><span class="level-badge badge-a1">A1</span><a href="hellofuture-lesson1.html" target="_blank" class="song-btn" style="background:#10B981;">Lesson 1</a><a href="nct-lesson1-story.html" target="_blank" class="song-btn-quiz">Story 📖</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist" style="opacity:.6;">
+        <div class="kculture-artist-header" style="cursor:default;"><span style="font-size:1.3rem;">💜</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">방탄소년단 (BTS)</div><div style="font-size:.72rem;color:var(--text-muted);">HYBE · 2013–</div></div><span>🔒</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kculture-section" style="margin-top:.8rem;">
+    <div class="kculture-section-header" onclick="toggleKSection(this)" id="kdrama-header"><span style="font-size:1.1rem;">🎬</span><span>드라마·예능</span><span class="chevron">▼</span></div>
+    <div id="kdrama-body" style="display:none;">
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">💕</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">이 사랑 통역 되나요?</div><div style="font-size:.72rem;color:var(--text-muted);">Can This Love Be Translated · Netflix 2025</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">나랑 오로라 보러 갈래? 🌌</div><div class="song-sub">감정 표현 + 색깔 + 제안하기</div></div><span class="level-badge badge-a1a2">A1–A2</span><a href="isarang-lesson1.html" target="_blank" class="song-btn" style="background:#E879A0;">레슨 열기</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist" style="opacity:.6;">
+        <div class="kculture-artist-header" style="cursor:default;"><span style="font-size:1.3rem;">⏪</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">선재 업고 튀어</div><div style="font-size:.72rem;color:var(--text-muted);">Lovely Runner · tvN 2024</div></div><span>🔒</span></div>
+      </div>
+      <div class="kculture-artist" style="opacity:.6;">
+        <div class="kculture-artist-header" style="cursor:default;"><span style="font-size:1.3rem;">🌊</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">갯마을 차차차</div><div style="font-size:.72rem;color:var(--text-muted);">Hometown Cha-Cha-Cha · tvN 2021</div></div><span>🔒</span></div>
+      </div>
+      <div class="kculture-artist" style="opacity:.6;">
+        <div class="kculture-artist-header" style="cursor:default;"><span style="font-size:1.3rem;">💘</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">솔로지옥</div><div style="font-size:.72rem;color:var(--text-muted);">Single's Inferno · Netflix 2021–</div></div><span>🔒</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kculture-section" style="margin-top:.8rem;">
+    <div class="kculture-section-header" onclick="toggleKSection(this)" id="kfolktale-header"><span style="font-size:1.1rem;">📖</span><span>동화 · Reading</span><span class="chevron">▼</span></div>
+    <div id="kfolktale-body" style="display:none;">
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🌟</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">함께 해</div><div style="font-size:.72rem;color:var(--text-muted);">Hello Future Mini Story · NCT Dream</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">함께 해 🌟</div><div class="song-sub">Mini Story · A1</div></div><span class="level-badge badge-a1">A1</span><a href="nct-lesson1-story.html" target="_blank" class="song-btn" style="background:#10B981;">레슨 열기</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🐇</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">토끼와 거북이</div><div style="font-size:.72rem;color:var(--text-muted);">The Rabbit and the Turtle</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">토끼와 거북이 🐇</div><div class="song-sub">Korean Folktale · A1–A2</div></div><span class="level-badge badge-a1a2">A1–A2</span><a href="rabbit_turtle_lesson.html" target="_blank" class="song-btn">레슨 열기</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🦅</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">단군 이야기</div><div style="font-size:.72rem;color:var(--text-muted);">The Legend of Dangun</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">단군 이야기 🦅</div><div class="song-sub">Korean Folktale · B1</div></div><span class="level-badge badge-b1">B1</span><a href="dangun_lesson.html" target="_blank" class="song-btn">레슨 열기</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">🐦</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">흥부와 놀부</div><div style="font-size:.72rem;color:var(--text-muted);">Heungbu and Nolbu</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">흥부와 놀부 🐦</div><div class="song-sub">Korean Folktale · A2–B1</div></div><span class="level-badge badge-a2b1">A2–B1</span><a href="heungbu_lesson.html" target="_blank" class="song-btn">레슨 열기</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kculture-section" style="margin-top:.8rem;">
+    <div class="kculture-section-header" onclick="toggleKSection(this)" id="klife-header"><span style="font-size:1.1rem;">💫</span><span>K-Life</span><span class="chevron">▼</span></div>
+    <div id="klife-body" style="display:none;">
+      <div class="kculture-artist">
+        <div class="kculture-artist-header" onclick="toggleArtist(this)"><span style="font-size:1.3rem;">💘</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">밀당 (Push-Pull Dating)</div><div style="font-size:.72rem;color:var(--text-muted);">한국 연애 문화 · Korean Dating Culture</div></div><span class="chevron">▼</span></div>
+        <div class="kculture-songs">
+          <div class="kculture-song-row"><div class="song-info"><div class="song-title">밀당 4단계 💌</div><div class="song-sub">Gen Z 연애 단계 · A2–B1</div></div><span class="level-badge badge-b1">A2–B1</span><a href="gen_z_dating_4stages.html" target="_blank" class="song-btn">레슨 열기</a><a href="mildang-discussion.html" target="_blank" class="song-btn-quiz">토론 💬</a></div>
+        </div>
+      </div>
+      <div class="kculture-artist" style="opacity:.6;">
+        <div class="kculture-artist-header" style="cursor:default;"><span style="font-size:1.3rem;">🌱</span><div><div style="font-weight:800;font-size:.95rem;color:var(--text);">사춘기 (Puberty)</div><div style="font-size:.72rem;color:var(--text-muted);">한국 청소년 문화 · Teen Life in Korea</div></div><span>🔒</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kculture-section" style="margin-top:.8rem;">
+    <div class="kculture-section-header" style="opacity:.6;cursor:default;"><span style="font-size:1.1rem;">🍜</span><span>K-Food</span><span style="margin-left:auto;">🔒</span></div>
+  </div>
+  <div class="kculture-section" style="margin-top:.8rem;">
+    <div class="kculture-section-header" style="opacity:.6;cursor:default;"><span style="font-size:1.1rem;">📺</span><span>K-Ents</span><span style="margin-left:auto;">🔒</span></div>
+  </div>
+
+<script>
+function toggleKSection(h){
+  const isOpen = h.classList.contains('open');
+  document.querySelectorAll('.kculture-section-header').forEach(hdr => {
+    hdr.classList.remove('open');
+    const b = document.getElementById(hdr.id.replace('-header','-body'));
+    if(b){ b.style.display='none'; }
+    b && b.querySelectorAll('.kculture-artist-header').forEach(ah => {
+      ah.classList.remove('open');
+      const s = ah.nextElementSibling;
+      if(s) s.style.display='none';
+    });
+  });
+  if(!isOpen){
+    h.classList.add('open');
+    const b = document.getElementById(h.id.replace('-header','-body'));
+    if(b) b.style.display='block';
+  }
+}
+function toggleArtist(h){
+  const isOpen = h.classList.contains('open');
+  const body = h.closest('[id$="-body"]');
+  if(body){
+    body.querySelectorAll('.kculture-artist-header').forEach(ah => {
+      ah.classList.remove('open');
+      const s = ah.nextElementSibling;
+      if(s) s.style.display='none';
+    });
+  }
+  if(!isOpen){
+    h.classList.add('open');
+    const s = h.nextElementSibling;
+    if(s) s.style.display='block';
+  }
+}
+</script>
+</body>
+</html>
