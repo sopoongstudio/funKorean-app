@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도깨비 – B1/B2 Korean Lesson</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #F5F0E8;
+  --card: #EDE8DF;
+  --navy: #1A1A2E;
+  --gold: #C9922A;
+  --gold-lt: #F0D898;
+  --brown: #4A3728;
+  --muted: #8A7F72;
+  --white: #FFFFFF;
+  --line: #D8D0C4;
+}
+body {
+  background: var(--bg);
+  font-family: Georgia, serif;
+  color: var(--navy);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 0 60px;
+}
+
+/* Header */
+.app-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.pill {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--white);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.app-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.app-subtitle {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Section wrapper */
+.section {
+  padding: 28px 20px 0;
+}
+.section + .section {
+  margin-top: 8px;
+}
+
+/* Step label */
+.step-label {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.card-dark {
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+/* Step 1 */
+.drama-hero {
+  text-align: center;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.drama-kr {
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.drama-en {
+  font-style: italic;
+  font-size: 14px;
+  color: var(--brown);
+  margin-top: 6px;
+}
+.video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-note {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.questions p {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: var(--gold-lt);
+  line-height: 1.65;
+  padding: 8px 0;
+  border-bottom: 1px solid #2E2E4A;
+}
+.questions p:last-child { border-bottom: none; }
+
+/* Step 2: 대사 */
+.quote-text {
+  font-size: 15.5px;
+  line-height: 2;
+}
+.hl { color: var(--gold); font-weight: 700; }
+.divider { border: none; border-top: 1px solid var(--line); margin: 14px 0; }
+.translation {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.8;
+}
+.shadowing-mini {
+  border-left: 3px solid var(--gold);
+  padding-left: 14px;
+  margin-top: 4px;
+}
+.sh-title {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.sh-steps { list-style: none; }
+.sh-steps li {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #C8C0B4;
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+}
+.sh-steps li .n { color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+/* Step 3: 어휘 */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media(max-width:480px){ .vocab-grid { grid-template-columns: 1fr; } }
+.vocab-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.vkr { font-size: 22px; font-weight: 700; color: var(--gold); }
+.vrom { font-family: Arial, sans-serif; font-size: 10px; color: var(--muted); font-style: italic; margin: 2px 0 5px; }
+.ven-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.ven { font-family: Arial, sans-serif; font-size: 12px; color: var(--navy); }
+.tag {
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--brown);
+  color: var(--white);
+  white-space: nowrap;
+}
+.vdiv { border: none; border-top: 1px solid var(--line); margin: 8px 0; }
+.exkr { font-family: Arial, sans-serif; font-size: 11.5px; font-weight: 700; color: var(--navy); margin-bottom: 1px; }
+.exen { font-family: Arial, sans-serif; font-size: 10.5px; color: var(--muted); font-style: italic; margin-bottom: 7px; }
+.exen:last-child { margin-bottom: 0; }
+
+/* Pattern drills */
+.pattern-header {
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.pf { font-size: 20px; font-weight: 700; color: var(--gold); margin-bottom: 3px; }
+.pm { font-family: Arial, sans-serif; font-size: 12px; color: #C8C0B4; }
+.usage-note {
+  font-family: Arial, sans-serif;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.from-drama {
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px;
+  background: var(--card);
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 14px;
+}
+.fd-label { font-family: Arial, sans-serif; font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+.fd-text { font-size: 15px; font-weight: 700; color: var(--gold); }
+.ex-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.ex-item { display: flex; gap: 10px; }
+.exn { font-size: 13px; font-weight: 700; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+.exc .kr { font-size: 14.5px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.exc .en { font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* Shadowing full */
+.sh-phase {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: flex-start;
+}
+.sh-phase:last-child { border-bottom: none; }
+.sh-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold-lt);
+  font-family: Arial, sans-serif;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.sh-txt strong {
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 13.5px;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.sh-txt span {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Output */
+.template-card {
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+}
+.tline {
+  font-family: Arial, sans-serif;
+  font-size: 14.5px;
+  color: var(--white);
+  line-height: 2.4;
+}
+.blank {
+  display: inline-block;
+  width: 110px;
+  border-bottom: 2px solid var(--gold);
+  margin: 0 4px;
+  vertical-align: bottom;
+}
+.tip {
+  font-family: Arial, sans-serif;
+  font-size: 12.5px;
+  color: var(--brown);
+  background: var(--card);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.share {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+  padding: 16px 0 0;
+}
+
+/* Restart button */
+.restart-wrap {
+  padding: 28px 20px 0;
+  text-align: center;
+}
+.btn-restart {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 11px 28px;
+  border-radius: 30px;
+  border: none;
+  background: var(--gold);
+  color: var(--white);
+  cursor: pointer;
+}
+.btn-restart:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="pill">K-Drama Class</div>
+  <div class="app-title">도깨비 · Lesson 1</div>
+  <div class="app-subtitle">나아가는 이 · B1–B2</div>
+</div>
+
+<!-- STEP 1: HOOK -->
+<div class="section">
+  <div class="step-label">STEP 1</div>
+  <div class="section-title">Watch – The Hook</div>
+  <div class="drama-hero">
+    <div class="drama-kr">도깨비</div>
+    <div class="drama-en">Goblin: The Lonely and Great God</div>
+  </div>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/__aM0oZF1ig?start=20" allowfullscreen></iframe>
+  </div>
+  <p class="video-note">▶ Watch from 0:20 · Watch twice before scrolling</p>
+  <div class="card-dark">
+    <div class="questions">
+      <p>💬 Who do you think is speaking? What kind of person are they describing?</p>
+      <p>💬 What feeling does this speech give you — admiration? sadness? something else?</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: 대사 -->
+<div class="section">
+  <div class="step-label">STEP 2</div>
+  <div class="section-title">대사 읽기</div>
+  <div class="card">
+    <p class="quote-text">
+      나는 수천의 사람들에게 샌드위치를 건넸다.
+      <span class="hl">허나</span> 그대처럼 <span class="hl">나아가는 이</span>는 드물다.<br>
+      보통의 사람은 그 기적의 순간에 멈춰 서서 한 번 더 도와달라고 <span class="hl">하지</span>.<br>
+      당신이 있는 걸 안다고. 마치 기적을 <span class="hl">맡겨 놓은 것처럼</span>.<br>
+      그대의 삶은 그대 스스로 바꾼 것이다.
+    </p>
+    <hr class="divider">
+    <p class="translation">
+      I handed sandwiches to thousands of people. Yet someone who presses forward like you is rare.<br>
+      Most people stop at the moment of the miracle and ask for one more favour — as if to say, "I know you're there."<br>
+      As if a miracle had been entrusted to them.<br>
+      You changed your own life yourself.
+    </p>
+  </div>
+
+</div>
+
+<!-- STEP 3: 어휘 -->
+<div class="section">
+  <div class="step-label">STEP 3</div>
+  <div class="section-title">Golden Words – 어휘</div>
+  <div class="vocab-grid">
+
+    <div class="vocab-card">
+      <div class="vkr">수천</div>
+      <div class="vrom">su-cheon</div>
+      <div class="ven-row">
+        <span class="ven">thousands (of)</span>
+        <span class="tag">formal</span>
+      </div>
+      <hr class="vdiv">
+      <div class="exkr">수천 명의 사람들이 그 경기를 봤다.</div>
+      <div class="exen">Thousands of people watched the game.</div>
+      <div class="exkr">그는 수천 번 연습했다.</div>
+      <div class="exen">He practised thousands of times.</div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vkr">허나</div>
+      <div class="vrom">heo-na</div>
+      <div class="ven-row">
+        <span class="ven">however / yet</span>
+        <span class="tag">formal</span>
+      </div>
+      <hr class="vdiv">
+      <div class="exkr">열심히 공부했다. 허나 시험은 어려웠다.</div>
+      <div class="exen">I studied hard. Yet the exam was difficult.</div>
+      <div class="exkr">그는 강했다. 허나 혼자였다.</div>
+      <div class="exen">He was strong. However, he was alone.</div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vkr">드물다</div>
+      <div class="vrom">deu-mul-da</div>
+      <div class="ven-row">
+        <span class="ven">to be rare</span>
+      </div>
+      <hr class="vdiv">
+      <div class="exkr">그렇게 친절한 사람은 드물다.</div>
+      <div class="exen">Someone that kind is rare.</div>
+      <div class="exkr">이런 기회는 정말 드물어.</div>
+      <div class="exen">An opportunity like this is truly uncommon.</div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vkr">이 <span style="font-size:16px;font-weight:400">(人)</span></div>
+      <div class="vrom">i</div>
+      <div class="ven-row">
+        <span class="ven">person (literary)</span>
+        <span class="tag">≈ 사람</span>
+      </div>
+      <hr class="vdiv">
+      <div class="exkr">그러한 이를 만난 적이 없다.</div>
+      <div class="exen">I have never met such a person.</div>
+      <div class="exkr">사랑하는 이를 위해 모든 것을 했다.</div>
+      <div class="exen">He did everything for the one he loved.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STEP 4: ~잖아 -->
+<div class="section">
+  <div class="step-label">STEP 4 · Pattern Drill 1</div>
+  <div class="section-title">~ 잖아</div>
+  <div class="pattern-header">
+    <div class="pf">~ 잖아</div>
+    <div class="pm">"You know how… right?" &nbsp;/&nbsp; "…as you know"</div>
+  </div>
+  <p class="usage-note">Used when reminding someone of something they already know, or confirming a shared fact between speaker and listener.</p>
+  <div class="from-drama">
+    <div class="fd-label">📺 From the drama</div>
+    <div class="fd-text">보통의 사람은 멈춰 서서 도와달라고 하잖아.</div>
+  </div>
+  <ul class="ex-list">
+    <li class="ex-item">
+      <span class="exn">1.</span>
+      <div class="exc">
+        <div class="kr">한국어는 배우면 배울수록 재밌잖아.</div>
+        <div class="en">The more you study Korean, the more fun it gets, right?</div>
+      </div>
+    </li>
+    <li class="ex-item">
+      <span class="exn">2.</span>
+      <div class="exc">
+        <div class="kr">그 드라마 벌써 끝났잖아.</div>
+        <div class="en">That drama's already finished, you know.</div>
+      </div>
+    </li>
+    <li class="ex-item">
+      <span class="exn">3.</span>
+      <div class="exc">
+        <div class="kr">사람은 누구나 실수를 하잖아.</div>
+        <div class="en">Everyone makes mistakes, as you know.</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- STEP 5: ~ㄴ 것처럼 -->
+<div class="section">
+  <div class="step-label">STEP 5 · Pattern Drill 2</div>
+  <div class="section-title">~ ㄴ / 는 것처럼</div>
+  <div class="pattern-header">
+    <div class="pf">~ ㄴ / 는 것처럼</div>
+    <div class="pm">"as if…" &nbsp;/&nbsp; "like…"</div>
+  </div>
+  <p class="usage-note">Compares an action or state to something else. Use <strong>~ㄴ 것처럼</strong> for past/completed actions, <strong>~는 것처럼</strong> for present/ongoing.</p>
+  <div class="from-drama">
+    <div class="fd-label">📺 From the drama</div>
+    <div class="fd-text">마치 기적을 맡겨 놓은 것처럼.</div>
+  </div>
+  <ul class="ex-list">
+    <li class="ex-item">
+      <span class="exn">1.</span>
+      <div class="exc">
+        <div class="kr">그는 아무 일도 없었던 것처럼 웃었다.</div>
+        <div class="en">He smiled as if nothing had happened.</div>
+      </div>
+    </li>
+    <li class="ex-item">
+      <span class="exn">2.</span>
+      <div class="exc">
+        <div class="kr">꿈을 꾸는 것처럼 걸어다녔어.</div>
+        <div class="en">I walked around as if I were dreaming.</div>
+      </div>
+    </li>
+    <li class="ex-item">
+      <span class="exn">3.</span>
+      <div class="exc">
+        <div class="kr">처음 만난 것처럼 어색했다.</div>
+        <div class="en">It was awkward, as if we were meeting for the first time.</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- STEP 6: Shadowing -->
+<div class="section">
+  <div class="step-label">STEP 6 · Shadowing</div>
+  <div class="section-title">대사 따라 말하기</div>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/__aM0oZF1ig?start=20" allowfullscreen></iframe>
+  </div>
+  <div class="card">
+    <p class="quote-text">
+      나는 수천의 사람들에게 샌드위치를 건넸다.<br>
+      <span class="hl">허나</span> 그대처럼 <span class="hl">나아가는 이</span>는 드물다.<br>
+      보통의 사람은 그 기적의 순간에 멈춰 서서<br>
+      한 번 더 도와달라고 <span class="hl">하지</span>.<br>
+      당신이 있는 걸 안다고.<br>
+      마치 기적을 <span class="hl">맡겨 놓은 것처럼</span>.<br>
+      그대의 삶은 그대 스스로 바꾼 것이다.
+    </p>
+  </div>
+</div>
+
+<!-- STEP 7: Output -->
+<div class="section">
+  <div class="step-label">STEP 7 · Output</div>
+  <div class="section-title">나만의 도깨비 대사 쓰기 ✍️</div>
+  <p class="usage-note">Complete the template with your own ideas.</p>
+  <div class="template-card">
+    <div class="tline">나는 수천의 <span class="blank"></span> 를 봤다.</div>
+    <div class="tline">허나 <span class="blank"></span> 처럼</div>
+    <div class="tline"><span class="blank"></span> 는 사람은 드물다.</div>
+    <div class="tline">마치 <span class="blank"></span> 것처럼.</div>
+  </div>
+  <div class="tip">💡 Try to use at least one <strong>~잖아</strong> or <strong>~ㄴ 것처럼</strong> in your writing.</div>
+  <div class="share">Share your sentence with the class! 🎤</div>
+</div>
+
+<!-- STEP 8: 함께 생각해봐요 -->
+<div class="section">
+  <div class="step-label">STEP 8 · 함께 생각해봐요</div>
+  <div class="section-title">Let's Think Together 💭</div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)">
+      <div style="font-size:22px;font-weight:700;color:var(--gold-lt);font-family:Arial,sans-serif;flex-shrink:0;line-height:1">Q1</div>
+      <div style="font-family:Arial,sans-serif;font-size:14px;color:var(--navy);line-height:1.7">도깨비는 이 대사에서 무엇을 말하고 싶었을까요?<br><span style="font-size:12px;color:var(--muted);font-style:italic">What do you think the Goblin is trying to say in this speech?</span></div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)">
+      <div style="font-size:22px;font-weight:700;color:var(--gold-lt);font-family:Arial,sans-serif;flex-shrink:0;line-height:1">Q2</div>
+      <div style="font-family:Arial,sans-serif;font-size:14px;color:var(--navy);line-height:1.7">스스로 자신의 삶을 바꾸었다고 느낀 순간이 있었나요?<br><span style="font-size:12px;color:var(--muted);font-style:italic">Have you ever felt that you changed your own life?</span></div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:10px 0">
+      <div style="font-size:22px;font-weight:700;color:var(--gold-lt);font-family:Arial,sans-serif;flex-shrink:0;line-height:1">Q3</div>
+      <div style="font-family:Arial,sans-serif;font-size:14px;color:var(--navy);line-height:1.7">내 생각이나 행동을 바꾸는 데 결정적인 역할을 한 사람이나 상황이 있었나요?<br><span style="font-size:12px;color:var(--muted);font-style:italic">Was there a person or moment that changed the way you think or act?</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 수고 -->
+<div style="margin:32px 20px 0;background:var(--navy);border-radius:14px;padding:24px;text-align:center">
+  <div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px">수고하셨습니다! 🎉</div>
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"
+     style="display:inline-block;margin-top:10px;font-family:Arial,sans-serif;font-size:12px;font-weight:700;color:var(--gold);text-decoration:none;border:1px solid var(--gold);padding:8px 20px;border-radius:20px">
+    ↑ 처음으로
+  </a>
+</div>
+
+</body>
+</html>
