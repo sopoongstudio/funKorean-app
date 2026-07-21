@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pretty Girl - RESCENE | 노래로 배우는 한국어</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #FFF5F8;
+    color: #2A1A22;
+    line-height: 1.5;
+    padding-bottom: 40px;
+  }
+
+  /* Progress bar */
+  #progWrap {
+    position: sticky; top: 0; z-index: 100;
+    height: 6px; width: 100%; background: #F5D9E4;
+  }
+  #progBar { height: 100%; width: 0%; background: linear-gradient(90deg,#FF5B94,#FF8FB3); transition: width .1s; }
+
+  .section { max-width: 780px; margin: 0 auto; padding: 36px 20px; }
+
+  /* Cover */
+  .cover { text-align: center; padding: 50px 20px 40px; }
+  .format-pill {
+    display: inline-block; background: #fff; color: #D6336C;
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: 2px solid #FF8FB3; padding: 8px 20px; border-radius: 30px; margin-bottom: 22px;
+  }
+  .title-main {
+    font-family: 'Poppins', sans-serif; font-weight: 800; font-size: clamp(34px,9vw,52px);
+    color: #1A1A1A; margin-bottom: 10px;
+  }
+  .title-main .title-accent { color: #FF5B94; }
+  .tagline { font-size: 15px; font-weight: 500; color: #6b5a62; margin-bottom: 4px; }
+  .tagline-en { font-size: 12px; font-weight: 500; color: #B8879B; margin-bottom: 26px; }
+  .nav-chips { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .chip {
+    font-size: 13px; font-weight: 600; background:#fff; color:#D6336C;
+    border: 2px solid #FFC2D9; padding: 9px 16px; border-radius: 20px;
+    text-decoration:none; cursor:pointer;
+  }
+  .chip-en { font-size: 10px; font-weight: 500; color:#D6336C; opacity: 0.65; margin-left: 3px; }
+
+  h2.sec-title { font-size: clamp(20px,5vw,26px); font-weight: 800; color:#1A1A1A; margin-bottom: 4px; }
+  .sec-title-en { font-size: 13px; font-weight: 500; color:#B8879B; margin-bottom: 18px; }
+  .emoji-tag { font-size: 22px; margin-right: 6px; }
+
+  /* Card base */
+  .card {
+    background:#fff; border: 2px solid #FFD3E3; border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(214,51,108,0.08);
+    padding: 20px;
+  }
+
+  /* Video + lyric focus */
+  .video-lyric-grid { display:grid; grid-template-columns: 1fr; gap:16px; }
+  @media(min-width:640px){ .video-lyric-grid{ grid-template-columns: 1fr 1.3fr; } }
+  .video-box { text-align:center; }
+  .video-box .yt-icon { font-size:40px; margin-bottom:8px; }
+  .link-btn {
+    display:block; text-decoration:none; background:#FF5B94; color:#fff;
+    font-weight:700; font-size:14px; padding:12px; border-radius:12px; margin-top:10px;
+  }
+  .link-btn.secondary { background:#1A1A1A; }
+  .lyric-focus p.kr { font-size: clamp(17px,4.2vw,19px); font-weight:600; color:#1A1A1A; margin-bottom:4px; }
+  .lyric-line { display:flex; align-items:center; gap:8px; }
+  .lyric-line p.kr { margin-bottom:0; flex:1; }
+  .lyric-focus p.romanized { font-size:14px; font-weight:500; color:#B8879B; margin-bottom:2px; font-style: italic;}
+  .lyric-focus p.eng { font-size:14px; font-weight:500; color:#8a7580; margin-bottom:16px; }
+
+  /* Fun fact */
+  .fact-card { background:#FFF0F5; border:2px solid #FFC2D9; }
+  .fact-card p.kr-line { font-size:15px; font-weight:500; margin-bottom:2px; }
+  .fact-card p.en-line { font-size:13px; font-weight:500; color:#B8879B; margin-bottom:14px; }
+  .fact-card p.en-line:last-child{ margin-bottom:0; }
+  .fact-card b { color:#D6336C; }
+
+  /* Pattern drill */
+  .pattern-box { margin-bottom: 16px; }
+  .formula {
+    background:#1A1A1A; color:#fff; text-align:center; font-weight:700;
+    font-size: clamp(16px,4.5vw,19px); padding:16px; border-radius:14px; margin-bottom:16px;
+  }
+  .formula span.blank { color:#FF8FB3; }
+  .formula-en { text-align:center; font-size:12px; font-weight:500; color:#B8879B; margin: -10px 0 16px; }
+  .example-row {
+    display:flex; align-items:center; gap:10px; background:#fff;
+    border:2px solid #FFD3E3; border-radius:12px; padding:12px 16px; margin-bottom:10px;
+    font-size:15px; font-weight:600; flex-wrap: wrap;
+  }
+  .example-row em { font-style:normal; font-size:12px; font-weight:500; color:#B8879B; }
+  .example-row .arrow { color:#D6336C; font-weight:800; }
+  .example-row .result { color:#D6336C; }
+  .try-row {
+    border: 2px dashed #FFB0CC; background:#FFF9FB; border-radius:12px; padding:14px 16px;
+    font-size:14px; font-weight:500; color:#8a7580;
+  }
+  .try-en { display:inline-block; margin-top:6px; font-size:12px; font-weight:500; color:#B8879B; }
+  .speak-btn {
+    background:#FFE1EC; border:none; color:#D6336C; font-weight:700; font-size:13px;
+    padding:6px 12px; border-radius:10px; cursor:pointer;
+  }
+
+  /* Vocab */
+  .vocab-grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+  @media(min-width:520px){ .vocab-grid{ grid-template-columns: 1fr 1fr; } }
+  .vocab-card {
+    background:#fff; border:2px solid #FFD3E3; border-radius:14px; padding:14px 16px;
+  }
+  .vocab-main { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .vocab-card .vocab-text { display:flex; flex-direction:column; gap:2px; }
+  .vocab-card .kr { font-size:17px; font-weight:700; color:#1A1A1A; }
+  .vocab-card .romanized-vocab { font-size:12px; font-weight:500; color:#B8879B; font-style:italic; }
+  .vocab-card .en { font-size:13px; font-weight:500; color:#B8879B; }
+  .collocation {
+    display:flex; justify-content:space-between; align-items:center; gap:8px;
+    margin-top:10px; padding-top:10px; border-top: 1px dashed #FFD3E3;
+  }
+  .collo-text { display:flex; flex-direction:column; gap:1px; }
+  .collo-kr { font-size:14px; font-weight:600; color:#D6336C; }
+  .collo-en { font-size:12px; font-weight:500; color:#B8879B; }
+
+  /* Activity */
+  .activity-card { margin-bottom: 16px; }
+  .activity-card h3 { font-size:16px; font-weight:800; color:#D6336C; margin-bottom:8px; }
+  .h3-en { font-size:12px; font-weight:500; color:#B8879B; margin-left:4px; }
+  .activity-instruction { font-size:14px; font-weight:500; color:#6b5a62; margin-bottom:14px; }
+  .li-en { display:inline-block; margin-top:3px; font-size:12px; font-weight:500; color:#B8879B; }
+  .word-bank { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .word-chip {
+    background:#FFE1EC; border:2px solid #FFC2D9; color:#D6336C; font-weight:700;
+    font-size:14px; padding:9px 14px; border-radius:16px; cursor:pointer;
+    font-family:'Noto Sans KR', sans-serif;
+  }
+  .word-chip:active, .word-chip.selected { background:#FF5B94; color:#fff; border-color:#FF5B94; }
+  .sentence-preview {
+    background:#FFF9FB; border:2px dashed #FFB0CC; border-radius:12px; padding:14px 16px;
+    font-size:16px; font-weight:700; color:#8a7580; margin-bottom:12px; min-height: 22px;
+  }
+  .sentence-preview.filled { color:#D6336C; border-style:solid; background:#fff; }
+  .speak-btn-lg {
+    background:#1A1A1A; color:#fff; border:none; font-weight:700; font-size:14px;
+    padding:10px 20px; border-radius:20px; cursor:pointer;
+  }
+  .speak-btn-lg:disabled { background:#ddd; color:#999; cursor:not-allowed; }
+
+  /* Wrap up */
+  .wrapup-card { background:#1A1A1A; color:#fff; text-align:center; }
+  .wrapup-card h2 { color:#fff; margin-bottom: 6px; }
+  .top-btn {
+    display:inline-block; margin-top:14px; background:#FF5B94; color:#fff; text-decoration:none;
+    font-weight:700; font-size:14px; padding:10px 22px; border-radius:20px;
+  }
+
+  .divider { text-align:center; color:#FFC2D9; font-size:20px; margin: 6px 0 30px; letter-spacing:8px; }
+</style>
+</head>
+<body id="top">
+
+<div id="progWrap"><div id="progBar"></div></div>
+
+<!-- COVER -->
+<div class="section cover">
+  <div class="format-pill">RESCENE · A0-A1 · LESSON 1</div>
+  <div class="title-main">Pretty <span class="title-accent">Girl</span> 👑</div>
+  <div class="tagline">노래로 배우는 한국어</div>
+  <div class="tagline-en">Learn Korean through songs</div>
+  <div class="nav-chips">
+    <a href="#song" class="chip">🎬 노래 배우기 <span class="chip-en">Learn the Song</span></a>
+    <a href="#drill1" class="chip">💬 패턴 드릴 <span class="chip-en">Pattern Drill</span></a>
+    <a href="#activity" class="chip">🎮 활동 <span class="chip-en">Activity</span></a>
+  </div>
+</div>
+
+<!-- SONG + LYRIC FOCUS -->
+<div class="section" id="song">
+  <h2 class="sec-title"><span class="emoji-tag">🎬</span>오늘의 노래</h2>
+  <div class="sec-title-en">Today's Song</div>
+  <div class="video-lyric-grid">
+    <div class="card video-box">
+      <div class="yt-icon">▶️</div>
+      <p style="font-weight:600; font-size:14px;">RESCENE - Pretty Girl</p>
+      <a class="link-btn" href="https://youtu.be/qZlu2j2SiBA" target="_blank">전체 MV 보기</a>
+      <a class="link-btn secondary" href="https://youtu.be/j6ybyVa_5N4" target="_blank">가사 보기</a>
+    </div>
+    <div class="card lyric-focus">
+      <p class="kr">If you wanna pretty, every wanna pretty</p>
+      <div class="lyric-line">
+        <p class="kr">안된다는 맘은 no no no no</p>
+        <button class="speak-btn" onclick="speak('안된다는 맘은 노노노노')">🔊</button>
+      </div>
+      <p class="romanized">andwendaneun mameun no no no no</p>
+      <p class="eng">"안 된다"는 마음은 no no no no</p>
+      <div class="lyric-line">
+        <p class="kr">어디서나 당당하게 걷기</p>
+        <button class="speak-btn" onclick="speak('어디서나 당당하게 걷기')">🔊</button>
+      </div>
+      <p class="romanized">eodiseona dangdanghage geotgi</p>
+      <p class="eng">어디서든 자신감 있게 걷기</p>
+    </div>
+  </div>
+</div>
+
+<!-- FUN FACT -->
+<div class="section" id="fact">
+  <h2 class="sec-title"><span class="emoji-tag">✨</span>알고 보면 더 재밌는 이야기</h2>
+  <div class="sec-title-en">A Fun Story Behind the Song</div>
+  <div class="card fact-card">
+    <p class="kr-line">이 노래가 무려 <b>18년 전</b> 노래라는 거 아세요?</p>
+    <p class="en-line">Did you know this song is actually 18 years old?</p>
+    <p class="kr-line">원래 2008년, <b>카라(KARA)</b>라는 그룹이 부른 노래예요. 카라는 소녀시대, 원더걸스와 함께 그 시절을 대표하는 <b>'2세대'</b> 아이돌이었어요.</p>
+    <p class="en-line">It was originally sung by KARA in 2008 — one of the "2nd generation" idol groups, along with Girls' Generation and Wonder Girls.</p>
+    <p class="kr-line">이 노래는 리센느의 이미지랑 정말 잘 어울려요. 그때 카라는 당당하고 멋있는 모습, <b>'나다움'</b>을 대표하는 그룹이었고, 지금까지도 그 이미지를 그대로 이어가고 있어요.</p>
+    <p class="en-line">This song fits RESCENE's image well too — KARA was known for being confident and cool, staying true to "who they are," and RESCENE carries that same spirit today.</p>
+    <p class="kr-line">그래서 요즘 아이돌이 옛날 노래를 다시 부르는 걸 <b>'리메이크'</b>라고 해요.</p>
+    <p class="en-line">When today's idols sing an old song again like this, it's called a "remake."</p>
+  </div>
+</div>
+
+<!-- PATTERN DRILL 1 -->
+<div class="section" id="drill1">
+  <h2 class="sec-title"><span class="emoji-tag">💬</span>표현 1 : 그 생각은 이제 그만!</h2>
+  <div class="sec-title-en">Phrase 1: Stop That Thought!</div>
+  <div class="pattern-box">
+    <div class="formula">~는다는 맘은 <span class="blank">No No No!</span></div>
+    <div class="formula-en">"The thought that ~" — say No No No to it!</div>
+    <div class="example-row">
+      <span>못한다 <em>(can't do it)</em></span><span class="arrow">→</span><span class="result">못한다는 맘은 No No No!</span>
+      <button class="speak-btn" onclick="speak('못한다는 맘은 노노노')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>안 예쁘다 <em>(not pretty)</em></span><span class="arrow">→</span><span class="result">안 예쁘다는 맘은 No No No!</span>
+      <button class="speak-btn" onclick="speak('안 예쁘다는 맘은 노노노')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>어렵다 <em>(it's hard)</em></span><span class="arrow">→</span><span class="result">어렵다는 맘은 No No No!</span>
+      <button class="speak-btn" onclick="speak('어렵다는 맘은 노노노')">🔊</button>
+    </div>
+    <div class="try-row">✏️ 이제 내 생각을 넣어서 만들어 보세요: ______는 맘은 No No No!<br><span class="try-en">Now try it with your own thought: "The thought that ___" — No No No!</span></div>
+  </div>
+</div>
+
+<!-- PATTERN DRILL 2 -->
+<div class="section" id="drill2">
+  <h2 class="sec-title"><span class="emoji-tag">💃</span>표현 2 : 당당하게!</h2>
+  <div class="sec-title-en">Phrase 2: Confidently!</div>
+  <div class="pattern-box">
+    <div class="formula">당당하게 <span class="blank">+ 동사</span></div>
+    <div class="formula-en">"Confidently" + verb</div>
+    <div class="example-row">
+      <span>걷다 <em>(to walk)</em></span><span class="arrow">→</span><span class="result">당당하게 걷기</span>
+      <button class="speak-btn" onclick="speak('당당하게 걷기')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>말하다 <em>(to speak)</em></span><span class="arrow">→</span><span class="result">당당하게 말하기</span>
+      <button class="speak-btn" onclick="speak('당당하게 말하기')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>웃다 <em>(to smile)</em></span><span class="arrow">→</span><span class="result">당당하게 웃기</span>
+      <button class="speak-btn" onclick="speak('당당하게 웃기')">🔊</button>
+    </div>
+    <div class="try-row">✏️ 오늘 당당하게 하고 싶은 것을 만들어 보세요: 당당하게 ______<br><span class="try-en">Make your own: something you want to do confidently today</span></div>
+  </div>
+
+  <div class="pattern-box">
+    <div class="formula">의문사 <span class="blank">+ 나</span> = "any-"</div>
+    <div class="formula-en">Question word + 나 → "any-, no matter which"</div>
+    <div class="example-row">
+      <span>어디 <em>(where)</em></span><span class="arrow">→</span><span class="result">어디나 / 어디서나 <em>(anywhere)</em></span>
+      <button class="speak-btn" onclick="speak('어디서나')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>언제 <em>(when)</em></span><span class="arrow">→</span><span class="result">언제나 <em>(always)</em></span>
+      <button class="speak-btn" onclick="speak('언제나')">🔊</button>
+    </div>
+    <div class="example-row">
+      <span>누구 <em>(who)</em></span><span class="arrow">→</span><span class="result">누구나 <em>(everyone)</em></span>
+      <button class="speak-btn" onclick="speak('누구나')">🔊</button>
+    </div>
+    <div class="try-row">🎵 가사에서: "어디서나 당당하게 걷기"<br><span class="try-en">From the lyrics: "walk confidently anywhere"</span></div>
+  </div>
+</div>
+
+<!-- VOCAB -->
+<div class="section" id="vocab">
+  <h2 class="sec-title"><span class="emoji-tag">📚</span>오늘의 단어</h2>
+  <div class="sec-title-en">Today's Words</div>
+  <div class="vocab-grid">
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">눈부신</span><span class="romanized-vocab">nunbusin</span><span class="en">dazzling</span></div>
+        <button class="speak-btn" onclick="speak('눈부신')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">눈부신 햇살</span><span class="collo-en">dazzling sunlight</span></div>
+        <button class="speak-btn" onclick="speak('눈부신 햇살')">🔊</button>
+      </div>
+    </div>
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">센스있는</span><span class="romanized-vocab">senseuinneun</span><span class="en">stylish, sharp</span></div>
+        <button class="speak-btn" onclick="speak('센스있는')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">센스있는 사람</span><span class="collo-en">a stylish person</span></div>
+        <button class="speak-btn" onclick="speak('센스있는 사람')">🔊</button>
+      </div>
+    </div>
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">끊임없는</span><span class="romanized-vocab">kkeunimeomneun</span><span class="en">endless</span></div>
+        <button class="speak-btn" onclick="speak('끊임없는')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">끊임없는 노력</span><span class="collo-en">endless effort</span></div>
+        <button class="speak-btn" onclick="speak('끊임없는 노력')">🔊</button>
+      </div>
+    </div>
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">당당하게</span><span class="romanized-vocab">dangdanghage</span><span class="en">confidently</span></div>
+        <button class="speak-btn" onclick="speak('당당하게')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">당당하게 말하다</span><span class="collo-en">to speak confidently</span></div>
+        <button class="speak-btn" onclick="speak('당당하게 말하다')">🔊</button>
+      </div>
+    </div>
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">노력</span><span class="romanized-vocab">noryeok</span><span class="en">effort</span></div>
+        <button class="speak-btn" onclick="speak('노력')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">노력을 하다</span><span class="collo-en">to make an effort</span></div>
+        <button class="speak-btn" onclick="speak('노력을 하다')">🔊</button>
+      </div>
+    </div>
+    <div class="vocab-card">
+      <div class="vocab-main">
+        <div class="vocab-text"><span class="kr">완벽하다</span><span class="romanized-vocab">wanbyeokhada</span><span class="en">to be perfect</span></div>
+        <button class="speak-btn" onclick="speak('완벽하다')">🔊</button>
+      </div>
+      <div class="collocation">
+        <div class="collo-text"><span class="collo-kr">완벽한 하루</span><span class="collo-en">a perfect day</span></div>
+        <button class="speak-btn" onclick="speak('완벽한 하루')">🔊</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY -->
+<div class="section" id="activity">
+  <h2 class="sec-title"><span class="emoji-tag">🎮</span>활동하기</h2>
+  <div class="sec-title-en">Let's Practice</div>
+
+  <div class="card activity-card">
+    <h3>🃏 "No No No" 문장 만들기 <span class="h3-en">Build Your Sentence</span></h3>
+    <p class="activity-instruction">아래 단어를 탭해서 문장을 완성해 보세요<br><span class="li-en">Tap a word below to complete the sentence</span></p>
+    <div class="word-bank" id="bank1">
+      <button class="word-chip" onclick="buildSentence(1,'못한다')">못한다</button>
+      <button class="word-chip" onclick="buildSentence(1,'안 예쁘다')">안 예쁘다</button>
+      <button class="word-chip" onclick="buildSentence(1,'어렵다')">어렵다</button>
+      <button class="word-chip" onclick="buildSentence(1,'실수한다')">실수한다</button>
+      <button class="word-chip" onclick="buildSentence(1,'잘 안된다')">잘 안된다</button>
+    </div>
+    <div class="sentence-preview" id="preview1">👆 단어를 선택해 보세요 <span class="li-en">Pick a word above</span></div>
+    <button class="speak-btn-lg" id="playBtn1" onclick="playPreview(1)" disabled>🔊 듣기 Listen</button>
+  </div>
+
+  <div class="card activity-card">
+    <h3>🚶‍♀️ 당당하게 문장 만들기 <span class="h3-en">Build Your Sentence</span></h3>
+    <p class="activity-instruction">아래 동작을 탭해서 문장을 완성해 보세요<br><span class="li-en">Tap an action below to complete the sentence</span></p>
+    <div class="word-bank" id="bank2">
+      <button class="word-chip" onclick="buildSentence(2,'걷기')">걷기</button>
+      <button class="word-chip" onclick="buildSentence(2,'말하기')">말하기</button>
+      <button class="word-chip" onclick="buildSentence(2,'웃기')">웃기</button>
+      <button class="word-chip" onclick="buildSentence(2,'인사하기')">인사하기</button>
+      <button class="word-chip" onclick="buildSentence(2,'노래하기')">노래하기</button>
+    </div>
+    <div class="sentence-preview" id="preview2">👆 동작을 선택해 보세요 <span class="li-en">Pick an action above</span></div>
+    <button class="speak-btn-lg" id="playBtn2" onclick="playPreview(2)" disabled>🔊 듣기 Listen</button>
+  </div>
+</div>
+
+<!-- WRAP UP -->
+<div class="section" id="wrapup">
+  <div class="card wrapup-card">
+    <h2 class="sec-title">🎉 수고했어요! <span style="font-size:14px; font-weight:500; color:#FFC2D9;">Great job!</span></h2>
+    <a href="#top" class="top-btn">↑ 처음으로</a>
+  </div>
+</div>
+
+<script>
+  // Progress bar
+  const progBar = document.getElementById('progBar');
+  window.addEventListener('scroll', function () {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progBar.style.width = scrolled + '%';
+  });
+
+  // TTS
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ko-KR';
+    utter.rate = 0.85;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }
+
+  // Activity sentence builders
+  const sentences = { 1: '', 2: '' };
+  function buildSentence(bankNum, word) {
+    const bank = document.getElementById('bank' + bankNum);
+    Array.from(bank.children).forEach(function (btn) {
+      btn.classList.toggle('selected', btn.textContent === word);
+    });
+    const preview = document.getElementById('preview' + bankNum);
+    const playBtn = document.getElementById('playBtn' + bankNum);
+    let sentence;
+    if (bankNum === 1) {
+      sentence = word + '는 맘은 No No No!';
+    } else {
+      sentence = '당당하게 ' + word;
+    }
+    sentences[bankNum] = sentence;
+    preview.textContent = sentence;
+    preview.classList.add('filled');
+    playBtn.disabled = false;
+  }
+  function playPreview(bankNum) {
+    if (sentences[bankNum]) speak(sentences[bankNum]);
+  }
+</script>
+
+</body>
+</html>
