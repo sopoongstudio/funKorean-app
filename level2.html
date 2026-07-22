@@ -14,6 +14,23 @@
   .logo-hangul{font-family:'Noto Sans KR',sans-serif;font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-1px;}
   .logo-en{font-size:.85rem;color:var(--text-muted);font-weight:300;letter-spacing:2px;text-transform:uppercase;}
   .vcat-select{width:100%;padding:.65rem 1rem;border-radius:12px;border:2px solid #52b788;background:#f0faf4;color:#276749;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:1.2rem;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23276749' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-color:#f0faf4;}
+  .dlg-top-bar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+  .header-chip-btn{background:#EFF6FF;border:1.5px solid #BFDBFE;color:#1E40AF;padding:.4rem .8rem;border-radius:99px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+  .header-chip-btn.expanded{background:#1E40AF;color:white;border-color:#1E40AF;}
+  .grammar-box{background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+  .grammar-box.collapsed{display:none;}
+  .grammar-box-title{font-size:.68rem;font-weight:800;color:#1E40AF;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem;}
+  .grammar-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;font-size:.85rem;margin-bottom:.4rem;}
+  .grammar-item:last-child{margin-bottom:0;}
+  .grammar-kr{font-family:'Noto Sans KR',sans-serif;font-weight:800;color:#1E3A8A;cursor:pointer;}
+  .grammar-en{color:#3B4E6B;font-size:.8rem;}
+  .scene-label{display:flex;align-items:center;gap:.6rem;margin:1.6rem 0 .7rem;}
+  .scene-num{background:#52b788;color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:800;flex-shrink:0;}
+  .scene-title{font-family:'Noto Sans KR',sans-serif;font-weight:800;font-size:1rem;}
+  .scene-title-en{font-size:.68rem;color:var(--text-muted);}
+  .bonus-divider{display:flex;align-items:center;gap:.7rem;margin:2.2rem 0 1.3rem;}
+  .bonus-divider-line{flex:1;height:1px;background:var(--border);}
+  .bonus-divider-label{font-size:.74rem;font-weight:800;color:#92400E;background:#FEF3C7;padding:.32rem .8rem;border-radius:99px;white-space:nowrap;}
   @media(max-width:768px){
     header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
     .content{padding:1rem;}
@@ -308,25 +325,33 @@ sentences:[
   {kr:'할인 해요?',rom:'ha-rin hae-yo?',en:'Is there a discount?'},
 ],
 dialogues:[
-  {title:'옷 사러 갔을 때',titleEn:'Shopping for clothes',lines:[
-    {speaker:'직원',kr:'어서오세요! 찾으시는 거 있어요?',rom:'eo-seo-o-se-yo! cha-jeu-si-neun geo i-sseo-yo?',en:'Welcome! Is there something you\'re looking for?',isMe:false},
-    {speaker:'나',kr:'그냥 볼게요. 이거 얼마예요?',rom:'geu-nyang bol-ge-yo. i-geo eol-ma-ye-yo?',en:'Just browsing. How much is this?',isMe:true},
-    {speaker:'직원',kr:'사만 원이에요.',rom:'sa-man wo-ni-e-yo.',en:'It\'s 40,000 won.',isMe:false},
-    {speaker:'나',kr:'이거 입어봐도 돼요?',rom:'i-geo i-beo-bwa-do dwae-yo?',en:'Can I try this on?',isMe:true},
-    {speaker:'직원',kr:'네, 탈의실은 저쪽이에요.',rom:'ne, ta-ri-sil-eun jeo-jjo-gi-e-yo.',en:'Yes, the fitting room is over there.',isMe:false},
-    {speaker:'나',kr:'좀 커요. M 사이즈 있어요?',rom:'jom keo-yo. em sa-i-jeu i-sseo-yo?',en:'It\'s a bit big. Do you have a size M?',isMe:true},
+  {title:'매장에 들어가서',titleEn:'Entering the store',lines:[
+    {speaker:'직원',kr:'어서오세요! 찾으시는 거 있어요?',rom:'eo-seo-o-se-yo! cha-jeu-si-neun geo i-sseo-yo?',en:'Welcome! Looking for something in particular?',isMe:false},
+    {speaker:'나',kr:'그냥 볼게요. 감사해요!',rom:'geu-nyang bol-ge-yo. gam-sa-hae-yo!',en:"I'm just browsing. Thank you!",isMe:true},
   ]},
-  {title:'가격 흥정',titleEn:'Negotiating the price',lines:[
-    {speaker:'나',kr:'너무 비싸요. 좀 깎아 주세요.',rom:'neo-mu bi-ssa-yo. jom kka-kka ju-se-yo.',en:'It\'s too expensive. Can you give me a discount?',isMe:true},
-    {speaker:'상인',kr:'에이, 이미 싼 거예요. 어디 가도 이 가격 없어요.',rom:'e-i, i-mi ssan geo-ye-yo. eo-di ga-do i ga-gyeok eop-seo-yo.',en:'Come on, this is already cheap. You won\'t find this price anywhere.',isMe:false},
-    {speaker:'나',kr:'두 개 살 건데요. 조금만요.',rom:'du gae sal geon-de-yo. jo-geum-man-yo.',en:'I\'m buying two. Just a little off.',isMe:true},
+  {title:'마음에 드는 옷을 발견했어요',titleEn:'You found something you like',lines:[
+    {speaker:'나',kr:'저기요, 이거 얼마예요? 입어봐도 돼요?',rom:'jeo-gi-yo, i-geo eol-ma-ye-yo? i-beo-bwa-do dwae-yo?',en:'Excuse me, how much is this? Can I try it on?',isMe:true},
+    {speaker:'직원',kr:'사만 원이에요. 네, 탈의실은 저쪽이에요.',rom:'sa-man wo-ni-e-yo. ne, ta-ri-sil-eun jeo-jjo-gi-e-yo.',en:"It's 40,000 won. Yes, the fitting room is over there.",isMe:false},
+    {speaker:'나',kr:'음... 좀 커요. M 사이즈 있어요? 다른 색도 있어요?',rom:'eum... jom keo-yo. em sa-i-jeu i-sseo-yo? da-reun saek-do i-sseo-yo?',en:"Hmm... it's a bit big. Do you have size M? Do you have other colors too?",isMe:true},
+  ]},
+  {title:'결정하고 계산해요',titleEn:'Deciding and paying',lines:[
+    {speaker:'나',kr:'이걸로 할게요. 카드 돼요?',rom:'i-geol-lo hal-ge-yo. ka-deu dwae-yo?',en:"I'll take this one. Can I pay by card?",isMe:true},
+    {speaker:'직원',kr:'네, 되세요. 봉투 필요하세요?',rom:'ne, doe-se-yo. bong-tu pil-yo-ha-se-yo?',en:'Yes, you can. Do you need a bag?',isMe:false},
+    {speaker:'나',kr:'네, 주세요. 감사합니다!',rom:'ne, ju-se-yo. gam-sa-ham-ni-da!',en:'Yes, please. Thank you!',isMe:true},
+  ]},
+],
+bonusDialogues:[
+  {title:'시장에서 흥정하기 (전통시장·노점에서만 통해요)',titleEn:'Bargaining at a traditional market or street stall',lines:[
+    {speaker:'나',kr:'너무 비싸요. 좀 깎아 주세요.',rom:'neo-mu bi-ssa-yo. jom kka-kka ju-se-yo.',en:"It's too expensive. Can you give me a discount?",isMe:true},
+    {speaker:'상인',kr:'에이, 이미 싼 거예요. 어디 가도 이 가격 없어요.',rom:'e-i, i-mi ssan geo-ye-yo. eo-di ga-do i ga-gyeok eop-seo-yo.',en:"Come on, this is already cheap. You won't find this price anywhere.",isMe:false},
+    {speaker:'나',kr:'두 개 살 건데요. 조금만요.',rom:'du gae sal geon-de-yo. jo-geum-man-yo.',en:"I'm buying two. Just a little off.",isMe:true},
     {speaker:'상인',kr:'그럼 두 개에 오만 원이요.',rom:'geu-reom du gae-e o-man wo-ni-yo.',en:'Okay, 50,000 for two.',isMe:false},
     {speaker:'나',kr:'좋아요! 카드 돼요?',rom:'jo-a-yo! ka-deu dwae-yo?',en:'Deal! Can I pay by card?',isMe:true},
   ]},
-  {title:'환불할 때',titleEn:'Returning an item',lines:[
-    {speaker:'나',kr:'저기요, 이거 환불하고 싶어요.',rom:'jeo-gi-yo, i-geo hwan-bul-ha-go si-peo-yo.',en:'Excuse me, I\'d like to return this.',isMe:true},
+  {title:'환불할 때 (다른 날)',titleEn:'Returning an item (a different day)',lines:[
+    {speaker:'나',kr:'저기요, 이거 환불하고 싶어요.',rom:'jeo-gi-yo, i-geo hwan-bul-ha-go si-peo-yo.',en:"Excuse me, I'd like to return this.",isMe:true},
     {speaker:'직원',kr:'영수증 있으세요?',rom:'yeong-su-jeung i-sseu-se-yo?',en:'Do you have your receipt?',isMe:false},
-    {speaker:'나',kr:'네, 여기요. 사이즈가 안 맞아서요.',rom:'ne, yeo-gi-yo. sa-i-jeu-ga an ma-ja-seo-yo.',en:'Yes, here. The size doesn\'t fit.',isMe:true},
+    {speaker:'나',kr:'네, 여기요. 사이즈가 안 맞아서요.',rom:'ne, yeo-gi-yo. sa-i-jeu-ga an ma-ja-seo-yo.',en:"Yes, here. The size doesn't fit.",isMe:true},
     {speaker:'직원',kr:'확인해볼게요. 잠깐만요.',rom:'hwa-gin-hae-bol-ge-yo. jam-kkan-man-yo.',en:'Let me check. One moment.',isMe:false},
   ]},
 ],
@@ -458,6 +483,10 @@ speaking:[
 {id:'intro',cat:'🙋 자기소개',
 desc:'Introduce yourself naturally — country, job, hobbies and why you came to Korea',
 patterns:[
+  {pattern:'저는 ~이에요/예요',hint:'I am ~'},
+  {pattern:'~에서 왔어요',hint:'I am from ~'},
+  {pattern:'만나서 반가워요',hint:'Nice to meet you'},
+  {pattern:'처음 뵙겠습니다',hint:'Nice to meet you (formal, first time)'},
   {pattern:'저는 ~에서 왔어요',hint:'I am from ~'},
   {pattern:'저는 ~에서 일하고 있어요',hint:'I work at ~'},
   {pattern:'~을/를 전공했어요',hint:'I majored in ~'},
@@ -476,6 +505,15 @@ sentences:[
   {kr:'만나서 정말 반가워요!',rom:'man-na-seo jeong-mal ban-ga-wo-yo',en:'I am really glad to meet you!'},
 ],
 dialogues:[
+  {title:'처음 만나서 자기소개',titleEn:'Introducing yourself when meeting someone new',lines:[
+    {speaker:'나',kr:'안녕하세요! 저는 사라예요.',rom:'an-nyeong-ha-se-yo! jeo-neun sa-ra-ye-yo.',en:"Hello! I'm Sara.",isMe:true},
+    {speaker:'민준',kr:'안녕하세요! 저는 민준이에요. 어느 나라에서 왔어요?',rom:'an-nyeong-ha-se-yo! jeo-neun min-jun-i-e-yo. eo-neu na-ra-e-seo wa-sseo-yo?',en:"Hello! I'm Minjun. Which country are you from?",isMe:false},
+    {speaker:'나',kr:'저는 캐나다에서 왔어요.',rom:'jeo-neun kae-na-da-e-seo wa-sseo-yo.',en:"I'm from Canada.",isMe:true},
+    {speaker:'민준',kr:'만나서 반가워요!',rom:'man-na-seo ban-ga-wo-yo!',en:'Nice to meet you!',isMe:false},
+    {speaker:'나',kr:'저도요! 잘 부탁드려요.',rom:'jeo-do-yo! jal bu-tak-deu-ryeo-yo.',en:'Same here! Nice to meet you.',isMe:true},
+  ]},
+],
+bonusDialogues:[
   {title:'온라인 언어교환',titleEn:'Online language exchange — first meeting',lines:[
     {speaker:'민준',kr:'안녕하세요! 저는 민준이에요. 언어교환 신청해 주셔서 감사해요.',rom:'an-nyeong-ha-se-yo! jeo-neun min-jun-i-e-yo. eon-eo-gyo-hwan sin-cheong-hae ju-syeo-seo gam-sa-hae-yo.',en:"Hello! I'm Minjun. Thank you for applying for the language exchange.",isMe:false},
     {speaker:'나',kr:'안녕하세요! 저는 사라예요. 저야말로요, 잘 부탁드려요!',rom:'an-nyeong-ha-se-yo! jeo-neun sa-ra-ye-yo. jeo-ya-mal-lo-yo, jal bu-tak-deu-ryeo-yo!',en:"Hello! I'm Sara. Likewise, nice to meet you!",isMe:true},
@@ -522,6 +560,9 @@ speaking:[
 {id:'request',cat:'🤝 부탁·거절하기',
 desc:'Make requests and decline politely — practical expressions for real-life situations',
 patterns:[
+  {pattern:'~해 줄 수 있어?',hint:'Can you ~ for me? (casual)'},
+  {pattern:'이번엔 좀 어려울 것 같아',hint:"I think this time won't work (casual)"},
+  {pattern:'다음에 꼭 ~할게',hint:"I'll definitely ~ next time (casual)"},
   {pattern:'~해 줄 수 있어요?',hint:'Can you ~ for me?'},
   {pattern:'~하기가 좀 어려울 것 같아요',hint:'I think it might be a bit difficult to ~'},
   {pattern:'혹시 괜찮으시면 ~해 주실 수 있을까요?',hint:'If it\'s okay with you, could you possibly ~?'},
@@ -549,6 +590,8 @@ dialogues:[
     {speaker:'수진',kr:'미안해. 다음에 뭔가 필요하면 꼭 말해!',rom:'mi-an-hae. da-eu-me mwon-ga pi-ryo-ha-myeon kkok mal-hae!',en:"Sorry about that. Next time you need something, definitely let me know!",isMe:false},
     {speaker:'나',kr:'당연하지! 고마워.',rom:'dang-yeon-ha-ji! go-ma-wo.',en:"Of course! Thanks.",isMe:true},
   ]},
+],
+bonusDialogues:[
   {title:'야근 거절하기',titleEn:'Declining overtime politely',lines:[
     {speaker:'팀장',kr:'오 씨, 오늘 야근 가능해요? 급하게 처리할 게 생겼어요.',rom:'o ssi, o-neul ya-geun ga-neung-hae-yo? geu-pa-ge cheo-ri-hal ge saeng-gyeo-sseo-yo.',en:"Oh, is it possible for you to work late tonight? Something urgent has come up.",isMe:false},
     {speaker:'나',kr:'죄송한데요, 오늘은 좀 어려울 것 같아요. 집에 개인적인 일이 있어서요.',rom:'joe-song-han-de-yo, o-neu-reun jom eo-ryeo-ul geot ga-ta-yo. ji-be gae-in-jeo-gin i-ri i-sseo-seo-yo.',en:"I'm sorry, I think tonight is going to be a bit difficult. I have a personal matter at home.",isMe:true},
@@ -615,15 +658,6 @@ function switchL2Section(section, btn) {
 
 function renderL2Sentences(cat) {
   const el = document.getElementById('l2-section-content');
-  let patternsHtml = '';
-  if (cat.patterns && cat.patterns.length > 0) {
-    patternsHtml = `<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;">`;
-    cat.patterns.forEach(p => {
-      const cp = p.pattern.replace(/~/g,'').replace(/[?!]/g,'').trim().split('/')[0].trim();
-      patternsHtml += `<div onclick="speak('${cp}')" style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:.35rem .8rem;font-size:.78rem;color:#276749;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.4rem;" onmouseover="this.style.background='#DCFCE7'" onmouseout="this.style.background='#F0FDF4'"><span style="font-family:'Noto Sans KR',sans-serif;">${p.pattern}</span><span style="color:#94A3B8;font-weight:400;">= ${p.hint}</span><span style="font-size:.7rem;color:#86EFAC;">🔊</span></div>`;
-    });
-    patternsHtml += `</div>`;
-  }
   let sentHtml = `
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;">
       <span style="font-size:.8rem;color:var(--text-muted);font-weight:600;">Show:</span>
@@ -644,7 +678,7 @@ function renderL2Sentences(cat) {
     </div>`;
   });
   sentHtml += `</div>`;
-  el.innerHTML = patternsHtml + sentHtml;
+  el.innerHTML = sentHtml;
 }
 
 function toggleSentenceView(mode) {
@@ -663,17 +697,21 @@ function toggleSentenceView(mode) {
 
 function renderL2Dialogue(cat) {
   const el = document.getElementById('l2-section-content');
-  let html = `<div style="font-size:.75rem;color:var(--text-muted);margin-bottom:1rem;">🔊 tap to listen &nbsp;·&nbsp; 🎤 tap to speak</div>`;
-  cat.dialogues.forEach((dlg, dIdx) => {
-    html += `<div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;margin-bottom:1rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div><div style="font-size:.7rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:.2rem;">대화 ${dIdx+1}</div><div style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;">${dlg.title}</div><div style="font-size:.78rem;color:var(--text-muted);">${dlg.titleEn}</div></div>
-        <button onclick="playFullDialogue(${dIdx})" style="background:#4D96FF;color:white;border:none;padding:.45rem 1rem;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;">▶ 전체 듣기</button>
-      </div>`;
+  let html = `<div class="dlg-top-bar">
+      <button class="header-chip-btn" id="l2-gchip" onclick="toggleL2Grammar()">💡 오늘의 표현</button>
+      <button onclick="playFullDialogue()" style="background:#4D96FF;color:white;border:none;padding:.45rem 1rem;border-radius:99px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;">▶ 전체 듣기</button>
+    </div>
+    <div class="grammar-box collapsed" id="l2-gbox">
+      <div class="grammar-box-title">💡 오늘의 표현</div>
+      ${(cat.patterns||[]).map(p=>{const cp=p.pattern.replace(/~/g,'').replace(/[?!]/g,'').trim().split('/')[0].trim();return `<div class="grammar-item"><span class="grammar-kr" onclick="speak('${cp.replace(/'/g,"\\'")}')">${p.pattern} 🔊</span><span class="grammar-en">— ${p.hint}</span></div>`;}).join('')}
+    </div>`;
+
+  function renderDialogueBlock(dlg, dIdx, prefix) {
+    let block = `<div class="scene-label"><div class="scene-num">${dIdx+1}</div><div><div class="scene-title">${dlg.title}</div><div class="scene-title-en">${dlg.titleEn}</div></div></div>`;
     dlg.lines.forEach((line, lIdx) => {
-      const feedbackId = `dlg-fb-${dIdx}-${lIdx}`;
+      const feedbackId = `dlg-fb-${prefix}-${dIdx}-${lIdx}`;
       const kc = line.kr.replace(/~/g,'');
-      html += `<div class="dlg-line" data-kr="${kc.replace(/"/g,'&quot;')}" style="background:${line.isMe?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'white'};border:${line.isMe?'2px solid #52b788':'1px solid var(--border)'};border-radius:12px;padding:.8rem 1rem;margin-bottom:0;display:flex;gap:.8rem;align-items:center;">
+      block += `<div class="dlg-line" id="dlg-line-${prefix}-${dIdx}-${lIdx}" style="background:${line.isMe?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'white'};border:${line.isMe?'2px solid #52b788':'1px solid var(--border)'};border-radius:12px;padding:.8rem 1rem;margin-bottom:.55rem;display:flex;gap:.8rem;align-items:center;">
         <div style="font-size:.68rem;font-weight:700;color:${line.isMe?'#276749':'#64748B'};min-width:2rem;flex-shrink:0;text-transform:uppercase;">${line.speaker}</div>
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:${line.isMe?'800':'600'};color:${line.isMe?'#0F172A':'#334155'};margin-bottom:.15rem;">${line.kr}</div>
@@ -686,9 +724,25 @@ function renderL2Dialogue(cat) {
         </div>
       </div><div id="${feedbackId}" style="margin-bottom:.5rem;min-height:0;"></div>`;
     });
-    html += `</div>`;
-  });
+    return block;
+  }
+
+  (cat.dialogues||[]).forEach((dlg, dIdx) => { html += renderDialogueBlock(dlg, dIdx, 'core'); });
+
+  if (cat.bonusDialogues && cat.bonusDialogues.length) {
+    html += `<div class="bonus-divider"><div class="bonus-divider-line"></div><div class="bonus-divider-label">🎓 더 해보고 싶다면 (선택)</div><div class="bonus-divider-line"></div></div>`;
+    cat.bonusDialogues.forEach((dlg, dIdx) => { html += renderDialogueBlock(dlg, dIdx, 'bonus'); });
+  }
+
   el.innerHTML = html;
+}
+
+function toggleL2Grammar(){
+  const box = document.getElementById('l2-gbox');
+  const chip = document.getElementById('l2-gchip');
+  const isOpen = !box.classList.contains('collapsed');
+  if(isOpen){ box.classList.add('collapsed'); chip.classList.remove('expanded'); chip.textContent='💡 오늘의 표현'; }
+  else { box.classList.remove('collapsed'); chip.classList.add('expanded'); chip.textContent='💡 닫기'; }
 }
 
 function highlightDlgLine(el){el.style.boxShadow='0 0 0 2px #52b788';setTimeout(()=>el.style.boxShadow='',800);}
@@ -770,15 +824,21 @@ function startDlgSpeech(expected, btn, feedbackId) {
   }
 }
 
-function playFullDialogue(dIdx) {
+function playFullDialogue() {
   const cat = window._activeL2Cat || l2Categories[3];
-  const lines = cat.dialogues[dIdx].lines;
+  const flatLines = [];
+  (cat.dialogues||[]).forEach((dlg, dIdx) => {
+    dlg.lines.forEach((line, lIdx) => flatLines.push({id:`dlg-line-core-${dIdx}-${lIdx}`, text: line.kr.replace(/~/g,'')}));
+  });
   let i = 0;
   function playNext() {
-    if (i >= lines.length) return;
-    const u = new SpeechSynthesisUtterance(lines[i].kr.replace(/~/g,''));
+    if (i >= flatLines.length) return;
+    const {id, text} = flatLines[i];
+    const el = document.getElementById(id);
+    if (el) { el.scrollIntoView({behavior:'smooth', block:'center'}); highlightDlgLine(el); }
+    const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ko-KR'; u.rate = 0.85; u.pitch = 1;
-    u.onend = () => { i++; playNext(); };
+    u.onend = () => { i++; setTimeout(playNext, 300); };
     window.speechSynthesis.speak(u);
   }
   window.speechSynthesis.cancel();
