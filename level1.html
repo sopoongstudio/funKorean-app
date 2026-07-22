@@ -562,33 +562,41 @@ function tpToggleMic(){
     });
   }
 }
+function tpPickMimeType(){
+  const testEl = document.createElement('audio');
+  const canPlayWebm = testEl.canPlayType && testEl.canPlayType('audio/webm');
+  if (canPlayWebm) return ''; // keep default (original working behavior)
+  const types=['audio/mp4','audio/aac','audio/webm;codecs=opus'];
+  for(const t of types){ if(window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) return t; }
+  return '';
+}
 function tpStartRecording(stream){
   tpState.recognizing=true;
   tpAudioChunks=[];tpFinalTranscript='';
   const btn=document.getElementById('tp-mic-btn');
   btn.classList.add('recording');
-  tpMediaRecorder=new MediaRecorder(stream);
+  const mimeType=tpPickMimeType();
+  tpMediaRecorder=mimeType?new MediaRecorder(stream,{mimeType}):new MediaRecorder(stream);
+  tpMediaRecorder._mimeType=mimeType||'audio/webm';
   tpMediaRecorder.ondataavailable=e=>{if(e.data.size>0)tpAudioChunks.push(e.data);};
   tpMediaRecorder.onstop=()=>{
-    const blob=new Blob(tpAudioChunks,{type:'audio/webm'});
+    const blob=new Blob(tpAudioChunks,{type:tpMediaRecorder._mimeType});
     window._tpLastRecordingUrl=URL.createObjectURL(blob);
     tpFinishRecording();
   };
   tpMediaRecorder.start();
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(SR){
-    tpRecognition=new SR();
-    tpRecognition.lang='ko-KR';tpRecognition.continuous=false;tpRecognition.interimResults=true;
+    if(!tpRecognition){
+      tpRecognition=new SR();
+      tpRecognition.lang='ko-KR';tpRecognition.continuous=true;tpRecognition.interimResults=true;
+      tpRecognition.onerror=()=>{};
+    }
     tpRecognition.onresult=e=>{
       tpFinalTranscript='';
       for(let i=0;i<e.results.length;i++){if(e.results[i].isFinal)tpFinalTranscript+=e.results[i][0].transcript;}
     };
-    tpRecognition.onend=()=>{
-      if(tpMediaRecorder&&tpMediaRecorder.state==='recording'){
-        setTimeout(()=>{try{tpRecognition.start();}catch(e){}},300);
-      }
-    };
-    tpRecognition.onerror=()=>{};
+    tpRecognition.onend=()=>{}; // continuous:true keeps it running; no manual restart needed
     try{tpRecognition.start();}catch(e){}
   }
 }
@@ -598,7 +606,11 @@ function tpStopRecording(){
 }
 function tpPlayRecording(){
   if(!window._tpLastRecordingUrl)return;
-  new Audio(window._tpLastRecordingUrl).play();
+  const audio=new Audio(window._tpLastRecordingUrl);
+  audio.play().catch(()=>{
+    const fb=document.getElementById('tp-feedback');
+    if(fb)fb.insertAdjacentHTML('beforeend','<div style="color:#F59E0B;font-size:.75rem;margin-top:.4rem;">⚠️ 이 브라우저에서는 녹음 재생이 지원되지 않아요.</div>');
+  });
 }
 function tpFinishRecording(){
   const btn=document.getElementById('tp-mic-btn');
