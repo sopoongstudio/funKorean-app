@@ -15,14 +15,48 @@
   .logo-en{font-size:.85rem;color:var(--text-muted);font-weight:300;letter-spacing:2px;text-transform:uppercase;}
   .vocab-cat-select{width:100%;padding:.65rem 1rem;border-radius:12px;border:2px solid #F59E0B;background:#FEF3C7;color:#78350F;font-family:'DM Sans','Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:1.2rem;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2378350F' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-color:#FEF3C7;}
   .vocab-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.8rem;}
-  .vocab-card{background:#FFFDF9;border:1px solid rgba(255,217,61,.25);border-radius:14px;padding:1.4rem 1.2rem;text-align:center;cursor:pointer;transition:all .22s ease;}
-  .vocab-card:hover{border-color:rgba(255,107,107,.35);background:#FFF8F6;transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,107,107,.12);}
-  .vc-emoji{font-size:2.4rem;margin-bottom:.7rem;display:block;}
-  .vc-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:900;color:#0F172A;display:block;margin-bottom:.4rem;}
+  .vocab-card{background:transparent;border:none;padding:0;cursor:pointer;perspective:1000px;height:150px;}
+  .vc-inner{position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
+  .vocab-card.flipped .vc-inner{transform:rotateY(180deg);}
+  .vc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:1px solid rgba(255,217,61,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem .8rem;transition:all .22s ease;}
+  .vocab-card:hover .vc-face{border-color:rgba(255,107,107,.35);box-shadow:0 8px 24px rgba(255,107,107,.12);}
+  .vc-front{background:#FFFDF9;}
+  .vc-back{background:#FFF8F6;transform:rotateY(180deg);}
+  .vc-emoji{font-size:2.2rem;margin-bottom:.5rem;display:block;}
+  .vc-kr{font-family:'Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:900;color:#0F172A;display:block;}
+  .vc-kr-small{font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:700;color:#94A3B8;margin-bottom:.4rem;}
   .vc-rom{font-size:.88rem;color:#475569;margin-bottom:.3rem;letter-spacing:.3px;font-weight:500;}
-  .vc-en{font-size:.95rem;color:#1E293B;font-weight:600;}
-  .vc-sound-hint{font-size:.7rem;margin-top:.5rem;opacity:.35;transition:opacity .2s;}
-  .vocab-card:hover .vc-sound-hint{opacity:.8;}
+  .vc-en{font-size:.95rem;color:#1E293B;font-weight:600;text-align:center;}
+  .vc-sound-hint{font-size:.65rem;margin-top:.5rem;opacity:.4;}
+  .vc-flip-hint{font-size:.62rem;color:#B45309;opacity:.55;margin-top:.5rem;letter-spacing:.5px;}
+
+  .pp-wrap{max-width:480px;margin:0 auto;}
+  .pp-modes{display:flex;gap:.6rem;margin-bottom:1.2rem;justify-content:center;}
+  .pp-mode-btn{padding:.5rem 1.1rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.8rem;}
+  .pp-mode-btn.active{background:#10B981;border-color:#10B981;color:white;}
+  .pp-score{text-align:center;font-size:.8rem;color:#64748B;margin-bottom:1rem;font-weight:600;}
+  .pp-scene{background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:16px;padding:1.6rem 1.2rem;text-align:center;margin-bottom:1.2rem;}
+  .pp-clerk-line{font-size:.85rem;color:#166534;margin-bottom:.6rem;font-weight:600;}
+  .pp-speak-btn{background:#10B981;border:none;color:white;width:56px;height:56px;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 14px rgba(16,185,129,.35);}
+  .pp-receipt{background:#fff;border:1.5px dashed #94A3B8;border-radius:10px;padding:1rem 1.2rem;display:inline-block;min-width:180px;}
+  .pp-receipt-title{font-size:.68rem;letter-spacing:2px;color:#94A3B8;font-weight:700;margin-bottom:.4rem;}
+  .pp-receipt-price{font-family:'DM Sans',sans-serif;font-size:1.7rem;font-weight:800;color:#0F172A;}
+  .pp-receipt-speak{margin-top:.7rem;background:none;border:1.5px solid #CBD5E1;color:#475569;border-radius:99px;padding:.35rem 1rem;font-size:.78rem;cursor:pointer;}
+  .pp-options{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+  .pp-option{background:#FFFDF9;border:1.5px solid rgba(255,217,61,.3);border-radius:12px;padding:.85rem .7rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;color:#0F172A;text-align:center;transition:all .15s;}
+  .pp-option:hover{border-color:#FFD93D;background:#FFFBEB;}
+  .pp-option.correct{background:#DCFCE7;border-color:#22C55E;color:#166534;}
+  .pp-option.wrong{background:#FEE2E2;border-color:#EF4444;color:#991B1B;}
+  .pp-feedback{text-align:center;margin-top:1rem;font-weight:700;font-size:.95rem;min-height:1.3rem;}
+  .pp-next-btn{display:block;margin:1rem auto 0;background:#FF6B6B;color:white;border:none;border-radius:99px;padding:.6rem 1.6rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;}
+
+  .tp-clock{font-family:'DM Sans',sans-serif;font-size:2.4rem;font-weight:800;color:#1E40AF;margin:.3rem 0 .8rem;}
+  .tp-mic-btn{background:#3B82F6;border:none;color:white;width:64px;height:64px;border-radius:50%;font-size:1.7rem;cursor:pointer;box-shadow:0 4px 14px rgba(59,130,246,.35);}
+  .tp-mic-btn.recording{background:#EF4444;box-shadow:0 0 0 8px rgba(239,68,68,.15);animation:tpPulse 1s infinite;}
+  @keyframes tpPulse{0%,100%{box-shadow:0 0 0 6px rgba(239,68,68,.15);}50%{box-shadow:0 0 0 12px rgba(239,68,68,.05);}}
+  .tp-mic-hint{font-size:.75rem;color:#64748B;margin-top:.6rem;}
+  .tp-transcript{margin-top:.7rem;font-family:'Noto Sans KR',sans-serif;font-size:.9rem;color:#334155;background:#F1F5F9;border-radius:8px;padding:.4rem .8rem;display:inline-block;min-height:1.2rem;}
+  .tp-unsupported{background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:10px;padding:.9rem 1rem;font-size:.82rem;color:#92400E;text-align:center;}
   @media(max-width:768px){
     header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
     .vocab-cards{grid-template-columns:repeat(2,1fr);}
@@ -49,9 +83,10 @@
     <button id="main-tab-vocab" onclick="switchVocabMain('vocab')" style="padding:.5rem 1.2rem;border-radius:99px;border:2px solid #FF6B6B;background:#FF6B6B;color:white;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.85rem;">📚 Vocab</button>
     <button id="main-tab-numbers" onclick="switchVocabMain('numbers')" style="padding:.5rem 1.2rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.85rem;">🔢 Numbers</button>
     <button id="main-tab-time" onclick="switchVocabMain('time')" style="padding:.5rem 1.2rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.85rem;">🕐 Time</button>
+    <button id="main-tab-practice" onclick="switchVocabMain('practice')" style="padding:.5rem 1.2rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.85rem;">💰 Price Practice</button>
+    <button id="main-tab-timepractice" onclick="switchVocabMain('timepractice')" style="padding:.5rem 1.2rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.85rem;">⏰ Time Practice</button>
   </div>
   <select class="vocab-cat-select" id="vocab-tabs" onchange="showVocabCat(this.value,this)"></select>
-  <div id="vocab-pdf-btn"></div>
   <div class="vocab-cards" id="vocab-cards"></div>
 </section>
 
@@ -59,59 +94,550 @@
 function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.85;u.pitch=1;window.speechSynthesis.speak(u);}
 
 const vocabData={
-  '👨‍👩‍👧 Family 가족':[{emoji:'👩',kr:'엄마',rom:'eom-ma',en:'mom'},{emoji:'👨',kr:'아빠',rom:'a-ppa',en:'dad'},{emoji:'👵',kr:'할머니',rom:'hal-meo-ni',en:'grandmother'},{emoji:'👴',kr:'할아버지',rom:'ha-ra-beo-ji',en:'grandfather'},{emoji:'👧',kr:'언니',rom:'eon-ni',en:'older sister (f)'},{emoji:'👦',kr:'오빠',rom:'o-ppa',en:'older brother (f)'},{emoji:'👱‍♀️',kr:'누나',rom:'nu-na',en:'older sister (m)'},{emoji:'👱‍♂️',kr:'형',rom:'hyeong',en:'older brother (m)'},{emoji:'🧒',kr:'동생',rom:'dong-saeng',en:'younger sibling'},{emoji:'👶',kr:'아기',rom:'a-gi',en:'baby'}],
-  '💼 Jobs 직업':[{emoji:'👩‍🏫',kr:'선생님',rom:'seon-saeng-nim',en:'teacher'},{emoji:'🧑‍🎓',kr:'학생',rom:'hak-saeng',en:'student'},{emoji:'👨‍⚕️',kr:'의사',rom:'ui-sa',en:'doctor'},{emoji:'👩‍⚕️',kr:'간호사',rom:'gan-ho-sa',en:'nurse'},{emoji:'👨‍🍳',kr:'요리사',rom:'yo-ri-sa',en:'chef'},{emoji:'👮',kr:'경찰',rom:'gyeong-chal',en:'police officer'},{emoji:'👔',kr:'회사원',rom:'hoe-sa-won',en:'office worker'},{emoji:'🎤',kr:'가수',rom:'ga-su',en:'singer'},{emoji:'🎭',kr:'배우',rom:'bae-u',en:'actor'},{emoji:'⚽',kr:'운동선수',rom:'un-dong-seon-su',en:'athlete'}],
-  '🏫 Places 장소':[{emoji:'🏫',kr:'학교',rom:'hak-gyo',en:'school'},{emoji:'🏥',kr:'병원',rom:'byeong-won',en:'hospital'},{emoji:'☕',kr:'카페',rom:'ka-pe',en:'cafe'},{emoji:'🍽️',kr:'식당',rom:'sik-dang',en:'restaurant'},{emoji:'🌳',kr:'공원',rom:'gong-won',en:'park'},{emoji:'🏠',kr:'집',rom:'jip',en:'home'},{emoji:'🏪',kr:'편의점',rom:'pyeon-ui-jeom',en:'convenience store'},{emoji:'📚',kr:'도서관',rom:'do-seo-gwan',en:'library'},{emoji:'🚇',kr:'지하철역',rom:'ji-ha-cheol-yeok',en:'subway station'},{emoji:'💊',kr:'약국',rom:'yak-guk',en:'pharmacy'},{emoji:'🛒',kr:'마트',rom:'ma-teu',en:'supermarket'},{emoji:'✈️',kr:'공항',rom:'gong-hang',en:'airport'}],
-  '🍎 Food 음식':[{emoji:'🍚',kr:'밥',rom:'bap',en:'rice / meal'},{emoji:'💧',kr:'물',rom:'mul',en:'water'},{emoji:'🥬',kr:'김치',rom:'gim-chi',en:'kimchi'},{emoji:'🍞',kr:'빵',rom:'ppang',en:'bread'},{emoji:'🍜',kr:'라면',rom:'ra-myeon',en:'ramen'},{emoji:'☕',kr:'커피',rom:'keo-pi',en:'coffee'},{emoji:'🥚',kr:'계란',rom:'gye-ran',en:'egg'},{emoji:'🍗',kr:'치킨',rom:'chi-kin',en:'fried chicken'},{emoji:'🍖',kr:'고기',rom:'go-gi',en:'meat'},{emoji:'🍵',kr:'차',rom:'cha',en:'tea'}],
-  '🎨 Colors 색깔':[{emoji:'❤️',kr:'빨간색',rom:'ppal-gan-saek',en:'red'},{emoji:'🧡',kr:'주황색',rom:'ju-hwang-saek',en:'orange'},{emoji:'💛',kr:'노란색',rom:'no-ran-saek',en:'yellow'},{emoji:'💚',kr:'초록색',rom:'cho-rok-saek',en:'green'},{emoji:'💙',kr:'파란색',rom:'pa-ran-saek',en:'blue'},{emoji:'💜',kr:'보라색',rom:'bo-ra-saek',en:'purple'},{emoji:'🖤',kr:'검은색',rom:'geo-meun-saek',en:'black'},{emoji:'🤍',kr:'하얀색',rom:'ha-yan-saek',en:'white'},{emoji:'🩷',kr:'분홍색',rom:'bun-hong-saek',en:'pink'},{emoji:'🩵',kr:'하늘색',rom:'ha-neul-saek',en:'sky blue'}],
-  '😊 Feelings 감정':[{emoji:'😊',kr:'행복해요',rom:'haeng-bo-kae-yo',en:'happy'},{emoji:'😢',kr:'슬퍼요',rom:'seul-peo-yo',en:'sad'},{emoji:'😴',kr:'피곤해요',rom:'pi-gon-hae-yo',en:'tired'},{emoji:'😪',kr:'졸려요',rom:'jol-lyeo-yo',en:'sleepy'},{emoji:'🤒',kr:'아파요',rom:'a-pa-yo',en:'sick'},{emoji:'🍽️',kr:'배고파요',rom:'bae-go-pa-yo',en:'hungry'},{emoji:'🤤',kr:'배불러요',rom:'bae-bul-leo-yo',en:'full'},{emoji:'😌',kr:'좋아요',rom:'jo-a-yo',en:'good'},{emoji:'😒',kr:'싫어요',rom:'si-reo-yo',en:'dislike'},{emoji:'😨',kr:'무서워요',rom:'mu-seo-wo-yo',en:'scared'},{emoji:'😔',kr:'우울해요',rom:'u-ul-hae-yo',en:'down'},{emoji:'🥱',kr:'심심해요',rom:'sim-sim-hae-yo',en:'bored'},{emoji:'🤩',kr:'신나요',rom:'sin-na-yo',en:'excited'}],
-  '🚂 Transport 교통':[{emoji:'🚇',kr:'지하철',rom:'ji-ha-cheol',en:'subway'},{emoji:'🚕',kr:'택시',rom:'taek-si',en:'taxi'},{emoji:'✈️',kr:'비행기',rom:'bi-haeng-gi',en:'airplane'},{emoji:'🚲',kr:'자전거',rom:'ja-jeon-geo',en:'bicycle'},{emoji:'⛴️',kr:'배',rom:'bae',en:'boat / ship'},{emoji:'🛣️',kr:'길',rom:'gil',en:'road / street'},{emoji:'🚉',kr:'역',rom:'yeok',en:'station'},{emoji:'🎫',kr:'표',rom:'pyo',en:'ticket'},{emoji:'🛫',kr:'출발',rom:'chul-bal',en:'departure'},{emoji:'🛬',kr:'도착',rom:'do-chak',en:'arrival'}],
-  '🏠 Home 집':[{emoji:'🛏️',kr:'방',rom:'bang',en:'room'},{emoji:'🍳',kr:'부엌',rom:'bu-eok',en:'kitchen'},{emoji:'🚿',kr:'화장실',rom:'hwa-jang-sil',en:'bathroom'},{emoji:'🚪',kr:'문',rom:'mun',en:'door'},{emoji:'🪟',kr:'창문',rom:'chang-mun',en:'window'},{emoji:'🛋️',kr:'소파',rom:'so-pa',en:'sofa'},{emoji:'🛏️',kr:'침대',rom:'chim-dae',en:'bed'},{emoji:'❄️',kr:'냉장고',rom:'naeng-jang-go',en:'refrigerator'},{emoji:'🪜',kr:'계단',rom:'gye-dan',en:'stairs'},{emoji:'🛋️',kr:'거실',rom:'geo-sil',en:'living room'}],
+  '👨‍👩‍👧 Family 가족':[{emoji:'👩',kr:'엄마',rom:'eom-ma',en:'mom'},{emoji:'👨',kr:'아빠',rom:'a-ppa',en:'dad'},{emoji:'👵',kr:'할머니',rom:'hal-meo-ni',en:'grandmother'},{emoji:'👴',kr:'할아버지',rom:'ha-ra-beo-ji',en:'grandfather'},{emoji:'👧',kr:'언니',rom:'eon-ni',en:'older sister (f)'},{emoji:'👦',kr:'오빠',rom:'o-ppa',en:'older brother (f)'},{emoji:'👱‍♀️',kr:'누나',rom:'nu-na',en:'older sister (m)'},{emoji:'👱‍♂️',kr:'형',rom:'hyeong',en:'older brother (m)'},{emoji:'🧒',kr:'동생',rom:'dong-saeng',en:'younger sibling'},{emoji:'👶',kr:'아기',rom:'a-gi',en:'baby'},{emoji:'👨',kr:'삼촌',rom:'sam-chon',en:'uncle'},{emoji:'👩',kr:'이모',rom:'i-mo',en:'aunt (mother\'s side)'},{emoji:'👩',kr:'고모',rom:'go-mo',en:'aunt (father\'s side)'},{emoji:'🧑',kr:'조카',rom:'jo-ka',en:'nephew / niece'}],
+  '💼 Jobs 직업':[{emoji:'👩‍🏫',kr:'선생님',rom:'seon-saeng-nim',en:'teacher'},{emoji:'🧑‍🎓',kr:'학생',rom:'hak-saeng',en:'student'},{emoji:'👨‍⚕️',kr:'의사',rom:'ui-sa',en:'doctor'},{emoji:'👩‍⚕️',kr:'간호사',rom:'gan-ho-sa',en:'nurse'},{emoji:'👨‍🍳',kr:'요리사',rom:'yo-ri-sa',en:'chef'},{emoji:'👮',kr:'경찰',rom:'gyeong-chal',en:'police officer'},{emoji:'👔',kr:'회사원',rom:'hoe-sa-won',en:'office worker'},{emoji:'🎤',kr:'가수',rom:'ga-su',en:'singer'},{emoji:'🎭',kr:'배우',rom:'bae-u',en:'actor'},{emoji:'⚽',kr:'운동선수',rom:'un-dong-seon-su',en:'athlete'},{emoji:'🏦',kr:'은행원',rom:'eun-haeng-won',en:'bank teller'},{emoji:'🔬',kr:'과학자',rom:'gwa-hak-ja',en:'scientist'},{emoji:'🚒',kr:'소방관',rom:'so-bang-gwan',en:'firefighter'},{emoji:'🚑',kr:'응급구조사',rom:'eung-geup-gu-jo-sa',en:'paramedic'},{emoji:'⚖️',kr:'변호사',rom:'byeon-ho-sa',en:'lawyer'},{emoji:'🧾',kr:'계산원',rom:'gye-san-won',en:'cashier'},{emoji:'📊',kr:'회계사',rom:'hoe-gye-sa',en:'accountant'},{emoji:'🏛️',kr:'정치인',rom:'jeong-chi-in',en:'politician'},{emoji:'📹',kr:'유튜버',rom:'yu-tyu-beo',en:'YouTuber'},{emoji:'📺',kr:'방송인',rom:'bang-song-in',en:'broadcaster'},{emoji:'⭐',kr:'연예인',rom:'yeon-ye-in',en:'celebrity'}],
+  '📍 Places & Location 장소·위치':[{emoji:'🏫',kr:'학교',rom:'hak-gyo',en:'school'},{emoji:'🏥',kr:'병원',rom:'byeong-won',en:'hospital'},{emoji:'☕',kr:'카페',rom:'ka-pe',en:'cafe'},{emoji:'🍽️',kr:'식당',rom:'sik-dang',en:'restaurant'},{emoji:'🌳',kr:'공원',rom:'gong-won',en:'park'},{emoji:'🏠',kr:'집',rom:'jip',en:'home'},{emoji:'🏪',kr:'편의점',rom:'pyeon-ui-jeom',en:'convenience store'},{emoji:'📚',kr:'도서관',rom:'do-seo-gwan',en:'library'},{emoji:'🚇',kr:'지하철역',rom:'ji-ha-cheol-yeok',en:'subway station'},{emoji:'💊',kr:'약국',rom:'yak-guk',en:'pharmacy'},{emoji:'🛒',kr:'마트',rom:'ma-teu',en:'supermarket'},{emoji:'✈️',kr:'공항',rom:'gong-hang',en:'airport'},{emoji:'⬆️',kr:'위',rom:'wi',en:'up / above'},{emoji:'⬇️',kr:'아래',rom:'a-rae',en:'down / below'},{emoji:'⏩',kr:'앞',rom:'ap',en:'front'},{emoji:'⏪',kr:'뒤',rom:'dwi',en:'back'},{emoji:'⬅️',kr:'왼쪽',rom:'oen-jjok',en:'left'},{emoji:'➡️',kr:'오른쪽',rom:'o-reun-jjok',en:'right'},{emoji:'📥',kr:'안',rom:'an',en:'inside'},{emoji:'📤',kr:'밖',rom:'bakk',en:'outside'},{emoji:'↔️',kr:'옆',rom:'yeop',en:'beside / next to'},{emoji:'🔀',kr:'사이',rom:'sa-i',en:'between'},{emoji:'🎯',kr:'가운데',rom:'ga-un-de',en:'middle / center'},{emoji:'🏁',kr:'끝쪽',rom:'kkeut-jjok',en:'far end'}],
+  '🍎 Food 음식':[{emoji:'🍚',kr:'밥',rom:'bap',en:'rice / meal'},{emoji:'💧',kr:'물',rom:'mul',en:'water'},{emoji:'🥬',kr:'김치',rom:'gim-chi',en:'kimchi'},{emoji:'🍞',kr:'빵',rom:'ppang',en:'bread'},{emoji:'🍜',kr:'라면',rom:'ra-myeon',en:'ramen'},{emoji:'☕',kr:'커피',rom:'keo-pi',en:'coffee'},{emoji:'🥚',kr:'계란',rom:'gye-ran',en:'egg'},{emoji:'🍗',kr:'치킨',rom:'chi-kin',en:'fried chicken'},{emoji:'🍖',kr:'고기',rom:'go-gi',en:'meat'},{emoji:'🍵',kr:'차',rom:'cha',en:'tea'},{emoji:'🍎',kr:'사과',rom:'sa-gwa',en:'apple'},{emoji:'🍌',kr:'바나나',rom:'ba-na-na',en:'banana'},{emoji:'🍓',kr:'딸기',rom:'ttal-gi',en:'strawberry'},{emoji:'🍇',kr:'포도',rom:'po-do',en:'grape'},{emoji:'🥕',kr:'당근',rom:'dang-geun',en:'carrot'},{emoji:'🧅',kr:'양파',rom:'yang-pa',en:'onion'},{emoji:'🥔',kr:'감자',rom:'gam-ja',en:'potato'},{emoji:'🍅',kr:'토마토',rom:'to-ma-to',en:'tomato'},{emoji:'🥩',kr:'소고기',rom:'so-go-gi',en:'beef'},{emoji:'🐖',kr:'돼지고기',rom:'dwae-ji-go-gi',en:'pork'},{emoji:'🌿',kr:'파',rom:'pa',en:'green onion'},{emoji:'🥬',kr:'상추',rom:'sang-chu',en:'lettuce'},{emoji:'🍑',kr:'복숭아',rom:'bok-sung-a',en:'peach'},{emoji:'🐟',kr:'생선',rom:'saeng-seon',en:'fish'},{emoji:'🍗',kr:'통닭',rom:'tong-dak',en:'whole fried chicken'}],
+  '🎨 Colors 색깔':[{emoji:'❤️',kr:'빨간색',rom:'ppal-gan-saek',en:'red'},{emoji:'🧡',kr:'주황색',rom:'ju-hwang-saek',en:'orange'},{emoji:'💛',kr:'노란색',rom:'no-ran-saek',en:'yellow'},{emoji:'💚',kr:'초록색',rom:'cho-rok-saek',en:'green'},{emoji:'💙',kr:'파란색',rom:'pa-ran-saek',en:'blue'},{emoji:'💜',kr:'보라색',rom:'bo-ra-saek',en:'purple'},{emoji:'🖤',kr:'검은색',rom:'geo-meun-saek',en:'black'},{emoji:'🤍',kr:'흰색',rom:'huin-saek',en:'white'},{emoji:'🩷',kr:'분홍색',rom:'bun-hong-saek',en:'pink'},{emoji:'🩵',kr:'하늘색',rom:'ha-neul-saek',en:'sky blue'},{emoji:'🩶',kr:'회색',rom:'hoe-saek',en:'gray'}],
+  '😊 Feelings 감정':[{emoji:'😊',kr:'행복해요',rom:'haeng-bo-kae-yo',en:'happy'},{emoji:'😢',kr:'슬퍼요',rom:'seul-peo-yo',en:'sad'},{emoji:'😴',kr:'피곤해요',rom:'pi-gon-hae-yo',en:'tired'},{emoji:'😪',kr:'졸려요',rom:'jol-lyeo-yo',en:'sleepy'},{emoji:'🤒',kr:'아파요',rom:'a-pa-yo',en:'sick'},{emoji:'🍽️',kr:'배고파요',rom:'bae-go-pa-yo',en:'hungry'},{emoji:'🤤',kr:'배불러요',rom:'bae-bul-leo-yo',en:'full'},{emoji:'😌',kr:'좋아요',rom:'jo-a-yo',en:'good'},{emoji:'😒',kr:'싫어요',rom:'si-reo-yo',en:'dislike'},{emoji:'😨',kr:'무서워요',rom:'mu-seo-wo-yo',en:'scared'},{emoji:'😔',kr:'우울해요',rom:'u-ul-hae-yo',en:'down'},{emoji:'🥱',kr:'심심해요',rom:'sim-sim-hae-yo',en:'bored'},{emoji:'🤩',kr:'신나요',rom:'sin-na-yo',en:'excited'},{emoji:'😠',kr:'화나요',rom:'hwa-na-yo',en:'angry'},{emoji:'😄',kr:'기뻐요',rom:'gi-ppeo-yo',en:'glad'},{emoji:'😂',kr:'웃겨요',rom:'ut-gyeo-yo',en:'funny'}],
+  '🚂 Transport 교통':[{emoji:'🚇',kr:'지하철',rom:'ji-ha-cheol',en:'subway'},{emoji:'🚕',kr:'택시',rom:'taek-si',en:'taxi'},{emoji:'✈️',kr:'비행기',rom:'bi-haeng-gi',en:'airplane'},{emoji:'🚲',kr:'자전거',rom:'ja-jeon-geo',en:'bicycle'},{emoji:'⛴️',kr:'배',rom:'bae',en:'boat / ship'},{emoji:'🛣️',kr:'길',rom:'gil',en:'road / street'},{emoji:'🚉',kr:'역',rom:'yeok',en:'station'},{emoji:'🎫',kr:'표',rom:'pyo',en:'ticket'},{emoji:'🛫',kr:'출발',rom:'chul-bal',en:'departure'},{emoji:'🛬',kr:'도착',rom:'do-chak',en:'arrival'},{emoji:'🚏',kr:'정류장',rom:'jeong-ryu-jang',en:'bus stop'},{emoji:'🔄',kr:'경유',rom:'gyeong-yu',en:'stopover / transit'},{emoji:'↔️',kr:'환승',rom:'hwan-seung',en:'transfer'}],
+  '🏠 Home 집':[{emoji:'🛏️',kr:'방',rom:'bang',en:'room'},{emoji:'🍳',kr:'부엌',rom:'bu-eok',en:'kitchen'},{emoji:'🚿',kr:'화장실',rom:'hwa-jang-sil',en:'bathroom'},{emoji:'🚪',kr:'문',rom:'mun',en:'door'},{emoji:'🪟',kr:'창문',rom:'chang-mun',en:'window'},{emoji:'🛏️',kr:'침대',rom:'chim-dae',en:'bed'},{emoji:'🪜',kr:'계단',rom:'gye-dan',en:'stairs'},{emoji:'🛋️',kr:'거실',rom:'geo-sil',en:'living room'},{emoji:'🕳️',kr:'지하실',rom:'ji-ha-sil',en:'basement'},{emoji:'🏙️',kr:'옥상',rom:'ok-sang',en:'rooftop'},{emoji:'🏢',kr:'고시원',rom:'go-si-won',en:'goshiwon (small studio)'},{emoji:'💵',kr:'월세',rom:'wol-se',en:'monthly rent'},{emoji:'🏦',kr:'전세',rom:'jeon-se',en:'jeonse (lump-sum deposit lease)'},{emoji:'🏡',kr:'자가',rom:'ja-ga',en:'owned home'},{emoji:'🧑‍🤝‍🧑',kr:'이웃',rom:'i-ut',en:'neighbor'},{emoji:'🏘️',kr:'동네',rom:'dong-ne',en:'neighborhood'},{emoji:'🏡',kr:'마을',rom:'ma-eul',en:'village'},{emoji:'🌆',kr:'도시',rom:'do-si',en:'city'},{emoji:'🌾',kr:'시골',rom:'si-gol',en:'countryside'},{emoji:'🚜',kr:'농촌',rom:'nong-chon',en:'farming village'},{emoji:'⛵',kr:'어촌',rom:'eo-chon',en:'fishing village'},{emoji:'🏕️',kr:'오지',rom:'o-ji',en:'remote area'},{emoji:'⛰️',kr:'산골',rom:'san-gol',en:'mountain village'}],
   '👕 Clothes 옷':[{emoji:'👖',kr:'바지',rom:'ba-ji',en:'pants'},{emoji:'👗',kr:'치마',rom:'chi-ma',en:'skirt'},{emoji:'👔',kr:'셔츠',rom:'syeo-cheu',en:'shirt'},{emoji:'👗',kr:'원피스',rom:'won-pi-seu',en:'dress'},{emoji:'👟',kr:'신발',rom:'sin-bal',en:'shoes'},{emoji:'🧦',kr:'양말',rom:'yang-mal',en:'socks'},{emoji:'🧥',kr:'코트',rom:'ko-teu',en:'coat'},{emoji:'👜',kr:'가방',rom:'ga-bang',en:'bag'},{emoji:'👓',kr:'안경',rom:'an-gyeong',en:'glasses'},{emoji:'💍',kr:'반지',rom:'ban-ji',en:'ring'}],
-  '🌡️ Weather 날씨':[{emoji:'☀️',kr:'맑아요',rom:'mal-ga-yo',en:"It's sunny"},{emoji:'☁️',kr:'흐려요',rom:'heu-ryeo-yo',en:"It's cloudy"},{emoji:'🌧️',kr:'비',rom:'bi',en:'rain'},{emoji:'❄️',kr:'눈',rom:'nun',en:'snow'},{emoji:'💨',kr:'바람',rom:'ba-ram',en:'wind'},{emoji:'🥵',kr:'더워요',rom:'deo-wo-yo',en:"It's hot"},{emoji:'🥶',kr:'추워요',rom:'chu-wo-yo',en:"It's cold"},{emoji:'😎',kr:'시원해요',rom:'si-won-hae-yo',en:"It's cool"},{emoji:'🌤️',kr:'따뜻해요',rom:'tta-tteu-tae-yo',en:"It's warm"},{emoji:'🌫️',kr:'안개',rom:'an-gae',en:'fog'}],
-  '🐶 Animals 동물':[{emoji:'🐶',kr:'강아지',rom:'gang-a-ji',en:'dog / puppy'},{emoji:'🐱',kr:'고양이',rom:'go-yang-i',en:'cat'},{emoji:'🐰',kr:'토끼',rom:'to-kki',en:'rabbit'},{emoji:'🐦',kr:'새',rom:'sae',en:'bird'},{emoji:'🐟',kr:'물고기',rom:'mul-go-gi',en:'fish'},{emoji:'🐴',kr:'말',rom:'mal',en:'horse'},{emoji:'🐷',kr:'돼지',rom:'dwae-ji',en:'pig'},{emoji:'🐻',kr:'곰',rom:'gom',en:'bear'},{emoji:'🐘',kr:'코끼리',rom:'ko-kki-ri',en:'elephant'},{emoji:'🐒',kr:'원숭이',rom:'won-sung-i',en:'monkey'}],
-  '📱 Objects 물건':[{emoji:'📱',kr:'핸드폰',rom:'haen-deu-pon',en:'phone'},{emoji:'💻',kr:'컴퓨터',rom:'keom-pyu-teo',en:'computer'},{emoji:'📚',kr:'책',rom:'chaek',en:'book'},{emoji:'🔑',kr:'열쇠',rom:'yeol-soe',en:'key'},{emoji:'👛',kr:'지갑',rom:'ji-gap',en:'wallet'},{emoji:'✂️',kr:'가위',rom:'ga-wi',en:'scissors'},{emoji:'☂️',kr:'우산',rom:'u-san',en:'umbrella'},{emoji:'⌚',kr:'시계',rom:'si-gye',en:'clock / watch'},{emoji:'🪞',kr:'거울',rom:'geo-ul',en:'mirror'},{emoji:'🗑️',kr:'쓰레기통',rom:'sseu-re-gi-tong',en:'trash can'}],
-  '🏥 Body 신체':[{emoji:'👤',kr:'머리',rom:'meo-ri',en:'head'},{emoji:'👁️',kr:'눈',rom:'nun',en:'eyes'},{emoji:'👃',kr:'코',rom:'ko',en:'nose'},{emoji:'👄',kr:'입',rom:'ip',en:'mouth'},{emoji:'👂',kr:'귀',rom:'gwi',en:'ear'},{emoji:'🤲',kr:'손',rom:'son',en:'hand'},{emoji:'🦶',kr:'발',rom:'bal',en:'foot'},{emoji:'💪',kr:'팔',rom:'pal',en:'arm'},{emoji:'🦵',kr:'다리',rom:'da-ri',en:'leg'},{emoji:'🫁',kr:'배',rom:'bae',en:'stomach'},{emoji:'🫀',kr:'어깨',rom:'eo-kkae',en:'shoulder'},{emoji:'🧍',kr:'허리',rom:'heo-ri',en:'waist / lower back'},{emoji:'🍑',kr:'엉덩이',rom:'eong-deong-i',en:'hip / bottom'}],
+  '🌡️ Weather 날씨':[{emoji:'☀️',kr:'맑아요',rom:'mal-ga-yo',en:'It\'s sunny'},{emoji:'☁️',kr:'흐려요',rom:'heu-ryeo-yo',en:'It\'s cloudy'},{emoji:'🌧️',kr:'비',rom:'bi',en:'rain'},{emoji:'❄️',kr:'눈',rom:'nun',en:'snow'},{emoji:'💨',kr:'바람',rom:'ba-ram',en:'wind'},{emoji:'🥵',kr:'더워요',rom:'deo-wo-yo',en:'It\'s hot'},{emoji:'🥶',kr:'추워요',rom:'chu-wo-yo',en:'It\'s cold'},{emoji:'😎',kr:'시원해요',rom:'si-won-hae-yo',en:'It\'s cool'},{emoji:'🌤️',kr:'따뜻해요',rom:'tta-tteu-tae-yo',en:'It\'s warm'},{emoji:'🌫️',kr:'안개',rom:'an-gae',en:'fog'}],
+  '🐶 Animals 동물':[{emoji:'🐶',kr:'강아지',rom:'gang-a-ji',en:'dog / puppy'},{emoji:'🐱',kr:'고양이',rom:'go-yang-i',en:'cat'},{emoji:'🐰',kr:'토끼',rom:'to-kki',en:'rabbit'},{emoji:'🐦',kr:'새',rom:'sae',en:'bird'},{emoji:'🐟',kr:'물고기',rom:'mul-go-gi',en:'fish'},{emoji:'🐴',kr:'말',rom:'mal',en:'horse'},{emoji:'🐷',kr:'돼지',rom:'dwae-ji',en:'pig'},{emoji:'🐻',kr:'곰',rom:'gom',en:'bear'},{emoji:'🐘',kr:'코끼리',rom:'ko-kki-ri',en:'elephant'},{emoji:'🐒',kr:'원숭이',rom:'won-sung-i',en:'monkey'},{emoji:'🐦',kr:'까치',rom:'kka-chi',en:'magpie'},{emoji:'🐦‍⬛',kr:'까마귀',rom:'kka-ma-gwi',en:'crow'},{emoji:'🦊',kr:'여우',rom:'yeo-u',en:'fox'},{emoji:'🐺',kr:'늑대',rom:'neuk-dae',en:'wolf'},{emoji:'🐯',kr:'호랑이',rom:'ho-rang-i',en:'tiger'},{emoji:'🦁',kr:'사자',rom:'sa-ja',en:'lion'},{emoji:'🐢',kr:'거북',rom:'geo-buk',en:'turtle'},{emoji:'🐿️',kr:'다람쥐',rom:'da-ram-jwi',en:'squirrel'}],
+  '📱 Objects 물건':[{emoji:'📱',kr:'핸드폰',rom:'haen-deu-pon',en:'phone'},{emoji:'💻',kr:'컴퓨터',rom:'keom-pyu-teo',en:'computer'},{emoji:'📚',kr:'책',rom:'chaek',en:'book'},{emoji:'🔑',kr:'열쇠',rom:'yeol-soe',en:'key'},{emoji:'👛',kr:'지갑',rom:'ji-gap',en:'wallet'},{emoji:'✂️',kr:'가위',rom:'ga-wi',en:'scissors'},{emoji:'☂️',kr:'우산',rom:'u-san',en:'umbrella'},{emoji:'⌚',kr:'시계',rom:'si-gye',en:'clock / watch'},{emoji:'🪞',kr:'거울',rom:'geo-ul',en:'mirror'},{emoji:'🗑️',kr:'쓰레기통',rom:'sseu-re-gi-tong',en:'trash can'},{emoji:'✏️',kr:'연필',rom:'yeon-pil',en:'pencil'},{emoji:'▫️',kr:'지우개',rom:'ji-u-gae',en:'eraser'},{emoji:'📓',kr:'공책',rom:'gong-chaek',en:'notebook'},{emoji:'🖊️',kr:'필통',rom:'pil-tong',en:'pencil case'},{emoji:'🖍️',kr:'색연필',rom:'saeg-yeon-pil',en:'colored pencils'},{emoji:'📝',kr:'칠판',rom:'chil-pan',en:'blackboard'},{emoji:'🧹',kr:'전기청소기',rom:'jeon-gi-cheong-so-gi',en:'vacuum cleaner'},{emoji:'🍚',kr:'밥솥',rom:'bap-sot',en:'rice cooker'},{emoji:'🌀',kr:'선풍기',rom:'seon-pung-gi',en:'electric fan'},{emoji:'🪭',kr:'부채',rom:'bu-chae',en:'hand fan'},{emoji:'🧼',kr:'식기세척기',rom:'sik-gi-se-cheok-gi',en:'dishwasher'},{emoji:'🧺',kr:'세탁기',rom:'se-tak-gi',en:'washing machine'},{emoji:'♨️',kr:'전자레인지',rom:'jeon-ja-re-in-ji',en:'microwave'},{emoji:'🛋️',kr:'소파',rom:'so-pa',en:'sofa'},{emoji:'❄️',kr:'냉장고',rom:'naeng-jang-go',en:'refrigerator'}],
+  '🏥 Body 신체':[{emoji:'👤',kr:'머리',rom:'meo-ri',en:'head'},{emoji:'👀',kr:'눈',rom:'nun',en:'eyes'},{emoji:'👃',kr:'코',rom:'ko',en:'nose'},{emoji:'👄',kr:'입',rom:'ip',en:'mouth'},{emoji:'👂',kr:'귀',rom:'gwi',en:'ear'},{emoji:'✋',kr:'손',rom:'son',en:'hand'},{emoji:'🦶',kr:'발',rom:'bal',en:'foot'},{emoji:'💪',kr:'팔',rom:'pal',en:'arm'},{emoji:'🦵',kr:'다리',rom:'da-ri',en:'leg'},{emoji:'',kr:'배',rom:'bae',en:'stomach'},{emoji:'',kr:'어깨',rom:'eo-kkae',en:'shoulder'},{emoji:'🧍',kr:'허리',rom:'heo-ri',en:'waist / lower back'},{emoji:'',kr:'엉덩이',rom:'eong-deong-i',en:'hip / bottom'},{emoji:'👁️',kr:'눈동자',rom:'nun-dong-ja',en:'pupil / eyeball'},{emoji:'',kr:'콧등',rom:'kot-deung',en:'bridge of the nose'},{emoji:'💇',kr:'머리카락',rom:'meo-ri-ka-rak',en:'hair'},{emoji:'🔄',kr:'귓등',rom:'gwit-deung',en:'back of the ear'},{emoji:'👆',kr:'손가락',rom:'son-ga-rak',en:'finger'},{emoji:'',kr:'발가락',rom:'bal-ga-rak',en:'toe'},{emoji:'🤨',kr:'눈썹',rom:'nun-sseop',en:'eyebrow'},{emoji:'',kr:'볼',rom:'bol',en:'cheek'},{emoji:'',kr:'턱',rom:'teok',en:'chin / jaw'},{emoji:'',kr:'배꼽',rom:'bae-kkop',en:'navel / belly button'},{emoji:'🤚',kr:'손등',rom:'son-deung',en:'back of the hand'},{emoji:'',kr:'발등',rom:'bal-deung',en:'top of the foot'},{emoji:'',kr:'뒤꿈치',rom:'dwi-kkum-chi',en:'heel'}],
+  '🌿 Nature 자연':[{emoji:'⛰️',kr:'산',rom:'san',en:'mountain'},{emoji:'🌊',kr:'바다',rom:'ba-da',en:'sea'},{emoji:'🌳',kr:'나무',rom:'na-mu',en:'tree'},{emoji:'🌸',kr:'꽃',rom:'kkot',en:'flower'},{emoji:'🌌',kr:'하늘',rom:'ha-neul',en:'sky'},{emoji:'🏞️',kr:'강',rom:'gang',en:'river'},{emoji:'🏞️',kr:'호수',rom:'ho-su',en:'lake'},{emoji:'🪨',kr:'돌',rom:'dol',en:'stone'},{emoji:'☀️',kr:'해',rom:'hae',en:'sun'},{emoji:'🌍',kr:'지구',rom:'ji-gu',en:'earth'},{emoji:'🏔️',kr:'계곡',rom:'gye-gok',en:'valley'},{emoji:'🪨',kr:'바위',rom:'ba-wi',en:'rock'},{emoji:'🏖️',kr:'모래',rom:'mo-rae',en:'sand'},{emoji:'🪨',kr:'자갈',rom:'ja-gal',en:'gravel'}],
+  '⚽ Sports & Hobbies 스포츠·취미':[{emoji:'⚽',kr:'축구',rom:'chuk-gu',en:'soccer'},{emoji:'⚾',kr:'야구',rom:'ya-gu',en:'baseball'},{emoji:'🏀',kr:'농구',rom:'nong-gu',en:'basketball'},{emoji:'🏊',kr:'수영',rom:'su-yeong',en:'swimming'},{emoji:'📖',kr:'독서',rom:'dok-seo',en:'reading'},{emoji:'🍳',kr:'요리',rom:'yo-ri',en:'cooking'},{emoji:'🎨',kr:'그림',rom:'geu-rim',en:'drawing'},{emoji:'🎮',kr:'게임',rom:'ge-im',en:'gaming'},{emoji:'✈️',kr:'여행',rom:'yeo-haeng',en:'travel'},{emoji:'🎧',kr:'음악감상',rom:'eum-ak-gam-sang',en:'listening to music'},{emoji:'🥋',kr:'태권도',rom:'tae-gwon-do',en:'taekwondo'},{emoji:'🏹',kr:'양궁',rom:'yang-gung',en:'archery'},{emoji:'🪚',kr:'목공',rom:'mok-gong',en:'woodworking'},{emoji:'⛳',kr:'골프',rom:'gol-peu',en:'golf'},{emoji:'🤸',kr:'에어로빅',rom:'e-eo-ro-bik',en:'aerobics'},{emoji:'🏋️',kr:'헬스',rom:'hel-seu',en:'working out / gym'},{emoji:'🧘',kr:'요가',rom:'yo-ga',en:'yoga'},{emoji:'🥾',kr:'등산',rom:'deung-san',en:'hiking'}],
   '🔢 Native Numbers 고유어':[{emoji:'1️⃣',kr:'하나',rom:'ha-na',en:'one'},{emoji:'2️⃣',kr:'둘',rom:'dul',en:'two'},{emoji:'3️⃣',kr:'셋',rom:'set',en:'three'},{emoji:'4️⃣',kr:'넷',rom:'net',en:'four'},{emoji:'5️⃣',kr:'다섯',rom:'da-seot',en:'five'},{emoji:'6️⃣',kr:'여섯',rom:'yeo-seot',en:'six'},{emoji:'7️⃣',kr:'일곱',rom:'il-gop',en:'seven'},{emoji:'8️⃣',kr:'여덟',rom:'yeo-deol',en:'eight'},{emoji:'9️⃣',kr:'아홉',rom:'a-hop',en:'nine'},{emoji:'🔟',kr:'열',rom:'yeol',en:'ten'},{emoji:'2️⃣0️⃣',kr:'스물',rom:'seu-mul',en:'twenty'},{emoji:'3️⃣0️⃣',kr:'서른',rom:'seo-reun',en:'thirty'}],
-  '🔢 Sino Numbers 한자어':[{emoji:'1️⃣',kr:'일',rom:'il',en:'one'},{emoji:'2️⃣',kr:'이',rom:'i',en:'two'},{emoji:'3️⃣',kr:'삼',rom:'sam',en:'three'},{emoji:'4️⃣',kr:'사',rom:'sa',en:'four'},{emoji:'5️⃣',kr:'오',rom:'o',en:'five'},{emoji:'6️⃣',kr:'육',rom:'yuk',en:'six'},{emoji:'7️⃣',kr:'칠',rom:'chil',en:'seven'},{emoji:'8️⃣',kr:'팔',rom:'pal',en:'eight'},{emoji:'9️⃣',kr:'구',rom:'gu',en:'nine'},{emoji:'🔟',kr:'십',rom:'sip',en:'ten'},{emoji:'💯',kr:'백',rom:'baek',en:'hundred'},{emoji:'🔢',kr:'천',rom:'cheon',en:'thousand'}],
+  '🔢 Sino Numbers 한자어':[{emoji:'1️⃣',kr:'일',rom:'il',en:'one'},{emoji:'2️⃣',kr:'이',rom:'i',en:'two'},{emoji:'3️⃣',kr:'삼',rom:'sam',en:'three'},{emoji:'4️⃣',kr:'사',rom:'sa',en:'four'},{emoji:'5️⃣',kr:'오',rom:'o',en:'five'},{emoji:'6️⃣',kr:'육',rom:'yuk',en:'six'},{emoji:'7️⃣',kr:'칠',rom:'chil',en:'seven'},{emoji:'8️⃣',kr:'팔',rom:'pal',en:'eight'},{emoji:'9️⃣',kr:'구',rom:'gu',en:'nine'},{emoji:'🔟',kr:'십',rom:'sip',en:'ten'},{emoji:'💯',kr:'백',rom:'baek',en:'hundred'},{emoji:'🔢',kr:'천',rom:'cheon',en:'thousand'},{emoji:'💰',kr:'만',rom:'man',en:'ten thousand'},{emoji:'🏷️',kr:'가격',rom:'ga-gyeok',en:'price'},{emoji:'💵',kr:'원',rom:'won',en:'won (currency)'}],
   '🏅 Ordinal Numbers 서수':[{emoji:'🥇',kr:'첫째',rom:'cheot-jjae',en:'first'},{emoji:'🥈',kr:'둘째',rom:'dul-jjae',en:'second'},{emoji:'🥉',kr:'셋째',rom:'set-jjae',en:'third'},{emoji:'4️⃣',kr:'넷째',rom:'net-jjae',en:'fourth'},{emoji:'5️⃣',kr:'다섯째',rom:'da-seot-jjae',en:'fifth'},{emoji:'6️⃣',kr:'여섯째',rom:'yeo-seot-jjae',en:'sixth'},{emoji:'7️⃣',kr:'일곱째',rom:'il-gop-jjae',en:'seventh'},{emoji:'8️⃣',kr:'여덟째',rom:'yeo-deol-jjae',en:'eighth'},{emoji:'9️⃣',kr:'아홉째',rom:'a-hop-jjae',en:'ninth'},{emoji:'🔟',kr:'열째',rom:'yeol-jjae',en:'tenth'},{emoji:'🏆',kr:'첫 번째',rom:'cheot beon-jjae',en:'the first (formal)'},{emoji:'📌',kr:'마지막',rom:'ma-ji-mak',en:'last / final'}],
   '🌸 Seasons 계절':[{emoji:'🌸',kr:'봄',rom:'bom',en:'spring'},{emoji:'☀️',kr:'여름',rom:'yeo-reum',en:'summer'},{emoji:'🍂',kr:'가을',rom:'ga-eul',en:'autumn'},{emoji:'⛄',kr:'겨울',rom:'gyeo-ul',en:'winter'}],
   '📅 Days of the Week 요일':[{emoji:'📅',kr:'월요일',rom:'wol-yo-il',en:'Monday'},{emoji:'📅',kr:'화요일',rom:'hwa-yo-il',en:'Tuesday'},{emoji:'📅',kr:'수요일',rom:'su-yo-il',en:'Wednesday'},{emoji:'📅',kr:'목요일',rom:'mok-yo-il',en:'Thursday'},{emoji:'📅',kr:'금요일',rom:'geum-yo-il',en:'Friday'},{emoji:'📅',kr:'토요일',rom:'to-yo-il',en:'Saturday'},{emoji:'📅',kr:'일요일',rom:'il-yo-il',en:'Sunday'}],
   '☀️ Time of Day 하루':[{emoji:'🌙',kr:'새벽',rom:'sae-byeok',en:'dawn / early morning'},{emoji:'🌅',kr:'아침',rom:'a-chim',en:'morning'},{emoji:'☀️',kr:'점심',rom:'jeom-sim',en:'noon / lunch time'},{emoji:'🌤️',kr:'오후',rom:'o-hu',en:'afternoon'},{emoji:'🌆',kr:'저녁',rom:'jeo-nyeok',en:'evening'},{emoji:'🌙',kr:'밤',rom:'bam',en:'night'},{emoji:'🌑',kr:'자정',rom:'ja-jeong',en:'midnight'}],
   '📆 Dates & Time 날짜·기간':[{emoji:'📆',kr:'그저께',rom:'geu-jeo-kke',en:'the day before yesterday'},{emoji:'⬅️',kr:'어제',rom:'eo-je',en:'yesterday'},{emoji:'📍',kr:'오늘',rom:'o-neul',en:'today'},{emoji:'➡️',kr:'내일',rom:'nae-il',en:'tomorrow'},{emoji:'⏱️',kr:'지금',rom:'ji-geum',en:'now'},{emoji:'🏖️',kr:'주말',rom:'ju-mal',en:'weekend'},{emoji:'🔁',kr:'매일',rom:'mae-il',en:'every day'},{emoji:'📅',kr:'이번 주',rom:'i-beon ju',en:'this week'},{emoji:'⏭️',kr:'다음 주',rom:'da-eum ju',en:'next week'}],
+  '⏰ Telling Time 시간 읽기':[{emoji:'🕐',kr:'시',rom:'si',en:"hour (counter, e.g. 9시)"},{emoji:'⏲️',kr:'분',rom:'bun',en:"minute (counter, e.g. 30분)"},{emoji:'🕧',kr:'반',rom:'ban',en:'half (e.g. 9시 반 = 9:30)'},{emoji:'⏳',kr:'시간',rom:'si-gan',en:'hour / time (duration)'},{emoji:'⏱️',kr:'초',rom:'cho',en:'second (counter, e.g. 10초)'},{emoji:'🎯',kr:'정각',rom:'jeong-gak',en:"exactly on the hour (e.g. 9시 정각 = 9:00 sharp)"}],
 };
 const vocabCategories={
-  vocab:['👨‍👩‍👧 Family 가족','💼 Jobs 직업','🏫 Places 장소','🍎 Food 음식','🎨 Colors 색깔','😊 Feelings 감정','🚂 Transport 교통','🏠 Home 집','👕 Clothes 옷','🌡️ Weather 날씨','🐶 Animals 동물','📱 Objects 물건','🏥 Body 신체'],
+  vocab:['👨‍👩‍👧 Family 가족','💼 Jobs 직업','📍 Places & Location 장소·위치','🍎 Food 음식','🎨 Colors 색깔','😊 Feelings 감정','🚂 Transport 교통','🏠 Home 집','👕 Clothes 옷','🌡️ Weather 날씨','🐶 Animals 동물','📱 Objects 물건','🏥 Body 신체','🌿 Nature 자연','⚽ Sports & Hobbies 스포츠·취미'],
   numbers:['🔢 Native Numbers 고유어','🔢 Sino Numbers 한자어','🏅 Ordinal Numbers 서수'],
-  time:['🌸 Seasons 계절','📅 Days of the Week 요일','☀️ Time of Day 하루','📆 Dates & Time 날짜·기간'],
+  time:['🌸 Seasons 계절','📅 Days of the Week 요일','☀️ Time of Day 하루','📆 Dates & Time 날짜·기간','⏰ Telling Time 시간 읽기'],
 };
 let currentVocabMain='vocab';
 
 function switchVocabMain(type){
   currentVocabMain=type;
-  const vBtn=document.getElementById('main-tab-vocab'),nBtn=document.getElementById('main-tab-numbers'),tBtn=document.getElementById('main-tab-time');
-  [vBtn,nBtn,tBtn].forEach(b=>{if(b){b.style.background='var(--surface2)';b.style.borderColor='var(--border)';b.style.color='var(--text-muted)';}});
+  const vBtn=document.getElementById('main-tab-vocab'),nBtn=document.getElementById('main-tab-numbers'),tBtn=document.getElementById('main-tab-time'),pBtn=document.getElementById('main-tab-practice'),tpBtn=document.getElementById('main-tab-timepractice');
+  [vBtn,nBtn,tBtn,pBtn,tpBtn].forEach(b=>{if(b){b.style.background='var(--surface2)';b.style.borderColor='var(--border)';b.style.color='var(--text-muted)';}});
   if(type==='vocab'){vBtn.style.background='#FF6B6B';vBtn.style.borderColor='#FF6B6B';vBtn.style.color='white';}
   else if(type==='numbers'){nBtn.style.background='#10B981';nBtn.style.borderColor='#10B981';nBtn.style.color='white';}
   else if(type==='time'){tBtn.style.background='#8B5CF6';tBtn.style.borderColor='#8B5CF6';tBtn.style.color='white';}
-  const cats=vocabCategories[type];
+  else if(type==='practice'){pBtn.style.background='#F59E0B';pBtn.style.borderColor='#F59E0B';pBtn.style.color='white';}
+  else if(type==='timepractice'){tpBtn.style.background='#3B82F6';tpBtn.style.borderColor='#3B82F6';tpBtn.style.color='white';}
   const tabs=document.getElementById('vocab-tabs');
+  if(type==='practice'){
+    tabs.style.display='none';
+    initPricePractice();
+    return;
+  }
+  if(type==='timepractice'){
+    tabs.style.display='none';
+    initTimePractice();
+    return;
+  }
+  tabs.style.display='';
+  const cats=vocabCategories[type];
   tabs.innerHTML=cats.map((c)=>`<option value="${c.replace(/"/g,'&quot;')}">${c}</option>`).join('');
   showVocabCat(cats[0],tabs);
 }
 function showVocabCat(cat,btn){
   const words=vocabData[cat]||[];
-  const pdfMap={
-    '👨‍👩‍👧 Family 가족':'family_flashcards.pdf','💼 Jobs 직업':'jobs_flashcards.pdf','🏫 Places 장소':'places_flashcards.pdf',
-    '🍎 Food 음식':'food_flashcards.pdf','🌸 Seasons 계절':'seasons_flashcards.pdf','🎨 Colors 색깔':'colors_flashcards.pdf',
-    '😊 Feelings 감정':'feelings_flashcards.pdf','🚂 Transport 교통':'transport_flashcards.pdf','🏠 Home 집':'home_flashcards.pdf',
-    '👕 Clothes 옷':'clothes_flashcards.pdf','🌡️ Weather 날씨':'weather_flashcards.pdf','🐶 Animals 동물':'animals_flashcards.pdf',
-    '📱 Objects 물건':'objects_flashcards.pdf','🏥 Body 신체':'body_flashcards.pdf',
+  const container=document.getElementById('vocab-cards');
+  container.className='vocab-cards';
+  container.innerHTML=words.map(w=>`<div class="vocab-card" onclick="flipVocabCard(this,'${w.kr}')"><div class="vc-inner"><div class="vc-face vc-front">${w.emoji?`<span class="vc-emoji">${w.emoji}</span>`:''}<span class="vc-kr">${w.kr}</span><div class="vc-flip-hint">TAP TO REVEAL</div></div><div class="vc-face vc-back"><div class="vc-kr-small">${w.kr}</div><div class="vc-rom">${w.rom}</div><div class="vc-en">${w.en}</div><div class="vc-sound-hint">🔊</div></div></div></div>`).join('');
+}
+function flipVocabCard(el,kr){
+  const wasFlipped=el.classList.contains('flipped');
+  el.classList.toggle('flipped');
+  if(!wasFlipped)speak(kr);
+}
+
+// ===== Price Practice (편의점 가격 연습) =====
+const ppDigits=['','일','이','삼','사','오','육','칠','팔','구'];
+function ppConvertGroup(num){
+  let str='';
+  const units=['','십','백','천'];
+  const d=String(num).padStart(4,'0').split('').map(Number);
+  for(let i=0;i<4;i++){
+    const digit=d[i],unit=units[3-i];
+    if(digit===0)continue;
+    str+=(digit===1&&unit!=='')?unit:ppDigits[digit]+unit;
+  }
+  return str;
+}
+function numberToKoreanWon(num){
+  const man=Math.floor(num/10000),rest=num%10000;
+  let str='';
+  if(man>0){
+    str+=(man===1?'만':ppConvertGroup(man)+'만');
+    if(rest>0)str+=' ';
+  }
+  if(rest>0)str+=ppConvertGroup(rest);
+  else if(man===0)str+='영';
+  return str+'원';
+}
+function ppFormatNumber(num){return num.toLocaleString('en-US')+'원';}
+function ppRandomPrice(){
+  const remainders=[0,100,200,300,400,500,600,700,800,900,1200,1500,1800,2000,2500,2800,3000,3200,3500,3800,3900,4000,4200,4500,4800,4900,5000,5200,5500,5800,5900,6000,6500,6800,6900,7000,7200,7500,7800,7900,8000,8200,8500,8800,8900,9000,9200,9500,9800,9900];
+  const man=Math.random()<0.5?0:Math.floor(Math.random()*4)+1; // 0 or 1-4 (up to 4만원대)
+  let rest=remainders[Math.floor(Math.random()*remainders.length)];
+  let total=man*10000+rest;
+  if(total<100)total=900;
+  return total;
+}
+function ppSwapDigits(num){
+  const s=String(num).split('');
+  if(s.length<2)return num+100;
+  const i=Math.floor(Math.random()*(s.length-1));
+  [s[i],s[i+1]]=[s[i+1],s[i]];
+  const swapped=parseInt(s.join(''),10);
+  return swapped===num?num+100:swapped;
+}
+function ppMakeDistractors(correct){
+  const opts=new Set([correct]);
+  let tries=0;
+  while(opts.size<4&&tries<40){
+    tries++;
+    const r=Math.random();
+    let variant;
+    if(r<0.34)variant=correct+((Math.floor(Math.random()*5)+1)*100)*(Math.random()<0.5?1:-1);
+    else if(r<0.67)variant=ppSwapDigits(correct);
+    else variant=correct+((Math.floor(Math.random()*4)+1)*1000)*(Math.random()<0.5?1:-1);
+    if(variant>0&&variant!==correct)opts.add(variant);
+  }
+  return [...opts].sort(()=>Math.random()-0.5);
+}
+let ppState={mode:'listen',score:0,round:0,setSize:3,answered:false,current:0};
+function initPricePractice(){
+  ppState={mode:'listen',score:0,round:0,setSize:3,answered:false,current:0};
+  document.getElementById('vocab-cards').outerHTML='<div class="pp-wrap" id="vocab-cards"></div>';
+  ppRenderShell();
+  ppNext();
+}
+function ppRenderShell(){
+  const wrap=document.getElementById('vocab-cards');
+  wrap.innerHTML=`
+    <div class="pp-modes">
+      <button class="pp-mode-btn" id="pp-mode-listen" onclick="ppSetMode('listen')">🔊 듣고 고르기</button>
+      <button class="pp-mode-btn" id="pp-mode-read" onclick="ppSetMode('read')">🧾 영수증 읽기</button>
+    </div>
+    <div class="pp-score" id="pp-score"></div>
+    <div id="pp-question"></div>
+  `;
+  ppUpdateModeButtons();
+}
+function ppUpdateModeButtons(){
+  document.getElementById('pp-mode-listen').classList.toggle('active',ppState.mode==='listen');
+  document.getElementById('pp-mode-read').classList.toggle('active',ppState.mode==='read');
+}
+function ppSetMode(mode){
+  ppState.mode=mode;
+  ppState.round=0;
+  ppState.score=0;
+  ppUpdateModeButtons();
+  ppNext();
+}
+function ppUpdateScore(){
+  document.getElementById('pp-score').textContent=`문제 ${Math.min(ppState.round+1,ppState.setSize)} / ${ppState.setSize}  ·  점수 ${ppState.score}`;
+}
+function ppNext(){
+  if(ppState.round>=ppState.setSize){
+    ppRenderSummary();
+    return;
+  }
+  ppState.answered=false;
+  ppState.current=ppRandomPrice();
+  ppUpdateScore();
+  if(ppState.mode==='listen')ppRenderListen();
+  else ppRenderRead();
+}
+function ppRenderSummary(){
+  const q=document.getElementById('pp-question');
+  const pct=Math.round((ppState.score/ppState.setSize)*100);
+  const msg=pct===100?'완벽해요! 🎉':pct>=60?'잘했어요! 👍':'조금 더 연습해봐요 💪';
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div style="font-size:2.2rem;margin-bottom:.5rem;">${pct===100?'🏆':pct>=60?'😊':'📝'}</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#166534;margin-bottom:.3rem;">${msg}</div>
+      <div style="font-size:.9rem;color:#475569;">이번 세트 점수: ${ppState.score} / ${ppState.setSize}</div>
+    </div>
+    <button class="pp-next-btn" onclick="ppRestartSet()">🔁 다시 하기 (3문제)</button>
+  `;
+}
+function ppRestartSet(){
+  ppState.round=0;
+  ppState.score=0;
+  ppNext();
+}
+function ppRenderListen(){
+  const price=ppState.current;
+  const korean=numberToKoreanWon(price);
+  const options=ppMakeDistractors(price);
+  const q=document.getElementById('pp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🏪 점원이 가격을 말해요</div>
+      <button class="pp-speak-btn" onclick="speak('${korean}입니다')">🔊</button>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="ppCheckListen(this,${o},${price})">${ppFormatNumber(o)}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="pp-feedback"></div>
+  `;
+  speak(korean+'입니다');
+}
+function ppCheckListen(el,chosen,correct){
+  if(ppState.answered)return;
+  ppState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('pp-feedback');
+  if(chosen===correct){
+    ppState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';
+    fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===ppFormatNumber(correct))o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${ppFormatNumber(correct)}이에요`;
+    fb.style.color='#991B1B';
+  }
+  ppState.round++;
+  ppUpdateScore();
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="ppNext()">${ppState.round>=ppState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+function ppRenderRead(){
+  const price=ppState.current;
+  const correctKorean=numberToKoreanWon(price);
+  const distractors=ppMakeDistractors(price).filter(n=>n!==price).slice(0,3);
+  const options=[correctKorean,...distractors.map(n=>numberToKoreanWon(n))].sort(()=>Math.random()-0.5);
+  const q=document.getElementById('pp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🧾 영수증을 읽어보세요</div>
+      <div class="pp-receipt">
+        <div class="pp-receipt-title">RECEIPT</div>
+        <div class="pp-receipt-price">${ppFormatNumber(price)}</div>
+      </div><br>
+      <button class="pp-receipt-speak" onclick="speak('${correctKorean}')">🔊 정답 듣기</button>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="ppCheckRead(this,'${o}','${correctKorean}')">${o}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="pp-feedback"></div>
+  `;
+}
+function ppCheckRead(el,chosen,correct){
+  if(ppState.answered)return;
+  ppState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('pp-feedback');
+  if(chosen===correct){
+    ppState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';
+    fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===correct)o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${correct}이에요`;
+    fb.style.color='#991B1B';
+    speak(correct);
+  }
+  ppState.round++;
+  ppUpdateScore();
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="ppNext()">${ppState.round>=ppState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+
+// ===== Time Practice (시간 읽기 연습) =====
+const tpHourWords=['','한','두','세','네','다섯','여섯','일곱','여덟','아홉','열','열한','열두'];
+function tpHourToKorean(h){return tpHourWords[h]+' 시';}
+function tpTimeToKorean(h,m){return (tpHourToKorean(h)+(m>0?' '+ppConvertGroup(m)+' 분':'')).trim();}
+function tpFormatDigital(h,m){return `${h}시 ${String(m).padStart(2,'0')}분`;}
+function tpRandomHour(){return Math.floor(Math.random()*12)+1;}
+function tpRandomMinute(){return Math.floor(Math.random()*60);}
+function tpHourDistractors(correct){
+  const opts=new Set([correct]);
+  let tries=0;
+  while(opts.size<4&&tries<40){tries++;opts.add(tpRandomHour());}
+  return [...opts].sort(()=>Math.random()-0.5);
+}
+function tpCombinedDistractors(hour,minute){
+  const seen=new Set([hour+'|'+minute]);
+  const list=[{h:hour,m:minute}];
+  let tries=0;
+  while(list.length<4&&tries<40){
+    tries++;
+    const r=Math.random();
+    let h=hour,m=minute;
+    if(r<0.4)h=tpRandomHour();
+    else if(r<0.75)m=tpRandomMinute();
+    else{h=tpRandomHour();m=tpRandomMinute();}
+    const key=h+'|'+m;
+    if(!seen.has(key)){seen.add(key);list.push({h,m});}
+  }
+  return list.sort(()=>Math.random()-0.5);
+}
+let tpState={mode:'hour',score:0,round:0,setSize:3,answered:false,current:{h:0,m:0},recognizing:false};
+function initTimePractice(){
+  tpState={mode:'hour',score:0,round:0,setSize:3,answered:false,current:{h:0,m:0},recognizing:false};
+  document.getElementById('vocab-cards').outerHTML='<div class="pp-wrap" id="vocab-cards"></div>';
+  tpRenderShell();
+  tpNext();
+}
+function tpRenderShell(){
+  const wrap=document.getElementById('vocab-cards');
+  wrap.innerHTML=`
+    <div class="pp-modes">
+      <button class="pp-mode-btn" id="tp-mode-hour" onclick="tpSetMode('hour')">🕐 시간만 읽기</button>
+      <button class="pp-mode-btn" id="tp-mode-combined" onclick="tpSetMode('combined')">🕐 시+분 읽기</button>
+      <button class="pp-mode-btn" id="tp-mode-speak" onclick="tpSetMode('speak')">🎤 말해보기</button>
+    </div>
+    <div class="pp-score" id="tp-score"></div>
+    <div id="tp-question"></div>
+  `;
+  tpUpdateModeButtons();
+}
+function tpUpdateModeButtons(){
+  document.getElementById('tp-mode-hour').classList.toggle('active',tpState.mode==='hour');
+  document.getElementById('tp-mode-combined').classList.toggle('active',tpState.mode==='combined');
+  document.getElementById('tp-mode-speak').classList.toggle('active',tpState.mode==='speak');
+}
+function tpSetMode(mode){
+  tpState.mode=mode;
+  tpState.setSize=mode==='speak'?2:3;
+  tpState.round=0;
+  tpState.score=0;
+  tpUpdateModeButtons();
+  tpNext();
+}
+function tpUpdateScore(){
+  document.getElementById('tp-score').textContent=`문제 ${Math.min(tpState.round+1,tpState.setSize)} / ${tpState.setSize}  ·  점수 ${tpState.score}`;
+}
+function tpNext(){
+  if(tpState.round>=tpState.setSize){tpRenderSummary();return;}
+  tpState.answered=false;
+  tpState.current={h:tpRandomHour(),m:tpState.mode==='hour'?0:tpRandomMinute()};
+  tpUpdateScore();
+  if(tpState.mode==='hour')tpRenderHour();
+  else if(tpState.mode==='combined')tpRenderCombined();
+  else tpRenderSpeak();
+}
+function tpRenderSummary(){
+  const q=document.getElementById('tp-question');
+  const pct=Math.round((tpState.score/tpState.setSize)*100);
+  const msg=pct===100?'완벽해요! 🎉':pct>=60?'잘했어요! 👍':'조금 더 연습해봐요 💪';
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div style="font-size:2.2rem;margin-bottom:.5rem;">${pct===100?'🏆':pct>=60?'😊':'📝'}</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#166534;margin-bottom:.3rem;">${msg}</div>
+      <div style="font-size:.9rem;color:#475569;">이번 세트 점수: ${tpState.score} / ${tpState.setSize}</div>
+    </div>
+    <button class="pp-next-btn" onclick="tpRestartSet()">🔁 다시 하기</button>
+  `;
+}
+function tpRestartSet(){tpState.round=0;tpState.score=0;tpNext();}
+function tpRenderHour(){
+  const {h}=tpState.current;
+  const options=tpHourDistractors(h);
+  const q=document.getElementById('tp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🕐 몇 시예요?</div>
+      <div class="tp-clock">${h}시</div>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="tpCheckHour(this,${o},${h})">${tpHourToKorean(o)}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="tp-feedback"></div>
+  `;
+}
+function tpCheckHour(el,chosen,correct){
+  if(tpState.answered)return;
+  tpState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('tp-feedback');
+  if(chosen===correct){
+    tpState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===tpHourToKorean(correct))o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${tpHourToKorean(correct)}이에요`;fb.style.color='#991B1B';
+  }
+  tpState.round++;
+  tpUpdateScore();
+  speak(tpHourToKorean(correct));
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="tpNext()">${tpState.round>=tpState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+function tpRenderCombined(){
+  const {h,m}=tpState.current;
+  const correctStr=tpTimeToKorean(h,m);
+  const options=tpCombinedDistractors(h,m).map(({h,m})=>tpTimeToKorean(h,m));
+  const q=document.getElementById('tp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🕐 몇 시 몇 분이에요?</div>
+      <div class="tp-clock">${tpFormatDigital(h,m)}</div>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="tpCheckCombined(this,'${o}','${correctStr}')">${o}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="tp-feedback"></div>
+  `;
+}
+function tpCheckCombined(el,chosen,correct){
+  if(tpState.answered)return;
+  tpState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('tp-feedback');
+  if(chosen===correct){
+    tpState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===correct)o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${correct}이에요`;fb.style.color='#991B1B';
+  }
+  tpState.round++;
+  tpUpdateScore();
+  speak(correct);
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="tpNext()">${tpState.round>=tpState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+function tpCheckSpeech(transcript,h,m){
+  const norm=transcript.replace(/\s/g,'');
+  const hourWord=tpHourWords[h];
+  const hasHour=norm.includes(hourWord+'시')||norm.includes(String(h)+'시');
+  let hasMinute=true;
+  if(m>0){
+    const minuteWord=ppConvertGroup(m);
+    hasMinute=norm.includes(minuteWord+'분')||norm.includes(String(m)+'분');
+  }
+  return hasHour&&hasMinute;
+}
+function tpRenderSpeak(){
+  const q=document.getElementById('tp-question');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    q.innerHTML=`
+      <div class="tp-unsupported">🙏 이 기기(브라우저)에서는 마이크 녹음 기능을 지원하지 않아요.</div>
+      <button class="pp-next-btn" onclick="tpSetMode('hour')">다른 연습으로</button>
+    `;
+    return;
+  }
+  const {h,m}=tpState.current;
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🎤 이 시간을 말해보세요</div>
+      <div class="tp-clock">${tpFormatDigital(h,m)}</div>
+      <button class="tp-mic-btn" id="tp-mic-btn" onclick="tpToggleMic()">🎙️</button>
+      <div class="tp-mic-hint">마이크를 누르고 말한 뒤, 다시 눌러 완료하세요</div>
+    </div>
+    <div class="pp-feedback" id="tp-feedback"></div>
+  `;
+}
+let tpRecognition=null,tpMediaRecorder=null,tpAudioChunks=[],tpFinalTranscript='';
+function tpToggleMic(){
+  const btn=document.getElementById('tp-mic-btn');
+  if(tpState.recognizing){ tpStopRecording(); return; }
+  if(window._micStream && window._micStream.active){
+    tpStartRecording(window._micStream);
+  }else{
+    navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+      window._micStream=stream;
+      tpStartRecording(stream);
+    }).catch(()=>{
+      document.getElementById('tp-feedback').innerHTML='<div style="color:#F59E0B;font-size:.82rem;">⚠️ 마이크 권한이 필요해요.</div>';
+    });
+  }
+}
+function tpStartRecording(stream){
+  tpState.recognizing=true;
+  tpAudioChunks=[];tpFinalTranscript='';
+  const btn=document.getElementById('tp-mic-btn');
+  btn.classList.add('recording');
+  tpMediaRecorder=new MediaRecorder(stream);
+  tpMediaRecorder.ondataavailable=e=>{if(e.data.size>0)tpAudioChunks.push(e.data);};
+  tpMediaRecorder.onstop=()=>{
+    const blob=new Blob(tpAudioChunks,{type:'audio/webm'});
+    window._tpLastRecordingUrl=URL.createObjectURL(blob);
+    tpFinishRecording();
   };
-  const pdf=pdfMap[cat];
-  let pdfEl=document.getElementById('vocab-pdf-btn');
-  pdfEl.innerHTML=pdf?`<div style="margin-top:.5rem;margin-bottom:1rem;padding:.8rem 1rem;background:#F0F9FF;border:1.5px solid #BAE6FD;border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;"><span style="font-size:.83rem;color:#0369A1;">📋 이 카테고리의 플래시카드를 인쇄해서 연습해보세요!</span><a href="${pdf}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #CBD5E1;color:#475569;text-decoration:none;padding:.45rem 1.1rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.05);">🖨️ 플래시카드 Flashcards</a></div>`:'';
-  document.getElementById('vocab-cards').innerHTML=words.map(w=>`<div class="vocab-card" onclick="speak('${w.kr}')"><span class="vc-emoji">${w.emoji}</span><span class="vc-kr">${w.kr}</span><div class="vc-rom">${w.rom}</div><div class="vc-en">${w.en}</div><div class="vc-sound-hint">🔊</div></div>`).join('');
+  tpMediaRecorder.start();
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){
+    tpRecognition=new SR();
+    tpRecognition.lang='ko-KR';tpRecognition.continuous=false;tpRecognition.interimResults=true;
+    tpRecognition.onresult=e=>{
+      tpFinalTranscript='';
+      for(let i=0;i<e.results.length;i++){if(e.results[i].isFinal)tpFinalTranscript+=e.results[i][0].transcript;}
+    };
+    tpRecognition.onend=()=>{
+      if(tpMediaRecorder&&tpMediaRecorder.state==='recording'){
+        setTimeout(()=>{try{tpRecognition.start();}catch(e){}},300);
+      }
+    };
+    tpRecognition.onerror=()=>{};
+    try{tpRecognition.start();}catch(e){}
+  }
+}
+function tpStopRecording(){
+  if(tpRecognition){try{tpRecognition.stop();}catch(e){}}
+  if(tpMediaRecorder&&tpMediaRecorder.state==='recording')tpMediaRecorder.stop();
+}
+function tpPlayRecording(){
+  if(!window._tpLastRecordingUrl)return;
+  new Audio(window._tpLastRecordingUrl).play();
+}
+function tpFinishRecording(){
+  const btn=document.getElementById('tp-mic-btn');
+  if(btn)btn.classList.remove('recording');
+  tpState.recognizing=false;
+  const {h,m}=tpState.current;
+  const correctStr=tpTimeToKorean(h,m);
+  const fb=document.getElementById('tp-feedback');
+  const playBtn=`<button class="pp-receipt-speak" onclick="tpPlayRecording()">🔊 내 발음</button>`;
+  if(tpFinalTranscript){
+    const correct=tpCheckSpeech(tpFinalTranscript,h,m);
+    if(correct){
+      tpState.score++;
+      fb.innerHTML=`<div style="color:#166534;font-weight:700;">🔔 딩동댕! 정답이에요!</div><div style="font-size:.78rem;color:#64748B;margin:.3rem 0;">"${tpFinalTranscript}"</div>${playBtn}`;
+    }else{
+      fb.innerHTML=`<div style="color:#991B1B;font-weight:700;">🔁 다시 한번 들어보세요</div><div style="font-size:.78rem;color:#64748B;margin:.3rem 0;">You: "${tpFinalTranscript}" → ${correctStr}</div>${playBtn}`;
+      speak(correctStr);
+    }
+    tpState.round++;
+    tpUpdateScore();
+    fb.insertAdjacentHTML('beforeend',`<button class="pp-next-btn" onclick="tpNext()">${tpState.round>=tpState.setSize?'결과 보기 →':'다음 →'}</button>`);
+  }else{
+    fb.innerHTML=`<div style="font-size:.85rem;color:#334155;margin-bottom:.5rem;">🎧 녹음됐어요! 들어보고 맞게 말했는지 체크해보세요</div>${playBtn}<div style="display:flex;gap:.6rem;justify-content:center;margin-top:.7rem;"><button class="pp-next-btn" style="background:#22C55E;margin:0;" onclick="tpSelfGrade(true)">✅ 맞게 말했어요</button><button class="pp-next-btn" style="background:#EF4444;margin:0;" onclick="tpSelfGrade(false)">❌ 틀렸어요</button></div>`;
+  }
+}
+function tpSelfGrade(correct){
+  const {h,m}=tpState.current;
+  const correctStr=tpTimeToKorean(h,m);
+  const fb=document.getElementById('tp-feedback');
+  if(correct){
+    tpState.score++;
+    fb.innerHTML='<div style="color:#166534;font-weight:700;">✅ 좋아요!</div>';
+  }else{
+    fb.innerHTML=`<div style="color:#991B1B;font-weight:700;">🔁 다시 한번 들어보세요</div><div style="font-size:.78rem;color:#64748B;margin-top:.3rem;">→ ${correctStr}</div>`;
+    speak(correctStr);
+  }
+  tpState.round++;
+  tpUpdateScore();
+  fb.insertAdjacentHTML('beforeend',`<button class="pp-next-btn" onclick="tpNext()">${tpState.round>=tpState.setSize?'결과 보기 →':'다음 →'}</button>`);
 }
 
 // Init
