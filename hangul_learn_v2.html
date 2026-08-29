@@ -373,6 +373,8 @@ function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cance
 function openModal(type){const overlay=document.getElementById('modal-'+type);if(!overlay)return;overlay.classList.add('open');document.body.style.overflow='hidden';}
 function closeModal(type){const el=document.getElementById('modal-'+type);if(el)el.classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id.replace('modal-',''));});});
+// Auto-reopen a modal when arriving via a #hash link (e.g. game pages linking back with #games)
+if(location.hash==='#games')openModal('games');
 
 function showHome(){document.getElementById('home-screen').style.display='block';document.getElementById('learn-page').style.display='none';window.scrollTo(0,0);}
 function showLearnPage(){document.getElementById('home-screen').style.display='none';document.getElementById('learn-page').style.display='block';window.scrollTo(0,0);}
