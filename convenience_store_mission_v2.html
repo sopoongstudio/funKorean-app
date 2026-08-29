@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>편의점 게임 🏪</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sky: #87CEEB;
+  --ground: #8B7355;
+  --sidewalk: #C8C0B0;
+  --store-wall: #FFF8F0;
+  --store-roof: #E74C3C;
+  --sign-blue: #2980B9;
+  --shelf-brown: #8B6340;
+  --floor-tile: #F0EDE8;
+  --ui-blue: #3b5bdb;
+  --ui-green: #2f9e44;
+  --ui-yellow: #f59f00;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.game-wrap {
+  width: 100%;
+  max-width: 700px;
+}
+
+.game-title {
+  text-align: center;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.game-subtitle {
+  text-align: center;
+  color: #9aa3c9;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* HUD */
+.hud {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.hud-box {
+  background: rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 6px 14px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hud-box.money { border: 1px solid #2ecc71; color: #2ecc71; }
+.hud-box.basket { border: 1px solid #74b9ff; color: #74b9ff; }
+.hud-box.coupon { border: 1px solid #f9ca24; color: #f9ca24; display: none; }
+
+/* Game canvas */
+.game-canvas {
+  width: 100%;
+  aspect-ratio: 16/10;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 3px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* ========== SCENE: OUTSIDE ========== */
+.scene-outside {
+  width: 100%; height: 100%;
+  position: absolute;
+  display: none;
+}
+.scene-outside.active { display: block; }
+
+.sky {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(180deg, #1a1a6e 0%, #87CEEB 100%);
+}
+.sun {
+  position: absolute;
+  top: 12%; right: 12%;
+  width: 50px; height: 50px;
+  background: #FFD700;
+  border-radius: 50%;
+  box-shadow: 0 0 30px #FFD700;
+}
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 20px;
+  opacity: 0.9;
+}
+
+.ground-area {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45%;
+  background: var(--sidewalk);
+}
+.ground-line {
+  position: absolute;
+  bottom: 30%;
+  left: 0; right: 0;
+  height: 4px;
+  background: #aaa9a0;
+}
+
+/* Store building */
+.store-building {
+  position: absolute;
+  bottom: 28%;
+  left: 50%; transform: translateX(-50%);
+  width: 55%;
+}
+.store-roof-el {
+  background: var(--store-roof);
+  height: 18px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+.store-body {
+  background: var(--store-wall);
+  height: 120px;
+  position: relative;
+  border: 2px solid #ddd;
+}
+.store-sign-el {
+  background: var(--sign-blue);
+  color: white;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 4px 0;
+  letter-spacing: 3px;
+}
+.store-windows {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px;
+  height: 60px;
+}
+.store-window {
+  background: linear-gradient(135deg, #a8d8ea, #7ec8e3);
+  width: 28%;
+  border: 2px solid #5ba3c9;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.store-window::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 2px; height: 100%;
+  background: rgba(255,255,255,0.4);
+}
+.store-door {
+  width: 26%;
+  margin: 0 auto;
+  height: 50px;
+  background: linear-gradient(135deg, #a8d8ea, #7ec8e3);
+  border: 2px solid #5ba3c9;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: #2c5f7a;
+  font-weight: 700;
+  overflow: hidden;
+  transition: background 0.4s;
+}
+.door-open {
+  background: linear-gradient(135deg, #fff8f0 30%, #a8d8ea 100%) !important;
+}
+
+/* Character */
+.character {
+  position: absolute;
+  bottom: 28%;
+  width: 48px;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.char-body-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Head */
+.char-head {
+  width: 28px; height: 28px;
+  background: #FDDBB4;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+.char-hair {
+  position: absolute;
+  top: -4px; left: -3px;
+  width: 34px; height: 20px;
+  background: #4a2800;
+  border-radius: 50% 50% 0 0;
+}
+.char-bangs {
+  position: absolute;
+  top: 4px; left: -3px;
+  width: 34px; height: 10px;
+  background: #4a2800;
+  border-radius: 0 0 8px 8px;
+}
+.char-eye-l, .char-eye-r {
+  position: absolute;
+  top: 12px;
+  width: 5px; height: 5px;
+  background: #2c1810;
+  border-radius: 50%;
+}
+.char-eye-l { left: 5px; }
+.char-eye-r { right: 5px; }
+.char-mouth {
+  position: absolute;
+  bottom: 5px; left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 4px;
+  border-bottom: 2px solid #c0826a;
+  border-radius: 0 0 4px 4px;
+}
+/* Body */
+.char-torso {
+  width: 24px; height: 22px;
+  background: #FF6B9D;
+  border-radius: 4px 4px 0 0;
+  margin-top: -2px;
+}
+/* Legs */
+.char-legs {
+  display: flex;
+  gap: 4px;
+  margin-top: 1px;
+}
+.char-leg {
+  width: 10px; height: 18px;
+  background: #3b5bdb;
+  border-radius: 0 0 3px 3px;
+  position: relative;
+  transform-origin: top center;
+}
+.char-leg.walk-l { animation: none; }
+.char-leg.walk-r { animation: none; }
+.char-leg.walking-l { animation: walkL 0.4s infinite alternate; }
+.char-leg.walking-r { animation: walkR 0.4s infinite alternate; }
+/* Shoes */
+.char-leg::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: -2px;
+  width: 14px; height: 6px;
+  background: #fff;
+  border-radius: 2px;
+}
+/* Arms */
+.char-torso-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  margin-top: -2px;
+}
+.char-arm {
+  width: 7px; height: 16px;
+  background: #FF6B9D;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+.char-arm.left { transform: rotate(10deg); }
+.char-arm.right { transform: rotate(-10deg); }
+/* Bag */
+.char-bag {
+  position: absolute;
+  bottom: 2px; right: -14px;
+  width: 14px; height: 18px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 2px;
+  display: none;
+}
+.char-bag::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 6px;
+  border: 2px solid #aaa;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+}
+
+@keyframes walkL {
+  from { transform: rotate(-20deg); }
+  to { transform: rotate(20deg); }
+}
+@keyframes walkR {
+  from { transform: rotate(20deg); }
+  to { transform: rotate(-20deg); }
+}
+
+/* Enter button */
+.enter-btn {
+  position: absolute;
+  bottom: 6%;
+  left: 50%; transform: translateX(-50%);
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 28px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(46,204,113,0.4);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+}
+.enter-btn:hover { background: #27ae60; }
+
+/* ========== SCENE: INSIDE ========== */
+.scene-inside {
+  width: 100%; height: 100%;
+  position: absolute;
+  display: none;
+  background: var(--floor-tile);
+}
+.scene-inside.active { display: block; }
+
+/* Floor tiles */
+.floor-tiles {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 25%;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 49px, #ddd 49px, #ddd 50px),
+    repeating-linear-gradient(0deg, transparent, transparent 49px, #ddd 49px, #ddd 50px);
+  background-color: #f5f0e8;
+}
+
+/* Ceiling */
+.ceiling {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 12%;
+  background: #e8e4de;
+  border-bottom: 3px solid #d0ccc5;
+}
+.ceiling-light {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  height: 10px; background: #fffbe6;
+  border-radius: 4px;
+  box-shadow: 0 0 20px 6px rgba(255,251,200,0.6);
+}
+
+/* Shelves */
+.shelf-unit {
+  position: absolute;
+  background: var(--shelf-brown);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.15s;
+}
+.shelf-unit:hover { filter: brightness(1.15); transform: scale(1.02); }
+
+.shelf-label {
+  position: absolute;
+  top: -24px; left: 50%; transform: translateX(-50%);
+  background: white;
+  border: 2px solid var(--ui-blue);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--ui-blue);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.shelf-items-display {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  padding: 6px 4px 4px;
+}
+.shelf-item-icon {
+  font-size: 1.4rem;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+}
+
+/* Checkout counter */
+.counter {
+  position: absolute;
+  bottom: 22%;
+  right: 2%;
+  width: 20%;
+  height: 14%;
+  background: #5d4037;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.counter:hover { filter: brightness(1.2); }
+.counter-top {
+  position: absolute;
+  top: -8px; left: -4px; right: -4px;
+  height: 12px;
+  background: #795548;
+  border-radius: 4px;
+}
+.counter-label {
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  background: #e74c3c;
+  color: white;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.counter-register {
+  position: absolute;
+  top: -28px; left: 10px;
+  width: 30px; height: 20px;
+  background: #333;
+  border-radius: 4px;
+}
+
+/* Clerk */
+.clerk {
+  position: absolute;
+  bottom: 38%;
+  right: 4%;
+  width: 36px;
+  z-index: 2;
+}
+
+/* Inside character */
+.char-inside {
+  position: absolute;
+  bottom: 23%;
+  transition: left 0.7s cubic-bezier(0.4,0,0.2,1), bottom 0.5s;
+}
+
+/* Speech bubble */
+.speech-bubble {
+  position: absolute;
+  background: white;
+  border: 2px solid var(--ui-blue);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ui-blue);
+  white-space: nowrap;
+  bottom: 110%;
+  left: 50%; transform: translateX(-50%);
+  display: none;
+  z-index: 10;
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px; left: 50%; transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: var(--ui-blue);
+  border-bottom: none;
+}
+
+/* Section nav buttons */
+.section-nav {
+  position: absolute;
+  bottom: 2%;
+  left: 50%; transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nav-btn {
+  background: var(--ui-blue);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.nav-btn:hover { background: #2f4abf; }
+.nav-btn.checkout { background: #e74c3c; }
+.nav-btn.checkout:hover { background: #c0392b; }
+
+/* ========== POPUP ========== */
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  border-radius: 14px;
+}
+.popup-overlay.show { display: flex; }
+.popup {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 85%;
+  width: 320px;
+  text-align: center;
+  animation: popIn 0.2s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.p-emoji { font-size: 3rem; margin-bottom: 8px; display: block; }
+.p-kr { font-size: 1.5rem; font-weight: 900; color: var(--ui-blue); }
+.p-romaji { font-size: 0.85rem; color: #888; margin: 2px 0; }
+.p-en { font-size: 0.85rem; color: #333; margin-bottom: 6px; }
+.p-price { font-size: 1rem; font-weight: 800; color: var(--ui-green); margin-bottom: 12px; }
+.popup-btns { display: flex; gap: 8px; }
+.pbtn { flex: 1; padding: 10px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 800; cursor: pointer; font-family: inherit; }
+.pbtn-add { background: var(--ui-blue); color: white; }
+.pbtn-close { background: #f1f3f5; color: #333; }
+
+/* Payment popup */
+.clerk-says {
+  background: #e7ecff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ui-blue);
+}
+.clerk-says small { display: block; color: #888; font-weight: 400; font-size: 0.75rem; }
+.money-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; justify-content: center; }
+.mbtn {
+  background: #fff9e6;
+  border: 2px solid #f59f00;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  color: #7c6d00;
+}
+.mbtn.sel { background: #f59f00; color: white; }
+.selected-total { background: #f8f9fa; border-radius: 8px; padding: 6px; font-size: 0.82rem; font-weight: 700; margin-bottom: 8px; color: #333; }
+.change-box { background: #d3f9d8; border-radius: 8px; padding: 8px; font-size: 0.85rem; font-weight: 800; color: #2f9e44; margin-bottom: 10px; display: none; }
+
+/* Result */
+.result-big { font-size: 3.5rem; }
+.result-ttl { font-size: 1.3rem; font-weight: 900; margin: 8px 0 4px; }
+.result-sub { font-size: 0.82rem; color: #666; margin-bottom: 12px; line-height: 1.5; }
+.coupon-box { background: #fff3bf; border: 2px solid #f59f00; border-radius: 10px; padding: 8px; font-size: 0.82rem; font-weight: 800; color: #7c6d00; margin-bottom: 10px; display: none; }
+
+/* ===== MISSION PRE-GAME PHASES ===== */
+.phase { display: none; width: 100%; max-width: 460px; }
+.phase.show { display: block; }
+.phase-card {
+  background: white; border-radius: 20px; padding: 24px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+.phase-step {
+  display: inline-block; background: var(--ui-blue); color: white; font-weight: 800;
+  font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; margin-bottom: 14px; letter-spacing: 0.5px;
+}
+.mini-cal { background: #f0f4ff; border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+.mini-cal-month { font-weight: 900; font-size: 1.05rem; color: #333; margin-bottom: 10px; }
+.mini-cal-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.mini-cal-head { font-size: 0.72rem; font-weight: 800; color: #999; padding: 4px 0; }
+.mini-cal-cell { font-size: 0.85rem; padding: 8px 0; border-radius: 8px; color: #333; }
+.mini-cal-cell.today { background: #e74c3c; color: white; font-weight: 900; box-shadow: 0 0 0 3px #ffe3e3; }
+.phase-q { font-weight: 800; margin-bottom: 12px; font-size: 0.95rem; color: #333; }
+.choice-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+.choice-btn {
+  background: #e7ecff; color: var(--ui-blue); border: 2px solid transparent; border-radius: 12px;
+  padding: 12px 6px; font-size: 0.9rem; font-weight: 800; cursor: pointer; font-family: inherit;
+}
+.choice-btn:hover { border-color: var(--ui-blue); }
+.choice-btn.correct { background: #d3f9d8; color: var(--ui-green); border-color: var(--ui-green); }
+.choice-btn.wrong { background: #ffe3e3; color: #e03131; border-color: #e03131; }
+.phase-feedback { min-height: 22px; font-weight: 800; font-size: 0.88rem; margin-top: 10px; }
+.phase-feedback.ok { color: var(--ui-green); }
+.phase-feedback.no { color: #e03131; }
+.event-emoji { font-size: 3.2rem; margin-bottom: 10px; }
+.event-text { font-size: 1.1rem; font-weight: 900; color: var(--ui-yellow); margin-bottom: 4px; }
+.event-romaji { font-size: 0.8rem; color: #999; margin-bottom: 4px; }
+.event-en { font-size: 0.82rem; color: #333; margin-bottom: 18px; }
+.btn-main {
+  width: 100%; background: var(--ui-blue); color: white; border: none; border-radius: 12px;
+  padding: 13px; font-size: 0.98rem; font-weight: 800; cursor: pointer; font-family: inherit;
+}
+.btn-main:hover { background: #2f4abf; }
+
+/* ===== ESCAPE OVERLAY ===== */
+.escape-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.75);
+  display: none; align-items: center; justify-content: center; z-index: 80; border-radius: 14px;
+}
+.escape-overlay.show { display: flex; }
+.escape-card { background: white; border-radius: 18px; padding: 26px; text-align: center; width: 85%; max-width: 320px; }
+.escape-emoji { font-size: 3.5rem; margin-bottom: 10px; }
+.escape-title { font-size: 1.25rem; font-weight: 900; color: var(--ui-green); margin-bottom: 8px; }
+.escape-msg { font-size: 0.85rem; color: #666; margin-bottom: 16px; line-height: 1.5; }
+
+/* ===== CHECKOUT QUIZ ===== */
+.clerk-digit { font-size: 1.3rem; font-weight: 900; color: #333; margin-bottom: 4px; }
+.pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+.pay-opt {
+  background: #e7ecff; color: var(--ui-blue); border: 2px solid transparent; border-radius: 10px;
+  padding: 12px 6px; font-size: 0.92rem; font-weight: 800; cursor: pointer; font-family: inherit;
+}
+.pay-opt:hover { border-color: var(--ui-blue); }
+.pay-opt.correct { background: #d3f9d8; color: var(--ui-green); border-color: var(--ui-green); }
+.pay-opt.wrong { background: #ffe3e3; color: #e03131; border-color: #e03131; }
+.pay-feedback { min-height: 20px; font-weight: 800; font-size: 0.85rem; text-align: center; }
+
+/* ===== JAIL BARS ===== */
+.jail-bars {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  display: flex; justify-content: space-between; padding: 0 2%;
+  transform: translateY(-115%);
+  transition: transform 0.45s cubic-bezier(.36,1.4,.6,1);
+}
+.jail-bars.dropped { transform: translateY(0); }
+.jail-bars.opened { transform: translateY(-140%); transition: transform 0.9s ease-in; }
+.jail-bars .bar {
+  width: 1.1%; height: 100%;
+  background: linear-gradient(90deg, #4a4a4a, #9a9a9a 40%, #4a4a4a 60%, #2a2a2a);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.35);
+  opacity: 0.9;
+}
+
+/* ===== DEVIL CLERK ===== */
+.devil-horns {
+  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  display: none; width: 26px; z-index: 5;
+}
+.clerk.devil .devil-horns { display: block; }
+.devil-horns .horn {
+  position: absolute; top: 0; width: 0; height: 0;
+  border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 10px solid #b71c1c;
+}
+.devil-horns .horn.left { left: 0; transform: rotate(-15deg); }
+.devil-horns .horn.right { right: 0; transform: rotate(15deg); }
+.clerk.devil #clerk-torso, .clerk.devil #clerk-arm-l, .clerk.devil #clerk-arm-r {
+  background: #c0392b !important;
+}
+.clerk.devil #clerk-eye-l, .clerk.devil #clerk-eye-r {
+  background: #ff1744 !important; box-shadow: 0 0 6px 2px #ff1744;
+}
+.clerk.devil { animation: devilShake 0.15s infinite; }
+@keyframes devilShake {
+  0%,100% { transform: translateX(0); } 50% { transform: translateX(1.5px); }
+}
+.popup.devil-flash { animation: devilFlash 0.5s ease; }
+@keyframes devilFlash {
+  0% { box-shadow: 0 0 0 0 rgba(224,49,49,0); }
+  30% { box-shadow: 0 0 0 12px rgba(224,49,49,0.5); }
+  100% { box-shadow: 0 0 0 0 rgba(224,49,49,0); }
+}
+
+/* ===== FAIL ACTIONS ===== */
+.fail-box { display: none; text-align: center; }
+.fail-box.show { display: block; }
+.fail-emoji { font-size: 2.4rem; margin-bottom: 6px; }
+.fail-msg { font-weight: 800; color: #c0392b; margin-bottom: 14px; font-size: 0.95rem; }
+.fail-btns { display: flex; gap: 10px; }
+
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: absolute; top: -10%; width: 8px; height: 14px; z-index: 90;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(320px) rotate(540deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PHASE 1: DATE READING ===== -->
+<div class="phase show" id="phase-weekday">
+  <div class="phase-card">
+    <div class="phase-step">STEP 1</div>
+    <div class="mini-cal">
+      <div class="mini-cal-month" id="mini-cal-month"></div>
+      <div class="mini-cal-row" id="mini-cal-head"></div>
+      <div class="mini-cal-row" id="mini-cal-dates"></div>
+    </div>
+    <button onclick="replayDate()" style="background:#e7ecff;color:var(--ui-blue);border:none;border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:14px">🔊 다시 듣기</button>
+    <p class="phase-q">오늘은 몇 월 며칠이에요? 맞는 걸 골라보세요 👇</p>
+    <div class="choice-grid" id="weekday-choices"></div>
+    <div class="phase-feedback" id="weekday-feedback"></div>
+    <div id="date-reveal" style="display:none;margin-top:10px;font-size:0.82rem;color:#999"></div>
+  </div>
+</div>
+
+<!-- ===== PHASE 2: EVENT ===== -->
+<div class="phase" id="phase-event">
+  <div class="phase-card">
+    <div class="phase-step">STEP 2</div>
+    <div class="event-emoji" id="event-emoji"></div>
+    <div class="event-text" id="event-text"></div>
+    <div class="event-romaji" id="event-romaji"></div>
+    <div class="event-en" id="event-en"></div>
+    <button class="btn-main" onclick="revealStore()">🚪 편의점 앞으로 가기<br><span style="font-size:0.72rem;font-weight:700;opacity:0.85">Go to the convenience store</span></button>
+  </div>
+</div>
+
+<div class="game-wrap" id="game-wrap" style="display:none">
+  <div class="game-title">🏪 편의점 탈출 미션</div>
+  <div class="game-subtitle">Convenience Store Escape Mission</div>
+
+  <div class="hud">
+    <div class="hud-box basket">🛒 담은 상품 <span id="cart-disp">0개</span></div>
+  </div>
+
+  <div class="game-canvas">
+
+    <!-- ========== OUTSIDE SCENE ========== -->
+    <div class="scene-outside active" id="scene-outside">
+      <div class="sky"></div>
+      <div class="sun"></div>
+      <!-- clouds -->
+      <div class="cloud" style="top:8%;left:10%;width:80px;height:25px"></div>
+      <div class="cloud" style="top:14%;left:8%;width:50px;height:18px"></div>
+      <div class="cloud" style="top:10%;left:30%;width:60px;height:20px"></div>
+
+      <div class="ground-area"></div>
+      <div class="ground-line"></div>
+
+      <!-- Store -->
+      <div class="store-building">
+        <div class="store-roof-el"></div>
+        <div class="store-body">
+          <div class="store-sign-el">⭐ CU 편의점</div>
+          <div class="store-windows">
+            <div class="store-window"></div>
+            <div class="store-window"></div>
+          </div>
+          <div class="store-door" id="store-door">자동문</div>
+        </div>
+      </div>
+
+      <!-- Character outside -->
+      <div class="character" id="char-outside" style="left:10%">
+        <div class="char-body-wrap" style="position:relative">
+          <div class="char-head">
+            <div class="char-hair"></div>
+            <div class="char-bangs"></div>
+            <div class="char-eye-l"></div>
+            <div class="char-eye-r"></div>
+            <div class="char-mouth"></div>
+          </div>
+          <div class="char-torso-row">
+            <div class="char-arm left"></div>
+            <div class="char-torso"></div>
+            <div class="char-arm right"></div>
+          </div>
+          <div class="char-legs">
+            <div class="char-leg walk-l" id="leg-l-out"></div>
+            <div class="char-leg walk-r" id="leg-r-out"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="enter-btn" id="enter-btn" onclick="enterStore()">편의점 들어가기 →<br><span style="font-size:0.68rem;font-weight:700;opacity:0.9">Enter the store</span></button>
+    </div>
+
+    <!-- ========== INSIDE SCENE ========== -->
+    <div class="scene-inside" id="scene-inside">
+      <div class="jail-bars" id="jail-bars">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+      <div class="ceiling">
+        <div class="ceiling-light" style="left:15%;width:15%"></div>
+        <div class="ceiling-light" style="left:40%;width:15%"></div>
+        <div class="ceiling-light" style="left:65%;width:15%"></div>
+      </div>
+      <div class="floor-tiles"></div>
+
+      <!-- Drink shelf -->
+      <div class="shelf-unit" id="shelf-drinks" style="left:3%;bottom:40%;width:19%;height:42%;" onclick="openSection('drinks')">
+        <div class="shelf-label">🥤 음료 코너</div>
+        <div class="shelf-items-display" id="drinks-grid-preview" style="gap:4px;justify-content:center;flex-wrap:wrap;padding:4px"></div>
+      </div>
+
+      <!-- Food shelf -->
+      <div class="shelf-unit" id="shelf-food" style="left:24%;bottom:40%;width:18%;height:42%;" onclick="openSection('food')">
+        <div class="shelf-label">🍜 라면 코너</div>
+        <div class="shelf-items-display" id="food-grid-preview" style="gap:4px;justify-content:center;flex-wrap:wrap;padding:4px"></div>
+      </div>
+
+      <!-- Snack shelf -->
+      <div class="shelf-unit" id="shelf-snack" style="left:45%;bottom:40%;width:17%;height:42%;" onclick="openSection('snack')">
+        <div class="shelf-label">🍫 스낵 코너</div>
+        <div class="shelf-items-display" id="snack-grid-preview" style="gap:4px;justify-content:center;flex-wrap:wrap;padding:4px"></div>
+      </div>
+
+      <!-- Daily shelf -->
+      <div class="shelf-unit" id="shelf-daily" style="left:65%;bottom:40%;width:9%;height:30%;" onclick="openSection('daily')">
+        <div class="shelf-label">🧻 생활</div>
+        <div class="shelf-items-display" id="daily-grid-preview" style="gap:4px;justify-content:center;flex-wrap:wrap;padding:4px"></div>
+      </div>
+
+      <!-- Counter label (above counter) -->
+      <div style="position:absolute;bottom:55%;right:2%;width:22%;display:flex;justify-content:center;z-index:10;">
+        <div onclick="openPaymentScene()" style="background:#e74c3c;color:white;border-radius:8px;padding:5px 10px;font-size:0.78rem;font-weight:800;white-space:nowrap;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.25);text-align:center;line-height:1.3">🧾 계산대<br><span style="font-size:0.58rem;font-weight:700;opacity:0.9">Checkout</span></div>
+      </div>
+
+      <!-- Counter -->
+      <div class="counter" style="z-index:3;" onclick="openPaymentScene()">
+        <div class="counter-top"></div>
+        <div class="counter-register"></div>
+      </div>
+
+      <!-- Clerk -->
+      <div class="clerk" id="clerk">
+        <div class="devil-horns" id="devil-horns">
+          <div class="horn left"></div><div class="horn right"></div>
+        </div>
+        <div class="char-body-wrap" style="position:relative">
+          <div class="char-head" id="clerk-head" style="width:22px;height:22px">
+            <div class="char-hair" style="width:28px;height:16px;left:-3px;background:#1a1a1a"></div>
+            <div class="char-bangs" style="width:28px;left:-3px;background:#1a1a1a"></div>
+            <div class="char-eye-l" id="clerk-eye-l" style="left:3px;top:9px"></div>
+            <div class="char-eye-r" id="clerk-eye-r" style="right:3px;top:9px"></div>
+          </div>
+          <div class="char-torso-row">
+            <div class="char-arm left" id="clerk-arm-l" style="width:6px;height:13px;background:#27ae60"></div>
+            <div class="char-torso" id="clerk-torso" style="width:20px;height:18px;background:#27ae60"></div>
+            <div class="char-arm right" id="clerk-arm-r" style="width:6px;height:13px;background:#27ae60"></div>
+          </div>
+          <div class="char-legs" style="gap:3px">
+            <div class="char-leg" style="width:8px;height:14px;background:#2c3e50"></div>
+            <div class="char-leg" style="width:8px;height:14px;background:#2c3e50"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inside character -->
+      <div class="char-inside" id="char-inside" style="left:45%">
+        <div class="char-body-wrap" style="position:relative">
+          <div class="speech-bubble" id="char-speech"></div>
+          <div class="char-head">
+            <div class="char-hair"></div>
+            <div class="char-bangs"></div>
+            <div class="char-eye-l"></div>
+            <div class="char-eye-r"></div>
+            <div class="char-mouth"></div>
+          </div>
+          <div class="char-torso-row">
+            <div class="char-arm left"></div>
+            <div class="char-torso"></div>
+            <div class="char-arm right"></div>
+          </div>
+          <div class="char-legs">
+            <div class="char-leg walk-l" id="leg-l-in"></div>
+            <div class="char-leg walk-r" id="leg-r-in"></div>
+          </div>
+          <div class="char-bag" id="char-bag"></div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <!-- Cart bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(30,30,60,0.92);padding:6px 10px;display:flex;align-items:center;gap:8px;border-radius:0 0 14px 14px;min-height:44px">
+        <div style="color:#74b9ff;font-weight:900;font-size:0.8rem;white-space:nowrap">🛒 장바구니</div>
+        <div id="cart-bar-items" style="flex:1;font-size:0.75rem;color:white;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">아직 비어있어요</div>
+        <button class="nav-btn checkout" onclick="openPaymentScene()" style="white-space:nowrap;padding:5px 10px;font-size:0.75rem;flex-shrink:0">🧾 계산</button>
+      </div>
+
+      <!-- Item popup -->
+      <div class="popup-overlay" id="item-popup">
+        <div class="popup">
+          <div class="p-emoji" id="p-emoji"></div>
+          <div class="p-kr" id="p-kr"></div>
+          <div class="p-romaji" id="p-romaji"></div>
+          <div class="p-en" id="p-en"></div>
+          <div class="p-price" id="p-price"></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px">
+            <button onclick="changeQty(-1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#e7ecff;color:var(--ui-blue);font-size:1.2rem;font-weight:900;cursor:pointer">−</button>
+            <div id="qty-val" style="font-size:1.2rem;font-weight:900;min-width:26px">1</div>
+            <button onclick="changeQty(1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#e7ecff;color:var(--ui-blue);font-size:1.2rem;font-weight:900;cursor:pointer">+</button>
+          </div>
+          <div class="popup-btns">
+            <button class="pbtn pbtn-close" onclick="closePopup('item-popup')">닫기</button>
+            <button class="pbtn pbtn-add" onclick="confirmItem()">🛒 담기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section popup -->
+      <div class="popup-overlay" id="section-popup">
+        <div class="popup" style="width:90%;max-width:360px">
+          <div style="font-weight:900;font-size:1rem;margin-bottom:12px;color:#333" id="section-title"></div>
+          <div id="section-items" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"></div>
+          <button class="pbtn pbtn-close" onclick="closePopup('section-popup')" style="width:100%">← 돌아가기</button>
+        </div>
+      </div>
+
+      <!-- Payment popup -->
+      <div class="popup-overlay" id="pay-popup">
+        <div class="popup" id="pay-popup-inner" style="width:90%;max-width:360px">
+          <div style="font-size:1.5rem;margin-bottom:8px">🧾 계산대</div>
+          <div class="clerk-says">
+            <div class="clerk-digit" id="clerk-digit"></div>
+            <button onclick="replayClerk()" style="background:#e7ecff;color:var(--ui-blue);border:none;border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:inherit;margin-top:4px">🔊 다시 듣기</button>
+            <div id="clerk-reveal" style="display:none;margin-top:8px">
+              <div id="clerk-text"></div>
+              <small id="clerk-romaji"></small>
+            </div>
+          </div>
+
+          <div class="fail-box" id="fail-box">
+            <div class="fail-emoji">😈🔥</div>
+            <div class="fail-msg">으하하하! 틀렸다!</div>
+            <div class="fail-btns">
+              <button class="pbtn pbtn-close" onclick="cancelPayment()">취소</button>
+              <button class="pbtn pbtn-add" onclick="retryPayment()">🔄 다시하기</button>
+            </div>
+          </div>
+
+          <div id="pay-quiz">
+            <div style="font-size:0.8rem;font-weight:800;color:#888;margin-bottom:8px;text-align:left">맞는 금액을 골라보세요 👇</div>
+            <div class="pay-options" id="amount-options"></div>
+            <div class="pay-feedback" id="pay-feedback"></div>
+            <div class="popup-btns" style="margin-top:8px">
+              <button class="pbtn pbtn-close" onclick="closePopup('pay-popup')">취소</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Escape success overlay -->
+      <div class="escape-overlay" id="escape-overlay">
+        <div class="escape-card">
+          <div class="escape-emoji">🚪✨</div>
+          <div class="escape-title">문이 열렸어요!</div>
+          <div class="escape-msg">편의점 탈출 성공!<br>오늘의 미션을 완료했어요.</div>
+          <button class="btn-main" onclick="restartMission()">🔄 다시 하기</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+const SVG_SIZE_DRINKS = 'width="32" height="48"';
+const SVG_SIZE_FOOD = 'width="44" height="44"';
+const SVG_SIZE_SNACK_TALL = 'width="32" height="48"';
+const SVG_SIZE_SNACK_SQ = 'width="44" height="44"';
+const SVG_SIZE_DAILY = 'width="44" height="44"';
+
+// SVG illustrations for each item
+const SVG_ITEMS = {
+  // ===== DRINKS =====
+  cola: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="8" width="24" height="44" rx="5" fill="#E53935"/>
+    <rect x="12" y="3" width="16" height="8" rx="3" fill="#B71C1C"/>
+    <rect x="14" y="1" width="12" height="5" rx="2" fill="#ccc"/>
+    <rect x="8" y="18" width="24" height="4" rx="0" fill="#C62828"/>
+    <text x="20" y="36" text-anchor="middle" font-size="7" font-weight="bold" fill="white">Coca</text>
+    <text x="20" y="44" text-anchor="middle" font-size="7" font-weight="bold" fill="white">Cola</text>
+    <rect x="9" y="10" width="6" height="20" rx="2" fill="rgba(255,255,255,0.15)"/>
+  </svg>`,
+
+  monster: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#1a1a1a"/>
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="url(#mg)" opacity="0.3"/>
+    <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00E676"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient></defs>
+    <text x="20" y="28" text-anchor="middle" font-size="22" font-weight="900" fill="#00E676">M</text>
+    <text x="20" y="44" text-anchor="middle" font-size="6" fill="#00E676">MONSTER</text>
+    <rect x="7" y="5" width="5" height="25" rx="2" fill="rgba(255,255,255,0.07)"/>
+  </svg>`,
+
+  pocari: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#1565C0"/>
+    <rect x="6" y="4" width="28" height="30" rx="4" fill="#1976D2"/>
+    <text x="20" y="22" text-anchor="middle" font-size="5.5" font-weight="bold" fill="white">POCARI</text>
+    <text x="20" y="30" text-anchor="middle" font-size="5.5" font-weight="bold" fill="white">SWEAT</text>
+    <ellipse cx="20" cy="42" rx="10" ry="6" fill="rgba(255,255,255,0.15)"/>
+    <rect x="7" y="5" width="5" height="28" rx="2" fill="rgba(255,255,255,0.12)"/>
+  </svg>`,
+
+  banana_milk: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="6" width="24" height="46" rx="6" fill="#FFF9C4"/>
+    <rect x="8" y="6" width="24" height="20" rx="6" fill="#F9A825"/>
+    <text x="20" y="20" text-anchor="middle" font-size="6" font-weight="bold" fill="#5D4037">바나나</text>
+    <text x="20" y="38" text-anchor="middle" font-size="5" fill="#795548">우유</text>
+    <ellipse cx="20" cy="30" rx="8" ry="5" fill="#FFE082" opacity="0.5"/>
+    <rect x="9" y="7" width="5" height="18" rx="2" fill="rgba(255,255,255,0.3)"/>
+  </svg>`,
+
+  milk: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="10" width="24" height="42" rx="3" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="8" y="10" width="24" height="14" rx="3" fill="#E53935"/>
+    <polygon points="8,10 20,4 32,10" fill="#B71C1C"/>
+    <text x="20" y="20" text-anchor="middle" font-size="6" font-weight="bold" fill="white">우유</text>
+    <text x="20" y="38" text-anchor="middle" font-size="5" fill="#888">MILK</text>
+    <ellipse cx="20" cy="44" rx="7" ry="3" fill="#f5f5f5"/>
+  </svg>`,
+
+  water: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="8" width="20" height="44" rx="8" fill="rgba(173,216,230,0.4)" stroke="#90CAF9" stroke-width="1.5"/>
+    <rect x="13" y="4" width="14" height="7" rx="3" fill="#90CAF9"/>
+    <rect x="15" y="2" width="10" height="4" rx="2" fill="#64B5F6"/>
+    <ellipse cx="20" cy="32" rx="7" ry="12" fill="rgba(255,255,255,0.3)"/>
+    <text x="20" y="38" text-anchor="middle" font-size="6" font-weight="bold" fill="#1565C0">물</text>
+    <rect x="11" y="9" width="4" height="20" rx="2" fill="rgba(255,255,255,0.4)"/>
+  </svg>`,
+
+  coffee: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#3E2723"/>
+    <rect x="6" y="4" width="28" height="18" rx="4" fill="#4E342E"/>
+    <text x="20" y="16" text-anchor="middle" font-size="6" font-weight="bold" fill="#FFD54F">TOP</text>
+    <text x="20" y="34" text-anchor="middle" font-size="5" fill="#BCAAA4">COFFEE</text>
+    <ellipse cx="20" cy="44" rx="8" ry="4" fill="#5D4037" opacity="0.5"/>
+    <rect x="7" y="5" width="5" height="16" rx="2" fill="rgba(255,255,255,0.07)"/>
+  </svg>`,
+
+  sikhye: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#FFF8E1"/>
+    <rect x="6" y="4" width="28" height="18" rx="4" fill="#FFB300"/>
+    <text x="20" y="16" text-anchor="middle" font-size="6" font-weight="bold" fill="white">식혜</text>
+    <text x="20" y="34" text-anchor="middle" font-size="5" fill="#795548">전통음료</text>
+    <ellipse cx="20" cy="44" rx="7" ry="3" fill="#FFE082" opacity="0.5"/>
+    <rect x="7" y="5" width="5" height="16" rx="2" fill="rgba(255,255,255,0.2)"/>
+  </svg>`,
+
+  greentea: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#E8F5E9"/>
+    <rect x="6" y="4" width="28" height="22" rx="4" fill="#388E3C"/>
+    <text x="20" y="18" text-anchor="middle" font-size="6" font-weight="bold" fill="white">녹차</text>
+    <text x="20" y="36" text-anchor="middle" font-size="5" fill="#2E7D32">GREEN TEA</text>
+    <ellipse cx="20" cy="46" rx="7" ry="3" fill="#A5D6A7" opacity="0.5"/>
+    <rect x="7" y="5" width="5" height="20" rx="2" fill="rgba(255,255,255,0.15)"/>
+  </svg>`,
+
+  // ===== FOOD =====
+  buldak: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="10" width="42" height="34" rx="5" fill="#E53935"/>
+    <rect x="4" y="10" width="42" height="14" rx="5" fill="#B71C1C"/>
+    <rect x="12" y="6" width="26" height="8" rx="3" fill="#888"/>
+    <text x="25" y="20" text-anchor="middle" font-size="6" font-weight="bold" fill="white">불닭</text>
+    <text x="25" y="28" text-anchor="middle" font-size="5" fill="#FFCDD2">치즈컵라면</text>
+    <text x="25" y="37" text-anchor="middle" font-size="9">🔥</text>
+  </svg>`,
+
+  ramen: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="10" width="42" height="34" rx="5" fill="#F44336"/>
+    <rect x="4" y="10" width="42" height="14" rx="5" fill="#C62828"/>
+    <rect x="12" y="6" width="26" height="8" rx="3" fill="#999"/>
+    <text x="25" y="20" text-anchor="middle" font-size="7" font-weight="bold" fill="white">신라면</text>
+    <text x="25" y="35" text-anchor="middle" font-size="8">🍜</text>
+  </svg>`,
+
+  triangle: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+    <polygon points="25,8 8,40 42,40" fill="#333"/>
+    <rect x="8" y="28" width="34" height="12" rx="0" fill="white"/>
+    <rect x="10" y="30" width="30" height="8" rx="0" fill="#E53935"/>
+    <text x="25" y="22" text-anchor="middle" font-size="8" fill="white">🍙</text>
+    <text x="25" y="37" text-anchor="middle" font-size="5.5" font-weight="bold" fill="white">참치마요</text>
+  </svg>`,
+
+  egg: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="42" height="42" rx="5" fill="#FFF8E1" stroke="#FFE082" stroke-width="1.5"/>
+    <ellipse cx="17" cy="25" rx="9" ry="11" fill="#FDDBB4"/>
+    <ellipse cx="33" cy="25" rx="9" ry="11" fill="#FDDBB4"/>
+    <text x="25" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#795548">계란</text>
+    <text x="25" y="40" text-anchor="middle" font-size="6" fill="#A1887F">6구</text>
+  </svg>`,
+
+  gimbap: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+    <circle cx="14" cy="26" r="9" fill="#333"/>
+    <circle cx="14" cy="26" r="6" fill="white"/>
+    <circle cx="14" cy="26" r="3" fill="#E53935"/>
+    <circle cx="26" cy="26" r="9" fill="#333"/>
+    <circle cx="26" cy="26" r="6" fill="white"/>
+    <circle cx="26" cy="26" r="3" fill="#FF9800"/>
+    <circle cx="38" cy="26" r="9" fill="#333"/>
+    <circle cx="38" cy="26" r="6" fill="white"/>
+    <circle cx="38" cy="26" r="3" fill="#4CAF50"/>
+    <text x="25" y="12" text-anchor="middle" font-size="7" font-weight="bold" fill="#333">김밥</text>
+  </svg>`,
+
+  sandwich: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+    <rect x="8" y="12" width="34" height="6" rx="2" fill="#F9A825"/>
+    <rect x="8" y="18" width="34" height="5" rx="0" fill="#A5D6A7"/>
+    <rect x="8" y="23" width="34" height="4" rx="0" fill="#EF9A9A"/>
+    <rect x="8" y="27" width="34" height="4" rx="0" fill="#FFF9C4"/>
+    <rect x="8" y="31" width="34" height="6" rx="2" fill="#F9A825"/>
+    <text x="25" y="10" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#5D4037">샌드위치</text>
+    <text x="25" y="44" text-anchor="middle" font-size="5.5" fill="#888">SANDWICH</text>
+  </svg>`,
+
+  dosirak: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="8" width="40" height="34" rx="4" fill="#F5F5F5" stroke="#ddd" stroke-width="1"/>
+    <rect x="5" y="8" width="40" height="10" rx="4" fill="#1976D2"/>
+    <text x="25" y="17" text-anchor="middle" font-size="6" font-weight="bold" fill="white">도시락</text>
+    <rect x="8" y="20" width="18" height="12" rx="2" fill="#A5D6A7"/>
+    <rect x="28" y="20" width="14" height="12" rx="2" fill="#FFCC80"/>
+    <rect x="8" y="34" width="34" height="6" rx="2" fill="#EF9A9A"/>
+    <text x="25" y="44" text-anchor="middle" font-size="5" fill="#888">편의점도시락</text>
+  </svg>`,
+
+  // ===== SNACKS =====
+  pepero: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#E53935"/>
+    <rect x="6" y="4" width="28" height="20" rx="4" fill="#B71C1C"/>
+    <text x="20" y="17" text-anchor="middle" font-size="7" font-weight="bold" fill="white">빼빼로</text>
+    <rect x="16" y="26" width="3" height="22" rx="1" fill="#F5CBA7"/>
+    <rect x="22" y="26" width="3" height="22" rx="1" fill="#F5CBA7"/>
+    <rect x="16" y="26" width="3" height="8" rx="1" fill="#5D4037"/>
+    <rect x="22" y="26" width="3" height="8" rx="1" fill="#5D4037"/>
+  </svg>`,
+
+  melon: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="28" height="52" rx="4" fill="#E8F5E9"/>
+    <rect x="6" y="4" width="28" height="18" rx="4" fill="#66BB6A"/>
+    <text x="20" y="16" text-anchor="middle" font-size="6" font-weight="bold" fill="white">메로나</text>
+    <rect x="13" y="24" width="14" height="22" rx="4" fill="#A5D6A7"/>
+    <rect x="15" y="44" width="10" height="10" rx="0" fill="#BCAAA4"/>
+    <rect x="18" y="22" width="4" height="4" rx="1" fill="#ccc"/>
+  </svg>`,
+
+  icecream: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="20" cy="22" rx="12" ry="14" fill="#FFCCBC"/>
+    <ellipse cx="14" cy="18" rx="8" ry="10" fill="#F8BBD9"/>
+    <ellipse cx="26" cy="18" rx="8" ry="10" fill="#B3E5FC"/>
+    <polygon points="12,32 28,32 20,52" fill="#FFCC80"/>
+    <line x1="20" y1="32" x2="20" y2="52" stroke="#FFB300" stroke-width="1"/>
+    <line x1="12" y1="36" x2="28" y2="36" stroke="#FFB300" stroke-width="1"/>
+    <line x1="13" y1="40" x2="27" y2="40" stroke="#FFB300" stroke-width="1"/>
+  </svg>`,
+
+  tteok: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="5" fill="#FFEBEE"/>
+    <rect x="6" y="18" width="38" height="8" rx="4" fill="#E53935"/>
+    <rect x="6" y="26" width="38" height="8" rx="4" fill="#EF9A9A"/>
+    <rect x="6" y="34" width="38" height="8" rx="4" fill="#E53935"/>
+    <text x="25" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#C62828">떡볶이</text>
+    <circle cx="12" cy="22" r="3" fill="#FFCC80"/>
+    <circle cx="25" cy="22" r="3" fill="#FFCC80"/>
+    <circle cx="38" cy="22" r="3" fill="#FFCC80"/>
+  </svg>`,
+
+  saewooggang: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="32" height="52" rx="6" fill="#FF7043"/>
+    <rect x="4" y="4" width="32" height="18" rx="6" fill="#E64A19"/>
+    <text x="20" y="15" text-anchor="middle" font-size="5.5" font-weight="bold" fill="white">새우깡</text>
+    <ellipse cx="20" cy="36" rx="10" ry="6" fill="#FFAB91" opacity="0.5"/>
+    <text x="20" y="32" text-anchor="middle" font-size="14">🍤</text>
+    <text x="20" y="48" text-anchor="middle" font-size="5" fill="#FFCCBC">SAEWOO KANG</text>
+  </svg>`,
+
+  poca: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="32" height="52" rx="6" fill="#FDD835"/>
+    <rect x="4" y="4" width="32" height="18" rx="6" fill="#F9A825"/>
+    <text x="20" y="15" text-anchor="middle" font-size="6" font-weight="bold" fill="#5D4037">포카칩</text>
+    <ellipse cx="14" cy="36" rx="7" ry="5" fill="#FFF176" stroke="#F9A825" stroke-width="1" transform="rotate(-20 14 36)"/>
+    <ellipse cx="26" cy="32" rx="7" ry="5" fill="#FFF176" stroke="#F9A825" stroke-width="1" transform="rotate(15 26 32)"/>
+    <ellipse cx="20" cy="44" rx="7" ry="5" fill="#FFF176" stroke="#F9A825" stroke-width="1" transform="rotate(-10 20 44)"/>
+  </svg>`,
+
+  chokopie: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="5" fill="#4E342E"/>
+    <rect x="3" y="3" width="44" height="18" rx="5" fill="#3E2723"/>
+    <text x="25" y="15" text-anchor="middle" font-size="6" font-weight="bold" fill="#FFCC02">초코파이</text>
+    <ellipse cx="25" cy="34" rx="14" ry="9" fill="#5D4037"/>
+    <ellipse cx="25" cy="32" rx="12" ry="7" fill="#3E2723"/>
+    <ellipse cx="25" cy="30" rx="10" ry="5" fill="white" opacity="0.9"/>
+    <ellipse cx="25" cy="34" rx="14" ry="4" fill="#5D4037"/>
+  </svg>`,
+
+  jelly: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="32" height="52" rx="6" fill="#CE93D8"/>
+    <rect x="4" y="4" width="32" height="16" rx="6" fill="#AB47BC"/>
+    <text x="20" y="15" text-anchor="middle" font-size="6.5" font-weight="bold" fill="white">젤리</text>
+    <circle cx="13" cy="32" r="5" fill="#F48FB1" opacity="0.9"/>
+    <circle cx="27" cy="28" r="5" fill="#80DEEA" opacity="0.9"/>
+    <circle cx="13" cy="46" r="5" fill="#FFE082" opacity="0.9"/>
+    <circle cx="27" cy="44" r="5" fill="#A5D6A7" opacity="0.9"/>
+  </svg>`,
+
+  // ===== DAILY =====
+  tissue: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="10" width="38" height="32" rx="4" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.5"/>
+    <ellipse cx="25" cy="26" rx="12" ry="15" fill="white" stroke="#90CAF9" stroke-width="1"/>
+    <ellipse cx="25" cy="26" rx="5" ry="8" fill="#E3F2FD"/>
+    <text x="25" y="8" text-anchor="middle" font-size="6" font-weight="bold" fill="#1565C0">휴지</text>
+  </svg>`,
+
+  toothpaste: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="10" width="20" height="38" rx="3" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1"/>
+    <rect x="10" y="10" width="20" height="16" rx="3" fill="#1976D2"/>
+    <rect x="14" y="4" width="12" height="8" rx="3" fill="#64B5F6"/>
+    <rect x="16" y="2" width="8" height="4" rx="2" fill="#90CAF9"/>
+    <text x="20" y="20" text-anchor="middle" font-size="5.5" font-weight="bold" fill="white">치약</text>
+    <rect x="12" y="28" width="16" height="3" rx="1" fill="#90CAF9" opacity="0.5"/>
+    <rect x="12" y="33" width="16" height="3" rx="1" fill="#90CAF9" opacity="0.3"/>
+  </svg>`,
+
+  toothbrush: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="18" y="4" width="6" height="42" rx="3" fill="#42A5F5"/>
+    <rect x="14" y="4" width="14" height="14" rx="3" fill="#1976D2"/>
+    <rect x="15" y="6" width="4" height="10" rx="2" fill="white" opacity="0.8"/>
+    <rect x="21" y="6" width="4" height="10" rx="2" fill="white" opacity="0.8"/>
+    <text x="20" y="54" text-anchor="middle" font-size="5.5" font-weight="bold" fill="#1565C0">칫솔</text>
+  </svg>`,
+
+  band: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="5" fill="#FFF8E1" stroke="#FFE082" stroke-width="1"/>
+    <rect x="8" y="18" width="34" height="14" rx="2" fill="#FFCCBC"/>
+    <rect x="8" y="18" width="12" height="14" rx="2" fill="#FFAB91"/>
+    <rect x="30" y="18" width="12" height="14" rx="2" fill="#FFAB91"/>
+    <rect x="20" y="20" width="10" height="10" rx="1" fill="white"/>
+    <line x1="25" y1="21" x2="25" y2="29" stroke="#EF9A9A" stroke-width="1.5"/>
+    <line x1="21" y1="25" x2="29" y2="25" stroke="#EF9A9A" stroke-width="1.5"/>
+    <text x="25" y="10" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#E64A19">밴드</text>
+  </svg>`,
+
+  mask: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="44" height="44" rx="5" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1"/>
+    <rect x="8" y="16" width="34" height="20" rx="4" fill="white" stroke="#90CAF9" stroke-width="1.5"/>
+    <line x1="8" y1="22" x2="42" y2="22" stroke="#BBDEFB" stroke-width="1"/>
+    <line x1="8" y1="28" x2="42" y2="28" stroke="#BBDEFB" stroke-width="1"/>
+    <rect x="4" y="20" width="6" height="12" rx="3" fill="#90CAF9"/>
+    <rect x="40" y="20" width="6" height="12" rx="3" fill="#90CAF9"/>
+    <text x="25" y="10" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#1565C0">마스크</text>
+  </svg>`,
+};
+
+
+function getSVG(id) {
+  const svg = SVG_ITEMS[id];
+  if (!svg) return '<div style="font-size:2rem;text-align:center">?</div>';
+  return svg;
+}
+
+const ITEMS = {
+  drinks: [
+    { id:'cola',        kr:'콜라',       romaji:'kol-la',              en:'Cola',            price:400 },
+    { id:'monster',     kr:'몬스터',      romaji:'mon-seu-teo',         en:'Monster Energy',  price:500 },
+    { id:'pocari',      kr:'포카리스웨트', romaji:'po-ka-ri-seu-we-teu', en:'Pocari Sweat',    price:400 },
+    { id:'banana_milk', kr:'바나나우유',   romaji:'ba-na-na-u-yu',       en:'Banana Milk',     price:350 },
+    { id:'milk',        kr:'우유',        romaji:'u-yu',                en:'Milk',            price:350 },
+    { id:'water',       kr:'물',          romaji:'mul',                 en:'Water',           price:100 },
+    { id:'coffee',      kr:'커피',        romaji:'keo-pi',              en:'Coffee',          price:500 },
+    { id:'sikhye',      kr:'식혜',        romaji:'si-kye',             en:'Sweet Rice Drink',price:350 },
+    { id:'greentea',    kr:'녹차',        romaji:'nok-cha',             en:'Green Tea',       price:350 },
+  ],
+  food: [
+    { id:'buldak',    kr:'불닭치즈컵라면', romaji:'bul-dak-chi-jeu-keom-na-myeon', en:'Buldak Cheese Cup Noodle', price:450 },
+    { id:'ramen',     kr:'신라면',        romaji:'sil-la-myeon',   en:'Shin Ramen',    price:400 },
+    { id:'triangle',  kr:'삼각김밥',      romaji:'sam-gak-kkim-bap',en:'Triangle Kimbap',price:450 },
+    { id:'egg',       kr:'계란',          romaji:'gye-ran',        en:'Eggs (6)',       price:700 },
+    { id:'gimbap',    kr:'김밥',          romaji:'gim-bap',        en:'Gimbap',         price:800 },
+    { id:'sandwich',  kr:'샌드위치',      romaji:'saen-deu-wi-chi',en:'Sandwich',       price:500 },
+    { id:'dosirak',   kr:'도시락',        romaji:'do-si-rak',      en:'Lunch Box',      price:900 },
+  ],
+  snack: [
+    { id:'pepero',      kr:'빼빼로',   romaji:'ppae-ppae-ro',   en:'Pepero',      price:300 },
+    { id:'melon',       kr:'메로나',   romaji:'me-ro-na',       en:'Melona',      price:250 },
+    { id:'icecream',    kr:'아이스크림',romaji:'a-i-seu-keu-rim',en:'Ice Cream',   price:300 },
+    { id:'tteok',       kr:'떡볶이',   romaji:'tteok-ppo-kki',   en:'Tteokbokki',  price:500 },
+    { id:'saewooggang', kr:'새우깡',   romaji:'sae-u-kkang',    en:'Saewookang',  price:350 },
+    { id:'poca',        kr:'포카칩',   romaji:'po-ka-chip',     en:'Poca Chips',  price:350 },
+    { id:'chokopie',    kr:'초코파이', romaji:'cho-ko-pa-i',    en:'Choco Pie',   price:300 },
+    { id:'jelly',       kr:'젤리',     romaji:'jel-li',         en:'Jelly',       price:250 },
+  ],
+  daily: [
+    { id:'tissue',      kr:'휴지',   romaji:'hyu-ji',          en:'Tissue Roll', price:600 },
+    { id:'toothpaste',  kr:'치약',   romaji:'chi-yak',         en:'Toothpaste',  price:550 },
+    { id:'toothbrush',  kr:'칫솔',   romaji:'chit-ssol',        en:'Toothbrush',  price:400 },
+    { id:'band',        kr:'밴드',   romaji:'baen-deu',        en:'Band-Aid',    price:450 },
+    { id:'mask',        kr:'마스크', romaji:'ma-seu-keu',      en:'Face Mask',   price:600 },
+  ]
+};
+const ALL_ITEMS = [...ITEMS.drinks, ...ITEMS.food, ...ITEMS.snack, ...ITEMS.daily];
+
+// ===== Weekday / event mission data =====
+const WEEKDAYS = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+const WEEKDAYS_HEAD = ['일','월','화','수','목','금','토'];
+const EVENTS = [
+  { id:'milk11',     emoji:'🥛', kr:'오늘은 우유가 1+1이에요!',       romaji:'o-neu-reun u-yu-ga il peul-leo-seu i-ri-e-yo',            en:'Today milk is buy-one-get-one-free!', target:'milk',  type:'bogo' },
+  { id:'ramenhalf',  emoji:'🍜', kr:'오늘은 신라면이 반값이에요!',      romaji:'o-neu-reun sil-la-myeo-ni ban-gap-si-e-yo',               en:'Today Shin Ramen is half price!',      target:'ramen', type:'half' },
+  { id:'sale30',     emoji:'🎉', kr:'오늘은 전상품 30% 세일이에요!',    romaji:'o-neu-reun jeon-sang-pum sam-sip peo-sen-teu se-i-ri-e-yo', en:'Today everything is 30% off!',        target:null,    type:'percent30' },
+  { id:'none',       emoji:'📅', kr:'오늘은 평범한 날이에요.',         romaji:'o-neu-reun pyeong-beom-han na-ri-e-yo',                   en:'Today is just a normal day.',          target:null,    type:'none' },
+];
+let correctWeekday = '';
+let currentEvent = null;
+
+function getPrice(item) {
+  let price = item.price;
+  if (currentEvent) {
+    if (currentEvent.type === 'percent30') price = Math.round(price * 0.7 / 10) * 10;
+    if (currentEvent.type === 'half' && item.id === currentEvent.target) price = Math.round(price * 0.5 / 10) * 10;
+  }
+  return price;
+}
+
+function isSale(item) {
+  if (!currentEvent) return false;
+  if (currentEvent.type === 'percent30') return true;
+  if (currentEvent.type === 'half' && item.id === currentEvent.target) return true;
+  if (currentEvent.type === 'bogo' && item.id === currentEvent.target) return true;
+  return false;
+}
+function saleBadge(item) {
+  if (!currentEvent) return '';
+  if (currentEvent.type === 'percent30') return '30%';
+  if (currentEvent.type === 'half' && item.id === currentEvent.target) return '50%';
+  if (currentEvent.type === 'bogo' && item.id === currentEvent.target) return '1+1';
+  return '';
+}
+
+let cart = [];              // [{id, qty}]
+let payTotal = 0;
+let currentItem = null;
+let popupQty = 1;
+
+function fmt(n) { n = Number(n) || 0; return '₩' + n.toLocaleString(); }
+
+function wonToKr(n) {
+  if (n === 0) return '영 원';
+  n = Number(n) || 0;
+  const u = ['','일','이','삼','사','오','육','칠','팔','구'];
+  let r = '';
+  const man = Math.floor(n/10000), rest = n%10000;
+  const cheon = Math.floor(rest/1000), baek = Math.floor((rest%1000)/100);
+  const sip = Math.floor((rest%100)/10), il = rest%10;
+  if (man) r += (man>1?u[man]:'') + '만';
+  if (cheon) r += (cheon>1?u[cheon]:'') + '천';
+  if (baek) r += (baek>1?u[baek]:'') + '백';
+  if (sip) r += (sip>1?u[sip]:'') + '십';
+  if (il) r += u[il];
+  return r + ' 원';
+}
+
+function wonRomaji(n) {
+  const m = {'만':'man','일':'il','이':'i','삼':'sam','사':'sa','오':'o','육':'yuk','칠':'chil','팔':'pal','구':'gu','천':'cheon','백':'baek','십':'sip','원':'won',' ':'-'};
+  return wonToKr(n).split('').map(c=>m[c]||c).join('').replace(/([a-z])([가-힣])/g,'$1-$2');
+}
+
+function speak(txt) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'ko-KR'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
+// ===== SYNTHESIZED SOUND EFFECTS =====
+let audioCtx = null;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function noiseBurst(ctx, t, dur, freq, q, gainPeak) {
+  const bufferSize = Math.floor(ctx.sampleRate * dur);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random()*2-1) * Math.exp(-i/(bufferSize*0.4));
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filt = ctx.createBiquadFilter();
+  filt.type = 'bandpass'; filt.frequency.value = freq; filt.Q.value = q;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(gainPeak, t);
+  g.gain.exponentialRampToValueAtTime(0.01, t + dur);
+  noise.connect(filt).connect(g).connect(ctx.destination);
+  noise.start(t);
+}
+function playClang() {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    noiseBurst(ctx, t, 0.3, 1400, 4, 0.5);
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(140, t);
+    osc.frequency.exponentialRampToValueAtTime(40, t + 0.3);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.6, t);
+    g.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
+    osc.connect(g).connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.35);
+  } catch(e) {}
+}
+function playEvilLaugh() {
+  try {
+    const ctx = getCtx();
+    const notes = [220,180,220,160,200,140];
+    notes.forEach((f, i) => {
+      const t = ctx.currentTime + i*0.14;
+      const osc = ctx.createOscillator();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(f, t);
+      osc.frequency.exponentialRampToValueAtTime(f*0.7, t+0.11);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(0.22, t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t+0.13);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(t); osc.stop(t+0.14);
+    });
+  } catch(e) {}
+}
+function playFireworks() {
+  try {
+    const ctx = getCtx();
+    for (let i = 0; i < 5; i++) {
+      const t = ctx.currentTime + i*0.16;
+      noiseBurst(ctx, t, 0.22, 2000 + Math.random()*1500, 2, 0.28);
+    }
+  } catch(e) {}
+}
+function spawnConfetti(container) {
+  const colors = ['#ff6b6b','#feca57','#48dbfb','#1dd1a1','#f368e0','#54a0ff'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = (Math.random()*100) + '%';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration = (0.8 + Math.random()*0.9) + 's';
+    el.style.animationDelay = (Math.random()*0.3) + 's';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 2200);
+  }
+}
+
+function updateHUD() {
+  document.getElementById('cart-disp').textContent = cart.length + '개';
+}
+
+// Walking animation helpers
+function startWalk(l, r) {
+  l.classList.add('walking-l'); r.classList.add('walking-r');
+}
+function stopWalk(l, r) {
+  l.classList.remove('walking-l'); r.classList.remove('walking-r');
+}
+
+// ===== ENTER STORE =====
+function enterStore() {
+  document.getElementById('enter-btn').style.display = 'none';
+  const char = document.getElementById('char-outside');
+  const ll = document.getElementById('leg-l-out');
+  const lr = document.getElementById('leg-r-out');
+  startWalk(ll, lr);
+
+  // Walk to door
+  char.style.left = '42%';
+  setTimeout(() => {
+    stopWalk(ll, lr);
+    // Open door
+    document.getElementById('store-door').classList.add('door-open');
+    document.getElementById('store-door').textContent = '';
+    setTimeout(() => {
+      // Switch scene
+      document.getElementById('scene-outside').classList.remove('active');
+      document.getElementById('scene-inside').classList.add('active');
+      // Char enters from left
+      const ci = document.getElementById('char-inside');
+      ci.style.left = '5%';
+      const li = document.getElementById('leg-l-in');
+      const ri = document.getElementById('leg-r-in');
+      startWalk(li, ri);
+      setTimeout(() => {
+        ci.style.left = '40%';
+        setTimeout(() => stopWalk(li, ri), 800);
+      }, 100);
+      // Jail bars slide down behind you
+      setTimeout(() => {
+        document.getElementById('jail-bars').classList.add('dropped');
+        playClang();
+      }, 350);
+    }, 500);
+  }, 900);
+}
+
+// ===== SECTION POPUP =====
+function openSection(type) {
+  // Move char toward shelf
+  const positions = { drinks:'8%', food:'32%', snack:'55%', daily:'72%' };
+  const char = document.getElementById('char-inside');
+  const li = document.getElementById('leg-l-in');
+  const ri = document.getElementById('leg-r-in');
+  if (positions[type]) {
+    startWalk(li, ri);
+    char.style.left = positions[type];
+    setTimeout(() => stopWalk(li, ri), 700);
+  }
+
+  const labels = { drinks:'🥤 음료 코너', food:'🍜 라면 / 식품 코너', snack:'🍫 스낵 코너', daily:'🧻 생활용품' };
+  document.getElementById('section-title').textContent = labels[type];
+  const grid = document.getElementById('section-items');
+  grid.innerHTML = '';
+  ITEMS[type].forEach(item => {
+    const div = document.createElement('div');
+    const sale = isSale(item);
+    const finalP = getPrice(item);
+    const inCart = cart.find(c => c.id === item.id);
+    div.style.cssText = 'background:#f8f9fa;border-radius:10px;padding:6px 4px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all 0.15s;position:relative';
+    if (sale) div.style.borderColor = '#e53935';
+    if (inCart) div.style.borderColor = '#2f9e44';
+    div.innerHTML = `
+      ${sale ? `<div style="position:absolute;top:-6px;right:-6px;background:#e53935;color:white;border-radius:8px;padding:1px 5px;font-size:0.55rem;font-weight:900">${saleBadge(item)}</div>` : ''}
+      <div style="width:44px;height:44px;margin:0 auto">${getSVG(item.id)}</div>
+      <div style="font-size:0.6rem;font-weight:700;color:#333;margin-top:3px;line-height:1.2">${item.kr}${inCart ? ' x'+inCart.qty : ''}</div>
+      ${sale && item.price !== finalP ? `<div style="font-size:0.58rem;color:#bbb;text-decoration:line-through">${fmt(item.price)}</div>` : ''}
+      <div style="font-size:0.68rem;color:${sale?'#e53935':'#2f9e44'};font-weight:900">${fmt(finalP)}</div>
+    `;
+    div.onmouseover = () => { if(!sale && !inCart) div.style.borderColor = '#3b5bdb'; };
+    div.onmouseout = () => { div.style.borderColor = sale ? '#e53935' : (inCart ? '#2f9e44' : 'transparent'); };
+    div.onclick = () => { closePopup('section-popup'); openItem(item); };
+    grid.appendChild(div);
+  });
+  document.getElementById('section-popup').classList.add('show');
+}
+
+function openItem(item) {
+  const inCart = cart.find(c => c.id === item.id);
+  currentItem = item;
+  popupQty = inCart ? inCart.qty : 1;
+  document.getElementById('qty-val').textContent = popupQty;
+  document.getElementById('p-emoji').innerHTML = `<div style="width:80px;height:80px;margin:0 auto">${getSVG(item.id)}</div>`;
+  document.getElementById('p-kr').textContent = item.kr;
+  document.getElementById('p-romaji').textContent = item.romaji;
+  document.getElementById('p-en').textContent = item.en;
+  const sale = isSale(item);
+  const finalP = getPrice(item);
+  const priceEl = document.getElementById('p-price');
+  if (sale) {
+    priceEl.innerHTML = `
+      <span style="font-size:1.2rem;color:#e53935;font-weight:900">${fmt(finalP)}</span>
+      ${item.price !== finalP ? `<span style="margin-left:8px;font-size:0.85rem;color:#aaa;text-decoration:line-through">${fmt(item.price)}</span>` : ''}
+      <div style="font-size:0.75rem;font-weight:800;color:#e53935;margin-top:2px">${saleBadge(item)}</div>
+    `;
+  } else {
+    priceEl.innerHTML = `<span style="font-size:1.2rem;color:#2f9e44;font-weight:900">${fmt(item.price)}</span>`;
+  }
+  document.getElementById('item-popup').classList.add('show');
+  speak(item.kr);
+}
+
+function changeQty(delta) {
+  popupQty = Math.max(1, Math.min(5, popupQty + delta));
+  document.getElementById('qty-val').textContent = popupQty;
+}
+
+function confirmItem() {
+  if (!currentItem) return;
+  const existing = cart.find(c => c.id === currentItem.id);
+  if (existing) {
+    existing.qty = popupQty;
+  } else {
+    cart.push({ id: currentItem.id, qty: popupQty });
+  }
+  closePopup('item-popup');
+  updateHUD();
+  updateCartBar();
+  if (cart.length > 0) document.getElementById('char-bag').style.display = 'block';
+  showSpeech('🛒 담았어요!');
+}
+
+function updateCartBar() {
+  const bar = document.getElementById('cart-bar-items');
+  if (!bar) return;
+  if (cart.length === 0) { bar.textContent = '아직 비어있어요'; return; }
+  bar.textContent = cart.map(c => {
+    const item = ALL_ITEMS.find(i => i.id === c.id);
+    return item.kr + ' x' + c.qty + ' ' + fmt(getPrice(item) * c.qty);
+  }).join('  ·  ');
+}
+
+function showSpeech(txt) {
+  const s = document.getElementById('char-speech');
+  s.textContent = txt;
+  s.style.display = 'block';
+  setTimeout(() => s.style.display = 'none', 1500);
+}
+
+// ===== PAYMENT =====
+function computeTotal() {
+  let total = 0;
+  cart.forEach(c => {
+    const item = ALL_ITEMS.find(i => i.id === c.id);
+    let effQty = c.qty;
+    if (currentEvent && currentEvent.type === 'bogo' && c.id === currentEvent.target) {
+      effQty = Math.ceil(c.qty / 2); // buy-one-get-one-free -> pay for half, rounded up
+    }
+    total += getPrice(item) * effQty;
+  });
+  return total;
+}
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildAmountOptions(correct) {
+  const set = new Set([correct]);
+  const deltas = [10,20,30,50,100,-10,-20,-30,-50,-100];
+  let guard = 0;
+  while (set.size < 4 && guard < 50) {
+    const d = deltas[Math.floor(Math.random() * deltas.length)];
+    const val = correct + d;
+    if (val > 0 && val % 10 === 0) set.add(val);
+    guard++;
+  }
+  return shuffleArr([...set]);
+}
+
+function openPaymentScene() {
+  if (cart.length === 0) { showSpeech('물건을 먼저 골라요!'); return; }
+
+  // Move char to counter
+  const char = document.getElementById('char-inside');
+  const li = document.getElementById('leg-l-in');
+  const ri = document.getElementById('leg-r-in');
+  startWalk(li, ri);
+  char.style.left = '68%';
+  setTimeout(() => stopWalk(li, ri), 700);
+
+  payTotal = computeTotal();
+  const krText = wonToKr(payTotal);
+
+  document.getElementById('clerk-digit').textContent = fmt(payTotal);
+  document.getElementById('clerk-text').textContent = krText + '입니다.';
+  document.getElementById('clerk-romaji').textContent = wonRomaji(payTotal) + ' im-ni-da';
+  document.getElementById('clerk-reveal').style.display = 'none';
+  document.getElementById('clerk').classList.remove('devil');
+  document.getElementById('pay-popup-inner').classList.remove('devil-flash');
+  document.getElementById('fail-box').classList.remove('show');
+  document.getElementById('pay-quiz').style.display = 'block';
+  speak(krText + '입니다');
+
+  const options = buildAmountOptions(payTotal);
+  const grid = document.getElementById('amount-options');
+  grid.innerHTML = '';
+  options.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'pay-opt';
+    btn.textContent = wonToKr(val);
+    btn.onclick = () => checkPayAnswer(btn, val, payTotal);
+    grid.appendChild(btn);
+  });
+  document.getElementById('pay-feedback').textContent = '';
+
+  setTimeout(() => document.getElementById('pay-popup').classList.add('show'), 500);
+}
+
+function replayClerk() {
+  speak(wonToKr(payTotal) + '입니다');
+}
+
+function checkPayAnswer(btn, val, correct) {
+  const fb = document.getElementById('pay-feedback');
+  if (val === correct) {
+    btn.classList.add('correct');
+    fb.textContent = '정답이에요! 👍';
+    fb.style.color = '#2f9e44';
+    document.getElementById('clerk-reveal').style.display = 'block';
+    document.querySelectorAll('#amount-options .pay-opt').forEach(b => b.onclick = null);
+    setTimeout(() => { closePopup('pay-popup'); missionComplete(); }, 1400);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('clerk').classList.add('devil');
+    document.getElementById('pay-popup-inner').classList.add('devil-flash');
+    playEvilLaugh();
+    setTimeout(() => {
+      document.getElementById('pay-quiz').style.display = 'none';
+      document.getElementById('fail-box').classList.add('show');
+    }, 300);
+  }
+}
+
+function retryPayment() {
+  document.getElementById('clerk').classList.remove('devil');
+  document.getElementById('pay-popup-inner').classList.remove('devil-flash');
+  document.getElementById('fail-box').classList.remove('show');
+  document.getElementById('pay-quiz').style.display = 'block';
+
+  const options = buildAmountOptions(payTotal);
+  const grid = document.getElementById('amount-options');
+  grid.innerHTML = '';
+  options.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'pay-opt';
+    btn.textContent = wonToKr(val);
+    btn.onclick = () => checkPayAnswer(btn, val, payTotal);
+    grid.appendChild(btn);
+  });
+  document.getElementById('pay-feedback').textContent = '';
+  replayClerk();
+}
+
+function cancelPayment() {
+  document.getElementById('clerk').classList.remove('devil');
+  document.getElementById('pay-popup-inner').classList.remove('devil-flash');
+  document.getElementById('fail-box').classList.remove('show');
+  document.getElementById('pay-quiz').style.display = 'block';
+  closePopup('pay-popup');
+}
+
+function missionComplete() {
+  document.getElementById('clerk').classList.remove('devil');
+  document.getElementById('pay-popup-inner').classList.remove('devil-flash');
+  const jail = document.getElementById('jail-bars');
+  jail.classList.remove('dropped');
+  jail.classList.add('opened');
+  spawnConfetti(document.getElementById('scene-inside'));
+  playFireworks();
+  setTimeout(() => {
+    document.getElementById('escape-overlay').classList.add('show');
+  }, 500);
+}
+
+function closePopup(id) {
+  document.getElementById(id).classList.remove('show');
+  currentItem = null;
+}
+
+function initShelves() {
+  const previews = {
+    'drinks-grid-preview': ['cola','banana_milk','water','greentea','monster'],
+    'food-grid-preview': ['buldak','ramen','triangle','dosirak'],
+    'snack-grid-preview': ['pepero','saewooggang','chokopie','jelly'],
+    'daily-grid-preview': ['tissue','mask'],
+  };
+  Object.entries(previews).forEach(([id, items]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = items.map(itemId =>
+      `<div style="width:32px;height:40px;flex-shrink:0;filter:drop-shadow(1px 2px 2px rgba(0,0,0,0.3))">${getSVG(itemId)}</div>`
+    ).join('');
+  });
+}
+
+// ===== PHASE 1: WEEKDAY MINI-GAME =====
+// ===== Korean date reading helpers =====
+function numKr(n) {
+  const u = ['','일','이','삼','사','오','육','칠','팔','구'];
+  const sip = Math.floor(n/10), il = n%10;
+  let r = '';
+  if (sip) r += (sip>1 ? u[sip] : '') + '십';
+  if (il) r += u[il];
+  return r;
+}
+function monthKr(n) {
+  if (n === 6) return '유월';
+  if (n === 10) return '시월';
+  return numKr(n) + '월';
+}
+function dayKr(n) {
+  return numKr(n) + '일';
+}
+function dateKr(m, d) {
+  return monthKr(m) + ' ' + dayKr(d);
+}
+function dateRomaji(m, d) {
+  const map = {'일':'il','이':'i','삼':'sam','사':'sa','오':'o','육':'yuk','칠':'chil','팔':'pal','구':'gu','십':'sip','월':'wol',' ':'-'};
+  const kr = m===6 ? '유월' : (m===10 ? '시월' : (numKr(m)+'월'));
+  const dr = numKr(d) + '일';
+  const full = kr + ' ' + dr;
+  return full.split('').map(c => map[c] || c).join('').replace(/-+/g,'-');
+}
+
+let currentMonth = 0, currentDay = 0;
+
+function setupWeekday() {
+  currentMonth = Math.floor(Math.random() * 12) + 1;
+  currentDay = Math.floor(Math.random() * 28) + 1;
+  const correctIdx = Math.floor(Math.random() * 7);
+
+  document.getElementById('mini-cal-month').textContent = currentMonth + '월 ' + currentDay + '일';
+
+  const headRow = document.getElementById('mini-cal-head');
+  headRow.innerHTML = '';
+  WEEKDAYS_HEAD.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'mini-cal-head';
+    div.textContent = d;
+    headRow.appendChild(div);
+  });
+
+  const dateRow = document.getElementById('mini-cal-dates');
+  dateRow.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const div = document.createElement('div');
+    div.className = 'mini-cal-cell' + (i === correctIdx ? ' today' : '');
+    div.textContent = i === correctIdx ? currentDay : '';
+    dateRow.appendChild(div);
+  }
+
+  document.getElementById('date-reveal').style.display = 'none';
+  document.getElementById('weekday-feedback').textContent = '';
+
+  const options = buildDateOptions(currentMonth, currentDay);
+  const grid = document.getElementById('weekday-choices');
+  grid.innerHTML = '';
+  options.forEach(([m, d]) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = dateKr(m, d);
+    btn.onclick = () => checkDateAnswer(btn, m, d);
+    grid.appendChild(btn);
+  });
+
+  speak(dateKr(currentMonth, currentDay) + '이에요');
+}
+
+function replayDate() {
+  speak(dateKr(currentMonth, currentDay) + '이에요');
+}
+
+function buildDateOptions(month, day) {
+  const results = [[month, day]];
+  const candidates = [
+    [month, day + 1], [month, day - 1], [month, day + 2], [month, day - 2],
+    [month === 12 ? 1 : month + 1, day], [month === 1 ? 12 : month - 1, day],
+    [month, day + 10 <= 28 ? day + 10 : day - 10],
+  ];
+  for (const [m, d] of shuffleArr(candidates)) {
+    if (results.length >= 4) break;
+    if (m < 1 || m > 12 || d < 1 || d > 28) continue;
+    if (results.some(r => r[0] === m && r[1] === d)) continue;
+    results.push([m, d]);
+  }
+  return shuffleArr(results);
+}
+
+function checkDateAnswer(btn, m, d) {
+  const fb = document.getElementById('weekday-feedback');
+  if (m === currentMonth && d === currentDay) {
+    btn.classList.add('correct');
+    fb.textContent = '정답이에요! 👍';
+    fb.className = 'phase-feedback ok';
+    const reveal = document.getElementById('date-reveal');
+    reveal.style.display = 'block';
+    reveal.textContent = dateKr(currentMonth, currentDay) + ' · ' + dateRomaji(currentMonth, currentDay);
+    document.querySelectorAll('#weekday-choices .choice-btn').forEach(b => b.onclick = null);
+    setTimeout(setupEvent, 1300);
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '다시 골라보세요!';
+    fb.className = 'phase-feedback no';
+    setTimeout(() => btn.classList.remove('wrong'), 500);
+  }
+}
+
+// ===== PHASE 2: EVENT REVEAL =====
+function setupEvent() {
+  currentEvent = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+  document.getElementById('event-emoji').textContent = currentEvent.emoji;
+  document.getElementById('event-text').textContent = currentEvent.kr;
+  document.getElementById('event-romaji').textContent = currentEvent.romaji;
+  document.getElementById('event-en').textContent = currentEvent.en;
+  speak(currentEvent.kr);
+  document.getElementById('phase-weekday').classList.remove('show');
+  document.getElementById('phase-event').classList.add('show');
+}
+
+function revealStore() {
+  document.getElementById('phase-event').classList.remove('show');
+  document.getElementById('game-wrap').style.display = 'block';
+}
+
+function restartMission() {
+  cart = [];
+  currentEvent = null;
+  updateHUD();
+  updateCartBar();
+  document.getElementById('char-bag').style.display = 'none';
+  document.getElementById('escape-overlay').classList.remove('show');
+  document.getElementById('scene-inside').classList.remove('active');
+  document.getElementById('scene-outside').classList.add('active');
+  document.getElementById('char-outside').style.left = '10%';
+  document.getElementById('char-inside').style.left = '45%';
+  document.getElementById('enter-btn').style.display = 'block';
+  document.getElementById('store-door').classList.remove('door-open');
+  document.getElementById('store-door').textContent = '자동문';
+  document.getElementById('game-wrap').style.display = 'none';
+  document.getElementById('jail-bars').classList.remove('dropped', 'opened');
+  document.getElementById('clerk').classList.remove('devil');
+  document.getElementById('pay-popup-inner').classList.remove('devil-flash');
+  document.getElementById('fail-box').classList.remove('show');
+  document.getElementById('pay-quiz').style.display = 'block';
+  setupWeekday();
+  document.getElementById('phase-weekday').classList.add('show');
+}
+
+initShelves();
+updateHUD();
+updateCartBar();
+setupWeekday();
+</script>
+</body>
+</html>
