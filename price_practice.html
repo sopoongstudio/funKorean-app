@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Practice — Learn Korean</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--bg:#F0F4F8;--surface:#FFFFFF;--surface2:#F0F4F8;--accent:#FF6B6B;--accent2:#FFD93D;--accent3:#4D96FF;--text:#0F172A;--text-muted:#475569;--border:#CBD5E1;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{font-size:17px;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans','Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;font-weight:450;-webkit-font-smoothing:antialiased;}
+  header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;border-bottom:1px solid var(--border);background:rgba(240,244,248,.95);position:sticky;top:0;z-index:10;}
+  .logo{display:flex;align-items:baseline;gap:.6rem;}
+  .logo-hangul{font-family:'Noto Sans KR',sans-serif;font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-1px;}
+  .logo-en{font-size:.85rem;color:var(--text-muted);font-weight:300;letter-spacing:2px;text-transform:uppercase;}
+
+  .pp-wrap{max-width:480px;margin:0 auto;}
+  .pp-modes{display:flex;gap:.6rem;margin-bottom:1.2rem;justify-content:center;flex-wrap:wrap;}
+  .pp-mode-btn{padding:.5rem 1.1rem;border-radius:99px;border:2px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:.8rem;}
+  .pp-mode-btn.active{background:#10B981;border-color:#10B981;color:white;}
+  .pp-score{text-align:center;font-size:.8rem;color:#64748B;margin-bottom:1rem;font-weight:600;}
+  .pp-scene{background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:16px;padding:1.6rem 1.2rem;text-align:center;margin-bottom:1.2rem;}
+  .pp-clerk-line{font-size:.85rem;color:#166534;margin-bottom:.6rem;font-weight:600;}
+  .pp-speak-btn{background:#10B981;border:none;color:white;width:56px;height:56px;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 14px rgba(16,185,129,.35);}
+  .pp-receipt{background:#fff;border:1.5px dashed #94A3B8;border-radius:10px;padding:1rem 1.2rem;display:inline-block;min-width:180px;}
+  .pp-receipt-title{font-size:.68rem;letter-spacing:2px;color:#94A3B8;font-weight:700;margin-bottom:.4rem;}
+  .pp-receipt-price{font-family:'DM Sans',sans-serif;font-size:1.7rem;font-weight:800;color:#0F172A;}
+  .pp-receipt-speak{margin-top:.7rem;background:none;border:1.5px solid #CBD5E1;color:#475569;border-radius:99px;padding:.35rem 1rem;font-size:.78rem;cursor:pointer;}
+  .pp-options{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+  .pp-option{background:#FFFDF9;border:1.5px solid rgba(255,217,61,.3);border-radius:12px;padding:.85rem .7rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:.95rem;font-weight:700;color:#0F172A;text-align:center;transition:all .15s;}
+  .pp-option:hover{border-color:#FFD93D;background:#FFFBEB;}
+  .pp-option.correct{background:#DCFCE7;border-color:#22C55E;color:#166534;}
+  .pp-option.wrong{background:#FEE2E2;border-color:#EF4444;color:#991B1B;}
+  .pp-feedback{text-align:center;margin-top:1rem;font-weight:700;font-size:.95rem;min-height:1.3rem;}
+  .pp-next-btn{display:block;margin:1rem auto 0;background:#FF6B6B;color:white;border:none;border-radius:99px;padding:.6rem 1.6rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;}
+  @media(max-width:768px){
+    header{padding:.8rem 1rem;}.logo-hangul{font-size:1.4rem;}
+    section{padding:1rem !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <a href="hangul_learn_v2.html" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-decoration:none;">←</a>
+    <div class="logo"><span class="logo-hangul">한글</span><span class="logo-en">Learn Korean</span></div>
+  </div>
+  <div style="display:inline-block;background:linear-gradient(135deg,#FF6B6B,#A78BFA);color:#fff;padding:.3rem .9rem;border-radius:99px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;">🎮 PLAY · Price Practice</div>
+</header>
+
+<section style="max-width:700px;margin:0 auto;padding:2rem 1.5rem 3rem;">
+  <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;line-height:1.15;margin-bottom:.6rem;letter-spacing:-.5px;">가격 읽기 연습<br><span style="color:#4D96FF;font-family:'Noto Sans KR',sans-serif;font-size:.7em;">Price Practice</span></h1>
+  <p style="color:var(--text-muted);font-size:.95rem;line-height:1.7;margin-bottom:1.5rem;">편의점 가격을 듣고 맞혀보세요, 또는 영수증을 직접 읽어보세요.</p>
+
+  <div class="pp-wrap" id="vocab-cards"></div>
+</section>
+
+<script>
+function speak(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.85;u.pitch=1;window.speechSynthesis.speak(u);}
+
+// ===== Price Practice (편의점 가격 연습) =====
+const ppDigits=['','일','이','삼','사','오','육','칠','팔','구'];
+function ppConvertGroup(num){
+  let str='';
+  const units=['','십','백','천'];
+  const d=String(num).padStart(4,'0').split('').map(Number);
+  for(let i=0;i<4;i++){
+    const digit=d[i],unit=units[3-i];
+    if(digit===0)continue;
+    str+=(digit===1&&unit!=='')?unit:ppDigits[digit]+unit;
+  }
+  return str;
+}
+function numberToKoreanWon(num){
+  const man=Math.floor(num/10000),rest=num%10000;
+  let str='';
+  if(man>0){
+    str+=(man===1?'만':ppConvertGroup(man)+'만');
+    if(rest>0)str+=' ';
+  }
+  if(rest>0)str+=ppConvertGroup(rest);
+  else if(man===0)str+='영';
+  return str+'원';
+}
+function ppFormatNumber(num){return num.toLocaleString('en-US')+'원';}
+function ppRandomPrice(){
+  const remainders=[0,100,200,300,400,500,600,700,800,900,1200,1500,1800,2000,2500,2800,3000,3200,3500,3800,3900,4000,4200,4500,4800,4900,5000,5200,5500,5800,5900,6000,6500,6800,6900,7000,7200,7500,7800,7900,8000,8200,8500,8800,8900,9000,9200,9500,9800,9900];
+  const man=Math.random()<0.5?0:Math.floor(Math.random()*4)+1; // 0 or 1-4 (up to 4만원대)
+  let rest=remainders[Math.floor(Math.random()*remainders.length)];
+  let total=man*10000+rest;
+  if(total<100)total=900;
+  return total;
+}
+function ppSwapDigits(num){
+  const s=String(num).split('');
+  if(s.length<2)return num+100;
+  const i=Math.floor(Math.random()*(s.length-1));
+  [s[i],s[i+1]]=[s[i+1],s[i]];
+  const swapped=parseInt(s.join(''),10);
+  return swapped===num?num+100:swapped;
+}
+function ppMakeDistractors(correct){
+  const opts=new Set([correct]);
+  let tries=0;
+  while(opts.size<4&&tries<40){
+    tries++;
+    const r=Math.random();
+    let variant;
+    if(r<0.34)variant=correct+((Math.floor(Math.random()*5)+1)*100)*(Math.random()<0.5?1:-1);
+    else if(r<0.67)variant=ppSwapDigits(correct);
+    else variant=correct+((Math.floor(Math.random()*4)+1)*1000)*(Math.random()<0.5?1:-1);
+    if(variant>0&&variant!==correct)opts.add(variant);
+  }
+  return [...opts].sort(()=>Math.random()-0.5);
+}
+let ppState={mode:'listen',score:0,round:0,setSize:3,answered:false,current:0};
+function initPricePractice(){
+  ppState={mode:'listen',score:0,round:0,setSize:3,answered:false,current:0};
+  ppRenderShell();
+  ppNext();
+}
+function ppRenderShell(){
+  const wrap=document.getElementById('vocab-cards');
+  wrap.innerHTML=`
+    <div class="pp-modes">
+      <button class="pp-mode-btn" id="pp-mode-listen" onclick="ppSetMode('listen')">🔊 듣고 고르기</button>
+      <button class="pp-mode-btn" id="pp-mode-read" onclick="ppSetMode('read')">🧾 영수증 읽기</button>
+    </div>
+    <div class="pp-score" id="pp-score"></div>
+    <div id="pp-question"></div>
+  `;
+  ppUpdateModeButtons();
+}
+function ppUpdateModeButtons(){
+  document.getElementById('pp-mode-listen').classList.toggle('active',ppState.mode==='listen');
+  document.getElementById('pp-mode-read').classList.toggle('active',ppState.mode==='read');
+}
+function ppSetMode(mode){
+  ppState.mode=mode;
+  ppState.round=0;
+  ppState.score=0;
+  ppUpdateModeButtons();
+  ppNext();
+}
+function ppUpdateScore(){
+  document.getElementById('pp-score').textContent=`문제 ${Math.min(ppState.round+1,ppState.setSize)} / ${ppState.setSize}  ·  점수 ${ppState.score}`;
+}
+function ppNext(){
+  if(ppState.round>=ppState.setSize){
+    ppRenderSummary();
+    return;
+  }
+  ppState.answered=false;
+  ppState.current=ppRandomPrice();
+  ppUpdateScore();
+  if(ppState.mode==='listen')ppRenderListen();
+  else ppRenderRead();
+}
+function ppRenderSummary(){
+  const q=document.getElementById('pp-question');
+  const pct=Math.round((ppState.score/ppState.setSize)*100);
+  const msg=pct===100?'완벽해요! 🎉':pct>=60?'잘했어요! 👍':'조금 더 연습해봐요 💪';
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div style="font-size:2.2rem;margin-bottom:.5rem;">${pct===100?'🏆':pct>=60?'😊':'📝'}</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#166534;margin-bottom:.3rem;">${msg}</div>
+      <div style="font-size:.9rem;color:#475569;">이번 세트 점수: ${ppState.score} / ${ppState.setSize}</div>
+    </div>
+    <button class="pp-next-btn" onclick="ppRestartSet()">🔁 다시 하기 (3문제)</button>
+  `;
+}
+function ppRestartSet(){
+  ppState.round=0;
+  ppState.score=0;
+  ppNext();
+}
+function ppRenderListen(){
+  const price=ppState.current;
+  const korean=numberToKoreanWon(price);
+  const options=ppMakeDistractors(price);
+  const q=document.getElementById('pp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🏪 점원이 가격을 말해요</div>
+      <button class="pp-speak-btn" onclick="speak('${korean}입니다')">🔊</button>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="ppCheckListen(this,${o},${price})">${ppFormatNumber(o)}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="pp-feedback"></div>
+  `;
+  speak(korean+'입니다');
+}
+function ppCheckListen(el,chosen,correct){
+  if(ppState.answered)return;
+  ppState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('pp-feedback');
+  if(chosen===correct){
+    ppState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';
+    fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===ppFormatNumber(correct))o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${ppFormatNumber(correct)}이에요`;
+    fb.style.color='#991B1B';
+  }
+  ppState.round++;
+  ppUpdateScore();
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="ppNext()">${ppState.round>=ppState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+function ppRenderRead(){
+  const price=ppState.current;
+  const correctKorean=numberToKoreanWon(price);
+  const distractors=ppMakeDistractors(price).filter(n=>n!==price).slice(0,3);
+  const options=[correctKorean,...distractors.map(n=>numberToKoreanWon(n))].sort(()=>Math.random()-0.5);
+  const q=document.getElementById('pp-question');
+  q.innerHTML=`
+    <div class="pp-scene">
+      <div class="pp-clerk-line">🧾 영수증을 읽어보세요</div>
+      <div class="pp-receipt">
+        <div class="pp-receipt-title">RECEIPT</div>
+        <div class="pp-receipt-price">${ppFormatNumber(price)}</div>
+      </div><br>
+      <button class="pp-receipt-speak" onclick="speak('${correctKorean}')">🔊 정답 듣기</button>
+    </div>
+    <div class="pp-options">
+      ${options.map(o=>`<div class="pp-option" onclick="ppCheckRead(this,'${o}','${correctKorean}')">${o}</div>`).join('')}
+    </div>
+    <div class="pp-feedback" id="pp-feedback"></div>
+  `;
+}
+function ppCheckRead(el,chosen,correct){
+  if(ppState.answered)return;
+  ppState.answered=true;
+  const opts=document.querySelectorAll('.pp-option');
+  const fb=document.getElementById('pp-feedback');
+  if(chosen===correct){
+    ppState.score++;
+    el.classList.add('correct');
+    fb.textContent='✅ 정답이에요!';
+    fb.style.color='#166534';
+  }else{
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.textContent.trim()===correct)o.classList.add('correct');});
+    fb.textContent=`❌ 정답은 ${correct}이에요`;
+    fb.style.color='#991B1B';
+    speak(correct);
+  }
+  ppState.round++;
+  ppUpdateScore();
+  fb.insertAdjacentHTML('afterend',`<button class="pp-next-btn" onclick="ppNext()">${ppState.round>=ppState.setSize?'결과 보기 →':'다음 →'}</button>`);
+}
+
+initPricePractice();
+</script>
+</body>
+</html>
