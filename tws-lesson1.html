@@ -3,14 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LPC2J7SPY9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-LPC2J7SPY9");
-</script>
 <title>TWS 첫 만남 수업 - Lesson 1</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -249,7 +241,7 @@ h2.l2{color:#5b21b6}
         </div>
         <div class="lyric-row" onclick="speakKr(this,'첫 만남은 너무 어려워')">
           <button class="tts-btn">🔊</button>
-          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheot mann-am-eun neo-mu eo-ryeo-wo</div></div>
+          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheon man-na-meun neo-mu eo-ryeo-wo</div></div>
         </div>
         <div class="lyric-row" onclick="speakKr(this,'계획대로 되는 게 없어서')">
           <button class="tts-btn">🔊</button>
@@ -257,11 +249,11 @@ h2.l2{color:#5b21b6}
         </div>
         <div class="lyric-row" onclick="speakKr(this,'첫 만남은 너무 어려워')">
           <button class="tts-btn">🔊</button>
-          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheot mann-am-eun neo-mu eo-ryeo-wo</div></div>
+          <div><div class="lyric-kr">첫 만남은 너무 어려워</div><div class="lyric-rom">Cheon man-na-meun neo-mu eo-ryeo-wo</div></div>
         </div>
         <div class="lyric-row" onclick="speakKr(this,'내 이름은 말야')">
           <button class="tts-btn">🔊</button>
-          <div><div class="lyric-kr">내 이름은 말야</div><div class="lyric-rom">Nae i-reum-eun mal-ya</div></div>
+          <div><div class="lyric-kr">내 이름은 말야</div><div class="lyric-rom">Nae i-reum-eun ma-rya</div></div>
         </div>
       </div>
     </div>
@@ -274,7 +266,7 @@ h2.l2{color:#5b21b6}
   <div class="content">
     <div class="ordinal-grid" id="ordGrid"></div>
     <div class="quiz-box">
-      <div class="q" id="quizQ">❓ 퀴즈: "다섯 번째"는 영어로?</div>
+      <div class="q" id="quizQ">❓ 퀴즈: "다섯째"는 영어로?</div>
       <div class="quiz-opts" id="quizOpts">
         <button class="quiz-opt" onclick="checkQuiz(this,false)">Third</button>
         <button class="quiz-opt" onclick="checkQuiz(this,true)">Fifth</button>
@@ -473,8 +465,8 @@ function checkQuiz(el,correct){
   document.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('right','wrong');});
   el.classList.add(correct?'right':'wrong');
   document.getElementById('quizQ').textContent=correct
-    ?'🎉 정답! Fifth = 다섯째 (다섯 번째)'
-    :'❌ 다시 해봐요! Hint: 다섯 번째';
+    ?'🎉 정답! Fifth = 다섯째'
+    :'❌ 다시 해봐요! Hint: 다섯째';
 }
 
 // ——— Number game (1-10) with TTS ———
